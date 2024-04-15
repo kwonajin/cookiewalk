@@ -1,0 +1,148 @@
+body{
+	background-color: white;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.pause-container {
+  min-height: 830px;
+	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
+	top: 0;
+  /* left: 0; */
+	background-color:rgba(255, 255, 255, 1);
+	width:390px;
+	height:100%;
+	position:relative;
+  }
+  
+  .icon1 {
+    position: absolute;
+    left: 339px;
+    top: 10px;
+    width: 32px;
+    height: 31px;
+  }
+  
+  .icon2 {
+    position: absolute;
+    left: 0;
+    top: 49px;
+    width: 390px;
+    height: 391px;
+  }
+  
+  .label1 {
+    position: absolute;
+    left: 72px;
+    top: 462px;
+    width: 33px;
+    height: 19px;
+    font-size: 16px;
+    font-family: 'Inter';
+    font-weight: bold;
+    color: #131313;
+  }
+  
+  .label2 {
+    position: absolute;
+    left: 272px;
+    top: 462px;
+    width: 41px;
+    height: 21px;
+    font-size: 16px;
+    font-family: 'Noto_Sans_KR';
+    font-weight: medium;
+    color: #131313;
+  }
+  
+  .value1 {
+    position: absolute;
+    left: 50px;
+    top: 495px;
+    font-size: 32px;
+    font-family: 'Noto_Sans_KR';
+    font-weight: medium;
+    color: #131313;
+  }
+  
+  .close-button {
+    position: absolute;
+    left: 12px;
+    top: 17px;
+    font-size: 15px;
+    font-family: 'Inter';
+    font-weight: bold;
+    color: #7ca0c1;
+    white-space: nowrap;
+  }
+  
+  .bar {
+    position: absolute;
+    left: 174px;
+    top: 415px;
+    width: 48px;
+    height: 32px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+  
+  .icon3 {
+    position: absolute;
+    left: 173px;
+    top: 407px;
+    width: 50px;
+    height: 40px;
+  }
+  
+  .value2 {
+    position: absolute;
+    left: 222px;
+    top: 495px;
+    width: 135px;
+    height: 49px;
+    font-size: 32px;
+    font-family: 'Noto_Sans_KR';
+    font-weight: medium;
+    color: #131313;
+  }
+  
+  .button-container {
+  width: 300px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute; /* 절대 위치로 설정합니다. */
+  bottom: 0; /* 하단에 배치됩니다. */
+  left: 50%; /* 가운데 정렬을 위해 왼쪽으로 50% 이동합니다. */
+  transform: translateX(-50%);/* 자체의 가로 길이의 절반만큼 다시 왼쪽으로 이동하여 가운데 정렬합니다. */
+  margin-bottom: 20%;
+  }
+  
+  .button1{
+    width: 95px;
+    height: 95px;
+    background-color: #7ca0c1;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+
+  .button2 {
+    width: 95px;
+    height: 95px;
+    background-color: #7ca0c1;
+    border-radius: 50%;
+  }
+
+  .button-label-end, .button-label-restart{
+    width: 100px;
+    height: 25px;
+    font-size: 24px;
+    font-family: 'Inter';
+    font-weight: bold;
+    color: #fdfdfd;
+    text-align: center;
+    margin-top: 28px;
+  }
