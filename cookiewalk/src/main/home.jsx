@@ -13,7 +13,7 @@ export default function Home() {
         </div>
 
         <div className="active">
-          <div className="my_active">나의 이번주 활동</div>
+          <div className="my_active">나의s이번주 활동</div>
           <div className="e7_21">자세히보기</div>
           <div className="e7_16">완성한 그림 수</div>
           <div className="e7_13">0개</div>

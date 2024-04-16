@@ -25,19 +25,20 @@ function App() {
     setIsPressed(false);
   };
 
-  
+
   return (
     <div className="background">
-        <span className="e92_58">CookieWalk</span>
+        <div className="logo"></div>
+        <span className="title">CookieWalk</span>
         <input
-          className="e92_59"
+          className="id"
           type="text"
           placeholder="아이디"
           onFocus={handleFocus}
           onBlur={(event) => handleBlur(event, '아이디')}
         />
         <input
-          className="e92_60"
+          className="password"
           type="text"
           placeholder="비밀번호"
           onFocus={handleFocus}
@@ -54,18 +55,16 @@ function App() {
           로그인
         </button>
 
-        <a href='#' className="e92_63">아이디 찾기</a>
-        <a href='#' className="e92_66">비밀번호 찾기</a>
-        <a href='#' className="e92_62">회원가입</a>
-        <div className="e92_68"></div>
-        <div className="e92_69"></div>
-        <div className="e92_70"></div>
-        <div className="e92_71">또는</div>
-        <span className="e92_72">간편하게 시작하기</span>
-        <div className="e92_73"></div>
-        <div className="e92_74"></div>
-        <div className="e92_79"></div>
-        <div className="e92_75"></div>
+        <a href='#' className="find_id">아이디 찾기</a>
+        <div className="id_pw"></div>
+        <a href='#' className="find_password">비밀번호 찾기</a>
+        <a href='#' className="signup">회원가입</a>
+        <div className="line"></div>
+        <div className="or">또는</div>
+        <span className="easy_login">간편하게 시작하기</span>
+        <div className="kakao"></div>
+        <div className="naver"></div>
+        <div className="google"></div>
     </div>
   );
 }
