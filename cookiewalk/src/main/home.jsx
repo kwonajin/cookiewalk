@@ -13,24 +13,26 @@ export default function Home() {
         </div>
 
         <div className="active">
-          <div className="my_active">나의s이번주 활동</div>
-          <div className="e7_21">자세히보기</div>
-          <div className="e7_16">완성한 그림 수</div>
-          <div className="e7_13">0개</div>
-          <div className="e7_17">활동 거리</div>
-          <div className="e7_14">0.00km</div>
-          <div className="e7_18">활동 시간</div>
-          <div className="e7_15">0h 0m</div>
-          <div className="e7_19"></div>
-          <div className="e7_20"></div>
+          <div className="my_active">나의 이번주 활동</div>
+          <div className="detail">자세히보기</div>
+          <div className="art">완성한 그림 수</div>
+          <div className="art_num">0개</div>
+          <div className="line1"></div>
+          <div className="active_distance">활동 거리</div>
+          <div className="active_distance_num">0.00km</div>
+          <div className="line2"></div>
+          <div className="active_time">활동 시간</div>
+          <div className="active_time_num">0h 0m</div>
+
+
         </div>
       </div>
 
-      <div><img className='e7_22' src='./images/ellipse_7.png'/></div>
+      <div><img className='profile_img' src='./images/ellipse_7.png'/></div>
       <div className="name">running_go</div>
       <div className="place">부산 광안리</div>
 
-      <div className=""><img className='e11_2' src='./images/rectangle_2.png'/></div>
+      <div className=""><img className='content_img' src='./images/rectangle_2.png'/></div>
       <div className="comment_name">running_go</div>
       <div className="contents">오랜만에 모닝 러닝한 날 ️🌄👟 오랜만에 모닝 러닝한 날 ️🌄👟오랜만에 모닝 러닝한 날 ️🌄👟 오랜만에 모닝 러닝한 날 ️🌄👟오랜만에 모닝 러닝한 날 ️🌄👟 오랜만에 모닝 러닝한 날 ️🌄👟</div>
       <div className="comment_num">댓글 3개 모두 보기</div>
