@@ -6,7 +6,8 @@ body{
 }
 
 .background { 
-	min-height: 830px;
+	margin-top: -25px;
+	min-height: 850px;
 	box-shadow: 0px 10px 15px #00000040;
 	top: 0px;
 	background-color:#ffffff;
@@ -226,7 +227,7 @@ body{
 	height:35px;
 	position:absolute;
 	left:11px;
-	top:177px;
+	top:197px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -238,7 +239,7 @@ body{
 	height:19px;
 	position:absolute;
 	left:53px;
-	top:177px;
+	top:197px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -251,7 +252,7 @@ body{
 	height:16px;
 	position:absolute;
 	left:53px;
-	top:196px;
+	top:216px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -263,7 +264,7 @@ body{
 	height:390px;
 	position:absolute;
 	left:0px;
-	top:229px;
+	top:249px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -275,7 +276,7 @@ body{
 	height:21px;
 	position:relative;
 	left:10px;
-	top:680px;
+	top:700px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -287,7 +288,7 @@ body{
 	position:relative;
 	left:10px;	
   padding-right: 10px;
-	top:680px;
+	top:700px;
 	font-family:Noto Sans KR;
 	font-size:13px;
 	letter-spacing:0;
@@ -298,7 +299,7 @@ body{
 	height:21px;
 	position:relative;
 	left:10px;
-	top:685px;
+	top:705px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:13px;
@@ -307,11 +308,9 @@ body{
 
 .date { 
 	color:#787878;
-	/* width:42px; */
-	/* height:16px; */
 	position:relative;
 	left:10px;
-	top:685px;
+	top:705px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -322,7 +321,7 @@ body{
 	color:#131313;
 	position:absolute;
 	left:10px;
-	top:660px;
+	top:680px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:14px;
@@ -333,7 +332,7 @@ body{
 	color:#626262;
 	position:absolute;
 	left:215px;
-	top:660px;
+	top:680px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -344,7 +343,7 @@ body{
 	color:#626262;
 	position:absolute;
 	left:303px;
-	top:660px;
+	top:680px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -356,7 +355,7 @@ body{
 	height:25px;
 	position:absolute;
 	left:8px;
-	top:627px;
+	top:647px;
 }
 
 .heart_icon { 
@@ -373,7 +372,7 @@ body{
 	height:24px;
 	position:absolute;
 	left:73px;
-	top:628px;
+	top:648px;
 }
 
 .comment_icon { 
@@ -390,7 +389,7 @@ body{
 	height:24px;
 	position:absolute;
 	left:357px;
-	top:627px;
+	top:647px;
 }
 
 .save_icon { 
@@ -406,7 +405,7 @@ body{
 	height:25px;
 	position:absolute;
 	left:357px;
-	top:184px;
+	top:204px;
 }
 
 .dotmenu_icon { 
@@ -421,7 +420,7 @@ body{
 	height:24px;
 	position:absolute;
 	left:87px;
-	top:628px;
+	top:648px;
 }
 
 .share_icon { 
