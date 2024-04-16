@@ -1,9 +1,9 @@
-import Home from "./main/home";
+import Pause from "./startpage/pause";
 
 function App(){
   return(
     <>
-      <Home/>
+      <Pause/>
     </>
   )
 }
