@@ -1,9 +1,9 @@
-import Pause from "./startpage/pause";
+import Start from "./signup/signup1";
 
 function App(){
   return(
     <>
-      <Pause/>
+      <Start/>
     </>
   )
 }
