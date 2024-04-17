@@ -35,7 +35,6 @@ app.use("/", require("./routes/loginRoutes"));
 app.use('/auth', require("./routes/naverRoute"))
 //app.use('/auth', require("./routes/snsLogin"))
 
-
 app.listen(port,()=>{
    console.log(`${port}번 포트에서 서버 실행중`)
 });
