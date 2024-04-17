@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>간단한 지도 표시하기</title>
+    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=t0xghbfgfz"></script>
+    <style>
+        #map { height: 400px; }
+    </style>
+</head>
+<body>
+<button id="startDrawing">그림 그리기 시작</button>
+<button id="stopDrawing" style="display:none;">그림 그리기 종료</button>
+<button id="saveDrawing" style="display:none;">그림 저장하기</button>
+<button id="viewSavedDrawing" style="display:none;">저장된 그림 보기</button>
+<button id="undoDrawing" style="display:none;">되돌리기</button>
+<button id="clearDrawing" style="display:none;">초기화</button>
+<input type="color" id="colorPicker">
+<div id="map"></div>
+<script>
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude,
+            lon = position.coords.longitude;
+        var mapOptions = {
+            center: new naver.maps.LatLng(lat, lon),
+            zoom: 17
+        };
+        var map = new naver.maps.Map('map', mapOptions);
+
+        var marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(lat, lon),
+            map: map,
+            icon: {
+                content: '<div style="width:10px; height:10px; background-color:black; border-radius:50%;"></div>',
+                anchor: new naver.maps.Point(5, 5)
+            }
+        });
+
+        var drawing = false;
+        var path = [];
+        var currentColor = '#000000';
+        var polyline = new naver.maps.Polyline({
+            map: map,
+            path: [],
+            strokeColor: currentColor,
+            strokeWeight: 3
+        });
+
+        function updatePolyline() {
+            polyline.setMap(null);
+            polyline = new naver.maps.Polyline({
+                map: map,
+                path: path,
+                strokeColor: currentColor,
+                strokeWeight: 3
+            });
+        }
+
+        document.getElementById('colorPicker').addEventListener('change', function() {
+            if (!drawing) {
+                currentColor = this.value;
+                updatePolyline();
+            }
+        });
+
+        var zoomChangeListener; // 변경된 부분: 이벤트 핸들러 핸들을 저장할 변수 선언
+
+        document.getElementById('startDrawing').addEventListener('click', function() {
+            drawing = true;
+            this.style.display = 'none';
+            document.getElementById('stopDrawing').style.display = 'inline';
+            document.getElementById('undoDrawing').style.display = 'inline';
+            document.getElementById('clearDrawing').style.display = 'inline';
+            document.getElementById('saveDrawing').style.display = 'none';
+            document.getElementById('viewSavedDrawing').style.display = 'none';
+            map.setCursor('crosshair');
+            document.getElementById('colorPicker').disabled = true;
+            path = [];
+            updatePolyline();
+            // 변경된 부분: 이벤트 핸들러 핸들을 저장하고, 해당 핸들을 사용하여 이벤트 리스너 등록
+            zoomChangeListener = naver.maps.Event.addListener(map, 'zoom_changed', updatePolyline);
+        });
+
+        document.getElementById('stopDrawing').addEventListener('click', function() {
+            drawing = false;
+            document.getElementById('startDrawing').style.display = 'inline';
+            this.style.display = 'none';
+            document.getElementById('undoDrawing').style.display = 'none';
+            document.getElementById('clearDrawing').style.display = 'none';
+            document.getElementById('saveDrawing').style.display = 'inline';
+            document.getElementById('viewSavedDrawing').style.display = 'inline';
+            document.getElementById('colorPicker').disabled = false;
+            map.setCursor('');
+            // 변경된 부분: 저장한 이벤트 핸들러 핸들을 사용하여 이벤트 리스너 제거
+            naver.maps.Event.removeListener(zoomChangeListener);
+            polyline.setPath(path);
+        });
+
+        document.getElementById('undoDrawing').addEventListener('click', function() {
+            if (path.length > 0) {
+                path.pop();
+                updatePolyline();
+            }
+        });
+
+        document.getElementById('clearDrawing').addEventListener('click', function() {
+            path = [];
+            updatePolyline();
+        });
+
+        document.getElementById('saveDrawing').addEventListener('click', function() {
+            var savedMaps = JSON.parse(localStorage.getItem('savedMaps')) || [];
+            var pathData = JSON.stringify(path.map(function(p) { return { lat: p.lat(), lng: p.lng() }; }));
+            var colorData = currentColor;
+            savedMaps.push({ path: pathData, color: colorData });
+            localStorage.setItem('savedMaps', JSON.stringify(savedMaps));
+            alert('그림이 저장되었습니다.');
+        });
+
+        document.getElementById('viewSavedDrawing').addEventListener('click', function() {
+            window.location.href = 'loadMap.html';
+        });
+
+        naver.maps.Event.addListener(map, 'click', function(e) {
+            if (!drawing) return;
+            path.push(e.coord);
+            updatePolyline();
+           // 클릭할 때마다 위도와 경도를 console에 출력
+    console.log('위도:', e.coord._lat, '경도:', e.coord._lng);
+});
+    }, function(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }, {
+        maximumAge:60000,
+        timeout:5000,
+        enableHighAccuracy: true
+    });
+} else {
+    alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
+}
+</script>
+</body>
+</html>

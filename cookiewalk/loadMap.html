@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>저장된 그림 불러오기</title>
+  <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=t0xghbfgfz"></script>
+  <style>
+    .map-container { margin-bottom: 40px; }
+    .map { height: 400px; }
+    .controls { text-align: center; margin-top: 8px; }
+    button { margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <script>
+    var savedMaps = JSON.parse(localStorage.getItem('savedMaps')) || [];
+
+    function initializeMapContainer(mapData, index) {
+      var container = document.createElement('div');
+      container.className = 'map-container';
+      document.body.appendChild(container);
+
+      var mapDiv = document.createElement('div');
+      mapDiv.id = 'map' + index;
+      mapDiv.className = 'map';
+      container.appendChild(mapDiv);
+
+      var controlsDiv = document.createElement('div');
+      controlsDiv.className = 'controls';
+      container.appendChild(controlsDiv);
+
+      var startWalkingBtn = document.createElement('button');
+      startWalkingBtn.textContent = '걷기 시작';
+      controlsDiv.appendChild(startWalkingBtn);
+
+      var toggleDrawingBtn = document.createElement('button');
+      toggleDrawingBtn.textContent = '도면 숨김';
+      controlsDiv.appendChild(toggleDrawingBtn);
+
+      var deleteMapBtn = document.createElement('button');
+      deleteMapBtn.textContent = '지도 삭제';
+      controlsDiv.appendChild(deleteMapBtn);
+
+      var mapOptions = {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        zoom: 17
+      };
+      var map = new naver.maps.Map(mapDiv, mapOptions);
+
+      var currentMarker = new naver.maps.Marker({
+        position: mapOptions.center,
+        map: map,
+        icon: {
+          content: '<div style="width:10px; height:10px; background-color:black; border-radius:50%;"></div>',
+          anchor: new naver.maps.Point(5, 5)
+        }
+      });
+
+      var polyline = new naver.maps.Polyline({
+        map: map,
+        path: JSON.parse(mapData.path).map(function(p) { return new naver.maps.LatLng(p.lat, p.lng); }),
+        strokeColor: '#808080',
+        strokeWeight: 3
+      });
+
+      var walking = false;
+      var walkPath = [];
+      var walkPolyline = new naver.maps.Polyline({
+        map: null,
+        strokeColor: mapData.color, // Use the saved color for new paths
+        strokeWeight: 3
+      });
+
+      function handleWalking(position) {
+        var currentLocation = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        map.setCenter(currentLocation);
+        currentMarker.setPosition(currentLocation);
+        if (walking) {
+          walkPath.push(currentLocation);
+          walkPolyline.setPath(walkPath);
+        }
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(handleWalking, function(error) {
+          console.error('Geolocation error: ' + error.message);
+        }, {
+          maximumAge: 10000,
+          timeout: 5000,
+          enableHighAccuracy: true
+        });
+      } else {
+        alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
+      }
+
+      startWalkingBtn.addEventListener('click', function() {
+        walking = !walking;
+        if (walking) {
+          walkPolyline.setMap(map);
+          startWalkingBtn.textContent = '걷기 중지';
+        } else {
+          startWalkingBtn.textContent = '걷기 시작';
+          map.setCursor('');
+        }
+      });
+
+      toggleDrawingBtn.addEventListener('click', function() {
+        if (polyline.getMap()) {
+          polyline.setMap(null);
+          toggleDrawingBtn.textContent = '도면 보기';
+        } else {
+          polyline.setMap(map);
+          toggleDrawingBtn.textContent = '도면 숨김';
+        }
+      });
+
+      deleteMapBtn.addEventListener('click', function() {
+        savedMaps.splice(index, 1);
+        localStorage.setItem('savedMaps', JSON.stringify(savedMaps));
+        container.remove();
+      });
+    }
+
+    savedMaps.forEach(initializeMapContainer);
+
+    if (savedMaps.length === 0) {
+      var noMapsText = document.createElement('p');
+      noMapsText.textContent = '저장된 지도가 없습니다.';
+      document.body.appendChild(noMapsText);
+    }
+  </script>
+</body>
+</html>
