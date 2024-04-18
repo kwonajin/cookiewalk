@@ -47,12 +47,15 @@ export default function Home() {
       <div className="dotmenu"><img className="dotmenu_icon" src="./icon/dotmenu.svg" alt="" /></div>
       <div className="share"><img className="share_icon" src="./icon/share.svg" alt="" /></div>
 
-    </div><div className="navbar">
-        <a href="./index.html"><div className="home"><img className="home_icon" src="./icon/home.svg" alt="" /></div></a>
-        <a href="#"><div className="map"><img className="map_icon" src="./icon/map.svg" alt="" /></div></a>
-        <a href="#"><div className="run"><img className="run_icon" src="./icon/record.svg" alt="" /></div></a>
-        <a href="#"><div className="group"><img className="group_icon" src="./icon/group.svg" alt="" /></div></a>
-        <a href="./mypage/mypage.jsx"><div className="my"><img className="my_icon" src="./icon/my.svg" alt="" /></div></a>
-      </div></>
+    </div>
+    
+    <div className="navbar">
+      <a href="./index.html"><div className="home"><img className="home_icon" src="./icon/home.svg" alt="" /></div></a>
+      <a href="#"><div className="map"><img className="map_icon" src="./icon/map.svg" alt="" /></div></a>
+      <a href="#"><div className="run"><img className="run_icon" src="./icon/record.svg" alt="" /></div></a>
+      <a href="#"><div className="group"><img className="group_icon" src="./icon/group.svg" alt="" /></div></a>
+      <a href="./mypage/mypage.jsx"><div className="my"><img className="my_icon" src="./icon/my.svg" alt="" /></div></a>
+    </div></>
+    
   );
 }
