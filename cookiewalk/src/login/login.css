@@ -1,0 +1,226 @@
+body{
+	background-color: white;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+		margin-top: 0px;
+}
+
+.background { 
+	min-height:740px;
+	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
+	top: 0px;
+	background-color:rgba(255, 255, 255, 1);
+	width:390px;
+	height:100vh;
+	position:relative;
+}
+
+.logo { 
+	width:50px;
+	height:70px;
+	position:absolute;
+	left:165px;
+	top:46px;
+	background-image:url(./images/logo.png);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+
+.title { 
+	color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
+	width:240px;
+	height:54px;
+	position:absolute;
+	left:77px;
+	top:134px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:40px;
+	letter-spacing:0;
+	font-weight: 600;
+}
+.id { 
+	background-color:rgba(247.00000047683716, 247.00000047683716, 247.00000047683716, 1);
+	width:323px;
+	height:53px;
+	position:absolute;
+	left:33px;
+	top:218px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border: none;
+	outline: none;
+	padding-left: 10px;
+}
+
+input::placeholder{
+	color: #828282;
+  font-size: 14px;
+	font-weight: 600;
+}
+
+.password { 
+	background-color:rgba(247.00000047683716, 247.00000047683716, 247.00000047683716, 1);
+	width:323px;
+	height:53px;
+	position:absolute;
+	left:33px;
+	top:289px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border: none;
+	outline: none;
+	padding-left: 10px;
+}
+.login_btn { 
+	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
+	width:335px;
+	height:53px;
+	position:absolute;
+	left:33px;
+	top:369px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	color: white;
+	font-weight: 600;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	font-size: 15px;
+	letter-spacing: 5px;
+}
+
+.login_btn:focus{ 	
+	border: none;
+	outline:none;
+	/* background-color: #828282; */
+}
+
+.find_id { 
+	color:rgba(129.69693571329117, 129.69693571329117, 129.69693571329117, 1);
+	width:63px;
+	height:19px;
+	position:absolute;
+	left:33px;
+	top:433px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:13px;
+	letter-spacing:0;
+}
+
+.id_pw { 
+	transform: rotate(-90deg);
+	width:10px;
+	height:0px;
+	position:absolute;
+	left:99px;
+	top:443px;
+	border:1px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
+	}
+
+.find_password { 
+	color:rgba(129.69693571329117, 129.69693571329117, 129.69693571329117, 1);
+	width:75px;
+	height:19px;
+	position:absolute;
+	left:112px;
+	top:433px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:13px;
+	letter-spacing:0;
+}
+
+.signup { 
+	color:rgba(129.69693571329117, 129.69693571329117, 129.69693571329117, 1);
+	width:48px;
+	height:19px;
+	position:absolute;
+	left:300px;
+	top:433px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:13px;
+	letter-spacing:0;
+}
+
+.line { 
+	width:350px;
+	height:0px;
+	position:absolute;
+	left:20px;
+	top:535px;
+	border:1px solid #dddddd;
+}
+
+.or { 
+	background-color:#ffffff;
+	padding-left: 14px;
+	color:#828282;
+	width:40px;
+	height:22px;
+	position:absolute;
+	left:170px;
+	top:526px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:15px;
+	letter-spacing:0;
+	
+}
+
+.easy_login { 
+	color:#828282;
+	width:114px;
+	height:22px;
+	position:absolute;
+	left:33px;
+	top:594px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:15px;
+	letter-spacing:0;
+}
+.kakao { 
+	width:50px;
+	height:50px;
+	position:absolute;
+	left:168px;
+	top:580px;
+	background-image:url(./images/kakao.png);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+
+.naver { 
+	width:50px;
+	height:50px;
+	position:absolute;
+	left:243px;
+	top:580px;
+	background-image:url(./images/naver.png);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+
+.google { 
+	width:50px;
+	height:50px;
+	position:absolute;
+	left:319px;
+	top:580px;
+	background-image:url(./images/google.png);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+
+

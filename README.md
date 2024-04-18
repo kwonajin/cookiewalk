@@ -2,7 +2,7 @@
 
 클라이언트,서버 동시 실행 시키는 법
 1.현재 디렉터리 server로 변경 cd server
-2.npm run server 
+2.npm run start 
 
 서버만 실행 시키려면
 1.현재 디렉터리 server  cd server
