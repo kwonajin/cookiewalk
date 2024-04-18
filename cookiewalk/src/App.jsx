@@ -1,14 +1,13 @@
 // import Home from "./main/home"
+import MyPage from "./mypage/mypage"
 // import Pause from "./startpage/pause";
-import LogIn from "./login/login"
-// import My from "./mypage/mypage"
-// import My from "./mypage1/mypage"
+// import LogIn from "./login/login"
 
 
 function App(){
   return(
     <>
-      <LogIn/>
+      <MyPage/>
     </>
   )
 }

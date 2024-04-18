@@ -1,7 +1,7 @@
 import React from 'react';
 import './mypage.css'; // Import your CSS file
 
-export default function My() {
+export default function MyPage() {
   return (
     <><div className="background">
 

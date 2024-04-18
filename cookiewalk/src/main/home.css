@@ -145,7 +145,7 @@ body{
 	letter-spacing:0;
 }
 
-.line1 { 
+.home_line1 { 
 	margin-top: 30px;
 	margin-left: -30px;
 	transform: rotate(90deg);
@@ -183,7 +183,7 @@ body{
 	letter-spacing:0;
 }
 
-.line2 { 
+.home_line2 { 
 	margin-top: 30px;
 	margin-left: -30px;
 	transform: rotate(90deg);
@@ -221,7 +221,7 @@ body{
 	letter-spacing:0;
 }
 
-.profile_img { 
+.home_profile_img { 
 	border-radius:500px;
 	width:35px;
 	height:35px;

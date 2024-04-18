@@ -17,10 +17,10 @@ export default function Home() {
           <div className="detail">자세히보기</div>
           <div className="art">완성한 그림 수</div>
           <div className="art_num">0개</div>
-          <div className="line1"></div>
+          <div className="home_line1"></div>
           <div className="active_distance">활동 거리</div>
           <div className="active_distance_num">0.00km</div>
-          <div className="line2"></div>
+          <div className="home_line2"></div>
           <div className="active_time">활동 시간</div>
           <div className="active_time_num">0h 0m</div>
 
@@ -28,7 +28,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div><img className='profile_img' src='./images/ellipse_7.png'/></div>
+      <div><img className='home_profile_img' src='./images/ellipse_7.png'/></div>
       <div className="name">running_go</div>
       <div className="place">부산 광안리</div>
 
