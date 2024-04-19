@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Signup3.css'
+import { Link } from "react-router-dom";
 
 export default function DetailedInfo() {
     const [gender, setGender] = useState(null); // 성별 상태

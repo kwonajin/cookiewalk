@@ -1,5 +1,6 @@
 import './Signup1.css'
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 
 export default function Signup1() {
   // 첫 번째 비밀번호 입력 필드의 가시성 상태
