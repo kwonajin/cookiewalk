@@ -15,7 +15,7 @@ return (
             <input type="text" className="userEmailconfirm" required/>
             {/* <span className="e89_19">올바르지 않은 입력입니다</span> */}
             {/* 이메일 입력이 틀릴 시 나오게 할 부분 */}
-            <button className="next">다음</button>
+            <button className="next2">다음</button>
         </form>
         </div>
     );
