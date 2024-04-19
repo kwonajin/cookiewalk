@@ -1,14 +1,17 @@
-// import Home from "./main/home"
-// import Pause from "./startpage/pause";
-import LogIn from "./login/login"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from "./main/home"
+import MyPage from "./mypage/mypage"
+import Pause from "./startpage/pause";
+// import LogIn from "./login/login"
 
 
-function App(){
+export default function App(){
   return(
-    <>
-      <LogIn/>
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/pause" element={<Pause />} />
+      <Route path="/home" element={<Home />} />
+    </Routes>
   )
 }
-
-export default App
