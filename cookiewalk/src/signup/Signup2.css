@@ -1,0 +1,198 @@
+body{
+	background-color: white;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.signup2_container { 
+	overflow:hidden;
+	background-color:rgba(255, 255, 255, 1);
+	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
+	width:390px;
+	min-height:800px;
+	height:100vh;
+	position:relative;
+}
+.cookiewalk_logo { 
+	color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
+	width:123px;
+	height:25px;
+	position:absolute;
+	left:40px;
+	top:21px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:18px;
+	font-weight: 900;
+	letter-spacing:0;
+}
+.e83_36 { 
+	color:rgba(33.00000183284283, 33.00000183284283, 33.00000183284283, 1);
+	width:276px;
+	height:31px;
+	position:absolute;
+	left:40px;
+	top:72px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+	font-weight: 900;
+}
+.userEmailinput { 
+	background-color:rgba(247.35000729560852, 247.35000729560852, 247.35000729560852, 1);
+	width:220px;
+	height:53px;
+	position:absolute;
+	left:34px;
+	top:180px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border: none;
+	padding-left: 10px;
+}
+
+.e83_37::placeholder {
+    padding-top: 5px;
+
+    /* placeholder 내부 글자의 폰트 설정 */
+    font-family: 'Noto Sans KR'; /* 원하는 폰트로 변경 */
+    font-size: 16px; /* 원하는 크기로 변경 */
+    font-weight: 300; /* 원하는 두께로 변경 */
+    color: #828282; /* 원하는 색상으로 변경 */
+}
+
+.next { 
+	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
+	color: white;
+	font-size: 24px;
+	font-weight: 700;
+	font-family: Noto Sans KR;
+	letter-spacing: 3px;
+	width:323px;
+	height:53px;
+	position:absolute;
+	left:34px;
+	top: 410px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border: none;
+	cursor: pointer;
+}
+.e83_41 { 
+	color:rgba(129.69693571329117, 129.69693571329117, 129.69693571329117, 0.8999999761581421);
+	width:259px;
+	height:22px;
+	position:absolute;
+	left:42.5px;
+	top:108px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:15px;
+	letter-spacing:0;
+}
+.e89_19 { 
+	color:rgba(255, 0, 45.89998282492161, 0.8999999761581421);
+	width:159px;
+	height:22px;
+	position:absolute;
+	left:36px;
+	top:384px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:15px;
+	letter-spacing:0;
+}
+
+.e83_83 { 
+	color:rgba(130.0000074505806, 130.0000074505806, 130.0000074505806, 1);
+	width:151px;
+	height:23px;
+	position:absolute;
+	left:50px;
+	top:175px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:16px;
+	letter-spacing:0;
+}
+.e83_101 { 
+	width:25px;
+	height:25px;
+	position:absolute;
+	left:6px;
+	top:19px;
+}
+.e83_102 { 
+	width:25px;
+	height:25px;
+	position:relative;
+	left:10px;
+	top:20px;
+	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
+}
+.e83_59 { 
+	color:rgba(33.00000183284283, 33.00000183284283, 33.00000183284283, 1);
+	width:276px;
+	height:31px;
+	position:absolute;
+	left:40px;
+	top:266px;
+	font-family:Noto Sans KR;
+	font-weight: 900;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+.userEmailconfirm { 
+	background-color:rgba(247.35000729560852, 247.35000729560852, 247.35000729560852, 1);
+	width:313px;
+	height:53px;
+	position:absolute;
+	left:34px;
+	top:314px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border: none;
+	padding-left: 10px;
+}
+.e89_17 { 
+	background-color:rgba(217.0000022649765, 217.0000022649765, 217.0000022649765, 1);
+	width:62px;
+	height:35px;
+	position:absolute;
+	left:281px;
+	top:167px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+}
+.userEmailinput_btn { 
+	background-color:rgba(217.0000022649765, 217.0000022649765, 217.0000022649765, 1);
+	color:rgba(255, 255, 255, 1);
+	width:63px;
+	height:53px;
+	position:absolute;
+	left:295px;
+	top:180px;
+	font-weight: 700;
+	font-family:Noto Sans KR;
+	text-align:center;
+	font-size:15px;
+	letter-spacing:0;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border: none;
+	cursor: pointer;
+}
