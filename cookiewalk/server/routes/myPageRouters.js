@@ -8,7 +8,7 @@ const {getMypage} = require("../controllers/mypageController")
 
 router.use(cookieParser());
 
-router.route("/").get(getMypage);
+router.route("/").get(checkLogin,getMypage);
 
 
 module.exports = router;
