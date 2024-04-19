@@ -37,7 +37,7 @@ export default function DetailedInfo() {
     
             <button type='submit' className="UserNick_double_check">중복확인</button>
     
-            <button className="next">다음</button>
+            <button className="next3">다음</button>
         </form>
     </div>
     );

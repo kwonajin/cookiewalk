@@ -43,7 +43,7 @@ export default function Signup1() {
         <button type='button' className="e83_32" onClick={togglePasswordConfirmVisibility}>
           <img className="e83_33"  src={passwordConfirmVisible ? "./icon/mdi--eye.svg" : "./icon/mdi--eye-off.svg"} alt="Toggle Password Confirm Visibility"/>
         </button>
-        <button className='next'>다음</button>
+        <button className='next1'>다음</button>
       </form>
     </div>
   );
