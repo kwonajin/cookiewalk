@@ -1,7 +1,8 @@
 import React, { useState }  from 'react';
 import './login.css'; // login.css 파일을 import 합니다.
+import { Link } from "react-router-dom";
 
-function App() {
+export default function Login() {
 
   const handleFocus = (event) => {
     event.target.placeholder = '';
@@ -45,15 +46,17 @@ function App() {
           onBlur={(event) => handleBlur(event, '비밀번호')}
         />
 
-        <button
-          className="login_btn"
-          style={{ backgroundColor: isPressed ? '#C9C9C9' : '' }} // isPressed 상태에 따라 배경색이 변경됩니다.
-          onMouseDown={handleMouseDown} // 마우스 버튼을 누를 때 이벤트 핸들러
-          onMouseUp={handleMouseUp} // 마우스 버튼을 뗄 때 이벤트 핸들러
-          onMouseLeave={handleMouseUp} // 마우스가 버튼을 벗어날 때도 원래 상태로 돌아가도록 합니다.
-        >
-          로그인
-        </button>
+        <Link to="/home">
+          <button
+            className="login_btn"
+            style={{ backgroundColor: isPressed ? '#C9C9C9' : '' }} // isPressed 상태에 따라 배경색이 변경됩니다.
+            onMouseDown={handleMouseDown} // 마우스 버튼을 누를 때 이벤트 핸들러
+            onMouseUp={handleMouseUp} // 마우스 버튼을 뗄 때 이벤트 핸들러
+            onMouseLeave={handleMouseUp} // 마우스가 버튼을 벗어날 때도 원래 상태로 돌아가도록 합니다.
+          >
+            로그인
+          </button>
+        </Link>
 
         <a href='#' className="find_id">아이디 찾기</a>
         <div className="id_pw"></div>
@@ -68,5 +71,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
