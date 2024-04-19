@@ -1,10 +1,14 @@
 const asyncHandler = require("express-async-handler");
 const User=require("../models/userModel");
+const Token=require("../models/token");
 const bcrypt = require("bcrypt"); //비밀번호 암호화
 const { Mongoose } = require("mongoose");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
+
+var client_id = process.env.NAVER_ID;
+var client_secret = process.env.NAVER_SECRET;
 
 // @desc Get Login page
 // @route GET /
@@ -29,12 +33,12 @@ const loginUser = asyncHandler(async(req,res)=>{
         return res.status(401).render("login",{ok: false, message: "비밀번호가 틀렸습니다."})
       }
     }
-    const token = jwt.sign({id:loginUser},jwtSecret)
+    const token = jwt.sign({id:loginUser.user_id},jwtSecret)
+    console.log(token)
     res.cookie('token', token, {httpOnly:true})
   }
-  res.status(201).send("로그인 성공!")
+  res.redirect("mypage");
 });
-
 
 // @desc get Join page
 // @route get /join
@@ -53,10 +57,11 @@ const joinUser = asyncHandler(async(req,res)=>{
       password:hashPassword,
       email:email,
       name: name,
-      nickname: "sog",
+      nickname: "song",
       gender: "남",
       pfofile_image: "image",
-      point:0
+      point:0,
+      provider:'local'
     })
     res.redirect("/");
   }else {
@@ -64,11 +69,25 @@ const joinUser = asyncHandler(async(req,res)=>{
   }
 });
 
-// @desc logout
-// @route Get /logout
-const logout =(req,res) =>{
+//@desc logout
+//@route Get /logout
+const logout =asyncHandler(async(req,res) =>{
+  const token = req.cookies.token;
+  const decoded = jwt.verify(token, jwtSecret);
+  const logout= await Token.findOne({email:decoded.id})
+  const url=`https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=${client_id}&client_secret=${client_secret}&access_token=${logout.accesstoken}&service_provider=NAVER`
+  const response= await fetch(url,{
+    headers: {'X-Naver-Client-Id':client_id, 'X-Naver-Client-Secret': client_secret}
+  });
+  if(response.ok){
+    console.log('접근토큰 삭제 성공')
+  }else{
+    console.log('삭제 실패')
+  }
+  console.log(logout.accesstoken)
   res.clearCookie("token");
+  res.clearCookie("sid", { path: '/' });
   res.redirect("/");
-}
+});
 
-module.exports={getLogin,loginUser, getJoin, joinUser, logout }
+module.exports={getLogin,loginUser, getJoin, joinUser ,logout}

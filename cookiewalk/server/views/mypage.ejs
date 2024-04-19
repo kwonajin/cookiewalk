@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form</title>
+  <link rel="stylesheet" href="static/css/login.css">
+</head>
+
+<body>
+  <div class="login-container">
+    <h5>로그아웃 연습페이지(버튼 클릭시 로그아웃)</h5>
+    <a href="/logout"><button id="join">로그아웃</button></a>
+  </div>
+  <% if (!ok) { %>
+    <script>
+        alert('<%= message %>');
+    </script>
+    <% } %>
+</body>
+
+</html>
