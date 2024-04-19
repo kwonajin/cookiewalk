@@ -1,4 +1,5 @@
 import './home.css'; // CSS 파일을 import 합니다.
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -13,24 +14,26 @@ export default function Home() {
         </div>
 
         <div className="active">
-          <div className="my_active">나의s이번주 활동</div>
-          <div className="e7_21">자세히보기</div>
-          <div className="e7_16">완성한 그림 수</div>
-          <div className="e7_13">0개</div>
-          <div className="e7_17">활동 거리</div>
-          <div className="e7_14">0.00km</div>
-          <div className="e7_18">활동 시간</div>
-          <div className="e7_15">0h 0m</div>
-          <div className="e7_19"></div>
-          <div className="e7_20"></div>
+          <div className="my_active">나의 이번주 활동</div>
+          <div className="detail">자세히보기</div>
+          <div className="art">완성한 그림 수</div>
+          <div className="art_num">0개</div>
+          <div className="home_line1"></div>
+          <div className="active_distance">활동 거리</div>
+          <div className="active_distance_num">0.00km</div>
+          <div className="home_line2"></div>
+          <div className="active_time">활동 시간</div>
+          <div className="active_time_num">0h 0m</div>
+
+
         </div>
       </div>
 
-      <div><img className='e7_22' src='./images/ellipse_7.png'/></div>
+      <div><img className='home_profile_img' src='./images/ellipse_7.png'/></div>
       <div className="name">running_go</div>
       <div className="place">부산 광안리</div>
 
-      <div className=""><img className='e11_2' src='./images/rectangle_2.png'/></div>
+      <div className=""><img className='content_img' src='./images/rectangle_2.png'/></div>
       <div className="comment_name">running_go</div>
       <div className="contents">오랜만에 모닝 러닝한 날 ️🌄👟 오랜만에 모닝 러닝한 날 ️🌄👟오랜만에 모닝 러닝한 날 ️🌄👟 오랜만에 모닝 러닝한 날 ️🌄👟오랜만에 모닝 러닝한 날 ️🌄👟 오랜만에 모닝 러닝한 날 ️🌄👟</div>
       <div className="comment_num">댓글 3개 모두 보기</div>
@@ -45,12 +48,15 @@ export default function Home() {
       <div className="dotmenu"><img className="dotmenu_icon" src="./icon/dotmenu.svg" alt="" /></div>
       <div className="share"><img className="share_icon" src="./icon/share.svg" alt="" /></div>
 
-    </div><div className="navbar">
-        <a href="./index.html"><div className="home"><img className="home_icon" src="./icon/home.svg" alt="" /></div></a>
-        <a href="#"><div className="map"><img className="map_icon" src="./icon/map.svg" alt="" /></div></a>
-        <a href="#"><div className="run"><img className="run_icon" src="./icon/record.svg" alt="" /></div></a>
-        <a href="#"><div className="group"><img className="group_icon" src="./icon/group.svg" alt="" /></div></a>
-        <a href="./mypage/mypage.jsx"><div className="my"><img className="my_icon" src="./icon/my.svg" alt="" /></div></a>
-      </div></>
+    </div>
+    
+    <div className="navbar">
+      <Link to="/home"><div className="home"><img className="home_home_icon" src="./icon/home.svg" alt="" /></div></Link>
+      <Link to="/map"><div className="map"><img className="home_map_icon" src="./icon/map.svg" alt="" /></div></Link>
+      <Link to="/pause"><div className="run"><img className="home_run_icon" src="./icon/record.svg" alt="" /></div></Link>
+      <Link to="/group"><div className="group"><img className="home_group_icon" src="./icon/group.svg" alt="" /></div></Link>
+      <Link to="/mypage"><div className="my"><img className="home_my_icon" src="./icon/my.svg" alt="" /></div></Link>
+    </div></>
+    
   );
 }

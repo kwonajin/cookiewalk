@@ -23,7 +23,7 @@ body{
 	position:absolute;
 	left:165px;
 	top:46px;
-	background-image:url(images/image_10.png);
+	background-image:url(./images/logo.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -196,7 +196,7 @@ input::placeholder{
 	position:absolute;
 	left:168px;
 	top:580px;
-	background-image:url(images/image_6.png);
+	background-image:url(./images/kakao.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 	background-color: transparent;
@@ -210,7 +210,7 @@ input::placeholder{
 	position:absolute;
 	left:243px;
 	top:580px;
-	background-image:url(images/image_9.png);
+	background-image:url(./images/naver.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 	background-color: transparent;
@@ -224,7 +224,7 @@ input::placeholder{
 	position:absolute;
 	left:319px;
 	top:580px;
-	background-image:url(images/image_8.png);
+	background-image:url(./images/google.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 	border: 1px solid #dddddd;
