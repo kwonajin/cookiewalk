@@ -199,6 +199,9 @@ input::placeholder{
 	background-image:url(./images/kakao.png);
 	background-repeat:no-repeat;
 	background-size:cover;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
 }
 
 .naver { 
@@ -210,6 +213,9 @@ input::placeholder{
 	background-image:url(./images/naver.png);
 	background-repeat:no-repeat;
 	background-size:cover;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
 }
 
 .google { 
@@ -221,6 +227,9 @@ input::placeholder{
 	background-image:url(./images/google.png);
 	background-repeat:no-repeat;
 	background-size:cover;
+	border: 1px solid #dddddd;
+	border-radius: 50%;
+	cursor: pointer;
 }
 
 
