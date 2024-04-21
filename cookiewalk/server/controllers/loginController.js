@@ -1,8 +1,9 @@
 const asyncHandler = require("express-async-handler");
-const User=require("../models/userModel");
+// const User=require("../models/userModel");
+// const { Mongoose } = require("mongoose");
+
 const Token=require("../models/token");
 const bcrypt = require("bcrypt"); //비밀번호 암호화
-const { Mongoose } = require("mongoose");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;

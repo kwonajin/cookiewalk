@@ -1,15 +1,14 @@
 //express
 const express = require("express");
-const dbConnect = require("./config/dbConnect");
-
+// const dbConnect = require("./config/dbConnect");
+const supabase = require("./config/supabaseClient")
 //const session = require('express-session')
 const cookieParser = require('cookie-parser')
-//const passport = require('passport')
 
 const app = express();
 const port =3000;
 
-dbConnect();
+// dbConnect();
 
 app.set("view engine","ejs")
 app.set("views","./views")
@@ -19,17 +18,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use(cookieParser());
-
-// app.use(session({
-//   key: 'sid',
-// 	secret: 'secret',
-// 	resave: false,
-// 	saveUninitialized: true
-// }))
-// app.use(session(sessionOption));
-// app.use(passport.initialize());
-// app.use(passport.session())
-
 
 app.use("/", require("./routes/loginRoutes"));
 app.use('/', require("./routes/naverRoute"))
