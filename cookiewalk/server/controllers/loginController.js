@@ -2,6 +2,9 @@ const asyncHandler = require("express-async-handler");
 // const User=require("../models/userModel");
 // const { Mongoose } = require("mongoose");
 
+const supabase = require("../config/supabaseClient")
+
+
 const Token=require("../models/token");
 const bcrypt = require("bcrypt"); //비밀번호 암호화
 require("dotenv").config();
@@ -10,6 +13,7 @@ const jwtSecret = process.env.JWT_SECRET;
 
 var client_id = process.env.NAVER_ID;
 var client_secret = process.env.NAVER_SECRET;
+
 
 // @desc Get Login page
 // @route GET /
@@ -90,5 +94,29 @@ const logout =asyncHandler(async(req,res) =>{
   res.clearCookie("sid", { path: '/' });
   res.redirect("/");
 });
+// @desc get login kakao
+// @route get /kakaologin
+// const kakaologin= asyncHandler(async (req,res)=>{
+//   const result = await signInWithKakao();
+//   if (result.error) {
+//     return res.status(400).json({ error: result.error });
+//   }
 
-module.exports={getLogin,loginUser, getJoin, joinUser ,logout}
+//   res.json({
+//     message: "Login successful",
+//     user: result.user,
+//     session: result.session
+//   });
+// });
+const googlelogin= asyncHandler(async (req,res)=>{
+})
+async function signInWithKakao() {
+  console.log(supabase);  
+  console.log(supabase.auth);
+  const { user, error } = await supabase.auth.signInWithOAuth({
+    provider: 'kakao',
+  });
+}
+
+
+module.exports={getLogin,loginUser, getJoin, joinUser ,logout, signInWithKakao, googlelogin}

@@ -1,13 +1,10 @@
 //express
 const express = require("express");
 // const dbConnect = require("./config/dbConnect");
-const supabase = require("./config/supabaseClient")
 //const session = require('express-session')
 const cookieParser = require('cookie-parser')
-
 const app = express();
 const port =3000;
-
 // dbConnect();
 
 app.set("view engine","ejs")
