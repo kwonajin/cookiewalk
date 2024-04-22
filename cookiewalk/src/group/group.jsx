@@ -28,16 +28,13 @@ export default function Group() {
       <div className="search"><img className='search_icon' src="./icon/search.svg" alt="" /></div>
 
       <div className="e15_374"></div>
-      <div className="e15_378">
-        <div className="e15_379"></div>
-      </div>
+
 
       <div className="e15_370"></div>
-      <div className="e15_371">지역을 선택하세요</div>
-      <div className="e15_377">거리순</div>
-      <div className="e15_372">
-        <div className="e15_373"></div>
-      </div>
+      <div className="region_select">지역을 선택하세요</div>
+      <div className="region"><img className="region_icon" src="./icon/arrow.svg" alt="" /></div>
+      <div className="sort">거리순</div>
+      <div className="e15_378"><div className="e15_379"></div></div>
       <div className="e15_381"></div>
       <div className="e15_393"></div>
       <div className="e15_382"></div>

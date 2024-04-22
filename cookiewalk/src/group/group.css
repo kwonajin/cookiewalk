@@ -128,19 +128,20 @@ body{
 	border-bottom-right-radius:5px;
 }
 
-.e15_371 { 
+.region_select { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:116px;
 	height:25px;
 	position:absolute;
-	left:20px;
-	top:120px;
+	left:23px;
+	top:122px;
 	font-family:Noto Sans KR;
 	text-align:left;
-	font-size:15px;
+	font-size:14px;
 	letter-spacing:0;
+	font-weight: 600;
 }
-.e15_377 { 
+.sort { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:36px;
 	height:18px;
@@ -151,19 +152,19 @@ body{
 	text-align:left;
 	font-size:13px;
 	letter-spacing:0;
+	font-weight: 600;
 }
-.e15_372 { 
-	transform: rotate(180deg);
+.region { 
+	transform: rotate(270deg);
 	width:16px;
 	height:16px;
 	position:absolute;
-	left:153px;
-	top:140px;
+	left:135px;
+	top:128px;
 }
-.e15_373 { 
-	background-color:rgba(0, 0, 0, 1);
-	width:13.301498413085938px;
-	height:7.656573295593262px;
+.region_icon { 
+	width:20px;
+	height:16px;
 	position:absolute;
 	left:1.3432135581970215px;
 	top:3.3432133197784424px;
