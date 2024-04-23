@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
 import Home from "./main/home";
-// import Map from "./map/map";
+// import Map from "../map/map";
 import Pause from "./startpage/pause";
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
