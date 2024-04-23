@@ -3,18 +3,35 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+		/* height: auto; */
 }
 
 .background { 
-	margin-top: -8px;
-	min-height: 970px;
+	margin-top: 0px;
+	min-height: 1000px;
 	box-shadow: 0px 10px 15px #00000040;
 	top: 0px;
 	background-color:#ffffff;
 	width:390px;
-	height:100vh;
 	position:relative;
 	padding-bottom: 50px;
+	overflow-y: auto;
+}
+
+.background::-webkit-scrollbar {
+	display: none; /* 기본 스크롤 막대 숨기기 */
+}
+
+/* 가상 요소를 사용하여 스크롤 막대 대체하기 */
+.background::after {
+	content: "";
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 10px; /* 스크롤 막대 너비 조절 */
+	height: 100%;
+	background: linear-gradient(to right, transparent, #ffffff); /* 스크롤 막대 색상 설정 */
+	z-index: 9999; /* 다른 요소 위로 표시 */
 }
 
 .mynav{
@@ -69,7 +86,7 @@ body{
 	height:80px;
 	position:absolute;
 	left:11px;
-	top:59.5px;
+	top:63px;
 	background-repeat:no-repeat;
 	background-size:cover;
 	border-radius: 50px;
@@ -240,52 +257,43 @@ body{
 	font-weight: 600;
 }
 
-.line1 { 
-	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
-	height:0px;
-	position:absolute;
-	left:0px;
-	top:245px;
-	border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
+
+.TabMenu{
+  background-color: #e7e7e7;
+  color: rgb(124, 124, 124);
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  /* margin-bottom: 7rem; */
+  margin-top: 255px;
 }
 
-.myactive { 
-	color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
-	width:45px;
-	height:23px;
-	position:absolute;
-	left:78px;
-	top:254px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:16px;
-	letter-spacing:0;
-	font-weight: 600;
+
+.submenu {
+  display: flex;
+  width: calc(100% / 2);
+  padding: 10px;
+  font-size: 15px;
+  transition: 0.5s;
+  text-align: center;
+  padding-left: 77px;
+	cursor: pointer;
+  /* border-radius: 10px 10px 0px 0px; */
+  /* border-top: 1px solid; */
 }
 
-.mypost { 
-	color:rgba(0, 0, 0, 1);
-	width:45px;
-	height:23px;
-	position:absolute;
-	left:272px;
-	top:254px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:16px;
-	letter-spacing:0;
-	font-weight: 600;
+.focused {
+  background-color: rgb(255, 255, 255);
+  color: #131313;
+  border-bottom: 2px solid #131313;
+	transition: border-bottom 0s ease;
 }
 
-.line2 { 
-	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
-	height:0px;
-	position:absolute;
-	left:0px;
-	top:286px;
-	border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
+
+.desc{
+  text-align: center;
 }
 
 .carousel { 
@@ -294,7 +302,7 @@ body{
 	height:345px;
 	position:absolute;
 	left:13px;
-	top:298px;
+	top:308px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
@@ -307,7 +315,7 @@ body{
 	height:30px;
 	position:absolute;
 	right:20px;
-	top:455px;
+	top:465px;
 }
 
 .carousel_right_icon { 
@@ -323,7 +331,7 @@ body{
 	height:30px;
 	position:absolute;
 	left:20px;
-	top:455px;
+	top:465px;
 }
 
 .carousel_left_icon { 
@@ -340,7 +348,7 @@ body{
 	height:23px;
 	position:absolute;
 	left:13px;
-	top:662px;
+	top:672px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -354,7 +362,7 @@ body{
 	height:16px;
 	position:absolute;
 	left:95px;
-	top:666px;
+	top:676px;
 }
 
 .badge_go_icon { 
@@ -371,7 +379,7 @@ body{
 	height:90px;
 	position:absolute;
 	left:13px;
-	top:693px;
+	top:703px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
@@ -428,7 +436,7 @@ body{
 	height:23px;
 	position:absolute;
 	left:13px;
-	top:802px;
+	top:812px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -442,7 +450,7 @@ body{
 	height:16px;
 	position:absolute;
 	left:130px;
-	top:806px;
+	top:816px;
 }
 
 .group_go_icon { 
@@ -459,7 +467,7 @@ body{
 	height:100px;
 	position:absolute;
 	left:13px;
-	top:835px;
+	top:845px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
@@ -471,7 +479,7 @@ body{
 	height:78px;
 	position:absolute;
 	left:26px;
-	top:847px;
+	top:857px;
 }
 
 .group1_img { 
@@ -506,7 +514,7 @@ body{
 	height:78px;
 	position:absolute;
 	left:131px;
-	top:847px;
+	top:857px;
 }
 
 .group2_img { 
@@ -541,7 +549,7 @@ body{
 	height:78px;
 	position:absolute;
 	left:237px;
-	top:847px;
+	top:857px;
 }
 
 .group3_img { 
@@ -578,6 +586,7 @@ body{
 	background-color:#ffffff;
 	width:390px;
 	height:80px;
+	/* z-index: 999; */
 }
 
 .my_home_icon { 
