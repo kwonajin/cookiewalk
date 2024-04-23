@@ -6,7 +6,7 @@ export default function Home() {
     <><div className="background">
       <div className="topnav">
         <div className="homenav">
-          <a href="http://www.naver.com"><div className="write"><img className="write_icon" src="./icon/write.svg" alt="" /></div></a>
+          <Link to="/write"><div className="write"><img className="write_icon" src="./icon/write.svg" alt="" /></div></Link>
           <div className="home_title">홈</div>
           <a href="http://www.naver.com"><div className="notification"><img className="notification_icon" src="./icon/notification.svg" alt="" /></div></a>
           <a href="#"><div className="friendadd"><img className="friendadd_icon" src="./icon/friendadd.svg" alt="" /></div></a>

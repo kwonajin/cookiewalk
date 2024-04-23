@@ -11,11 +11,12 @@
   height: 100%;
   background-color: white;
   animation-name: slide-up;
+  animation-name: slide-up-pause;
   animation-duration: 0.2s; /* 애니메이션 지속 시간 */
   animation-timing-function: ease-out; /* 애니메이션 가속도 */
 }
 
-@keyframes slide-up {
+@keyframes slide-up-pause {
   from {
     transform: translateY(100%); /* 시작 지점: 아래로 이동 */
   }
