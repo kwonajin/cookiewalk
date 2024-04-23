@@ -26,7 +26,7 @@ body{
 .homenav{
 	background-color:white;
 	width: 100%;
-	height: 50px;
+	height: 53px;
 }
 
 .active { 
@@ -47,6 +47,7 @@ body{
 	text-align:left;
 	font-size:20px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .notification { 
@@ -104,6 +105,7 @@ body{
 	text-align:left;
 	font-size:16px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .detail { 
@@ -117,6 +119,7 @@ body{
 	text-align:left;
 	font-size:12px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .art { 
@@ -130,6 +133,7 @@ body{
 	text-align:left;
 	font-size:12px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .art_num { 
@@ -143,6 +147,7 @@ body{
 	text-align:left;
 	font-size:18px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .home_line1 { 
@@ -168,6 +173,7 @@ body{
 	text-align:left;
 	font-size:12px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .active_distance_num { 
@@ -181,6 +187,7 @@ body{
 	text-align:left;
 	font-size:18px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .home_line2 { 
@@ -206,6 +213,7 @@ body{
 	text-align:left;
 	font-size:12px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .active_time_num { 
@@ -219,6 +227,7 @@ body{
 	text-align:left;
 	font-size:18px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .home_profile_img { 
@@ -227,7 +236,7 @@ body{
 	height:35px;
 	position:absolute;
 	left:11px;
-	top:197px;
+	top:187px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -239,20 +248,20 @@ body{
 	height:19px;
 	position:absolute;
 	left:53px;
-	top:197px;
+	top:187px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
 	letter-spacing:0;
 }
 
-.place { 
+.home_place { 
 	color:#515151;
 	width:54px;
 	height:16px;
 	position:absolute;
 	left:53px;
-	top:216px;
+	top:206px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -264,7 +273,7 @@ body{
 	height:390px;
 	position:absolute;
 	left:0px;
-	top:249px;
+	top:239px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -276,7 +285,7 @@ body{
 	height:21px;
 	position:relative;
 	left:10px;
-	top:700px;
+	top:690px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -288,7 +297,7 @@ body{
 	position:relative;
 	left:10px;	
   padding-right: 10px;
-	top:700px;
+	top:690px;
 	font-family:Noto Sans KR;
 	font-size:13px;
 	letter-spacing:0;
@@ -299,7 +308,7 @@ body{
 	height:21px;
 	position:relative;
 	left:10px;
-	top:705px;
+	top:695px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:13px;
@@ -310,7 +319,7 @@ body{
 	color:#787878;
 	position:relative;
 	left:10px;
-	top:705px;
+	top:695px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -321,18 +330,18 @@ body{
 	color:#131313;
 	position:absolute;
 	left:10px;
-	top:680px;
+	top:670px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:14px;
 	letter-spacing:0;
 }
 
-.distance { 
+.home_distance { 
 	color:#626262;
 	position:absolute;
 	left:215px;
-	top:680px;
+	top:670px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -343,7 +352,7 @@ body{
 	color:#626262;
 	position:absolute;
 	left:303px;
-	top:680px;
+	top:670px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -355,7 +364,7 @@ body{
 	height:25px;
 	position:absolute;
 	left:8px;
-	top:647px;
+	top:637px;
 }
 
 .heart_icon { 
@@ -372,7 +381,7 @@ body{
 	height:24px;
 	position:absolute;
 	left:73px;
-	top:648px;
+	top:638px;
 }
 
 .comment_icon { 
@@ -389,7 +398,7 @@ body{
 	height:24px;
 	position:absolute;
 	left:357px;
-	top:647px;
+	top:637px;
 }
 
 .save_icon { 
@@ -405,7 +414,7 @@ body{
 	height:25px;
 	position:absolute;
 	left:357px;
-	top:204px;
+	top:194px;
 }
 
 .dotmenu_icon { 
@@ -420,7 +429,7 @@ body{
 	height:24px;
 	position:absolute;
 	left:87px;
-	top:648px;
+	top:638px;
 }
 
 .share_icon { 
