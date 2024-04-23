@@ -1,4 +1,5 @@
 import './pause.css'
+import { Link } from "react-router-dom";
 
 export default function pause(){
   return (
@@ -8,7 +9,7 @@ export default function pause(){
       <div className="label1">Km</div>
       <div className="label2">시간</div>
       <div className="value1">0.00</div>
-      <div className="close-button">CLOSE</div>
+      <Link to="/home"><div className="close-button">CLOSE</div></Link>
       <div className="bar"></div>
       <img className="icon3" src="./icon/mdi--arrow-down-drop.svg" alt="Icon 3" />
       <div className="value2">00:00:00</div>

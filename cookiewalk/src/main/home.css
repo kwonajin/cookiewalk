@@ -441,7 +441,7 @@ body{
 	height:80px;
 }
 
-.home_icon { 
+.home_home_icon { 
 	filter: invert(63%) sepia(6%) saturate(1742%) hue-rotate(167deg) brightness(95%) contrast(99%);
 	width:28px;
 	height:28px;
@@ -458,7 +458,7 @@ body{
 	top:27.5px;
 }
 
-.map_icon { 
+.home_map_icon { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:21.8751163482666px;
 	height:21.28816032409668px;
@@ -475,7 +475,7 @@ body{
 	top:27px;
 }
 
-.run_icon { 
+.home_run_icon { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:25px;
 	height:25px;
@@ -492,7 +492,7 @@ body{
 	top:25px;
 }
 
-.group_icon { 
+.home_group_icon { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:28px;
 	height:27px;
@@ -509,7 +509,7 @@ body{
 	top:27.5px;
 }
 
-.my_icon { 
+.home_my_icon { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:23px;
 	height:23px;

@@ -1,7 +1,9 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import './login.css'; // login.css 파일을 import 합니다.
+import {useNavigate} from "react-router-dom"
 
-function App() {
+
+export default function LogIn() {
 
   const handleFocus = (event) => {
     event.target.placeholder = '';
@@ -68,5 +70,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './mypage.css'; // Import your CSS file
 
 export default function MyPage() {
@@ -64,11 +65,11 @@ export default function MyPage() {
     </div>
 
     <div className="navbar">
-      <a href="./index.html"><div className="home"><img className="home_icon" src="./icon/home.svg" alt="" /></div></a>
-      <a href="#"><div className="map"><img className="map_icon" src="./icon/map.svg" alt="" /></div></a>
-      <a href="#"><div className="run"><img className="run_icon" src="./icon/record.svg" alt="" /></div></a>
-      <a href="#"><div className="group"><img className="group_icon" src="./icon/group.svg" alt="" /></div></a>
-      <a href="./mypage/mypage.jsx"><div className="my"><img className="my_icon" src="./icon/my.svg" alt="" /></div></a>
+      <Link to="/home"><div className="home"><img className="my_home_icon" src="./icon/home.svg" alt="" /></div></Link>
+      <Link to="/map"><div className="map"><img className="my_map_icon" src="./icon/map.svg" alt="" /></div></Link>
+      <Link to="/pause"><div className="run"><img className="my_run_icon" src="./icon/record.svg" alt="" /></div></Link>
+      <Link to="/group"><div className="group"><img className="my_group_icon" src="./icon/group.svg" alt="" /></div></Link>
+      <Link to="/mypage"><div className="my"><img className="my_my_icon" src="./icon/my.svg" alt="" /></div></Link>
     </div></>
     
   );
