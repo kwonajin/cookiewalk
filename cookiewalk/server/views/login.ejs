@@ -27,7 +27,7 @@
     <a href="/join"><button id="join">회원가입</button></a>
     <a href="/naverlogin">네이버</a>
     <input type="button" id="kakao" value="카카오">
-    <a href="/googlelogin">구글</a>
+    <input type="button" id="google" value="구글">
     <input type="button" value="login" id="login" />
   </div>
     <script>
@@ -39,13 +39,29 @@
           const { data, error } = await client.auth.signInWithOAuth({
             provider: 'kakao',
             options: {
-            redirectTo:'http://localhost:3000/mypage'
+              queryParams: {
+              access_type: 'offline',
+              prompt: 'consent',
+              },
+              redirectTo:'http://localhost:3000/mypage'
             }
           })
-          console.log(supabaseAnonKey)
-          console.log(1)
+        }
+
+        async function signInWithGoogle() {
+          const { data, error } = await client.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              queryParams: {
+              access_type: 'offline',
+              prompt: 'consent',
+              },
+              redirectTo:'http://localhost:3000/mypage'
+            },
+          })
         }
         document.querySelector("#kakao").addEventListener("click", signInWithKakao);
+        document.querySelector("#google").addEventListener("click", signInWithGoogle);
 
     </script>
 </body>

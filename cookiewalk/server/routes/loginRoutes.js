@@ -1,23 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const {getLogin, loginUser , getJoin, joinUser, logout,signInWithKakao, googlelogin} = require("../controllers/loginController")
+const {loginUser ,postSignup1,postSignup1_id,postSignup2,postSignup3,postSignup4, logout} = require("../controllers/loginController")
 
-require("dotenv").config();
-const supabase = require("../config/supabaseClient")
+router.route("/").post(loginUser)
 
-router.route("/").get(getLogin).post(loginUser)
-router.route("/kakaologin").get(
-  async function signInWithKakao() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'kakao',
-    options: {
-      redirectTo:'http://localhost:3000/mypage'
-    }
-  })
-});
-router.route("/googlelogin").get(googlelogin)
+router.route("/join").post(postSignup1_id)
 
-router.route("/join").get(getJoin).post(joinUser)
+router.route("/join/signup1").post(postSignup1)
+router.route("/join/signup2").post(postSignup2)
+router.route("/join/signup3").post(postSignup3)
+router.route("/join/signup4").post(postSignup4)
 
 router.route("/logout").get(logout);
 
