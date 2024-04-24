@@ -5,7 +5,7 @@ import Home from "./main/home";
 import Pause from "./startpage/pause";
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
-import Signup1 from "./signup/Signup1.jsx";
+import Signup1 from "./signup/Signup1";
 import Signup2 from "./signup/Signup2";
 import Signup3 from "./signup/Signup3";
 import Signup4 from "./signup/Signup4";
