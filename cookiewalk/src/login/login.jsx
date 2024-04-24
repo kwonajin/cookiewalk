@@ -29,7 +29,7 @@ export default function LogIn() {
 
   return (
     <div className="background">
-        <div className="logo"></div>
+        <img className="logo" src="./images/logo.png" alt="" />
         <span className="title">CookieWalk</span>
         <form action="/" method = "/">
           <input
@@ -67,9 +67,9 @@ export default function LogIn() {
         <div className="line"></div>
         <div className="or">또는</div>
         <span className="easy_login">간편하게 시작하기</span>
-        <button className="kakao"></button>
-        <button className="naver"></button>
-        <button className="google"></button>
+        <a href='#'><img className="kakao" src="./images/kakao.png" alt="" /></a>
+        <a href='#'><img className="naver" src="./images/naver.png" alt="" /></a>
+        <a href='#'><img className="google" src="./images/google.png" alt="" /></a>
     </div>
   );
 }
