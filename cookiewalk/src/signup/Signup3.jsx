@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import './Signup3.css'
-import { Link } from "react-router-dom";
+import { Link ,useNavigate, useLocation} from "react-router-dom";
+import axios from "axios";
 
 export default function DetailedInfo() {
+    const location = useLocation();
+    const {username} = location.state || {}
+    const [name,setName]=useState('')
+    const [phone, setPhone]=useState('')
+    const [nickname, setNickname]=useState('')
     const [gender, setGender] = useState(null); // 성별 상태
 
     // 성별 선택 핸들러
@@ -18,9 +24,9 @@ export default function DetailedInfo() {
         <span className="e86_9">쿠키워크의 상세정보를 입력해주세요</span>
     
         <form action="/" method = "/">
-            <input type="text" className="inputUserName" placeholder="이름을 입력해주세요" required/>
+            <input type="text" className="inputUserName" onChange={(e)=>setName(e.target.value)} value={name} placeholder="이름을 입력해주세요" required/>
             {/* 이름 */}
-            <input type="text" className="inputUserCP" placeholder="전화번호를 입력해주세요 (‘-’없이 입력)" required/>
+            <input type="text" className="inputUserCP" onChange={(e)=>setPhone(e.target.value)} value={phone} placeholder="전화번호를 입력해주세요 (‘-’없이 입력)" required/>
             {/* 전화번호 */}
     
             <button type='button' className={`e86_37 ${gender === 'male' ? 'selected' : ''}`} onClick={() => handleGenderSelect('male')}>

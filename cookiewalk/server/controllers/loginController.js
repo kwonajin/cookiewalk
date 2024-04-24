@@ -5,6 +5,11 @@ const supabase = require("../config/supabaseClient")
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
 
+const nodemailer =require('nodemailer')
+const email_service = process.env.EMAIL_SERVICE;
+const email_id=process.env.EMAIL_ID
+const email_password=process.env.PASSWORD
+
 var client_id = process.env.NAVER_ID;
 var client_secret = process.env.NAVER_SECRET;
 
@@ -93,8 +98,63 @@ const postSignup1 = asyncHandler(async(req,res)=>{
 // @desc Post Signup2 page
 // @route Post /signup2
 const postSignup2 = asyncHandler(async(req,res)=>{
-  
+  const {username, email}=req.body;
+  console.log(username,email)
+  const {data, error}=await supabase
+    .from('user')
+    .select('email')
+    .eq('email', email)
+  console.log(data)
+  if(data.length>0){
+    return res.send('가입한계정');
+  }
+  const transporter = nodemailer.createTransport({
+    service: email_service,
+    auth:{
+      user:email_id,
+      pass:email_password
+    }
+  });
+  //인증번호 난수 생성
+  const confirmCode = Math.floor(Math.random() * 900000) + 100000;
+  console.log(confirmCode);
+  // const mailOptions={
+  //   from: email_id,
+  //   to: email,
+  //   subject: '쿠키워크 이메일 인증 번호',
+  //   html:`<h1>쿠키워크에서 보낸 인증 번호 입니다.</h1><p>${confirmCode}</p>` 
+  // }
+  // transporter.sendMail(mailOptions, (error,info)=>{
+  //   if (error){
+  //     console.error(error)
+  //   }else{
+  //     console.log('Email Sent:', info)
+  //   }
+  // })
+  return res.status(200).json({ data: confirmCode});
 })
+// @desc Post Signup2 page
+// @route Post /signup2
+const postSignup2_2 = asyncHandler(async(req,res)=>{
+  const {username, email}=req.body;
+  console.log(username, email);
+  const {data, error}= await supabase
+    .from('userJoin')
+    .update([
+      {
+        email:email
+      }
+    ])
+    .match({'user_id':username})
+    .select('email')
+  if (error) {
+    console.error('Error saving user to Supabase', error);
+    return res.status(500).json({ success: false, message: "Failed to update" });
+  }
+  console.log('User added:', data);
+  res.status(200).json({ success: true, message: "signup1 successful" });
+})
+
 // @desc Post Signup2 page
 // @route Post /signup2
 const postSignup3 = asyncHandler(async(req,res)=>{
@@ -151,4 +211,4 @@ const logout =asyncHandler(async(req,res) =>{
   res.redirect("/");
 });
 
-module.exports={loginUser, postSignup1_id,postSignup1,postSignup2,postSignup3,postSignup4,logout}
+module.exports={loginUser, postSignup1_id,postSignup1,postSignup2_2,postSignup2,postSignup3,postSignup4,logout}

@@ -52,7 +52,7 @@ export default function Signup() {
 
   // setpasswordsMatch 상태가 변경될 때마다 실행해 취신 결과값 확인
   useEffect(() => {
-    console.log(password, confirmPassword, passwordsMatch);
+    // console.log(password, confirmPassword, passwordsMatch);
   }, [passwordsMatch]);
 
   const nextStep = (e) =>{
@@ -64,7 +64,7 @@ export default function Signup() {
         .then(response=>{
           console.log(response.status)
           if (response.status === 200) {
-            navigate('/signup2'); // signup2로 이동
+            navigate('/signup2', {state:{username}}); // signup2로 이동
           }
         });
     }   
