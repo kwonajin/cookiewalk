@@ -6,18 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Form</title>
   <link rel="stylesheet" href="static/css/login.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
   <div class="login-container">
     <h5>로그아웃 연습페이지(버튼 클릭시 로그아웃)</h5>
-    <a href="/logout"><button id="join">로그아웃</button></a>
+    <!-- <a href="/logout"><button id="join">로그아웃</button></a> -->
+    <input type="button" value="로그아웃" id="logout" />
   </div>
-  <% if (!ok) { %>
+
     <script>
-        alert('<%= message %>');
+      const supabaseUrl = 'https://rbdbdnushdupstmiydea.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJiZGJkbnVzaGR1cHN0bWl5ZGVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI3OTk1MzksImV4cCI6MjAyODM3NTUzOX0.SGk5FLipOul5nJ4O_6w2ibFmMZrGz_iLgLYzFmXwBU8';
+        
+        const client = supabase.createClient(supabaseUrl, supabaseAnonKey);
+        async function signOut() {
+          const { error } = await client.auth.signOut()
+          localStorage.clear();
+          sessionStorage.clear();
+          window.location.href = 'http://localhost:3000/';
+        }
+        document.querySelector("#logout").addEventListener("click", signOut);
     </script>
-    <% } %>
+
 </body>
 
 </html>

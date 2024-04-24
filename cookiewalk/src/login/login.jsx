@@ -1,16 +1,19 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import './login.css'; // login.css 파일을 import 합니다.
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LogIn() {
-
+  
+  // const handleInputChange = (e, setter) => {
+  //   setter(e.target.value);
+  // };
   const handleFocus = (event) => {
     event.target.placeholder = '';
   };
 
   const handleBlur = (event, placeholderText) => {
     event.target.placeholder = placeholderText;
-  
   };
 
   // isPressed 상태를 추가하여 마우스 버튼이 눌려있는지 추적합니다.
@@ -26,26 +29,55 @@ export default function LogIn() {
     setIsPressed(false);
   };
 
+  const [username, setUsername]=useState('');
+  const [password, setPassword]=useState('')
+  const navigate = useNavigate();
+
+  //로그인 버튼 클릭시 백엔드서버로 로그인 요청
+  const onSubmitHandler = (e) =>{
+    e.preventDefault();
+    axios.post('http://localhost:3000/login', {username,password}).then(response=>{
+      console.log(response)
+      if (response.data.token || response.status === 200) {
+        navigate('/home'); // homepage로 이동
+      }
+    }).catch(error =>{
+      navigate('/');
+      console.error('Login request failed:', error);
+      alert("아이디나 비밀번호가 일치하지 않습니다.")
+      navigate('/');
+    })
+      
+  
+  }
 
   return (
     <div className="login-background">
         <Link to='/home'><img className="logo" src="./images/logo.png" alt="" /></Link>
         <span className="title">CookieWalk</span>
-        <form action="/" method = "/">
+        <form onSubmit={onSubmitHandler}>
           <input
             className="id"
+            name='username'
             type="text"
             placeholder="아이디"
             onFocus={handleFocus}
             onBlur={(event) => handleBlur(event, '아이디')}
+            // onChange={(e) => handleInputChange(e, setUsername)}
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
             required
           />
           <input
             className="password"
+            name="password"
             type="password"
             placeholder="비밀번호"
             onFocus={handleFocus}
             onBlur={(event) => handleBlur(event, '비밀번호')}
+            // onChange={(e) => handleInputChange(e, setPassword)}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
             required
           />
   
