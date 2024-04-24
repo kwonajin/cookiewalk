@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
 import Home from "./main/home";
-// import Map from "../map/map";
+// import Map from "./map/map";
 import Pause from "./startpage/pause";
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
-import Signup1 from "./signup/Signup1";
+import Signup1 from "./signup/Signup1.jsx";
 import Signup2 from "./signup/Signup2";
 import Signup3 from "./signup/Signup3";
 import Signup4 from "./signup/Signup4";
