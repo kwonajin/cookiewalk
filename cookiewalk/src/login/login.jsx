@@ -29,7 +29,7 @@ export default function LogIn() {
 
   return (
     <div className="login-background">
-        <img className="logo" src="./images/logo.png" alt="" />
+        <Link to='/home'><img className="logo" src="./images/logo.png" alt="" /></Link>
         <span className="title">CookieWalk</span>
         <form action="/" method = "/">
           <input
