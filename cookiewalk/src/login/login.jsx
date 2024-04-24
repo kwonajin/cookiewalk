@@ -52,8 +52,8 @@ export default function LogIn() {
   }
 
   return (
-    <div className="background">
-        {/* <div className="logo"></div> */}
+    <div className="login-background">
+        <Link to='/home'><img className="logo" src="./images/logo.png" alt="" /></Link>
         <span className="title">CookieWalk</span>
         <form onSubmit={onSubmitHandler}>
           <input
@@ -95,14 +95,13 @@ export default function LogIn() {
         <a href='#' className="find_id">아이디 찾기</a>
         <div className="id_pw"></div>
         <a href='#' className="find_password">비밀번호 찾기</a>
-        <Link to="/signup1"><div className="signup">회원가입</div></Link>
+        <Link to="/Signup"><div className="signup">회원가입</div></Link>
         <div className="line"></div>
         <div className="or">또는</div>
         <span className="easy_login">간편하게 시작하기</span>
-        <a href='/kakaologin'><button className="kakao"></button></a>
-        <button className="naver"></button>
-        <button className="google"></button>
-
+        <a href='#'><img className="kakao" src="./images/kakao.png" alt="" /></a>
+        <a href='#'><img className="naver" src="./images/naver.png" alt="" /></a>
+        <a href='#'><img className="google" src="./images/google.png" alt="" /></a>
     </div>
   );
 }

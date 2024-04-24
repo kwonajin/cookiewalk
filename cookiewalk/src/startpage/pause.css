@@ -1,10 +1,30 @@
-body{
-	background-color: white;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
+.pause-page {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  animation-name: slide-up;
+  animation-name: slide-up-pause;
+  animation-duration: 0.2s; /* 애니메이션 지속 시간 */
+  animation-timing-function: ease-out; /* 애니메이션 가속도 */
 }
+
+@keyframes slide-up-pause {
+  from {
+    transform: translateY(100%); /* 시작 지점: 아래로 이동 */
+  }
+  to {
+    transform: translateY(0); /* 종료 지점: 원래 위치로 이동 */
+  }
+}
+
 
 .pause-container {
   min-height: 830px;

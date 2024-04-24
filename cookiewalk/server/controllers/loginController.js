@@ -86,7 +86,7 @@ const postSignup1 = asyncHandler(async(req,res)=>{
       console.error('Error saving user to Supabase', error);
       return res.status(500).json({ success: false, message: "Failed to insert" });
     }
-    console.log('User added:', data[0]);
+    console.log('User added:', data);
     res.status(200).json({ success: true, message: "signup1 successful" });
   
 })

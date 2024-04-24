@@ -1,9 +1,9 @@
-import './Signup1.css'
-import React, { useState, useEffect } from 'react';
+import './Signup.css'
+import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function Signup1() {
+export default function Signup() {
   // 첫 번째 비밀번호 입력 필드의 가시성 상태
   const [passwordVisible, setPasswordVisible] = useState(false);
   // 비밀번호 재입력 필드의 가시성 상태
