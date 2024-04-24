@@ -33,7 +33,7 @@ export default function Group() {
       <div className="sort_box"></div>
       <div className="sort_select">거리순</div>
       <div className="sort"><img className='sort_icon' src="./icon/arrow.svg" alt="" /></div>
-      <div className="group_img"></div>
+      <img className="group_img" src="./images/group1.png" alt="" />
       <div className="person_box"></div>
       <div className="person"><div><img className="person_icon" src="./icon/person.svg" alt="" /></div></div>
       <div className="current_people">4</div>

@@ -5,7 +5,6 @@ import Home from "./main/home";
 import Pause from "./startpage/pause";
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
-// import Signup from "./signup/Signup";
 import Signup from './signup/Signup';
 import Signup2 from "./signup/Signup2";
 import Signup3 from "./signup/Signup3";
@@ -17,7 +16,7 @@ export default function App() {
     
 
       <Routes>
-        {/* <Route path="/" element={<LogIn />} /> */}
+        <Route path="/" element={<LogIn />} />
         <Route path="/" element={<Home />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Signup2" element={<Signup2 />} />
