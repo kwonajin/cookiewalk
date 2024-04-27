@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './write.css'; // styles.css 파일을 import합니다.
+import './write.css'; 
 import { Link } from "react-router-dom";
 
 export default function Write(){
