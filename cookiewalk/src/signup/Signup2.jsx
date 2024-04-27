@@ -6,7 +6,7 @@ import axios from "axios";
 export default function Singup2() {
     const navigate = useNavigate();
     const location = useLocation();
-    const {username} = location.state || {};
+    const {username,password} = location.state || {};
     const [email, setEmail]=useState('');
     //inputConfirmCode: 이메일 인증창에 사용자가 입력한 인증코드
     //ConfirmCode:서버에서 생성한 인증코드
@@ -50,7 +50,7 @@ const nextStep = (e) =>{
     navigate('/signup3', {state:{username}}); // signup3로 이동
     //버튼 클릭시 마다 제출되는 것을 방지 하는 함수
     if(confirmCodeMatch){
-        axios.post('http://localhost:3000/login/join/signup2_2', {username,email})
+        axios.post('http://localhost:3000/login/join/signup2_2', {username,password ,email})
         .then(response=>{
             console.log(response.status)
             if (response.status === 200) {

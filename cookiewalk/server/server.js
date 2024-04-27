@@ -5,6 +5,20 @@ const cookieParser = require('cookie-parser')
 const app = express();
 const port =3000;
 
+require("dotenv").config();
+const supabase = require("./config/supabaseClient")
+async function main(){
+const { user, error } = await supabase.auth.signUp({
+  email: 'dustkscjswo@naver.com',
+  password: '12341234',
+})
+console.log(user)
+console.log(error)
+}
+
+main()
+
+
 //CORS 사용
 app.use(cors());
 

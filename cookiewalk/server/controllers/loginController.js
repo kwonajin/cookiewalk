@@ -16,32 +16,36 @@ var client_secret = process.env.NAVER_SECRET;
 // @desc Post Login page
 // @route Post /
 const loginUser = asyncHandler(async(req,res)=>{
-  console.log(req.body);
   const {username, password}=req.body;
+  console.log(username, password)
+  const { user, error } = await supabase.auth.signUp({
+    email: username,
+    password: password,
+  })
   // const hashPassword = await bcrypt.hash(password,10);
   // console.log(hashPassword)
-  const { data, error } = await supabase
-      .from('user')
-      .select('password') // Assuming you store only the hashed password
-      .eq('user_id', username)
-    if (error) {
-      console.error('Database error:', error.message);
-      return res.status(500).send('Internal Server Error');
-    }
-    if (!data) {
-      return res.send('일치하는 아이디 없음');
-    }
-    const user=data[0]
-    const passwordIsValid = await bcrypt.compare(password, user.password);
-    if (passwordIsValid) {
-      //jwt 토큰생성
-      const token = jwt.sign({id:username},jwtSecret)
-      // console.log(token)
-      res.cookie('token', token, {httpOnly:true})
-      return res.status(200).json({ success: true, message: "Login successful", token: token }); // "Login successful"
-    } else {
-      return res.status(401).json({ success: false, message: "Invalid credentials" }); // "Password does not match"
-      }
+  // const { data, error } = await supabase
+  //     .from('user')
+  //     .select('password') // Assuming you store only the hashed password
+  //     .eq('user_id', username)
+  //   if (error) {
+  //     console.error('Database error:', error.message);
+  //     return res.status(500).send('Internal Server Error');
+  //   }
+  //   if (!data) {
+  //     return res.send('일치하는 아이디 없음');
+  //   }
+  //   const user=data[0]
+  //   const passwordIsValid = await bcrypt.compare(password, user.password);
+  //   if (passwordIsValid) {
+  //     //jwt 토큰생성
+  //     const token = jwt.sign({id:username},jwtSecret)
+  //     // console.log(token)
+  //     res.cookie('token', token, {httpOnly:true})
+  //     return res.status(200).json({ success: true, message: "Login successful", token: token }); // "Login successful"
+  //   } else {
+  //     return res.status(401).json({ success: false, message: "Invalid credentials" }); // "Password does not match"
+  //     }
 });
 
 // @desc Post Signup1_id page
@@ -69,6 +73,7 @@ const postSignup1_id = asyncHandler(async(req,res)=>{
 // @route Post /signup1
 const postSignup1 = asyncHandler(async(req,res)=>{
   const {username, password}=req.body;
+
   const hashPassword = await bcrypt.hash(password,10);
   console.log(username, hashPassword) 
   if (!username || !password) {
@@ -158,8 +163,58 @@ const postSignup2_2 = asyncHandler(async(req,res)=>{
 // @desc Post Signup2 page
 // @route Post /signup2
 const postSignup3 = asyncHandler(async(req,res)=>{
-  
+  const {nickname}=req.body;
+  console.log(nickname)
+  const { data, error } = await supabase
+    .from('user')
+    .select('nick_name') 
+    .eq('nick_name',nickname)
+  console.log(data)
+  if (error) {
+    console.error('Database error:', error.message);
+    return res.status(500).send('Internal Server Error');
+  }
+  if (data.length >0) {
+    return res.send('중복');
+  }
+  return res.send('사용가능')
 })
+
+// @desc Post Signup3_2 page
+// @route Post /signup3_2
+const postSignup3_2 = asyncHandler(async(req,res)=>{
+  const {username, name, phone, gender, nickname}=req.body
+  console.log(username, name, phone, gender, nickname)
+
+  const {data, error}= await supabase
+    .from('userJoin')
+    .select('user_id ,password ,email')
+    .eq('user_id', username)
+  console.log(data[0].user_id,data[0].password,data[0].email)
+
+  const {data2, error2} = await supabase
+    .from('user')
+    .insert([
+      {
+        user_id:data[0].user_id,
+        password:data[0].password,
+        email:data[0].email,
+        username:name,
+        phone:phone,
+        gender:gender,
+        nickname:nickname,
+        profile_image:'',
+        point:0
+      }
+    ])
+    if (error2) {
+      console.error('Error saving user to Supabase', error);
+      return res.status(500).json({ success: false, message: "Failed to insert" });
+    }
+    console.log('User added :'+ data2);
+    res.status(200).json({ success: true, message: "회원정보 추가 성공" });
+})
+
 // @desc Post Signup2 page
 // @route Post /signup2
 const postSignup4 = asyncHandler(async(req,res)=>{
@@ -211,4 +266,4 @@ const logout =asyncHandler(async(req,res) =>{
   res.redirect("/");
 });
 
-module.exports={loginUser, postSignup1_id,postSignup1,postSignup2_2,postSignup2,postSignup3,postSignup4,logout}
+module.exports={loginUser, postSignup1_id,postSignup1,postSignup2_2,postSignup2,postSignup3,postSignup3_2,postSignup4,logout}

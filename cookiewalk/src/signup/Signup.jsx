@@ -2,6 +2,7 @@ import './Signup.css'
 import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import {supabase} from '../supabaseClient'
 
 export default function Signup() {
   // 첫 번째 비밀번호 입력 필드의 가시성 상태
@@ -19,23 +20,37 @@ export default function Signup() {
     setPasswordConfirmVisible(!passwordConfirmVisible);
   };
 
-  const [username, setUsername]=useState('');
-  const [confirmUsername, setConfirmUsername] = useState(false);
+  const [email, setemail]=useState('');
+  const [confirmEmail, setConfirmEmail] = useState(false);
   const [password, setPassword]=useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordsMatch, setPasswordsMatch] = useState(false);
-  const navigate = useNavigate();
   
-  //아이디 중복 검사 요청
-  const onSubmitHandlerID = (e) =>{
-    e.preventDefault();
-    axios.post('http://localhost:3000/login/join', {username})
-      .then(response=>{
-        console.log(response.data)
-        setConfirmUsername(response.data==='사용가능')
-      })
+  //이메일 양식 검사 함수
+  function validateEmail(e) {
+    const regex =/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    return regex.test(e);
   }
-
+  //이메일 중복 및 양식 검사 
+  const onSubmitEmail = async (e) =>{
+    e.preventDefault();
+    const isValidEmail = validateEmail(email);
+    if(isValidEmail=== true){
+      const {data, error}= await supabase
+        .from('profile')
+        .select('email')
+        .eq('email', email)
+      if(data.length>0){
+        setConfirmEmail(false)
+        console.log('이미 가입된 이메일 입니다.')
+      }else{
+        setConfirmEmail(true)
+        console.log('사용가능한 이메일 입니다')
+      } 
+    }else{
+      console.log('양식이 틀렸습니다.')
+    }
+  }
   //비밀 번호 검사 
   const confirmFuntion = (e)=>{
     const {name, value} = e.target;
@@ -52,33 +67,37 @@ export default function Signup() {
 
   // setpasswordsMatch 상태가 변경될 때마다 실행해 취신 결과값 확인
   useEffect(() => {
-    // console.log(password, confirmPassword, passwordsMatch);
+    console.log(password, confirmPassword, passwordsMatch);
   }, [passwordsMatch]);
 
-  const nextStep = (e) =>{
-    // console.log(confirmUsername, passwordsMatch);
+  const nextStep = async (e) =>{
     e.preventDefault(); //버튼 클릭시 마다 제출되는 것을 방지 하는 함수
-    if( confirmUsername && passwordsMatch){
-      console.log(confirmUsername, passwordsMatch);
-      axios.post('http://localhost:3000/login/join/signup1', {username,password})
-        .then(response=>{
-          console.log(response.status)
-          if (response.status === 200) {
-            navigate('/signup2', {state:{username}}); // signup2로 이동
-          }
-        });
-    }   
-  }
+    if(confirmEmail && passwordsMatch){
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      })
+      if(data.length>0){
+        console.log(data)
+        console.log('이메일의 인증 링크를 클릭하시오')  
+      }
+      console.log(data)
+      if (error) {
+        console.error('Signup error:', error.message);
+      }
+    }
+  }   
+
   return (
     <div className="signup_container">
       <div><img className='e83_104' src="./icon/ic--round-arrow-back.svg" /></div>
       <span className="cookiewalk_logo">CookieWalk</span>
       <span className="e82_14">쿠키워크의 계정정보를 입력해주세요</span>
       <span className="e82_15">아래의 정보로 계정이 생성됩니다.</span>
-      <form method = "/" onSubmit={nextStep}>
+      <form method = "/" >
         {/* 아이디 입력 */}
-        <input type="text" className="userIdInput" onChange={(e)=>setUsername(e.target.value)} value={username} placeholder="아이디를 입력해주세요" required/>
-        <button type='submit' className="Id_double_check" onClick={onSubmitHandlerID}>중복확인</button>
+        <input type="text" className="userIdInput" onChange={(e)=>setemail(e.target.value)} value={email} placeholder="이메일를 입력해주세요" required/>
+        <button type='submit' className="Id_double_check" onClick={onSubmitEmail}>중복확인</button>
         
         {/* 비밀번호 비밀 번호 입력부분 */}
         <input type={passwordVisible ? "text" : "password"} className="userPwInput" name="password" onChange={confirmFuntion} placeholder="비밀번호를 입력해주세요" required/>
@@ -97,7 +116,7 @@ export default function Signup() {
         <button type='button' className="e83_32" onClick={togglePasswordConfirmVisibility}>
           <img className="e83_33"  src={passwordConfirmVisible ? "./icon/mdi--eye.svg" : "./icon/mdi--eye-off.svg"} alt="Toggle Password Confirm Visibility"/>
         </button>
-        <button className='next1'>다음</button>
+        <button  type="button" className='next1'onClick={nextStep}>다음</button>
       </form>
     </div>
   );
