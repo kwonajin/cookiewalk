@@ -37,14 +37,8 @@ export default function DetailedInfo() {
         console.log(username, name, phone)
         //버튼 클릭시 마다 제출되는 것을 방지 하는 함수
         if(consfirmNickname){
-            axios.post('http://localhost:3000/login/join/signup3_2', {username, password, email,name,phone,gender, nickname})
-            .then(response=>{
-                console.log(response.status)
-                if (response.status === 200) {
-                    navigate('/signup4'); // signup3로 이동
-                }
-            });
-        }
+            navigate('/signup4'); // signup3로 이동
+        };
     }
 
 
