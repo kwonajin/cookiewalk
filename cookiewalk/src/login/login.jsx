@@ -29,14 +29,14 @@ export default function LogIn() {
     setIsPressed(false);
   };
 
-  const [username, setUsername]=useState('');
+  const [email, setEmail]=useState('');
   const [password, setPassword]=useState('')
   const navigate = useNavigate();
 
   //로그인 버튼 클릭시 백엔드서버로 로그인 요청
   const onSubmitHandler = (e) =>{
     e.preventDefault();
-    axios.post('http://localhost:3000/login', {username,password}).then(response=>{
+    axios.post('http://localhost:3000/login', {email,password}).then(response=>{
       console.log(response)
       if (response.data.token || response.status === 200) {
         navigate('/home'); // homepage로 이동
@@ -58,14 +58,14 @@ export default function LogIn() {
         <form onSubmit={onSubmitHandler}>
           <input
             className="id"
-            name='username'
+            name='email'
             type="text"
             placeholder="아이디"
             onFocus={handleFocus}
             onBlur={(event) => handleBlur(event, '아이디')}
-            // onChange={(e) => handleInputChange(e, setUsername)}
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
+            // onChange={(e) => handleInputChange(e, setEmail)}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
             required
           />
           <input
@@ -92,7 +92,7 @@ export default function LogIn() {
           </button>
         </form>
 
-        <a href='#' className="find_id">아이디 찾기</a>
+        {/* <a href='#' className="find_id">아이디 찾기</a> */}
         <div className="id_pw"></div>
         <a href='#' className="find_password">비밀번호 찾기</a>
         <Link to="/Signup"><div className="signup">회원가입</div></Link>
