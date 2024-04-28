@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, redirect , useNavigate} from 'react-router-dom';
 import './mypage.css'
+import {supabase} from '../supabaseClient'
 
 export const Tab = () => {
   const [currentTab, clickTab] = useState(0);
+  const navigate = useNavigate();
 
   const menuArr = [
     { id: 1, name: '내활동', content: '' },
@@ -13,9 +15,21 @@ export const Tab = () => {
   const selectMenuHandler = (index) => {
     clickTab(index);
   };
-
+  async function signOut() {
+    const { error } = await supabase.auth.signOut()
+    if(error){
+      console.log(error)
+    }
+    navigate('/')
+  }
+  function logouthandle(e){
+    e.preventDefault();
+    signOut();
+  }
   return (
     <>
+    <button onClick={logouthandle} className="next3">로그아웃</button>
+  
     <div className='background'>
       <div className='mynav'>
           <div className="user_id">running_go</div>

@@ -50,7 +50,7 @@ const nextStep = (e) =>{
     navigate('/signup3', {state:{username}}); // signup3로 이동
     //버튼 클릭시 마다 제출되는 것을 방지 하는 함수
     if(confirmCodeMatch){
-        axios.post('http://localhost:3000/login/join/signup2_2', {username,password ,email})
+        axios.post('http://localhost:3000/login/join/signup2_2', {username})
         .then(response=>{
             console.log(response.status)
             if (response.status === 200) {

@@ -44,6 +44,9 @@ export default function LogIn() {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email  ,
         password: password,
+        // options:{
+        //   redirectTo:'http://localhost:5173/mypage'
+        // }
       });
       console.log(data)
       if (data) {
@@ -52,9 +55,51 @@ export default function LogIn() {
       } else if (error) {
         console.error("Login failed:", error.message);
       };
-  
+  }
+  //카카오 로그인 함수
+  async function signInWithKakao() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options:{
+        redirectTo:'http://localhost:5173/mypage',
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+          },
+      }
+      
+    });
+    // Handle the response here, for example:
+    if (data) {
+      console.log('User signed in:', data);
+    }
+    if (error) {
+      console.error('Error signing in:', error);
+    }
   }
 
+  function  handleSignInKakao(e){
+    e.preventDefault();
+    signInWithKakao();
+  }
+
+  //구글 로그인 함수
+  async function signInWithGoogle() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo:'http://localhost:5173/mypage',
+        queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+        },
+      },
+    })
+  }
+  function handleSignInGoogle(e){
+    e.preventDefault();
+    signInWithGoogle();
+  }
   return (
     <div className="login-background">
         <Link to='/home'><img className="logo" src="./images/logo.png" alt="" /></Link>
@@ -95,17 +140,16 @@ export default function LogIn() {
             로그인
           </button>
         </form>
-
-        {/* <a href='#' className="find_id">아이디 찾기</a> */}
+        <a href='#' className="find_id">아이디 찾기</a>
         <div className="id_pw"></div>
         <a href='#' className="find_password">비밀번호 찾기</a>
-        <Link to="/Signup"><div className="signup">회원가입</div></Link>
+        <Link to="/signup"><div className="signup">회원가입</div></Link>
         <div className="line"></div>
         <div className="or">또는</div>
         <span className="easy_login">간편하게 시작하기</span>
-        <a href='#'><img className="kakao" src="./images/kakao.png" alt="" /></a>
+        <a href='#' onClick={ handleSignInKakao}><img className="kakao" src="./images/kakao.png" alt="" /></a>
         <a href='#'><img className="naver" src="./images/naver.png" alt="" /></a>
-        <a href='#'><img className="google" src="./images/google.png" alt="" /></a>
+        <a href='#' onClick={handleSignInGoogle}><img className="google" src="./images/google.png" alt="" /></a>
     </div>
   );
 }

@@ -19,10 +19,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LogIn />} />
         <Route path="/" element={<Home />} />
-        <Route path="/Signup" element={<Signup />} />
-        <Route path="/Signup2" element={<Signup2 />} />
-        <Route path="/Signup3" element={<Signup3 />} />
-        <Route path="/Signup4" element={<Signup4 />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup2" element={<Signup2 />} />
+        <Route path="/signup3" element={<Signup3 />} />
+        <Route path="/signup4" element={<Signup4 />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/home" element={<Home />} />
         {/* <Route path="/map" element={<Map />} /> */}
