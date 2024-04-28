@@ -35,14 +35,14 @@ export default function LogIn() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(username,password);
-  }, [username,password]);
+    console.log(email,password);
+  }, [email,password]);
 
   //로그인 버튼 클릭시 백엔드서버로 로그인 요청
   const onSubmitHandler = async(e) =>{
     e.preventDefault();
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: username,
+        email: email  ,
         password: password,
       });
       console.log(data)
