@@ -1,8 +1,8 @@
-import './Signup1.css'
+import './Signup.css'
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 
-export default function Signup1() {
+export default function Signup() {
   // 첫 번째 비밀번호 입력 필드의 가시성 상태
   const [passwordVisible, setPasswordVisible] = useState(false);
   // 비밀번호 재입력 필드의 가시성 상태

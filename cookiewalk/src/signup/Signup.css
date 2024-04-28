@@ -17,7 +17,7 @@ body{
 }
 .e82_14 { 
 	color:rgba(33.00000183284283, 33.00000183284283, 33.00000183284283, 1);
-	width:236px;
+	width:252px;
 	height:58px;
 	position:absolute;
 	left:40px;
@@ -137,6 +137,7 @@ body{
 	position:absolute;
 	left:281px;
 	top:195px;
+	font-size: 14px;
 	font-weight: 700;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;

@@ -63,7 +63,7 @@ export default function LogIn() {
         <a href='#' className="find_id">아이디 찾기</a>
         <div className="id_pw"></div>
         <a href='#' className="find_password">비밀번호 찾기</a>
-        <Link to="/Signup1"><div className="signup">회원가입</div></Link>
+        <Link to="/Signup"><div className="signup">회원가입</div></Link>
         <div className="line"></div>
         <div className="or">또는</div>
         <span className="easy_login">간편하게 시작하기</span>
