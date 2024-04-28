@@ -2,6 +2,7 @@ import React, { useState, useEffect }  from 'react';
 import './login.css'; // login.css 파일을 import 합니다.
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import {supabase} from '../supabaseClient';
 
 export default function LogIn() {
   
@@ -33,21 +34,24 @@ export default function LogIn() {
   const [password, setPassword]=useState('')
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log(username,password);
+  }, [username,password]);
+
   //로그인 버튼 클릭시 백엔드서버로 로그인 요청
-  const onSubmitHandler = (e) =>{
+  const onSubmitHandler = async(e) =>{
     e.preventDefault();
-    axios.post('http://localhost:3000/login', {username,password}).then(response=>{
-      console.log(response)
-      if (response.data.token || response.status === 200) {
-        navigate('/home'); // homepage로 이동
-      }
-    }).catch(error =>{
-      navigate('/');
-      console.error('Login request failed:', error);
-      alert("아이디나 비밀번호가 일치하지 않습니다.")
-      navigate('/');
-    })
-      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: username,
+        password: password,
+      });
+      console.log(data)
+      if (data) {
+        console.log("로그인 성공");
+        navigate('/mypage'); // mypage로 이동
+      } else if (error) {
+        console.error("Login failed:", error.message);
+      };
   
   }
 
