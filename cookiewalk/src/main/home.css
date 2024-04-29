@@ -3,10 +3,6 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-		overflow-x: hidden;
-		overflow-y: auto; /* 세로 스크롤 활성화 */
-    position: fixed; /* 화면 고정 */
-    width: 100%; /* 화면 폭 100%로 설정 */
 }
 
 .home_background { 
