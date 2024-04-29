@@ -84,7 +84,6 @@
 	width:390px;
 	height:72px;
 	position:absolute;
-	left:0px;
 	top:51px;
 }
 
@@ -240,6 +239,7 @@
 	text-align:left;
 	font-size:12px;
 	letter-spacing:5;
+	font-weight: 600;
 }
 
 .notice3_line { 
@@ -304,6 +304,7 @@
 	text-align:left;
 	font-size:12px;
 	letter-spacing:5;
+	font-weight: 600;
 }
 
 .notice4_line { 

@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-    <><div className="background">
+    <><div className="home_background">
       <div className="topnav">
         <div className="homenav">
           <Link to="/write"><div className="write"><img className="write_icon" src="./icon/write.svg" alt="" /></div></Link>
           <div className="home_title">홈</div>
           <Link to="/notice"><div className="notification"><img className="notification_icon" src="./icon/notification.svg" alt="" /></div></Link>
-          <a href="#"><div className="friendadd"><img className="friendadd_icon" src="./icon/friendadd.svg" alt="" /></div></a>
+          <Link to="/friend"><div className="friendadd"><img className="friendadd_icon" src="./icon/friendadd.svg" alt="" /></div></Link>
           <div className="homenav_line"></div>
         </div>
 
