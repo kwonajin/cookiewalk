@@ -302,8 +302,8 @@ body{
 .contents { 
 	color:#131313;
 	position:relative;
+	width: 372px;
 	left:10px;	
-  padding-right: 18px;
 	top:690px;
 	font-family:Noto Sans KR;
 	font-size:13px;
