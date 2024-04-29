@@ -16,6 +16,14 @@ body{
 	padding-bottom: 50px;
 }
 
+.groupnav{
+	position: fixed;
+	background-color: #ffffff;
+	width: 390px;
+	height: 51px;
+	z-index: 1;
+}
+
 .group_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:41px;
@@ -68,7 +76,7 @@ body{
 	width:23.630462646484375px;
 	height:23.621051788330078px;
 	position:absolute;
-	left:4.994609355926514px;
+	left:3px;
 	top:1.9102697372436523px;
 }
 
@@ -90,7 +98,7 @@ body{
 	width:116px;
 	height:25px;
 	position:absolute;
-	left:23px;
+	left:22px;
 	top:122px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -131,8 +139,6 @@ body{
 
 .sort_select { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:36px;
-	height:18px;
 	position:absolute;
 	left:315px;
 	top:118px;
@@ -261,13 +267,12 @@ body{
 
 .dday { 
 	color:rgba(220.45214742422104, 42.72213354706764, 42.72213354706764, 1);
-	width:31px;
-	height:14px;
+	width:36px;
 	position:absolute;
-	left:151px;
+	left:147px;
 	top:165px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	text-align:center;
 	font-size:11px;
 	letter-spacing:0;
 	font-weight: 600;
@@ -291,7 +296,7 @@ body{
 	width:18px;
 	height:17px;
 	position:absolute;
-	left:11px;
+	left:10px;
 	top:303px;
 }
 
@@ -305,10 +310,9 @@ body{
 
 .place_name { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:85px;
-	height:14px;
+	width:100px;
 	position:absolute;
-	left:26px;
+	left:25px;
 	top:302px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -362,13 +366,12 @@ body{
 
 .hashtag1 { 
 	color:rgba(101.80632591247559, 101.80632591247559, 101.80632591247559, 1);
-	width:31px;
-	height:16px;
+	width: 35px;
 	position:absolute;
-	left:18px;
+	left:13px;
 	top:326px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	text-align:center;
 	font-size:10px;
 	letter-spacing:0;
 	font-weight: 600;
@@ -389,13 +392,13 @@ body{
 
 .hashtag2 { 
 	color:rgba(101.80632591247559, 101.80632591247559, 101.80632591247559, 1);
-	width:37px;
+	width:40px;
 	height:16px;
 	position:absolute;
-	left:63px;
+	left:61px;
 	top:326px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	text-align:center;
 	font-size:10px;
 	letter-spacing:0;
 	font-weight: 600;
@@ -416,13 +419,13 @@ body{
 
 .hashtag3 { 
 	color:rgba(101.80632591247559, 101.80632591247559, 101.80632591247559, 1);
-	width:37px;
+	width:40px;
 	height:16px;
 	position:absolute;
-	left:116px;
+	left:114px;
 	top:326px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	text-align:center;
 	font-size:10px;
 	letter-spacing:0;
 	font-weight: 600;
