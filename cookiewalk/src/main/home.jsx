@@ -36,7 +36,7 @@ export default function Home() {
 
       <div className=""><img className='content_img' src='./images/rectangle_2.png'/></div>
       <div className="comment_name">running_go</div>
-      <div className="contents">오랜만에 모닝 러닝한 날 ️🌄👟 오랜만에 모닝 러닝한 날 ️🌄👟오랜만에 모닝 러닝한 날 ️🌄👟 오랜만에 모닝 러닝한 날 ️🌄👟오랜만에 모닝 러닝한 날 ️🌄👟 오랜만에 모닝 러닝한 날 ️🌄👟</div>
+      <div className="contents">오랜만에 모닝 러닝한 날🌄👟 오랜만에 모닝 러닝한 날🌄👟오랜만에 모닝 러닝한 날🌄👟 오랜만에 모닝 러닝한 날🌄👟오랜만에 모닝 러닝한 날🌄👟 오랜만에 모닝 러닝한 날🌄👟</div>
       <div className="comment_num">댓글 3개 모두 보기</div>
       <div className="date">4월 13일</div>
       <div className="like">좋아요 129개</div>
