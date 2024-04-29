@@ -37,18 +37,21 @@ export default function Signup() {
     const isValidEmail = validateEmail(email);
     if(isValidEmail=== true){
       const {data, error}= await supabase
-        .from('profile')
+        .from('user')
         .select('email')
         .eq('email', email)
       if(data.length>0){
         setConfirmEmail(false)
         console.log('이미 가입된 이메일 입니다.')
+        window.alert(`이미 가입된 이메일 입니다.`)
       }else{
         setConfirmEmail(true)
         console.log('사용가능한 이메일 입니다')
+        window.alert(`사용가능한 이메일 입니다.`)
       } 
     }else{
       console.log('양식이 틀렸습니다.')
+      window.alert(`양식이 틀렸습니다.`)
     }
   }
   //비밀 번호 검사 
@@ -80,6 +83,7 @@ export default function Signup() {
       if(data.length>0){
         console.log(data)
         console.log('이메일의 인증 링크를 클릭하시오')  
+        window.alert(`이메일로 인증 링크를 발송 하였습니다.`)
       }
       console.log(data)
       if (error) {
