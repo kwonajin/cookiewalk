@@ -45,7 +45,7 @@ body{
 
 .user_id { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:112px;
+	width:120px;
 	height:25px;
 	position:absolute;
 	left:139px;
@@ -94,7 +94,7 @@ body{
 
 .total_distance_num { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:43px;
+	width:60px;
 	height:22px;
 	position:absolute;
 	left:138px;
@@ -108,7 +108,7 @@ body{
 
 .total_distance { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:45px;
+	width:60px;
 	height:23px;
 	position:absolute;
 	left:138px;
@@ -122,13 +122,13 @@ body{
 
 .follower_num { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:28px;
+	width:60px;
 	height:23px;
 	position:absolute;
-	left:228px;
+	left:213px;
 	top:77px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	text-align:center;
 	font-size:16px;
 	letter-spacing:0;
 	font-weight: 600;
@@ -136,7 +136,7 @@ body{
 
 .follower { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:45px;
+	width:60px;
 	height:23px;
 	position:absolute;
 	left:221px;
@@ -150,13 +150,13 @@ body{
 
 .following_num { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:28px;
+	width:60px;
 	height:23px;
 	position:absolute;
-	left:313px;
+	left:298px;
 	top:77px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	text-align:center;
 	font-size:16px;
 	letter-spacing:0;
 	font-weight: 600;
@@ -164,7 +164,7 @@ body{
 
 .following { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:45px;
+	width:60px;
 	height:23px;
 	position:absolute;
 	left:306px;
@@ -178,7 +178,7 @@ body{
 
 .user_name { 
 	color:rgba(0, 0, 0, 1);
-	width:45px;
+	width:60px;
 	height:23px;
 	position:absolute;
 	left:11px;
@@ -192,7 +192,7 @@ body{
 
 .introduction { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:220px;
+	width:370px;
 	height:23px;
 	position:absolute;
 	left:11px;
@@ -218,7 +218,7 @@ body{
 
 .profile_edit_text { 
 	color:rgba(0, 0, 0, 1);
-	width:78px;
+	width:90px;
 	height:23px;
 	position:absolute;
 	left:62px;
@@ -245,7 +245,7 @@ body{
 
 .profile_share_text { 
 	color:rgba(0, 0, 0, 1);
-	width:78px;
+	width:90px;
 	height:23px;
 	position:absolute;
 	left:251px;
@@ -344,7 +344,7 @@ body{
 
 .badge { 
 	color:rgba(0, 0, 0, 1);
-	width:78px;
+	width:90px;
 	height:23px;
 	position:absolute;
 	left:13px;
@@ -361,7 +361,7 @@ body{
 	width:16px;
 	height:16px;
 	position:absolute;
-	left:95px;
+	left:100px;
 	top:676px;
 }
 
@@ -432,7 +432,7 @@ body{
 
 .myjoingroup { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:111px;
+	width:120px;
 	height:23px;
 	position:absolute;
 	left:13px;
@@ -497,10 +497,9 @@ body{
 
 .group1_tilte { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:88px;
+	width:90px;
 	height:16px;
 	position:absolute;
-	left:1px;
 	top:62px;
 	font-family:Noto Sans KR;
 	text-align:center;
@@ -532,7 +531,7 @@ body{
 
 .group2_tilte { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:88px;
+	width:90px;
 	height:16px;
 	position:absolute;
 	left:1px;
@@ -567,7 +566,7 @@ body{
 
 .group3_tilte { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:88px;
+	width:90px;
 	height:16px;
 	position:absolute;
 	left:1px;

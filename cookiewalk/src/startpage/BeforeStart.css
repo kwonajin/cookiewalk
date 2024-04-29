@@ -38,13 +38,13 @@ body{
 	background-repeat:no-repeat;
 	background-size:cover;
 }
-.e118_426 { 
+.start_button_circle { 
 	border-radius:500px;
 	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
 	width:95px;
 	height:95px;
 	position:absolute;
-	left:153px;
+	left:148px;
 	top:657px;
 }
 .route { 
@@ -80,16 +80,18 @@ body{
 	letter-spacing:0;
 }
 .e118_433 { 
-	color:rgba(252.8617027401924, 252.8617027401924, 252.8617027401924, 1);
-	width:33px;
+	color: rgba(253,253,253,1);
+	width:36px;
 	height:19px;
 	position:absolute;
-	left:186px;
-	top:722px;
-	font-family:Inter;
+	left:179.2px;
+	top:715px;
+	font-family:Noto Sans KR;
 	text-align:left;
-	font-size:16px;
+	font-size:18px;
+	font-weight: 700;
 	letter-spacing:0;
+	z-index: 100;
 }
 .e118_434 { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
@@ -103,23 +105,21 @@ body{
 	font-size:16px;
 	letter-spacing:0;
 }
-.e118_435 { 
-	width:40px;
-	height:44.34285354614258px;
+.start_logo { 
+	width:38px;
+	height:43px;
 	position:absolute;
-	left:180px;
-	top:672px;
-	background-repeat:no-repeat;
-	background-size:cover;
+	left:178px;
+	top:671px;
+	z-index: 100;
 }
-.e118_436 { 
-	width:60px;
+
+.uncomplted_route { 
+	width:58px;
 	height:60px;
 	position:absolute;
 	left:257px;
 	top:497px;
-	background-repeat:no-repeat;
-	background-size:cover;
 }
 
 
