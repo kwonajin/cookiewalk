@@ -16,8 +16,10 @@ export default function Group() {
 
   return (
     <><div className="group_background">
-      <div className="group_title">그룹</div>
-      <div className="group_line"></div>
+      <div className='groupnav'>
+        <div className="group_title">그룹</div>
+        <div className="group_line"></div>
+      </div>
       <input
           className="searchbar"
           type="text"

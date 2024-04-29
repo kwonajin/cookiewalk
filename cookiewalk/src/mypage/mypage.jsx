@@ -28,9 +28,8 @@ export const Tab = () => {
   }
   return (
     <>
-    <button onClick={logouthandle} className="next3">로그아웃</button>
   
-    <div className='background'>
+    <div className='mypage_background'>
       <div className='mynav'>
           <div className="user_id">running_go</div>
           <div className="menu"><img className="menu_icon" src="./icon/menu.svg" alt="" /></div>
@@ -40,10 +39,14 @@ export const Tab = () => {
         <div><img className="profile_img" src="./images/ellipse_7.png" alt="" /></div>
         <div className="total_distance_num">32km</div>
         <div className="total_distance">총거리</div>
-        <div className="follower_num">147</div>
-        <div className="follower">팔로워</div>
-        <div className="following_num">182</div>
-        <div className="following">팔로잉</div>
+        <Link to="/follower">
+          <div className="follower_num">147</div>
+          <div className="follower">팔로워</div>
+        </Link>
+        <Link to="/following">
+          <div className="following_num">182</div>
+          <div className="following">팔로잉</div>
+        </Link>
   
         <div className="user_name">유민지</div>
         <div className="introduction">재미있는 산책을 지향합니다 🌳✨</div>

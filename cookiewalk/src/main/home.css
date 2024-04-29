@@ -5,8 +5,7 @@ body{
     align-items: center;
 }
 
-.background { 
-	margin-top: -25px;
+.home_background { 
 	min-height: 850px;
 	box-shadow: 0px 10px 15px #00000040;
 	top: 0px;

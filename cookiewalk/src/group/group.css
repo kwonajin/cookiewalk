@@ -16,6 +16,14 @@ body{
 	padding-bottom: 50px;
 }
 
+.groupnav{
+	position: fixed;
+	background-color: #ffffff;
+	width: 390px;
+	height: 51px;
+	z-index: 1;
+}
+
 .group_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:41px;
