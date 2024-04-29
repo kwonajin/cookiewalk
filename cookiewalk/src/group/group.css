@@ -267,13 +267,12 @@ body{
 
 .dday { 
 	color:rgba(220.45214742422104, 42.72213354706764, 42.72213354706764, 1);
-	width:31px;
-	height:14px;
+	width:36px;
 	position:absolute;
-	left:151px;
+	left:147px;
 	top:165px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	text-align:center;
 	font-size:11px;
 	letter-spacing:0;
 	font-weight: 600;
