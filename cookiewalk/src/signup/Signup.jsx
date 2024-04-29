@@ -1,6 +1,7 @@
 import './Signup.css'
 import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {supabase} from '../supabaseClient'
 
 export default function Signup() {
@@ -75,9 +76,6 @@ export default function Signup() {
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
-        // options: {
-        //   emailRedirectTo: 'http://localhost:5173/signup4'
-        // }
       })
       if(data.length>0){
         console.log(data)
