@@ -495,13 +495,13 @@ body{
 	border-bottom-right-radius:5px;
 }
 
-.group1_tilte { 
+.group1_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:95px;
+	width:98px;
 	height:16px;
 	position:absolute;
 	top:62px;
-	left: -3px;
+	left: -4px;
 	font-family:Noto Sans KR;
 	text-align:center;
 	font-size:11px;
@@ -530,7 +530,7 @@ body{
 	border-bottom-right-radius:5px;
 }
 
-.group2_tilte { 
+.group2_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:90px;
 	height:16px;
@@ -565,7 +565,7 @@ body{
 	border-bottom-right-radius:5px;
 }
 
-.group3_tilte { 
+.group3_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:90px;
 	height:16px;
