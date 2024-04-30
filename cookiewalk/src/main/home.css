@@ -110,8 +110,6 @@ body{
 
 .detail { 
 	color:#7CA0C1;
-	width:56px;
-	height:17px;
 	position:absolute;
 	left:325px;
 	top:60px;
@@ -124,11 +122,9 @@ body{
 
 .art { 
 	color:#898989;
-	width:72px;
-	height:17px;
 	position:absolute;
 	left:12px;
-	top:91px;
+	top:95px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:12px;
@@ -164,11 +160,9 @@ body{
 
 .active_distance { 
 	color:#898989;
-	width:47px;
-	height:17px;
 	position:absolute;
 	left:117px;
-	top:91px;
+	top:95px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:12px;
@@ -204,11 +198,9 @@ body{
 
 .active_time { 
 	color:#898989;
-	width:47px;
-	height:17px;
 	position:absolute;
 	left:219px;
-	top:91px;
+	top:95px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:12px;
@@ -268,6 +260,21 @@ body{
 	letter-spacing:0;
 }
 
+.dotmenu { 
+	width:25px;
+	height:25px;
+	position:absolute;
+	left:357px;
+	top:194px;
+}
+
+.dotmenu_icon { 
+	width:24px;
+	height:24px;
+	position:absolute;
+	top:1px;
+}
+
 .content_img { 
 	width:390px;
 	height:390px;
@@ -295,8 +302,8 @@ body{
 .contents { 
 	color:#131313;
 	position:relative;
+	width:370px;
 	left:10px;	
-  padding-right: 10px;
 	top:690px;
 	font-family:Noto Sans KR;
 	font-size:13px;
@@ -407,21 +414,6 @@ body{
 	position:absolute;
 	left:1.0800000429153442px;
 	top:2.0399999618530273px;
-}
-
-.dotmenu { 
-	width:25px;
-	height:25px;
-	position:absolute;
-	left:357px;
-	top:194px;
-}
-
-.dotmenu_icon { 
-	width:24px;
-	height:24px;
-	position:absolute;
-	top:1px;
 }
 
 .share { 

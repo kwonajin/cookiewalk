@@ -113,15 +113,15 @@ export const Tab = () => {
                   <div className="myjoingroup_list"></div>
                   <div className="group1">
                     <div className="group1_img"></div>
-                    <div className="group1_tilte">전국 한반도 그리기</div>
+                    <div className="group1_title">전국 한반도 그리기</div>
                   </div>
                   <div className="group2">
                     <div className="group2_img"></div>
-                    <div className="group2_tilte">부산 토끼 그려요</div>
+                    <div className="group2_title">부산 토끼 그려요</div>
                   </div>
                   <div className="group3">
                     <div className="group3_img"></div>
-                    <div className="group3_tilte">폼폼푸린 🍮</div>
+                    <div className="group3_title">폼폼푸린 🍮</div>
                   </div>
                 </>
               )}
