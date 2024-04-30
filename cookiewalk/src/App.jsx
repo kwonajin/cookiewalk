@@ -28,8 +28,8 @@ export default function App() {
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup2" element={<Signup2 />} />
-            <Route path="/signup3" element={<Signup3 />} />
-            <Route path="/signup4" element={<Signup4 />} />
+            <Route path="/signup3" element={<ProtectedRoute><Signup3/></ProtectedRoute>} />
+            <Route path="/signup4" element={<ProtectedRoute><Signup4 /></ProtectedRoute>} />
             <Route path="/login" element={<LogIn />} />
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             {/* <Route path="/map" element={<Map />} /> */}
