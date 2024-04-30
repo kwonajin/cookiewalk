@@ -90,6 +90,9 @@ export default function Signup() {
         console.error('Signup error:', error.message);
       }
     }
+
+      const { data, error } = await supabase.auth.getSession()
+      console.log(data)
   }   
 
   return (

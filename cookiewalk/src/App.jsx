@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
 import Home from "./main/home";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LogIn from "./login/login";
+import Home from "./main/home";
 // import Map from "./map/map";
 import Pause from "./startpage/pause";
 import Group from "./group/group";
@@ -14,34 +17,51 @@ import Notice from './main/notice';
 import Friend from './main/friend';
 import Follower from './mypage/follower';
 import Following from './mypage/following';
+import { tokenContext } from './tokenContext';
+import { supabase } from './supabaseClient';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import GroupDetail from './group/group_detail';
 import MyGroup from './mypage/mygroup';
 
 export default function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async function checkToken() {
+      const {data,error}= await supabase.auth.getUser();
+      setUser(data);
+      console.log(user.user.id);
+    }
+    checkToken();
+  }, []);
+
   return (
-      <Routes>
-        <Route path="/" element={<LogIn />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/signup2" element={<Signup2 />} />
-        <Route path="/signup3" element={<Signup3 />} />
-        <Route path="/signup4" element={<Signup4 />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/home" element={<Home />} />
-        {/* <Route path="/map" element={<Map />} /> */}
-        <Route path="/pause" element={<Pause />} />
-        <Route path="/group" element={<Group />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/write" element={<Write />} />
-        <Route path="/notice" element={<Notice />} />
-        <Route path="/friend" element={<Friend />} />
-        <Route path="/follower" element={<Follower />} />
-        <Route path="/following" element={<Following />} />
-        <Route path="/group_detail" element={<GroupDetail />} />
-        <Route path="/mygroup" element={<MyGroup />} />
+      <tokenContext.Provider value={{user,setUser}}>
+        <Routes>
+          <Route path="/" element={<LogIn />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup2" element={<Signup2 />} />
+          <Route path="/signup3" element={<Signup3 />} />
+          <Route path="/signup4" element={<Signup4 />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/home" element={<Home />} />
+          {/* <Route path="/map" element={<Map />} /> */}
+          <Route path="/pause" element={<Pause />} />
+          <Route path="/group" element={<Group />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/write" element={<Write />} />
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/friend" element={<Friend />} />
+          <Route path="/follower" element={<Follower />} />
+          <Route path="/following" element={<Following />} />
+          <Route path="/group_detail" element={<GroupDetail />} />
+          <Route path="/mygroup" element={<MyGroup />} />
 
 
       </Routes>
+      </tokenContext.Provider>
 
   );
 }
