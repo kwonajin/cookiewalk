@@ -1,11 +1,11 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect, useContext }  from 'react';
 import './login.css'; // login.css 파일을 import 합니다.
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import {supabase} from '../supabaseClient';
 
 export default function LogIn() {
-  
+
+  // export default useAuth;
   // const handleInputChange = (e, setter) => {
   //   setter(e.target.value);
   // };
@@ -38,7 +38,7 @@ export default function LogIn() {
     console.log(email,password);
   }, [email,password]);
 
-  //로그인 버튼 클릭시 백엔드서버로 로그인 요청
+  //로그인 버튼 클릭시 로그인 요청
   const onSubmitHandler = async(e) =>{
     e.preventDefault();
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -49,6 +49,7 @@ export default function LogIn() {
         // }
       });
       console.log(data)
+      // console.log(data.session.access_token)
       if (data) {
         console.log("로그인 성공");
         navigate('/mypage'); // mypage로 이동
@@ -95,6 +96,12 @@ export default function LogIn() {
         },
       },
     })
+    if (data) {
+      console.log('User signed in:', data);
+    }
+    if (error) {
+      console.error('Error signing in:', error);
+    }
   }
   function handleSignInGoogle(e){
     e.preventDefault();
