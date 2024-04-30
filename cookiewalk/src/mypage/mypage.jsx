@@ -9,7 +9,7 @@ export const Tab = () => {
   const navigate = useNavigate();
 
   const userInfo=useToken(); //TokenContext에서 user 상태를 가져옴
-  console.log(userInfo)
+  // console.log(userInfo)
 
   const menuArr = [
     { id: 1, name: '내활동', content: '' },

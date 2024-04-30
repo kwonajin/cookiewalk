@@ -23,30 +23,29 @@ import Unfinished_route from './startpage/Unfinished_route';
 
 export default function App() {
   return (
-      <Unfinished_route/>
-      // <TokenProvider>
-      //   <Routes>
-      //       <Route path="/" element={<LogIn />} />
-      //       <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      //       <Route path="/signup" element={<Signup />} />
-      //       <Route path="/signup2" element={<Signup2 />} />
-      //       <Route path="/signup3" element={<Signup3 />} />
-      //       <Route path="/signup4" element={<Signup4 />} />
-      //       <Route path="/login" element={<LogIn />} />
-      //       <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      //       {/* <Route path="/map" element={<Map />} /> */}
-      //       <Route path="/pause" element={<ProtectedRoute><Pause /></ProtectedRoute>} />
-      //       <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
-      //       <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
-      //       <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
-      //       <Route path="/notice" element={<ProtectedRoute><Notice /></ProtectedRoute>} />
-      //       <Route path="/friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />
-      //       <Route path="/follower" element={<ProtectedRoute><Follower /></ProtectedRoute>} />
-      //       <Route path="/following" element={<ProtectedRoute><Following /></ProtectedRoute>} />
-      //       <Route path="/group_detail" element={<ProtectedRoute><GroupDetail /></ProtectedRoute>} />
-      //       <Route path="/mygroup" element={<ProtectedRoute><MyGroup /></ProtectedRoute>} />
-      // </Routes>
-      // </TokenProvider>
+      <TokenProvider>
+        <Routes>
+            <Route path="/" element={<LogIn />} />
+            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup2" element={<Signup2 />} />
+            <Route path="/signup3" element={<ProtectedRoute><Signup3/></ProtectedRoute>} />
+            <Route path="/signup4" element={<ProtectedRoute><Signup4 /></ProtectedRoute>} />
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            {/* <Route path="/map" element={<Map />} /> */}
+            <Route path="/pause" element={<ProtectedRoute><Pause /></ProtectedRoute>} />
+            <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
+            <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
+            <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
+            <Route path="/notice" element={<ProtectedRoute><Notice /></ProtectedRoute>} />
+            <Route path="/friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />
+            <Route path="/follower" element={<ProtectedRoute><Follower /></ProtectedRoute>} />
+            <Route path="/following" element={<ProtectedRoute><Following /></ProtectedRoute>} />
+            <Route path="/group_detail" element={<ProtectedRoute><GroupDetail /></ProtectedRoute>} />
+            <Route path="/mygroup" element={<ProtectedRoute><MyGroup /></ProtectedRoute>} />
+      </Routes>
+      </TokenProvider>
 
   );
 }
