@@ -1,44 +1,65 @@
 import React, { useState,useEffect } from 'react';
 import './Signup3.css'
-import { Link ,useNavigate, useLocation} from "react-router-dom";
-import axios from "axios";
+import {Link ,useNavigate} from "react-router-dom";
+import {supabase} from '../supabaseClient'
+import {useToken} from '../context/tokenContext.jsx'
 
 export default function DetailedInfo() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const {username, password, email} = location.state || {}
     const [name,setName]=useState('')
     const [phone, setPhone]=useState('')
     const [nickname, setNickname]=useState('')
     const [consfirmNickname, setConfirmNickname]=useState(false)
-    const [gender, setGender] = useState(null); // 성별 상태
+    const [gender, setGender] = useState('M'); // 성별 상태
 
+    const userInfo=useToken();
+    // console.log(userInfo.user.user.id)
     // 성별 선택 핸들러
     const handleGenderSelect = (selectedGender) => {
         setGender(selectedGender);
     };
 
     //닉네임 중복 검사 요청
-    const onSubmitHandlerNick = (e) =>{
+    const onSubmitHandlerNick = async(e) =>{
         e.preventDefault();
-        axios.post('http://localhost:3000/login/join/signup3', {nickname})
-            .then(response=>{
-                console.log(response.data)
-                setConfirmNickname(response.data==='사용가능')
-            })
+        const {data, error}= await supabase
+            .from('user')
+            .select('nick_name')
+            .eq('nick_name', nickname)
+        if(data.length>0){
+            console.log('닉네임 중복')
+            setConfirmNickname(false)
+        }else{
+            console.log('사용가능한 닉네임')
+            setConfirmNickname(true)
+        }
     }
     // setConfirmCodeMatch 상태가 변경될 때마다 실행해 취신 결과값 확인
     useEffect(() => {
     console.log(consfirmNickname);
     }, [consfirmNickname]);
 
-    const nextStep = (e) =>{
+    const nextStep = async(e) =>{
         e.preventDefault()
-        console.log(username, name, phone)
-        //버튼 클릭시 마다 제출되는 것을 방지 하는 함수
         if(consfirmNickname){
-            navigate('/signup4'); // signup3로 이동
-        };
+            const {data, error}= await supabase
+                .from('user')
+                .update({
+                    gender: gender,
+                    phone: phone,
+                    name : name,
+                    nick_name: nickname
+                })
+                .eq('user_id',userInfo.user.user.id )
+            if(error){
+                console.error(error.message)
+            }
+            console.log('data :',data)
+            navigate('/signup4'); // signup4로 이동
+        }
+        else{
+            console.log('값을 모두 입력해주세요')
+        }
     }
 
 
@@ -50,7 +71,7 @@ export default function DetailedInfo() {
 
         <span className="e86_9">쿠키워크의 상세정보를 입력해주세요</span>
     
-        <form onSubmit={nextStep} method = "/">
+        <form  method = "/">
             <input type="text" className="inputUserName" onChange={(e)=>setName(e.target.value)} value={name} placeholder="이름을 입력해주세요" required/>
             {/* 이름 */}
             <input type="text" className="inputUserCP" onChange={(e)=>setPhone(e.target.value)} value={phone} placeholder="전화번호를 입력해주세요 (‘-’없이 입력)" required/>
@@ -70,7 +91,7 @@ export default function DetailedInfo() {
     
             <button type='submit' onClick={onSubmitHandlerNick} className="UserNick_double_check">중복확인</button>
     
-            <button className="next3">다음</button>
+            <button className="next3"onClick={nextStep}>등록</button>
         </form>
     </div>
     );
