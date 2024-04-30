@@ -12,7 +12,7 @@ export const TokenProvider = ({children}) => {
     async function checkUser(){
       const {data, error} = await supabase.auth.getUser();
       if(data){
-        setUser(data);
+        setUser(data.user.id);
       }else{
         setUser(null);
       }
