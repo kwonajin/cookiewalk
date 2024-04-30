@@ -1,0 +1,30 @@
+import React, {createContext, useContext, useState, useEffect} from 'react';
+import { supabase } from '../supabaseClient';
+
+export const TokenContext = createContext(null);
+
+export const useToken = () => useContext(TokenContext);
+
+export const TokenProvider = ({children}) => {
+  const [user,setUser]= useState(null);
+
+  useEffect(()=> {
+    async function checkUser(){
+      const {data, error} = await supabase.auth.getUser();
+      if(data){
+        setUser(data);
+      }else{
+        setUser(null);
+      }
+    }
+
+    checkUser();
+  },[]);
+
+  return (
+    <TokenContext.Provider value={{user, setUser}}>
+      {children}
+    </TokenContext.Provider>
+  )
+
+};
