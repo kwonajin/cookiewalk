@@ -1,6 +1,6 @@
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import LogIn from "./login/login";
-// import Home from "./main/home";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LogIn from "./login/login";
+import Home from "./main/home";
 // import Map from "./map/map";
 import Pause from "./startpage/pause";
 import Group from "./group/group";
@@ -14,6 +14,7 @@ import Notice from './main/notice';
 import Friend from './main/friend';
 import Follower from './mypage/follower';
 import Following from './mypage/following';
+import GroupDetail from './group/group_detail';
 
 export default function App() {
   return (
@@ -35,6 +36,8 @@ export default function App() {
         <Route path="/friend" element={<Friend />} />
         <Route path="/follower" element={<Follower />} />
         <Route path="/following" element={<Following />} />
+        <Route path="/group_detail" element={<GroupDetail />} />
+
       </Routes>
 
   );
