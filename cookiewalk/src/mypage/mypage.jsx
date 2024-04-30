@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, redirect , useNavigate} from 'react-router-dom';
 import './mypage.css'
 import {supabase} from '../supabaseClient'
+import { tokenContext } from '../tokenContext';
 
 export const Tab = () => {
   const [currentTab, clickTab] = useState(0);
   const navigate = useNavigate();
+
+  const userInfo=useContext(tokenContext)
+
+  console.log(userInfo)
 
   const menuArr = [
     { id: 1, name: '내활동', content: '' },
