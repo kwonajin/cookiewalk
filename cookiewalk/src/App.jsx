@@ -15,6 +15,7 @@ import Friend from './main/friend';
 import Follower from './mypage/follower';
 import Following from './mypage/following';
 import GroupDetail from './group/group_detail';
+import MyGroup from './mypage/mygroup';
 
 export default function App() {
   return (
@@ -37,6 +38,8 @@ export default function App() {
         <Route path="/follower" element={<Follower />} />
         <Route path="/following" element={<Following />} />
         <Route path="/group_detail" element={<GroupDetail />} />
+        <Route path="/mygroup" element={<MyGroup />} />
+
 
       </Routes>
 
