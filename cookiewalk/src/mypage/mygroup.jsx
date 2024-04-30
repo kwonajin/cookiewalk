@@ -6,7 +6,7 @@ export default function MyGroup() {
   return (
     <div className="mg_background">
       <div className='mgnav'>
-        <div className="mg_back"><img className="mg_back_icon" src="./icon/arrow.svg" alt="" /></div>
+        <Link to="/mypage"><div className="mg_back"><img className="mg_back_icon" src="./icon/arrow.svg" alt="" /></div></Link>
         <span className="mg_title">내가 가입한 그룹</span>
         <div className="mg_line"></div>
       </div>
