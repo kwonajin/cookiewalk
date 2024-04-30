@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
 import Home from "./main/home";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LogIn from "./login/login";
+import Home from "./main/home";
 // import Map from "./map/map";
 import Pause from "./startpage/pause";
 import Group from "./group/group";
@@ -18,6 +21,7 @@ import { tokenContext } from './tokenContext';
 import { supabase } from './supabaseClient';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import GroupDetail from './group/group_detail';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -51,7 +55,9 @@ export default function App() {
           <Route path="/friend" element={<Friend />} />
           <Route path="/follower" element={<Follower />} />
           <Route path="/following" element={<Following />} />
-        </Routes>
+          <Route path="/group_detail" element={<GroupDetail />} />
+
+      </Routes>
       </tokenContext.Provider>
 
   );
