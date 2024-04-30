@@ -1,9 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LogIn from "./login/login";
 import Home from "./main/home";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
-import Home from "./main/home";
 // import Map from "./map/map";
 import Pause from "./startpage/pause";
 import Group from "./group/group";
@@ -30,7 +27,7 @@ export default function App() {
     async function checkToken() {
       const {data,error}= await supabase.auth.getUser();
       setUser(data);
-      console.log(user.user.id);
+      console.log(user);
     }
     checkToken();
   }, []);
@@ -38,7 +35,7 @@ export default function App() {
   return (
       <tokenContext.Provider value={{user,setUser}}>
         <Routes>
-          <Route path="/" element={<LogIn />} />
+          {/* <Route path="/" element={<LogIn />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signup2" element={<Signup2 />} />
