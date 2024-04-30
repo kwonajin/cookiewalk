@@ -11,12 +11,13 @@ import Signup3 from "./signup/Signup3";
 import Signup4 from "./signup/Signup4";
 import Write from "./main/write";
 import Notice from './main/notice';
+// import {IsLoginProvider} from './context/IsLoginContext';
 
 export default function App() {
   return (
     
-
       <Routes>
+
         <Route path="/" element={<LogIn />} />
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
@@ -31,7 +32,7 @@ export default function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/write" element={<Write />} />
         <Route path="/notice" element={<Notice />} />
+    
       </Routes>
-
   );
 }

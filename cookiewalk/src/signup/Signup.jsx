@@ -2,6 +2,7 @@ import './Signup.css'
 import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import {supabase} from '../supabaseClient'
+import { createContext, useContext } from 'react';
 
 export default function Signup() {
   // 첫 번째 비밀번호 입력 필드의 가시성 상태
@@ -36,7 +37,7 @@ export default function Signup() {
     const isValidEmail = validateEmail(email);
     if(isValidEmail=== true){
       const {data, error}= await supabase
-        .from('profile')
+        .from('user')
         .select('email')
         .eq('email', email)
       if(data.length>0){

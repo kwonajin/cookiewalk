@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, redirect , useNavigate} from 'react-router-dom';
 import './mypage.css'
-import {supabase} from '../supabaseClient'
+import {supabase} from '../supabaseClient';
 
 export const Tab = () => {
+
+
+
   const [currentTab, clickTab] = useState(0);
   const navigate = useNavigate();
 
