@@ -30,26 +30,26 @@ export default function LogIn() {
     setIsPressed(false);
   };
 
-  const [username, setUsername]=useState('');
-  const [password, setPassword]=useState('');
+  const [email, setEmail]=useState('');
+  const [password, setPassword]=useState('')
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(username,password);
-  }, [username,password]);
+    console.log(email,password);
+  }, [email,password]);
 
   //로그인 버튼 클릭시 로그인 요청
   const onSubmitHandler = async(e) =>{
     e.preventDefault();
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: username,
+        email: email  ,
         password: password,
         // options:{
         //   redirectTo:'http://localhost:5173/mypage'
         // }
       });
       console.log(data)
-      console.log(data.session.access_token)
+      // console.log(data.session.access_token)
       if (data) {
         console.log("로그인 성공");
         navigate('/mypage'); // mypage로 이동
@@ -114,14 +114,14 @@ export default function LogIn() {
         <form onSubmit={onSubmitHandler}>
           <input
             className="id"
-            name='username'
+            name='email'
             type="text"
             placeholder="아이디"
             onFocus={handleFocus}
             onBlur={(event) => handleBlur(event, '아이디')}
-            // onChange={(e) => handleInputChange(e, setUsername)}
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
+            // onChange={(e) => handleInputChange(e, setEmail)}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
             required
           />
           <input

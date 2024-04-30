@@ -16,8 +16,10 @@ export default function Group() {
 
   return (
     <><div className="group_background">
-      <div className="group_title">그룹</div>
-      <div className="group_line"></div>
+      <div className='groupnav'>
+        <div className="group_title">그룹</div>
+        <div className="group_line"></div>
+      </div>
       <input
           className="searchbar"
           type="text"
@@ -33,19 +35,23 @@ export default function Group() {
       <div className="sort_box"></div>
       <div className="sort_select">거리순</div>
       <div className="sort"><img className='sort_icon' src="./icon/arrow.svg" alt="" /></div>
-      <img className="group_img" src="./images/group1.png" alt="" />
-      <div className="person_box"></div>
-      <div className="person"><div><img className="person_icon" src="./icon/person.svg" alt="" /></div></div>
-      <div className="current_people">4</div>
-      <div className="division">/</div>
-      <div className="total_people">5</div>
-      <div className="dday_box"></div>
-      <div className="dday">D - 14</div>
-      <div className="group_name">같이 그리실 분??</div>
-      <div className="place"><img className='place_icon' src="./icon/place.svg" alt="" /></div>
-      <div className="place_name">부산 남구 대연동</div>
-      <div className="distance"><img className='distance_icon' src="./icon/run.svg" alt="" /></div>
-      <div className="distance_num">2.5km</div>
+
+      <Link to="/group_detail">
+        <img className="group_img" src="./images/group1.png" alt="" />
+        <div className="person_box"></div>
+        <div className="person"><div><img className="person_icon" src="./icon/person.svg" alt="" /></div></div>
+        <div className="current_people">4</div>
+        <div className="division">/</div>
+        <div className="total_people">5</div>
+        <div className="dday_box"></div>
+        <div className="dday">D - 14</div>
+        <div className="group_name">같이 그리실 분??</div>
+        <div className="place"><img className='place_icon' src="./icon/place.svg" alt="" /></div>
+        <div className="place_name">부산 남구 대연동</div>
+        <div className="distance"><img className='distance_icon' src="./icon/run.svg" alt="" /></div>
+        <div className="distance_num">2.5km</div>
+      </Link>
+      
       <div className="hashtag_box1"></div>
       <div className="hashtag1">#부산</div>
       <div className="hashtag_box2"></div>

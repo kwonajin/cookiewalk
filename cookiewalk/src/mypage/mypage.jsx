@@ -1,7 +1,8 @@
-import { useState, useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Link, redirect , useNavigate} from 'react-router-dom';
 import './mypage.css'
-import {supabase} from '../supabaseClient';
+import {supabase} from '../supabaseClient'
+import { tokenContext } from '../tokenContext';
 
 export const Tab = () => {
 
@@ -9,6 +10,10 @@ export const Tab = () => {
 
   const [currentTab, clickTab] = useState(0);
   const navigate = useNavigate();
+
+  const userInfo=useContext(tokenContext)
+
+  console.log(userInfo)
 
   const menuArr = [
     { id: 1, name: '내활동', content: '' },
@@ -31,11 +36,10 @@ export const Tab = () => {
   }
   return (
     <>
-    <button onClick={logouthandle} className="next3">로그아웃</button>
   
-    <div className='background'>
+    <div className='mypage_background'>
       <div className='mynav'>
-          <div className="user_id">running_go</div>
+          <div className="user_id" onClick={logouthandle}>running_go</div>
           <div className="menu"><img className="menu_icon" src="./icon/menu.svg" alt="" /></div>
           <div className="title_line"></div>
         </div>
@@ -43,10 +47,14 @@ export const Tab = () => {
         <div><img className="profile_img" src="./images/ellipse_7.png" alt="" /></div>
         <div className="total_distance_num">32km</div>
         <div className="total_distance">총거리</div>
-        <div className="follower_num">147</div>
-        <div className="follower">팔로워</div>
-        <div className="following_num">182</div>
-        <div className="following">팔로잉</div>
+        <Link to="/follower">
+          <div className="follower_num">147</div>
+          <div className="follower">팔로워</div>
+        </Link>
+        <Link to="/following">
+          <div className="following_num">182</div>
+          <div className="following">팔로잉</div>
+        </Link>
   
         <div className="user_name">유민지</div>
         <div className="introduction">재미있는 산책을 지향합니다 🌳✨</div>
@@ -113,15 +121,15 @@ export const Tab = () => {
                   <div className="myjoingroup_list"></div>
                   <div className="group1">
                     <div className="group1_img"></div>
-                    <div className="group1_tilte">전국 한반도 그리기</div>
+                    <div className="group1_title">전국 한반도 그리기</div>
                   </div>
                   <div className="group2">
                     <div className="group2_img"></div>
-                    <div className="group2_tilte">부산 토끼 그려요</div>
+                    <div className="group2_title">부산 토끼 그려요</div>
                   </div>
                   <div className="group3">
                     <div className="group3_img"></div>
-                    <div className="group3_tilte">폼폼푸린 🍮</div>
+                    <div className="group3_title">폼폼푸린 🍮</div>
                   </div>
                 </>
               )}

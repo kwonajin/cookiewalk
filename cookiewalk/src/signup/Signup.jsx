@@ -1,6 +1,7 @@
 import './Signup.css'
 import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {supabase} from '../supabaseClient'
 import { createContext, useContext } from 'react';
 
@@ -43,12 +44,15 @@ export default function Signup() {
       if(data.length>0){
         setConfirmEmail(false)
         console.log('이미 가입된 이메일 입니다.')
+        window.alert(`이미 가입된 이메일 입니다.`)
       }else{
         setConfirmEmail(true)
         console.log('사용가능한 이메일 입니다')
+        window.alert(`사용가능한 이메일 입니다.`)
       } 
     }else{
       console.log('양식이 틀렸습니다.')
+      window.alert(`양식이 틀렸습니다.`)
     }
   }
   //비밀 번호 검사 
@@ -76,19 +80,20 @@ export default function Signup() {
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
-        // options: {
-        //   emailRedirectTo: 'http://localhost:5173/signup4'
-        // }
       })
       if(data.length>0){
         console.log(data)
         console.log('이메일의 인증 링크를 클릭하시오')  
+        window.alert(`이메일로 인증 링크를 발송 하였습니다.`)
       }
       console.log(data)
       if (error) {
         console.error('Signup error:', error.message);
       }
     }
+
+      const { data, error } = await supabase.auth.getSession()
+      console.log(data)
   }   
 
   return (
