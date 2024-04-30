@@ -3,6 +3,7 @@ import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {supabase} from '../supabaseClient'
+import { createContext, useContext } from 'react';
 
 export default function Signup() {
   // 첫 번째 비밀번호 입력 필드의 가시성 상태

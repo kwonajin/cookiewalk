@@ -2,14 +2,13 @@ import { useContext, useState } from 'react';
 import { Link, redirect , useNavigate} from 'react-router-dom';
 import './mypage.css'
 import {supabase} from '../supabaseClient'
-import { tokenContext } from '../tokenContext';
+import { useToken } from '../context/tokenContext.jsx'
 
 export const Tab = () => {
   const [currentTab, clickTab] = useState(0);
   const navigate = useNavigate();
 
-  const userInfo=useContext(tokenContext)
-
+  const userInfo=useToken(); //TokenContext에서 user 상태를 가져옴
   console.log(userInfo)
 
   const menuArr = [
@@ -36,7 +35,7 @@ export const Tab = () => {
   
     <div className='mypage_background'>
       <div className='mynav'>
-          <div className="user_id">running_go</div>
+          <div className="user_id" onClick={logouthandle}>running_go</div>
           <div className="menu"><img className="menu_icon" src="./icon/menu.svg" alt="" /></div>
           <div className="title_line"></div>
         </div>
@@ -107,14 +106,10 @@ export const Tab = () => {
                     <div className="badge4"></div>
                   </div>
   
-                  <div className="myjoingroup">내가 가입한 그룹</div>
-                  <div className="group_go">
-                    <img
-                      className='group_go_icon'
-                      src="./icon/arrow.svg"
-                      alt=""
-                    />
-                  </div>
+                  <Link to="/mygroup">
+                    <div className="myjoingroup">내가 가입한 그룹</div>
+                    <div className="group_go"><img className='group_go_icon' src="./icon/arrow.svg" alt=""/></div>
+                  </Link>
                   <div className="myjoingroup_list"></div>
                   <div className="group1">
                     <div className="group1_img"></div>

@@ -11,7 +11,7 @@ body{
 	top: 0px;
 	background-color:#ffffff;
 	width:390px;
-	height:100%;
+	height:100vh;
 	position:relative;
 	padding-bottom: 50px;
 }
@@ -386,7 +386,7 @@ body{
 .gd_join_text { 
 	color:rgba(252.8617027401924, 252.8617027401924, 252.8617027401924, 1);
 	position:absolute;
-	left:140px;
+	left:132px;
 	top:26px;
 	font-family:Inter;
 	text-align:left;

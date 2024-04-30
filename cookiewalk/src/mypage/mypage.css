@@ -9,6 +9,7 @@ body{
 .mypage_background { 
 	margin-top: 0px;
 	min-height: 1000px;
+	height: 100vh;
 	box-shadow: 0px 10px 15px #00000040;
 	top: 0px;
 	background-color:#ffffff;
