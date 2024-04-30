@@ -14,27 +14,13 @@ import Notice from './main/notice';
 import Friend from './main/friend';
 import Follower from './mypage/follower';
 import Following from './mypage/following';
-
-import { supabase } from './supabaseClient';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import GroupDetail from './group/group_detail';
+import MyGroup from './mypage/mygroup';
 
 import ProtectedRoute from './ProtectedRoute.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 
 export default function App() {
-  // const [user, setUser] = useState(null);
-
-  // useEffect(() => {
-  //   async function checkToken() {
-  //     const {data,error}= await supabase.auth.getUser();
-  //     setUser(data);
-  //     console.log(user);
-  //   }
-  //   checkToken();
-  // }, []);
-
   return (
       <TokenProvider>
         <Routes>
@@ -56,6 +42,7 @@ export default function App() {
             <Route path="/follower" element={<ProtectedRoute><Follower /></ProtectedRoute>} />
             <Route path="/following" element={<ProtectedRoute><Following /></ProtectedRoute>} />
             <Route path="/group_detail" element={<ProtectedRoute><GroupDetail /></ProtectedRoute>} />
+            <Route path="/mygroup" element={<ProtectedRoute><MyGroup /></ProtectedRoute>} />
       </Routes>
       </TokenProvider>
 
