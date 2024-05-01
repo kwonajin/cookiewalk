@@ -13,7 +13,7 @@ export default function DetailedInfo() {
     const [gender, setGender] = useState('M'); // 성별 상태
 
     const userInfo=useToken();
-    // console.log(userInfo.user.user.id)
+    // console.log(userInfo.user.session.user.id)
     // 성별 선택 핸들러
     const handleGenderSelect = (selectedGender) => {
         setGender(selectedGender);
@@ -50,7 +50,7 @@ export default function DetailedInfo() {
                     name : name,
                     nick_name: nickname
                 })
-                .eq('user_id',userInfo.user.user.id )
+                .eq('user_id',userInfo.user.session.user.id )
             if(error){
                 console.error(error.message)
             }
