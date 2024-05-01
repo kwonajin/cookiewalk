@@ -1,7 +1,11 @@
+import React, { useEffect }  from 'react';
 import './home.css'; // CSS 파일을 import 합니다.
 import { Link } from "react-router-dom";
 
 export default function Home() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <><div className="home_background">
       <div className="topnav">

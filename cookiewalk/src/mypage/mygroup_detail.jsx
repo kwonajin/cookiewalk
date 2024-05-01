@@ -1,20 +1,20 @@
 import React, { useEffect }  from 'react';
-import './group_detail.css'; 
+import './mygroup_detail.css'; 
 import { Link } from "react-router-dom";
 
-export default function GroupDetail() {
+export default function MyGroupDetail() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   return (
     <div className="gd_background">
-      <Link to="/group"><div className="gd_back"><img className='gd_back_icon' src="./icon/arrow.svg" alt="" /></div></Link>
-        <div className="gd_title">그룹</div>
+      <Link to="/mygroup"><div className="gd_back"><img className='gd_back_icon' src="./icon/arrow.svg" alt="" /></div></Link>
+        <div className="mgd_title">내가 가입한 그룹</div>
         <div className="gd_line"></div>
 
 
       <img className="gd_img" src="./images/group1.png" alt="" />
-      <div className="gd_name">같이 그리실 분??</div>
+      <div className="gd_name">전국 한반도 그려요</div>
       <div className="gd_dday">
         <div className="gd_dday_box"></div>
         <div className="gd_dday_text">D - 14</div>
@@ -53,7 +53,7 @@ export default function GroupDetail() {
 
       <div className="gd_join">
         <div className="gd_join_box"></div>
-        <div className="gd_join_text">그룹 참여하기</div>
+        <div className="gd_join_text">걷기 시작하기</div>
       </div>
 
 

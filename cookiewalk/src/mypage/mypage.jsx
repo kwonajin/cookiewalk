@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import react, { useContext, useState, useEffect } from 'react';
 import { Link, redirect , useNavigate} from 'react-router-dom';
 import './mypage.css'
 import {supabase} from '../supabaseClient'
@@ -30,6 +30,9 @@ export const Tab = () => {
     e.preventDefault();
     signOut();
   }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
   
@@ -56,7 +59,7 @@ export const Tab = () => {
         <div className="introduction">재미있는 산책을 지향합니다 🌳✨</div>
   
         <div className="profile_edit"></div>
-        <div className="profile_edit_text">프로필 편집</div>
+        <Link to="/profile_edit"><div className="profile_edit_text">프로필 편집</div></Link>
         <div className="profile_share"></div>
         <div className="profile_share_text">프로필 공유</div>
         <div>

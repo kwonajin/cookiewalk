@@ -16,9 +16,12 @@ import Follower from './mypage/follower';
 import Following from './mypage/following';
 import GroupDetail from './group/group_detail';
 import MyGroup from './mypage/mygroup';
+import MyGroupDetail from './mypage/mygroup_detail.jsx';
+// import ProfileEdit from './mypage/profile_edit.jsx'
 
 import ProtectedRoute from './ProtectedRoute.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
+import Unfinished_route from './startpage/Unfinished_route';
 
 export default function App() {
   return (
@@ -43,6 +46,10 @@ export default function App() {
             <Route path="/following" element={<ProtectedRoute><Following /></ProtectedRoute>} />
             <Route path="/group_detail" element={<ProtectedRoute><GroupDetail /></ProtectedRoute>} />
             <Route path="/mygroup" element={<ProtectedRoute><MyGroup /></ProtectedRoute>} />
+            <Route path="/mygroup_detail" element={<ProtectedRoute><MyGroupDetail /></ProtectedRoute>} />
+            {/* <Route path="/profile_edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} /> */}
+
+
       </Routes>
       </TokenProvider>
 

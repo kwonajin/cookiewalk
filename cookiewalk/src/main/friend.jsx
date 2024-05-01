@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import './friend.css';
 import { Link } from "react-router-dom";
 
 export default function Friend() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="friend-page">
       <div className='friendnav'>

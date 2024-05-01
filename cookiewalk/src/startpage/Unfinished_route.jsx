@@ -7,68 +7,63 @@ return (
         <div><img className="Unfinished_back_arrow" src="./icon/ic--round-arrow-back.svg"/></div>
         
 
-        <div className="e118_349">미완성 경로</div>
+        <div className="Unfinished_route_title">미완성 경로</div>
         <div className="e236_59"></div>
 
-        <div className="e118_348"></div>
-        <span className="e118_350">기록</span>
+        <div className="Unfinished_summary_box"></div>
 
-        <span className="e118_354">미완성한 그림 수</span>
-        <span className="e118_351">1개</span>
+        <div className="summary_box_title">기록</div>
+
+        <div className="summary_box_label1">미완성한 그림 수</div>
+        <div className="summary_box_value1">1개</div>
 
         <div className="e118_357"></div>
 
-        <span className="e118_355">활동 거리</span>
-        <span className="e118_352">0.00km</span>
+        <span className="summary_box_label2">활동 거리</span>
+        <span className="summary_box_value2">0.00km</span>
 
         <div className="e118_358"></div>
 
-        <span className="e118_356">활동 시간</span>
-        <span className="e118_353">0h 0m</span>
+        <span className="summary_box_label3">활동 시간</span>
+        <span className="summary_box_value3">0h 0m</span>
 
-        <div className="e236_7">
-        <div className="e118_362"></div>
-        <span className="e118_361">0%</span>
-        <span className="e118_363">0.00km</span>
-        <span className="e118_364">0h 0m</span>
-        <div className="e118_365"></div>
-        <div className="e118_366"></div>
-        <span className="e118_367">부산 수영구 광안동</span>
-        <div className="e118_368">
-            <div className="e118_369"></div>
-            <div className="e118_370"></div>
-            <div className="e118_371"></div>
+        {/* 리스트1 */}
+        <div className="Unfinished_list1">
+        
+        {/* 경로 사진 */}
+        <div><img className='Unfinished_list1_picture' src="./images/group1.png" /></div>
+
+        <span className="Unfinished_list1_location">부산 수영구 광안동</span>
+        
+        <div><img className='Unfinished_list1_distance_icon' src="./icon/run.svg"/></div>
+        <div className="Unfinished_list1_distance_value">0.00km</div>
+
+        <div><img className='Unfinished_list1_time_icon' src="./icon/clock.svg"/></div>
+        <div className="Unfinished_list1_time_value">0h 0m</div>
+
+        <div><img className='Unfinished_list1_rate_icon' src="./icon/sand-timer.svg"/></div>
+        <div className="Unfinished_list1_rate_value">0%</div>
+
         </div>
-        <div className="e118_372">
-            <div className="e118_373">
-            <div className="e118_374"></div>
-            <div className="e118_375"></div>
-            </div>
+        
+        {/* 리스트2 */}
+        <div className="Unfinished_list2">
+        
+        {/* 경로사진 */}
+        <div><img className='Unfinished_list2_picture' src="./images/group2.png"/></div>
+
+        <span className="Unfinished_list2_location">부산 수영구 수영동</span>
+
+        <div><img className='Unfinished_list2_distance_icon' src="./icon/run.svg"/></div>
+        <div className="Unfinished_list2_distance_value">0.00km</div>
+
+        <div><img className='Unfinished_list2_time_icon' src="./icon/clock.svg"/></div>
+        <div className="Unfinished_list2_time_value">0h 0m</div>
+
+        <div><img className="Unfinished_list2_rate_icon" src="./icon/sand-timer.svg" alt="" /></div>
+        <span className="Unfinished_list2_rate_value">0%</span>
+
         </div>
-        <span className="e236_6">0%</span>
-        </div>
-        <div className="e236_8">
-        <span className="e236_9">0%</span>
-        <div className="e236_10"></div>
-        <span className="e236_11">0.00km</span>
-        <span className="e236_12">0h 0m</span>
-        <div className="e236_13"></div>
-        <div className="e236_14"></div>
-        <span className="e236_15">부산 수영구 광안동</span>
-        <div className="e236_16">
-            <div className="e236_17"></div>
-            <div className="e236_18"></div>
-            <div className="e236_19"></div>
-            </div>
-            <div className="e236_20">
-            <div className="e236_21">
-                <div className="e236_22"></div>
-                <div className="e236_23"></div>
-            </div>
-            </div>
-            <span className="e236_24">0%</span>
-        </div>
-        <div className="e118_424"></div>
 
     </div>
 );
