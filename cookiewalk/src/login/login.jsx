@@ -42,27 +42,16 @@ export default function LogIn() {
   const onSubmitHandler = async(e) =>{
     e.preventDefault();
       const { data : loginData, error: loginError } = await supabase.auth.signInWithPassword({
-        email: email  ,
+        email: email,
         password: password,
       });
       console.log(loginData)
       // console.log(data.session.access_token)
       if (loginData.user != null) {
         console.log("로그인 성공");
-        const { data: firstLoginData, error:firstLoginError }= await supabase
-          .from('user')
-          .select('nick_name')
-          .eq('email', email)
-          .is('nick_name',null)
-        // console.log(firstLoginData)
-        if (firstLoginData.length>0){
-          navigate('/signup3')  //최초로그인시 상세정보 입력페이지 이동
-        if (firstLoginError){
-          console.error(firstLoginError.message)
-        }
-        }else{
-        navigate('/mypage'); // mypage로 이동
-        }
+        setEmail('')
+        setPassword('')
+        navigate('/home');
       } else if (loginError) {
         console.error("Login failed:", loginError.message);
       };
@@ -72,7 +61,7 @@ export default function LogIn() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options:{
-        redirectTo:'http://localhost:5173/mypage',
+        redirectTo:'http://localhost:5173/home',
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
@@ -99,7 +88,7 @@ export default function LogIn() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo:'http://localhost:5173/mypage',
+        redirectTo:'http://localhost:5173/home',
         queryParams: {
         access_type: 'offline',
         prompt: 'consent',

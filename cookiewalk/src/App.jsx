@@ -20,6 +20,7 @@ import MyGroupDetail from './mypage/mygroup_detail.jsx';
 import ProfileEdit from './mypage/profile_edit.jsx'
 
 import ProtectedRoute from './ProtectedRoute.jsx';
+import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 import Unfinished_route from './startpage/Unfinished_route';
 
@@ -27,13 +28,13 @@ export default function App() {
   return (
       <TokenProvider>
         <Routes>
-            <Route path="/" element={<LogIn />} />
+            <Route path="/" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} />
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/signup2" element={<Signup2 />} />
+            <Route path="/signup" element={<ProtectedRoute_2><Signup/></ProtectedRoute_2>} />
+            <Route path="/signup2" element={<ProtectedRoute_2><Signup2/></ProtectedRoute_2>} />
             <Route path="/signup3" element={<ProtectedRoute><Signup3/></ProtectedRoute>} />
             <Route path="/signup4" element={<ProtectedRoute><Signup4 /></ProtectedRoute>} />
-            <Route path="/login" element={<LogIn />} />
+            <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} />
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             {/* <Route path="/map" element={<Map />} /> */}
             <Route path="/pause" element={<ProtectedRoute><Pause /></ProtectedRoute>} />
