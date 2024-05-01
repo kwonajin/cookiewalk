@@ -28,9 +28,11 @@ export default function DetailedInfo() {
             .eq('nick_name', nickname)
         if(data.length>0){
             console.log('닉네임 중복')
+            window.alert("닉네임 중복")
             setConfirmNickname(false)
         }else{
             console.log('사용가능한 닉네임')
+            window.alert("사용가능하 닉네임")
             setConfirmNickname(true)
         }
     }
@@ -59,6 +61,7 @@ export default function DetailedInfo() {
         }
         else{
             console.log('값을 모두 입력해주세요')
+            window.alert("값을 모두 입력해주세요.")
         }
     }
 

@@ -15,6 +15,8 @@ import Follower from './mypage/follower';
 import Following from './mypage/following';
 import GroupDetail from './group/group_detail';
 import MyGroup from './mypage/mygroup';
+import Home from "./main/home.jsx"
+
 
 import ProtectedRoute from './ProtectedRoute.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
