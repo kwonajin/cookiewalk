@@ -5,7 +5,7 @@ import {supabase} from './supabaseClient'
 import { useToken } from './context/tokenContext'
 
 
-const ProtectedRoute = ({children}) => {
+const ProtectedRoute_2 = ({children}) => {
   const location = useLocation(); //현재 위치 정보
 
 
@@ -30,13 +30,13 @@ const ProtectedRoute = ({children}) => {
     return <div>Loading...</div>; // 인증 상태 확인 중에는 로딩 페이지 표시
   }
 
-  if (!authenticated) {
+  if (authenticated) {
     // 사용자 인증 실패시 로그인 페이지로 리다이렉트
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/home" state={{ from: location }} replace />;
   }
 
   return children;  // 사용자 인증선공시 자식 컴포넌트 렌더링
 };
 
-export default ProtectedRoute;
+export default ProtectedRoute_2;
 

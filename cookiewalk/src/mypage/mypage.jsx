@@ -7,9 +7,11 @@ import { useToken } from '../context/tokenContext.jsx'
 export const Tab = () => {
   const [currentTab, clickTab] = useState(0);
   const navigate = useNavigate();
+  // const [firstLogin, setfirstLogin]=useState(false)
 
   const userInfo=useToken(); //TokenContext에서 user 상태를 가져옴
-  // console.log(userInfo)
+  console.log(userInfo.user)
+  const userID= userInfo.user
 
   const menuArr = [
     { id: 1, name: '내활동', content: '' },

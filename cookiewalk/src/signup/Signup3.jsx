@@ -50,7 +50,7 @@ export default function DetailedInfo() {
                     name : name,
                     nick_name: nickname
                 })
-                .eq('user_id',userInfo.user.session.user.id )
+                .eq('user_id',userInfo.user )
             if(error){
                 console.error(error.message)
             }

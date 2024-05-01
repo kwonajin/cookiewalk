@@ -20,10 +20,9 @@ export const TokenProvider = ({children}) => {
       //   }, 0)
       // })
       const {data, error} =await supabase.auth.getSession();
-      console.log(data.session)
-      // console.log(data.session)
+      console.log(data.session.user.id)
       if(data){
-        setUser(data);
+        setUser(data.session.user.id);
       }else{
         setUser(null);
       }
