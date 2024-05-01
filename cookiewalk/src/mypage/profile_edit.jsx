@@ -11,7 +11,7 @@ export default function ProfileEdit() {
       <Link to="/mypage"><div className="pe_back"><img className="pe_back_icon" src="./icon/arrow.svg" alt="" /></div></Link>
       <span className="pe_title">프로필 편집</span>
       <div className="pe_line"></div>
-      <div className='pe_complete'>완료</div>
+      <div className='pe_complete'>저장</div>
 
 
       <div className="e206_74"></div>

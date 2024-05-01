@@ -3,7 +3,6 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-		overflow: hidden; /* 가로 스크롤 방지 */
 }
 
 .pe_background { 
