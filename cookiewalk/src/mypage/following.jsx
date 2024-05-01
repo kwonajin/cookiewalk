@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import './following.css';
 import { Link } from "react-router-dom";
 
 export default function Following() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="following_background">
       <div className='followingnav'>

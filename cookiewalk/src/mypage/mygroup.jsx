@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import './mygroup.css';
 import { Link } from "react-router-dom";
 
+
 export default function MyGroup() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="mg_background">
       <div className='mgnav'>
@@ -11,60 +15,55 @@ export default function MyGroup() {
         <div className="mg_line"></div>
       </div>
 
-      <div className="e172_291">
-        <div className="e172_292"></div>
-        <div className="e172_293"></div>
-        <span className="e172_294">같이 그리실 분??</span>
-        <span className="e172_295">부산 남구 대연동</span>
-        <span className="e172_297">#부산</span>
-        <div className="e172_298"></div>
-        <span className="e172_299">#대연동</span>
-        <div className="e172_300"></div>
-        <span className="e172_301">#자전거</span>
-        <span className="e172_302">2.5km</span>
-        <div className="e172_303">
-          <div className="e172_304"></div>
-        </div>
-        <div className="e172_305">
-          <div className="e172_306"></div>
-        </div>
-        <div className="e172_307"></div>
-        <div className="e172_308"></div>
-        <div className="e172_309">
-          <div className="e172_310"></div>
-        </div>
-        <span className="e172_311">4</span>
-        <span className="e172_312">D - 14</span>
-        <span className="e172_313">/</span>
-        <span className="e172_314">5</span>
+      <Link to="/mygroup_detail">
+        <div className="mg_group1">
+          <img className="mg_group1_img" src="./images/group1.png" alt="" />
+          <div className="mg_person_box"></div>
+          <div className="mg_person"><img className="mg_person_icon" src="./icon/person.svg" alt="" /></div>
+          <span className="mg_person_current">4</span>
+          <span className="mg_slash">/</span>
+          <span className="mg_person_total">5</span>
+          <div className="mg_dday_box"></div>
+          <span className="mg_dday">D - 14</span>
+          <span className="mg_group1_name">전국 한반도 그리기</span>
+          <div className="mg_place"><img className='mg_place_icon' src="./icon/place.svg" alt="" /></div>
+          <span className="mg_place_text">부산 남구 대연동</span>
+          <div className="mg_distance"><img className="mg_distance_icon" src="./icon/running.svg" alt="" /></div>
+          <span className="mg_distance_text">2.5km</span>
+          <div className="mg_hashtag1_box"></div>
+          <span className="mg_hashtag1">#부산</span>
+          <div className="mg_hashtag2_box"></div>
+          <span className="mg_hashtag2">#대연동</span>
+          <div className="mg_hashtag3_box"></div>
+          <span className="mg_hashtag3">#자전거</span>
       </div>
-      <div className="e172_315">
-        <div className="e172_316"></div>
-        <div className="e172_317"></div>
-        <span className="e172_318">공룡 같이 그려요 🐉</span>
-        <span className="e172_319">부산 해운대구 우동</span>
-        <span className="e172_320">#부산</span>
-        <div className="e172_321"></div>
-        <span className="e172_322">#해운대구</span>
-        <div className="e172_323"></div>
-        <span className="e172_324">#공룡</span>
-        <span className="e172_325">2.5km</span>
-        <div className="e172_326">
-          <div className="e172_327"></div>
+      </Link>
+
+
+      <Link to="/mygroup_detail">
+        <div className="mg_group2">
+          <img className="mg_group2_img" src="./images/group2.png" alt="" />
+          <div className="mg_person_box2"></div>
+          <div className="mg_person2"><img className="mg_person_icon2" src="./icon/person.svg" alt="" /></div>
+          <span className="mg_person_current2">2</span>
+          <span className="mg_slash2">/</span>
+          <span className="mg_person_total2">7</span>
+          <div className="mg_dday_box2"></div>
+          <span className="mg_dday2">D - 20</span>
+          <span className="mg_group2_name">부산 토끼 그려요</span>
+          <div className="mg_place2"><img className="mg_place_icon2" src="./icon/place.svg" alt="" />
+          </div>
+          <span className="mg_place_text2">부산 해운대구 우동</span>
+          <div className="mg_distance2"><img className="mg_distance_icon2" src="./icon/running.svg" alt="" /></div>
+          <span className="mg_distance_text2">2.5km</span>
+          <div className="mg_hashtag1_box2"></div>
+          <span className="mg_hashtag1_2">#부산</span>
+          <div className="mg_hashtag2_box2"></div>
+          <span className="mg_hashtag2_2">#해운대구</span>
+          <div className="mg_hashtag3_box2"></div>
+          <span className="mg_hashtag3_2">#공룡</span>
         </div>
-        <div className="e172_328">
-          <div className="e172_329"></div>
-        </div>
-        <div className="e172_330"></div>
-        <div className="e172_331"></div>
-        <div className="e172_332">
-          <div className="e172_333"></div>
-        </div>
-        <span className="e172_334">2</span>
-        <span className="e172_335">D - 20</span>
-        <span className="e172_336">/</span>
-        <span className="e172_337">7</span>
-      </div>
+      </Link>
     </div>
   );
 }

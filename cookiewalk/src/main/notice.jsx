@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import './notice.css'; 
 import { Link } from "react-router-dom";
 
 export default function Notice() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <div className="notice-page">
 
