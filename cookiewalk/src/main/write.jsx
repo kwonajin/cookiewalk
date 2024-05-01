@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './write.css'; 
 import { Link } from "react-router-dom";
 
 export default function Write(){
   const [text, setText] = useState("");
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="write-page">

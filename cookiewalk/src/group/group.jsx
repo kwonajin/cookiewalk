@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import './group.css';
 import { Link } from "react-router-dom";
 
 export default function Group() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleFocus = (event) => {
     event.target.placeholder = '';
