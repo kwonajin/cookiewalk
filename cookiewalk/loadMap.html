@@ -6,16 +6,50 @@
   <title>저장된 그림 불러오기</title>
   <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=t0xghbfgfz"></script>
   <style>
-    .map-container { margin-bottom: 40px; }
+body { margin-top: 30px; }
+    .map-container { margin-bottom: 40px; position: relative; }
     .map { height: 400px; }
     .controls { text-align: center; margin-top: 8px; }
     button { margin-right: 10px; }
+    .legend {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    .legend-item { margin-right: 10px; align-items: center; display: flex; }
+    .color-dot { height: 10px; width: 10px; border-radius: 50%; margin-right: 5px; }
+    .red { background-color: #FF0000; }
+    .green { background-color: #00FF00; }
+    .blue { background-color: #0000FF; }
   </style>
 </head>
 <body>
-  <script>
-    var savedMaps = JSON.parse(localStorage.getItem('savedMaps')) || [];
 
+  <div class="legend" id="legend">
+    <div class="legend-item"><div class="color-dot red"></div>출발지</div>
+    <div class="legend-item"><div class="color-dot green"></div>도착지</div>
+    <div class="legend-item"><div class="color-dot blue"></div>출발지=도착지</div>
+  </div>
+
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+  var savedMaps = JSON.parse(localStorage.getItem('savedMaps')) || [];
+  if (savedMaps.length === 0) {
+    document.getElementById('legend').style.display = 'none'; // 설명 숨김
+    displayNoMapsText();
+  } else {
+    savedMaps.forEach(initializeMapContainer);
+    document.getElementById('legend').style.display = 'flex'; // 설명 표시
+  }
+  
     function initializeMapContainer(mapData, index) {
       var container = document.createElement('div');
       container.className = 'map-container';
@@ -31,22 +65,54 @@
       container.appendChild(controlsDiv);
 
       var startWalkingBtn = document.createElement('button');
-      startWalkingBtn.textContent = '걷기 시작';
+      startWalkingBtn.innerHTML = '🚶‍♂️ 걷기 시작'; // 이모티콘 추가
       controlsDiv.appendChild(startWalkingBtn);
 
       var toggleDrawingBtn = document.createElement('button');
-      toggleDrawingBtn.textContent = '도면 숨김';
+      toggleDrawingBtn.innerHTML = '🙈 도면 숨김'; // 이모티콘 추가
       controlsDiv.appendChild(toggleDrawingBtn);
 
       var deleteMapBtn = document.createElement('button');
-      deleteMapBtn.textContent = '지도 삭제';
-      controlsDiv.appendChild(deleteMapBtn);
+      deleteMapBtn.innerHTML = '🗑️ 지도 삭제'; // 이모티콘 추가
+      // '지도 삭제' 버튼을 '도면 숨김' 버튼 뒤에 추가합니다.
+      controlsDiv.appendChild(deleteMapBtn);    
+
 
       var mapOptions = {
         center: new naver.maps.LatLng(37.3595704, 127.105399),
         zoom: 17
       };
       var map = new naver.maps.Map(mapDiv, mapOptions);
+
+        // 저장된 경로에서 출발지와 도착지 좌표를 추출
+    var savedPath = JSON.parse(mapData.path).map(function(p) { return new naver.maps.LatLng(p.lat, p.lng); });
+    var startCoord = savedPath[0];
+    var endCoord = savedPath[savedPath.length - 1];
+
+    // 출발지와 도착지에 마커 생성
+     
+  console.log("Loaded start marker color: ", mapData.startMarkerColor);  // 콘솔 로그 추가
+
+   // 출발지 마커에 저장된 색상을 적용합니다.
+var startMarker = new naver.maps.Marker({
+    position: startCoord,
+    map: map,
+    icon: {
+        content: '<div style="width:14px; height:14px; background-color:' + mapData.startMarkerColor + '; border-radius:50%; border: 2px solid white;"></div>',
+        anchor: new naver.maps.Point(7, 7)
+    }
+});
+
+// 도착지 마커에도 저장된 색상을 적용합니다. (여기서는 'endMarkerColor'를 사용하도록 수정해야 할 수도 있습니다.)
+var endMarker = new naver.maps.Marker({
+    position: endCoord,
+    map: map,
+    icon: {
+      content: '<div style="width:14px; height:14px; background-color:' + mapData.endMarkerColor + '; border-radius:50%; border: 2px solid white;"></div>',
+        anchor: new naver.maps.Point(7, 7)
+    }
+});
+
 
       var currentMarker = new naver.maps.Marker({
         position: mapOptions.center,
@@ -98,37 +164,50 @@
         walking = !walking;
         if (walking) {
           walkPolyline.setMap(map);
-          startWalkingBtn.textContent = '걷기 중지';
+         startWalkingBtn.innerHTML = '🛑 걷기 중지'; // 이모티콘 및 텍스트 변경
         } else {
-          startWalkingBtn.textContent = '걷기 시작';
+          startWalkingBtn.innerHTML = '🚶‍♂️ 걷기 시작'; // 이모티콘 및 텍스트 변경
           map.setCursor('');
         }
       });
 
       toggleDrawingBtn.addEventListener('click', function() {
-        if (polyline.getMap()) {
-          polyline.setMap(null);
-          toggleDrawingBtn.textContent = '도면 보기';
-        } else {
-          polyline.setMap(map);
-          toggleDrawingBtn.textContent = '도면 숨김';
-        }
-      });
+    if (polyline.getMap()) {
+        polyline.setMap(null);
+        startMarker.setMap(null);  // 출발지 마커 숨김
+        endMarker.setMap(null);    // 도착지 마커 숨김
+        toggleDrawingBtn.innerHTML = '👀 도면 보기'; // 이모티콘 및 텍스트 변경
+    } else {
+        polyline.setMap(map);
+        startMarker.setMap(map);   // 출발지 마커 보임
+        endMarker.setMap(map);     // 도착지 마커 보임
+        toggleDrawingBtn.innerHTML = '🙈 도면 숨김'; // 이모티콘 및 텍스트 변경
+          }
+});
 
-      deleteMapBtn.addEventListener('click', function() {
+deleteMapBtn.addEventListener('click', function() {
         savedMaps.splice(index, 1);
         localStorage.setItem('savedMaps', JSON.stringify(savedMaps));
         container.remove();
+        if (savedMaps.length === 0) {
+      displayNoMapsText();
+      document.getElementById('legend').style.display = 'none'; // 설명 숨김 로직 확실하게 적용
+    
+        }
       });
     }
 
-    savedMaps.forEach(initializeMapContainer);
 
-    if (savedMaps.length === 0) {
-      var noMapsText = document.createElement('p');
-      noMapsText.textContent = '저장된 지도가 없습니다.';
-      document.body.appendChild(noMapsText);
-    }
+  function displayNoMapsText() {
+    var noMapsText = document.createElement('p');
+    noMapsText.textContent = '저장된 지도가 없습니다.';
+    document.body.appendChild(noMapsText);
+  }
+});
+  
+
+
+
   </script>
 </body>
 </html>
