@@ -22,7 +22,6 @@ import ProtectedRoute from './ProtectedRoute.jsx';
 import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 import Unfinished_route from './startpage/Unfinished_route';
-import Home from "./main/home.jsx"
 
 export default function App() {
   return (

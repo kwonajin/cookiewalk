@@ -2,6 +2,11 @@ import React, { useEffect }  from 'react';
 import './home.css'; // CSS 파일을 import 합니다.
 import { Link , useNavigate } from "react-router-dom";
 import { useToken } from '../context/tokenContext';
+import HomeNav from './home/HomeNav';
+import Active from './home/Active';
+import ContentBox from './home/ConentBox';
+import NavBar from './home/NavBar';
+
 
 export default function Home() {
   const navigate = useNavigate();
