@@ -236,7 +236,7 @@ body{
 }
 .e206_89 { 
 	color:rgba(196.54589742422104, 196.54589742422104, 196.54589742422104, 1);
-	width:77px;
+	width:150px;
 	height:21px;
 	position:absolute;
 	left:109px;
@@ -245,6 +245,7 @@ body{
 	text-align:left;
 	font-size:14px;
 	letter-spacing:0;
+	border:none;
 }
 .e206_90 { 
 	color:rgba(196.54589742422104, 196.54589742422104, 196.54589742422104, 1);
