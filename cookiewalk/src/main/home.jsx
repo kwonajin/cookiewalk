@@ -7,7 +7,6 @@ import Active from './home/Active';
 import ContentBox from './home/ConentBox';
 import NavBar from './home/NavBar';
 import { useToken } from '../context/tokenContext';
-import {supabase} from '../supabaseClient'
 
 export default function Home() {
   const navigate = useNavigate();
@@ -43,6 +42,13 @@ export default function Home() {
         <Active></Active>
       </div>
 
+     <ContentBox></ContentBox>
+     <ContentBox></ContentBox>
+     <ContentBox></ContentBox>
+     <ContentBox></ContentBox>
+     <ContentBox></ContentBox>
+     <ContentBox></ContentBox>
+     <ContentBox></ContentBox>
      <ContentBox></ContentBox>
 
     </div>
