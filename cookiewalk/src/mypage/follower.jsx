@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import './follower.css';
 import { Link } from "react-router-dom";
 
 export default function Follower() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="follower_background">
       <div className='followernav'>

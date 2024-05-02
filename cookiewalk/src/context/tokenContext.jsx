@@ -11,13 +11,18 @@ export const TokenProvider = ({children}) => {
 
   useEffect(()=> {
     async function checkUser(){
-      const tokenString = window.localStorage.getItem('sb-rbdbdnushdupstmiydea-auth-token');
-      const tokenData = JSON.parse(tokenString);
+      // const tokenString = window.localStorage.getItem('sb-rbdbdnushdupstmiydea-auth-token');
+      // const tokenData = JSON.parse(tokenString);
       // console.log('Token Data:', tokenData);
-      // const {data, error} =await supabase.auth.getSession();
-      // console.log(data)
-      if(tokenData){
-        setUser(tokenData);
+      // const {data: AuthChange}=supabase.auth.onAuthStateChange((event, session) => {
+      //   setTimeout(async () => {
+      //     console.log('event: ',event ,'session :',session )
+      //   }, 0)
+      // })
+      const {data, error} =await supabase.auth.getSession();
+      console.log(data.session.user.id)
+      if(data){
+        setUser(data.session.user.id);
       }else{
         setUser(null);
       }

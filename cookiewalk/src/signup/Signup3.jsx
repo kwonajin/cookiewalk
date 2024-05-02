@@ -13,7 +13,7 @@ export default function DetailedInfo() {
     const [gender, setGender] = useState('M'); // 성별 상태
 
     const userInfo=useToken();
-    // console.log(userInfo.user.user.id)
+    // console.log(userInfo.user.session.user.id)
     // 성별 선택 핸들러
     const handleGenderSelect = (selectedGender) => {
         setGender(selectedGender);
@@ -28,9 +28,11 @@ export default function DetailedInfo() {
             .eq('nick_name', nickname)
         if(data.length>0){
             console.log('닉네임 중복')
+            window.alert("닉네임 중복")
             setConfirmNickname(false)
         }else{
             console.log('사용가능한 닉네임')
+            window.alert("사용가능하 닉네임")
             setConfirmNickname(true)
         }
     }
@@ -50,7 +52,7 @@ export default function DetailedInfo() {
                     name : name,
                     nick_name: nickname
                 })
-                .eq('user_id',userInfo.user.user.id )
+                .eq('user_id',userInfo.user )
             if(error){
                 console.error(error.message)
             }
@@ -59,6 +61,7 @@ export default function DetailedInfo() {
         }
         else{
             console.log('값을 모두 입력해주세요')
+            window.alert("값을 모두 입력해주세요.")
         }
     }
 
