@@ -6,20 +6,27 @@ body{
 }
 
 .home_background { 
-	min-height: 850px;
+	min-height: auto;
 	height: 100vh;
 	box-shadow: 0px 10px 15px #00000040;
 	top: 0px;
 	background-color:#ffffff;
 	width:390px;
 	position:relative;
-	padding-bottom: 50px;
 }
+
+.content_box{
+	background-color: #ffffff;
+	width: 390px;
+	height: 630px;
+}
+
 
 .topnav{
 	position: fixed;
 	top: 0px;
 	z-index: 1;
+	box-shadow:0px 4px 15px #00000040;
 }
 
 .homenav{
@@ -29,7 +36,7 @@ body{
 }
 
 .active { 
-	box-shadow:0px 4px 5px #00000040;
+
 	background-color:#ffffff;
 	width:390px;
 	height:112px;
@@ -226,9 +233,9 @@ body{
 	border-radius:500px;
 	width:35px;
 	height:35px;
-	position:absolute;
+	position:relative;
 	left:11px;
-	top:187px;
+	top:175px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -238,9 +245,9 @@ body{
 	font-weight: 600;
 	width:77px;
 	height:19px;
-	position:absolute;
+	position:relative;
 	left:53px;
-	top:187px;
+	top:136px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -251,9 +258,9 @@ body{
 	color:#515151;
 	width:54px;
 	height:16px;
-	position:absolute;
+	position:relative;
 	left:53px;
-	top:206px;
+	top:135px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -263,24 +270,24 @@ body{
 .dotmenu { 
 	width:25px;
 	height:25px;
-	position:absolute;
+	position:relative;
 	left:357px;
-	top:194px;
+	top:104px;
 }
 
 .dotmenu_icon { 
 	width:24px;
 	height:24px;
-	position:absolute;
+	position:relative;
 	top:1px;
 }
 
 .content_img { 
 	width:390px;
 	height:390px;
-	position:absolute;
+	position:relative;
 	left:0px;
-	top:239px;
+	top:120px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -292,7 +299,7 @@ body{
 	height:21px;
 	position:relative;
 	left:10px;
-	top:690px;
+	top:175px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -304,7 +311,7 @@ body{
 	position:relative;
 	width:370px;
 	left:10px;	
-	top:690px;
+	top:175px;
 	font-family:Noto Sans KR;
 	font-size:13px;
 	letter-spacing:0;
@@ -315,7 +322,7 @@ body{
 	height:21px;
 	position:relative;
 	left:10px;
-	top:695px;
+	top:176px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:13px;
@@ -326,7 +333,7 @@ body{
 	color:#787878;
 	position:relative;
 	left:10px;
-	top:695px;
+	top:177px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -335,20 +342,21 @@ body{
 
 .like { 
 	color:#131313;
-	position:absolute;
+	position:relative;
 	left:10px;
-	top:670px;
+	top:40px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:14px;
 	letter-spacing:0;
+	font-weight: 600;
 }
 
 .home_distance { 
 	color:#626262;
-	position:absolute;
+	position:relative;
 	left:215px;
-	top:670px;
+	top:20px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -357,9 +365,9 @@ body{
 
 .time { 
 	color:#626262;
-	position:absolute;
+	position:relative;
 	left:303px;
-	top:670px;
+	top:0px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -369,15 +377,15 @@ body{
 .heart { 
 	width:27px;
 	height:25px;
-	position:absolute;
+	position:relative;
 	left:8px;
-	top:637px;
+	top:-50px;
 }
 
 .heart_icon { 
 	/* filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%); */
 	height:26px;
-	position:absolute;
+	position:relative;
 	left:2px;
 	top:2.777777671813965px;
 }
@@ -386,16 +394,16 @@ body{
 	transform: rotate(180deg);
 	width:24px;
 	height:24px;
-	position:absolute;
+	position:relative;
 	left:73px;
-	top:638px;
+	top:-74px;
 }
 
 .comment_icon { 
 	/* filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%); */
 	width:20px;
 	height:20px;
-	position:absolute;
+	position:relative;
 	left:30px;
 	transform:rotate(180deg);
 }
@@ -403,15 +411,15 @@ body{
 .save { 
 	width:24px;
 	height:24px;
-	position:absolute;
+	position:relative;
 	left:357px;
-	top:637px;
+	top:-100px;
 }
 
 .save_icon { 
 	width:24px;
 	height:24px;
-	position:absolute;
+	position:relative;
 	left:1.0800000429153442px;
 	top:2.0399999618530273px;
 }
@@ -419,16 +427,16 @@ body{
 .share { 
 	width:24px;
 	height:24px;
-	position:absolute;
-	left:87px;
-	top:638px;
+	position:relative;
+	left:90px;
+	top:-122px;
 }
 
 .share_icon { 
 	/* filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%); */
 	width:24px;
 	height:24px;
-	position:absolute;
+	position:relative;
 	left:-10px;
 	top:2.6666667461395264px;
 }
