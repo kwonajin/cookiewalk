@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
-import Home from "./main/home";
 // import Map from "./map/map";
 import Pause from "./startpage/pause";
 import Group from "./group/group";
@@ -23,6 +22,7 @@ import ProtectedRoute from './ProtectedRoute.jsx';
 import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 import Unfinished_route from './startpage/Unfinished_route';
+import Home from "./main/home.jsx"
 
 export default function App() {
   return (
