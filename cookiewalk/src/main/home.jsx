@@ -31,6 +31,8 @@ export default function Home() {
     if(userID !=null){
       checkNickname()
     }
+
+    
   }, [userID]);
 
   
@@ -50,6 +52,9 @@ export default function Home() {
      <ContentBox></ContentBox>
      <ContentBox></ContentBox>
      <ContentBox></ContentBox>
+     <ContentBox></ContentBox>
+
+
 
     </div>
     
