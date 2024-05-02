@@ -29,9 +29,24 @@ export default function Home() {
     }
   }, [userID]);
 
+  const additionalItems = [
+    {
+      profileImgSrc: './images/ellipse_7.png',
+      name: 'running_go',
+      place: '부산 광안리',
+      contentImgSrc: './images/rectangle_2.png',
+      contents: '오랜만에 모닝 러닝한 날🌄👟 오랜만에 모닝 러닝한 날🌄👟오랜만에 모닝 러닝한 날🌄👟 오랜만에 모닝 러닝한 날🌄👟오랜만에 모닝 러닝한 날🌄👟 오랜만에 모닝 러닝한 날🌄👟',
+      date: '4월 13일',
+      likeCount: 129,
+      distance: '8.11km',
+      time: '3h 13m',
+    },
+    // 추가 아이템을 필요한 만큼 여기에 추가
+  ];
+
   
   return (
-    <><div className="home_background">
+    <div className="home_background">
       <div className="topnav">
         <div className="homenav">
           <Link to="/write"><div className="write"><img className="write_icon" src="./icon/write.svg" alt="" /></div></Link>
@@ -57,26 +72,34 @@ export default function Home() {
         </div>
       </div>
 
-      <div><img className='home_profile_img' src='./images/ellipse_7.png'/></div>
-      <div className="name">running_go</div>
-      <div className="home_place">부산 광안리</div>
-      <div className="dotmenu"><img className="dotmenu_icon" src="./icon/dotmenu.svg" alt="" /></div>
+      <div className="home_background">
+        {/* 내용 생략 */}
+        {/* 아이템 리스트 매핑 */}
+        {additionalItems.map((item, index) => (
+          <div key={index} className="item">
+            <div>
+              <img className="home_profile_img" src={item.profileImgSrc} alt="" />
+            </div>
+            <div className="name">{item.name}</div>
+            <div className="home_place">{item.place}</div>
+            <div className="dotmenu"><img className="dotmenu_icon" src="./icon/dotmenu.svg" alt="" /></div>
 
-      <div className=""><img className='content_img' src='./images/rectangle_2.png'/></div>
-      <div className="comment_name">running_go</div>
-      <div className="contents">오랜만에 모닝 러닝한 날🌄👟 오랜만에 모닝 러닝한 날🌄👟오랜만에 모닝 러닝한 날🌄👟 오랜만에 모닝 러닝한 날🌄👟오랜만에 모닝 러닝한 날🌄👟 오랜만에 모닝 러닝한 날🌄👟</div>
-      <div className="comment_num">댓글 3개 모두 보기</div>
-      <div className="date">4월 13일</div>
-      <div className="like">좋아요 129개</div>
-      <div className="home_distance">거리 8.11km</div>
-      <div className="time">시간 3h 13m</div>
+            <div><img className="content_img" src={item.contentImgSrc} alt="" /></div>
+            <div className="comment_name">{item.name}</div>
+            <div className="contents">{item.contents}</div>
+            <div className="comment_num">댓글 3개 모두 보기</div>
+            <div className="date">{item.date}</div>
+            <div className="like">좋아요 {item.likeCount}개</div>
+            <div className="home_distance">거리 {item.distance}</div>
+            <div className="time">시간 {item.time}</div>
 
-      <div className="heart"><img className="heart_icon" src="./icon/heart.svg" alt="" /></div>
-      <div className="comment"><img className="comment_icon" src="./icon/comment.svg" alt="" /></div>
-      <div className="save"><img className="save_icon" src="./icon/save.svg" alt="" /></div>
-      <div className="share"><img className="share_icon" src="./icon/share.svg" alt="" /></div>
-
-    </div>
+            <div className="heart"><img className="heart_icon" src="./icon/heart.svg" alt="" /></div>
+            <div className="comment"><img className="comment_icon" src="./icon/comment.svg" alt="" /></div>
+            <div className="save"><img className="save_icon" src="./icon/save.svg" alt="" /></div>
+            <div className="share"><img className="share_icon" src="./icon/share.svg" alt="" /></div>
+          </div>
+        ))}
+      </div>
     
     <div className="navbar">
       <Link to="/home"><div className="home"><img className="home_home_icon" src="./icon/home.svg" alt="" /></div></Link>
