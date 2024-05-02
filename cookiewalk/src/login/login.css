@@ -7,13 +7,12 @@ body{
 		margin-top: 0px;
 }
 
-.background { 
-	min-height:740px;
+.login-background { 
+	min-height:820px;
 	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
 	top: 0px;
 	background-color:rgba(255, 255, 255, 1);
 	width:390px;
-	height:100vh;
 	position:relative;
 }
 
@@ -23,7 +22,6 @@ body{
 	position:absolute;
 	left:165px;
 	top:46px;
-	background-image:url(images/logo.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -196,9 +194,11 @@ input::placeholder{
 	position:absolute;
 	left:168px;
 	top:580px;
-	background-image:url(images/kakao.png);
 	background-repeat:no-repeat;
 	background-size:cover;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
 }
 
 .naver { 
@@ -207,9 +207,11 @@ input::placeholder{
 	position:absolute;
 	left:243px;
 	top:580px;
-	background-image:url(images/naver.png);
 	background-repeat:no-repeat;
 	background-size:cover;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
 }
 
 .google { 
@@ -218,9 +220,11 @@ input::placeholder{
 	position:absolute;
 	left:319px;
 	top:580px;
-	background-image:url(images/google.png);
 	background-repeat:no-repeat;
 	background-size:cover;
+	border: 1px solid #dddddd;
+	border-radius: 50%;
+	cursor: pointer;
 }
 
 
