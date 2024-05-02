@@ -14,7 +14,7 @@ export default function MyGroupDetail() {
 
 
       <img className="gd_img" src="./images/group1.png" alt="" />
-      <div className="gd_name">전국 한반도 그려요</div>
+      <div className="gd_name">전국 한반도 그리기</div>
       <div className="gd_dday">
         <div className="gd_dday_box"></div>
         <div className="gd_dday_text">D - 14</div>
