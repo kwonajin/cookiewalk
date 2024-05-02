@@ -17,7 +17,7 @@ import GroupDetail from './group/group_detail';
 import MyGroup from './mypage/mygroup';
 import MyGroupDetail from './mypage/mygroup_detail.jsx';
 import ProfileEdit from './mypage/profile_edit.jsx'
-
+import Home from "./main/home.jsx"
 import ProtectedRoute from './ProtectedRoute.jsx';
 import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
