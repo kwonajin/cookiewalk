@@ -1,55 +1,58 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './map_search.css'
 import { Link } from "react-router-dom";
+import MapList from './map_List/map_list';
 
-export default function MapSearch(){
-    // expanded_content의 상태를 관리하는 state
-    const [isExpanded, setIsExpanded] = useState(true);
-    const [selectedLocation, setSelectedLocation] = useState('내 위치'); // 위치 드롭다운 선택 상태
-    const [selectedDistance, setSelectedDistance] = useState('거리순'); // 거리 드롭다운 선택 상태
-    const [selectedDifficulty, setSelectedDifficulty] = useState('난이도순'); // 난이도 드롭다운 선택 상태
-
-    // icon3 클릭 시 실행되는 함수
-    const toggleExpand = () => {
-    setIsExpanded(!isExpanded); // 상태 반전
-    };
-
-    // 위치 드롭다운 선택 핸들러
+export default function MapSearch() {
+    const [selectedLocation, setSelectedLocation] = useState('내 위치');
+    const [selectedDistance, setSelectedDistance] = useState('거리순');
+    const [selectedDifficulty, setSelectedDifficulty] = useState('난이도순');
+    const [minHeight, setMinHeight] = useState(800); // 여기로 상태를 옮겼습니다.
+    const [mapLists, setMapLists] = useState([{}, {}, {}, {}, {},{}, {}, {}, {}, {}]); // MapList 컴포넌트를 나타내는 객체들의 배열
+    // 위치, 거리, 난이도 드롭다운 선택 핸들러
     const handleLocationChange = (event) => {
         setSelectedLocation(event.target.value);
     };
-    // 거리 드롭다운 선택 핸들러
     const handleDistanceChange = (event) => {
         setSelectedDistance(event.target.value);
     };
-    // 난이도 드롭다운 선택 핸들러
     const handleDifficultyChange = (event) => {
         setSelectedDifficulty(event.target.value);
     };
 
-  //아이콘 경로 조건부 설정
-    const icon3Path = isExpanded ? "./icon/mdi--arrow-down-drop.svg" : "./icon/mdi--arrow-drop-up.svg";
+    const handleFocus = (event) => {
+        event.target.placeholder = '';
+    };
+    
+    const handleBlur = (event, placeholderText) => {
+        event.target.placeholder = placeholderText;
+    };
+
+
+    useEffect(() => {
+        // MapList 컴포넌트의 개수를 기반으로 min-height를 조정합니다.
+        const newMinHeight = 800 + (mapLists.length * 150); // 각 MapList 당 150px를 추가합니다.
+        setMinHeight(newMinHeight);
+    }, [mapLists.length]); // mapLists 배열의 길이가 변경될 때 useEffect를 재실행합니다.
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
 
     return(
     <div className="map_search_container">
-        {/* 지도 */}
-        <img className='e118_252' src="./images/image 229_4174.png" alt="" />
-
-        {/* search bar */}
-        <div className="map_searchbar_box"></div>
-        <div><img  className="map_search_icon" src="./icon/search.svg" alt="" /></div>
+        <span className="map_title">맵</span>
+        <div className="e118_274"></div>
         
-        {/* gps */}
-        <div className="e118_259"></div>
-        <div className="e118_260"></div>
-
-        {/* 아이콘3과 expanded_content의 위치와 표시 방식을 변경합니다. */}
-        <div className={`expanded_content ${isExpanded ? 'map_expanded' : 'map_collapsed'}`}>
-        <img className={`map_icon3 ${isExpanded ? 'map_icon3-expanded' : 'map_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
-
-        {/* 내용이 표시되는 부분 */}
-        {isExpanded && (
-            <>
+        <input
+            className="map_searchbar"
+            type="text"
+            placeholder="참여할 지역을 찾아보세요!"
+            onFocus={handleFocus}
+            onBlur={(event) => handleBlur(event, '참여할 지역을 찾아보세요!')}
+        />
+        <div className="map_search"><img className='map_search_icon' src="./icon/search.svg" alt="" /></div>
+        
 
             {/* 위치 드롭다운 메뉴 구현 */}
             <select className='map_location_dropdown' value={selectedLocation} onChange={handleLocationChange}>
@@ -77,26 +80,14 @@ export default function MapSearch(){
                 <option value="하">하</option>
             </select>
 
-            <div className="e118_274"></div>
-            
-            {/* 맵_리스트 1 */}
-            <div className="map_list1">
-                <div className="map_list1_box"></div>
-                <div className="map_list1_location">부산 수영구 광안동</div>
-                <div><img className="map_list1_picture" src="./images/group1.png" alt="" /></div>
-
-                <div><img className='map_list1_distance_icon' src="./icon/run.svg"/></div>
-                <div className="map_list1_distance_value">4.0km</div>
-
-                <div><img className='map_list1_time_icon' src="./icon/clock.svg"/></div>
-                <div className="map_list1_time_value">1h 0m</div>
-                
-                <div><img className='map_list1_rate_icon' src="./icon/sand-timer.svg"/></div>
-                <div className="map_list1_rate_value">중</div>
+        
+            <div className="map-list-container" style={{ minHeight: `${minHeight}px` }}>
+                {mapLists.map((_, index) => (
+                    <MapList key={index}></MapList>
+                ))}
             </div>
-            </>
-        )}
-        </div>
+            
+            
 
         <div className="navbar">
         <Link to="/home"><div className="home"><img className="map_home_icon" src="./icon/home.svg" alt="" /></div></Link>

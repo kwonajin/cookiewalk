@@ -17,9 +17,13 @@ import Follower from './mypage/follower';
 import Following from './mypage/following';
 import GroupDetail from './group/group_detail';
 import MyGroup from './mypage/mygroup';
+import MyGroupDetail from './mypage/mygroup_detail'
+import ProfileEdit from './mypage/profile_edit.jsx'
+
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
 import ProtectedRoute from './ProtectedRoute.jsx';
+import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 
 
@@ -33,7 +37,7 @@ export default function App() {
             <Route path="/signup2" element={<ProtectedRoute_2><Signup2/></ProtectedRoute_2>} />
             <Route path="/signup3" element={<ProtectedRoute><Signup3/></ProtectedRoute>} />
             <Route path="/signup4" element={<ProtectedRoute><Signup4 /></ProtectedRoute>} />
-            <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} />
+            {/* <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} /> */}
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/map" element={<ProtectedRoute><MapSearch /></ProtectedRoute>} />
             <Route path="/BeforeStart" element={<ProtectedRoute><BeforeStart /></ProtectedRoute>} />

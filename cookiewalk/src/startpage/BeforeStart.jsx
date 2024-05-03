@@ -1,7 +1,11 @@
+import react, {useEffect} from 'react';
 import './BeforeStart.css'
 import { Link } from "react-router-dom";
 
 export default function BeforeStart(){
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     return(
         <div className="BeforeStart_container">
             <div><img className='e118_437' src="./icon/arrow.svg"/></div>

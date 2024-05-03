@@ -10,79 +10,62 @@ body{
     background-color:rgba(255, 255, 255, 1);
 	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
 	width:390px;
-	height:100vh;
+	height:auto;
     min-height: 800px;
 	position:relative;
 }
-.map_expanded {
-    max-height: 500px; /* 컨텐츠가 확장될 때의 최대 높이 */
-    top: 400px;
-}
 
-.map_collapsed {
-    max-height: 50px; /* 컨텐츠가 접혔을 때의 최대 높이 */
-    padding: 20px 0; /* 접혔을 때 상단 패딩 유지 */
-    top: 705px;
-}
-
-.map_icon3-expanded {
-    /* 펼쳐졌을 때의 아이콘 위치 */
-    top: -10px;
-}
-.map_icon3-collapsed {
-    top: -15px; /* 예시 값, 실제 필요에 따라 조정 */
-}
-.expanded_content{
-    position: relative;
-    /* top: 420px; */
-    bottom: auto;
-    width: 390px;
-    height: 380px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    background-color: white;
-    border-radius: 8px;
-    /* transition: max-height 0.5s ease-out, padding 0.5s ease-out; */
-    overflow: hidden;
-}
-
-.map_icon3 {
-    position: absolute;
-    left: 170px;
-    width: 50px;
-    height: 40px;
-    z-index: 150;
-    cursor: pointer;
-}
-
-.e118_252 { 
-	width:390px;
-	height:751px;
+.map_searchbar { 
+	background-color:rgba(239.04590249061584, 239.04590249061584, 239.04590249061584, 1);
+	width:355px;
+	height:45px;
 	position:absolute;
-	left:0px;
-	top:0px;
+	left:12px;
+	top:59px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	padding-left: 10px;
+	border: none;
+	outline: none;
 }
-.map_searchbar_box { 
-	background-color:rgba(217.0000022649765, 217.0000022649765, 217.0000022649765, 1);
-	opacity:0.75;
-	width:350px;
-	height:49px;
-	position:absolute;
-	left:21px;
-	top:13px;
-	border-top-left-radius:10px;
-	border-top-right-radius:10px;
-	border-bottom-left-radius:10px;
-	border-bottom-right-radius:10px;
-}
-.map_search_icon { 
-	width:29.999998092651367px;
+
+.map_search { 
+	width:30px;
 	height:30px;
 	position:absolute;
-	left:50px;
-	top:23px;
+	left:336px;
+	top:68px;
 }
+
+.map_search_icon { 
+	width:23.630462646484375px;
+	height:23.621051788330078px;
+	position:absolute;
+	left:3px;
+	top:1.9102697372436523px;
+}
+
+
+.map_list_container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px; /* 원하는 간격으로 조정 */
+}
+
+.map_title { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	position:absolute;
+	left:185px;
+	top:10px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+	font-weight: 600;
+}
+
 
 .e118_259 { 
 	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -103,25 +86,17 @@ body{
 }
 
 
-.e118_273 { 
-	width:390px;
-	height:169.37109375px;
-	position:absolute;
-	left:0px;
-	top:418px;
-}
-
 
 
 .map_location_dropdown{
-    background-color:rgba(217.0000022649765, 217.0000022649765, 217.0000022649765, 1);
+    background-color:rgba(239.04590249061584, 239.04590249061584, 239.04590249061584, 1);
     position:absolute;
     border: none;
     cursor: pointer;
     width: 70px;
     height: 30px;
     left:11px;
-	top:20px;
+	top:115px;
     font-size: 14px;
     border-top-left-radius:5px;
 	border-top-right-radius:5px;
@@ -129,11 +104,11 @@ body{
 	border-bottom-right-radius:5px;
 }
 .map_distance_dropdown { 
-	background-color:rgba(217.0000022649765, 217.0000022649765, 217.0000022649765, 1);
+	background-color:rgba(239.04590249061584, 239.04590249061584, 239.04590249061584, 1);
 	width:90px;
 	height:30px;
     left:90px;
-	top:20px;
+	top:115px;
     font-size: 14px;
 	position:absolute;
     cursor: pointer;
@@ -144,11 +119,11 @@ body{
 	border-bottom-right-radius:5px;
 }
 .map_difficulty_dropdown { 
-	background-color:rgba(217.0000022649765, 217.0000022649765, 217.0000022649765, 1);
+	background-color:rgba(239.04590249061584, 239.04590249061584, 239.04590249061584, 1);
 	width:80px;
 	height:30px;
-    left:184px;
-	top:20px;
+    left:189px;
+	top:115px;
     font-size: 14px;
 	position:absolute;
     cursor: pointer;
@@ -164,7 +139,7 @@ body{
 	height:0px;
 	position:absolute;
 	left:0px;
-	top:57px;
+	top:45px;
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
 
@@ -172,16 +147,17 @@ body{
 .map_list1 { 
 	width:368px;
 	height:122.37110137939453px;
-	position:absolute;
-	left:13px;
-	top:65px;
+	position:relative;
+	left:11.5px;
+	top:155px;
+	margin-bottom: 10px;
 }
 .map_list1_box { 
 	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
 	background-color:rgba(247.35000729560852, 247.35000729560852, 247.35000729560852, 1);
 	width:368px;
 	height:122.37110137939453px;
-	position:absolute;
+	position:relative;
 	left:0px;
 	top:0px;
 	border-top-left-radius:5px;
@@ -193,9 +169,9 @@ body{
 	color:rgba(0, 0, 0, 1);
 	width:133px;
 	height:17.363468170166016px;
-	position:absolute;
+	position:relative;
 	left:137px;
-	top:7.2607927322387695px;
+	top:-115px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -205,10 +181,10 @@ body{
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:57px;
 	height:18.19029998779297px;
-	position:absolute;
+	position:relative;
 	left:163px;
-	top:35.616275787353516px;
-	font-family:Inter;
+	top:-232px;
+	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:13px;
 	letter-spacing:0;
@@ -217,10 +193,10 @@ body{
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:47px;
 	height:18.19029998779297px;
-	position:absolute;
+	position:relative;
 	left:163px;
-	top:62.27637481689453px;
-	font-family:Inter;
+	top:-247px;
+	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:13px;
 	letter-spacing:0;
@@ -228,9 +204,9 @@ body{
 .map_list1_picture { 
 	width:100px;
 	height:102.8328628540039px;
-	position:absolute;
+	position:relative;
 	left:16px;
-	top:10.283265113830566px;
+	top:-130px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
@@ -239,18 +215,18 @@ body{
 .map_list1_distance_icon { 
 	width:13.327808380126953px;
 	height:16.453258514404297px;
-	position:absolute;
+	position:relative;
 	left:137px;
-	top:36.40145492553711px;
+	top:-210px;
 	border-radius:5px;
 }
 
 .map_list1_time_icon { 
 	width:17px;
 	height:16.134475708007812px;
-	position:absolute;
-	left:136px;
-	top:62.25553512573242px;
+	position:relative;
+	left:137px;
+	top:-225px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
@@ -260,18 +236,18 @@ body{
 .map_list1_rate_icon { 
 	width:15px;
 	height:14.396600723266602px;
-	position:absolute;
-	left:138px;
-	top:88.51268768310547px;
+	position:relative;
+	left:137px;
+	top:-240px;
 	border-radius:5px;
 }
 .map_list1_rate_value { 
 	color:rgba(0, 0, 0, 1);
 	width:19px;
 	height:16.536636352539062px;
-	position:absolute;
+	position:relative;
 	left:163px;
-	top:86.4560317993164px;
+	top:-260px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:13px;
