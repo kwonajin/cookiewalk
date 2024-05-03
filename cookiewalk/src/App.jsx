@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
-// import Map from "./map/map";
-import Pause from "./startpage/pause";
+import Home from "./main/home";
+import MapSearch from './map/map';
+// import Pause from "./startpage/pause";
+import BeforeStart from './startpage/BeforeStart'
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
 import Signup from './signup/Signup';
@@ -15,14 +17,15 @@ import Follower from './mypage/follower';
 import Following from './mypage/following';
 import GroupDetail from './group/group_detail';
 import MyGroup from './mypage/mygroup';
-import MyGroupDetail from './mypage/mygroup_detail.jsx';
+import MyGroupDetail from './mypage/mygroup_detail'
 import ProfileEdit from './mypage/profile_edit.jsx'
 
+import Unfinished_route from './startpage/Unfinished_route';
+import Start from './startpage/Start'
 import ProtectedRoute from './ProtectedRoute.jsx';
 import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
-import Unfinished_route from './startpage/Unfinished_route';
-import Home from "./main/home.jsx"
+
 
 export default function App() {
   return (
@@ -34,10 +37,12 @@ export default function App() {
             <Route path="/signup2" element={<ProtectedRoute_2><Signup2/></ProtectedRoute_2>} />
             <Route path="/signup3" element={<ProtectedRoute><Signup3/></ProtectedRoute>} />
             <Route path="/signup4" element={<ProtectedRoute><Signup4 /></ProtectedRoute>} />
-            <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} />
+            {/* <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} /> */}
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-            {/* <Route path="/map" element={<Map />} /> */}
-            <Route path="/pause" element={<ProtectedRoute><Pause /></ProtectedRoute>} />
+            <Route path="/map" element={<ProtectedRoute><MapSearch /></ProtectedRoute>} />
+            <Route path="/BeforeStart" element={<ProtectedRoute><BeforeStart /></ProtectedRoute>} />
+            <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />
+            <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
             <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
