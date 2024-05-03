@@ -40,6 +40,7 @@ export default function ProfileEdit() {
       if(error){
         console.error('오류발생', error)
       }
+
       if (data){
         const userProfile = data[0]
         setCurrentname(userProfile.name)          
@@ -71,9 +72,20 @@ export default function ProfileEdit() {
   }
 
   const ImageFileUpload = async ()=>{
+    const randomNumber = Math.floor(10000000 + Math.random() * 90000000); //랜덤 8자리숫자
     const fileExtnesion = imageFile.name.split('.').pop();    //파일확장자추출
-    const newFilename=`Profile/${userID}.${fileExtnesion}` //새 파일명 설정 profile폴더에 넣을거라 폴더 경로 추가
-  
+    const newFilename=`Profile/${randomNumber}.${fileExtnesion}` //새 파일명 설정 profile폴더에 넣을거라 폴더 경로 추가
+    // if(imageUrl !== 'https://rbdbdnushdupstmiydea.supabase.co/storage/v1/object/public/image/Profile/defaultProfileImage.png'){
+    //   const {data:removeData, error: removeError} =await supabase.storage
+    //     .from('image')
+    //     .remove([imageUrl])
+    //   if(removeError){
+    //     console.error(removeError)
+    //   }
+    // if(removeData){
+    //   console.log(removeData)
+    // }
+    // }
     const {data, error} = await supabase.storage
       .from('image')
       .upload(newFilename, imageFile, {upsert: true}); //prifile 폴더내에 저장
@@ -135,7 +147,9 @@ export default function ProfileEdit() {
         console.error('오류발생', error)
       }
       console.log('저장완료', userDatabase)
-      navigate('/mypage');
+      setTimeout(()=>{
+        navigate('/mypage');
+      },1000)
     }
   }
   
