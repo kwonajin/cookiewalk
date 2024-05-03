@@ -70,6 +70,7 @@ body{
 	position:absolute;
 	left:336px;
 	top:68px;
+	cursor: pointer;
 }
 
 .search_icon { 
