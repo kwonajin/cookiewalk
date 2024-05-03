@@ -381,6 +381,7 @@ body{
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
+	cursor: pointer;
 }
 
 .gd_join_text { 
@@ -393,4 +394,5 @@ body{
 	font-size:20px;
 	letter-spacing:3;
   font-weight: 600;
+	cursor: pointer;
 }
