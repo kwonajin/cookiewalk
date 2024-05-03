@@ -7,10 +7,19 @@ import { useToken } from '../context/tokenContext.jsx'
 export const Tab = () => {
   const [currentTab, clickTab] = useState(0);
   const navigate = useNavigate();
-  // const [firstLogin, setfirstLogin]=useState(false)
 
+  const [nickname, setNickname]=useState('');
+  const [name, setName]=useState('')
+  const [intro, setIntro]=useState('')
+  const [profileImage, setProfileImage]=useState('')
+  const [email, setEmail]=useState('')
+  const [distance, setDistance]=useState(0)
+
+  const [followerCount, setFollowerCount]=useState(0);
+  const [followingCount, setFollowingCount]=useState(0);
+  
   const userInfo=useToken(); //TokenContext에서 user 상태를 가져옴
-  console.log(userInfo.user)
+  // console.log(userInfo.user)
   const userID= userInfo.user
 
   const menuArr = [
@@ -32,33 +41,96 @@ export const Tab = () => {
     e.preventDefault();
     signOut();
   }
+
+  //유저 테이블에서 정보 가져오기
+  const User = async()=>{
+    // console.log(userID)
+    const {data, error}=await supabase
+      .from('user')
+      .select('*')
+      .eq('user_id', userID)
+      if(error){
+        console.error('오류발생', error)
+      }
+      if (data){
+        console.log(data)
+        setNickname(data[0].nick_name)
+        setName(data[0].name)
+        setIntro(data[0].intro)
+        setProfileImage(data[0].profile_image)
+        setEmail(data[0].email)
+        setDistance(data[0].distance)
+        // const name=data[0].name
+        // const nickname=data[0].nick_name
+        // const Intro=data[0].intro
+        // const profileImage=data[0].profile.image
+        // const email=data[0].email
+      }
+  }
+  //팔로우 팔로워 정보 가벼오기
+  const followInfo = async()=>{
+    const {count :follower, error: followerError}= await supabase
+      .from('follows')
+      .select('*',{count:'exact'})
+      .eq('target_email',email)
+
+      if(followerError){
+        console.error('오류발생', followingError)
+      }
+      if(follower){
+        setFollowerCount(follower)
+        console.log(follower)
+      }
+
+
+    const {count :following, error: followingError}= await supabase
+      .from('follows')
+      .select('*',{count:'exact'})
+      .eq('following_email',email)
+
+      if(followingError){
+        console.error('오류발생', followingError)
+      }
+      if(following){
+        setFollowingCount(following)
+        console.log(following)
+      }
+  }
+  
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    if(userID !=null){
+      User();
+    }
+    if(email){
+      followInfo();
+    }
+  }, [userID, email]);
   return (
     <>
   
     <div className='mypage_background'>
       <div className='mynav'>
-          <div className="user_id" onClick={logouthandle}>running_go</div>
+          <div className="user_id" onClick={logouthandle}>{nickname}</div>
           <div className="menu"><img className="menu_icon" src="./icon/menu.svg" alt="" /></div>
           <div className="title_line"></div>
         </div>
   
-        <div><img className="profile_img" src="./images/ellipse_7.png" alt="" /></div>
-        <div className="total_distance_num">32km</div>
+        <div><img className="profile_img" src={profileImage} alt="" /></div>
+        <div className="total_distance_num">{distance}km</div>
         <div className="total_distance">총거리</div>
         <Link to="/follower">
-          <div className="follower_num">147</div>
+          <div className="follower_num">{followerCount}</div>
           <div className="follower">팔로워</div>
         </Link>
         <Link to="/following">
-          <div className="following_num">182</div>
+          <div className="following_num">{followingCount}</div>
           <div className="following">팔로잉</div>
         </Link>
   
-        <div className="user_name">유민지</div>
-        <div className="introduction">재미있는 산책을 지향합니다 🌳✨</div>
+        <div className="user_name">{name}</div>
+        <div className="introduction">{intro}</div>
   
         <div className="profile_edit"></div>
         <Link to="/profile_edit"><div className="profile_edit_text">프로필 편집</div></Link>
