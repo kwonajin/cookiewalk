@@ -150,7 +150,7 @@ export default function ProfileEdit() {
       setTimeout(()=>{
         navigate('/mypage');
       },1000)
-    
+    }
   }
   
 
