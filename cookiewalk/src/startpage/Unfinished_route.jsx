@@ -1,10 +1,11 @@
 import React from 'react';
 import './Unfinished_route.css'
+import { Link } from "react-router-dom";
 
 export default function Unfinished_route() {
 return (
     <div className="Unfinished_route_container">
-        <div><img className="Unfinished_back_arrow" src="./icon/ic--round-arrow-back.svg"/></div>
+        <Link to='/BeforeStart'><div><img className="Unfinished_back_arrow" src="./icon/ic--round-arrow-back.svg"/></div></Link>
         
 
         <div className="Unfinished_route_title">미완성 경로</div>
