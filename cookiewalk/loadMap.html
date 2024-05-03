@@ -41,24 +41,20 @@ body { margin-top: 30px; }
 
   <script>
 document.addEventListener("DOMContentLoaded", function() {
-  var savedMaps = JSON.parse(localStorage.getItem('savedMaps')) || [];
-  if (savedMaps.length === 0) {
-    document.getElementById('legend').style.display = 'none'; // 설명 숨김
-    displayNoMapsText();
-  } else {
-    savedMaps.forEach(initializeMapContainer);
-    document.getElementById('legend').style.display = 'flex'; // 설명 표시
-  }
-  
-    function initializeMapContainer(mapData, index) {
-      var container = document.createElement('div');
-      container.className = 'map-container';
-      document.body.appendChild(container);
+      var savedMaps = JSON.parse(localStorage.getItem('savedMaps')) || [];
+      updateMapDisplay();
 
-      var mapDiv = document.createElement('div');
-      mapDiv.id = 'map' + index;
-      mapDiv.className = 'map';
-      container.appendChild(mapDiv);
+      function initializeMapContainer(mapData, index) {
+        var containerId = 'map-container-' + index;
+        var container = document.createElement('div');
+        container.id = containerId;
+        container.className = 'map-container';
+        document.body.appendChild(container);
+
+
+        var mapDiv = document.createElement('div');
+        mapDiv.className = 'map';
+        container.appendChild(mapDiv);
 
       var controlsDiv = document.createElement('div');
       controlsDiv.className = 'controls';
@@ -186,28 +182,31 @@ var endMarker = new naver.maps.Marker({
 });
 
 deleteMapBtn.addEventListener('click', function() {
-        savedMaps.splice(index, 1);
-        localStorage.setItem('savedMaps', JSON.stringify(savedMaps));
-        container.remove();
+          savedMaps.splice(index, 1);
+          localStorage.setItem('savedMaps', JSON.stringify(savedMaps));
+          document.getElementById(containerId).remove();
+          updateMapDisplay();
+        });
+      }
+
+      function displayNoMapsText() {
+        var noMapsText = document.createElement('p');
+        noMapsText.textContent = '저장된 지도가 없습니다.';
+        document.body.appendChild(noMapsText);
+      }
+
+      function updateMapDisplay() {
+        document.body.querySelectorAll('.map-container').forEach(el => el.remove());
         if (savedMaps.length === 0) {
-      displayNoMapsText();
-      document.getElementById('legend').style.display = 'none'; // 설명 숨김 로직 확실하게 적용
-    
+          displayNoMapsText();
+          document.getElementById('legend').style.display = 'none';
+        } else {
+          document.getElementById('legend').style.display = 'flex';
+          savedMaps.forEach(initializeMapContainer);
         }
-      });
-    }
+      }
+    });
 
-
-  function displayNoMapsText() {
-    var noMapsText = document.createElement('p');
-    noMapsText.textContent = '저장된 지도가 없습니다.';
-    document.body.appendChild(noMapsText);
-  }
-});
-  
-
-
-
-  </script>
+</script>
 </body>
-</html>
+</html> 
