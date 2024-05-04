@@ -30,7 +30,7 @@ export const TokenProvider = ({children}) => {
         if(error){
         console.error('오류발생', UserError)
       }
-
+      
     }
 
     checkUser();
