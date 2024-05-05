@@ -9,7 +9,7 @@
   padding: 0px;
 }
 
-.notice-page {
+/* .notice-page {
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -19,18 +19,18 @@
   background-color: white;
   animation-name: slide-up;
   animation-name: slide-up-notice;
-  animation-duration: 0.2s; /* 애니메이션 지속 시간 */
-  animation-timing-function: ease-out; /* 애니메이션 가속도 */
+  animation-duration: 0.2s; 
+  animation-timing-function: ease-out; 
 }
 
 @keyframes slide-up-notice{
   from {
-    transform: translateX(100%); /* 시작 지점: 오른쪽에서 왼쪽으로 이동 */
+    transform: translateX(100%); 
   }
   to {
-    transform: translateX(0); /* 종료 지점: 원래 위치로 이동 */
+    transform: translateX(0);
   }
-}
+} */
 
 .noticenav{
 	position: fixed;

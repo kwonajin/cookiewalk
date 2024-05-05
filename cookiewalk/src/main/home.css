@@ -13,6 +13,24 @@ body{
 	background-color:#ffffff;
 	width:390px;
 	position:relative;
+	overflow-y: auto; /* 세로 스크롤 가능하게 함 */
+	overflow-x: hidden;
+}
+
+.home_background::-webkit-scrollbar {
+	display: none; /* 기본 스크롤 막대 숨기기 */
+}
+
+/* 가상 요소를 사용하여 스크롤 막대 대체하기 */
+.home_background::after {
+	content: "";
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 10px; /* 스크롤 막대 너비 조절 */
+	height: 100%;
+	background: linear-gradient(to right, transparent, #ffffff); /* 스크롤 막대 색상 설정 */
+	z-index: 9999; /* 다른 요소 위로 표시 */
 }
 
 .content_box{
@@ -36,7 +54,6 @@ body{
 }
 
 .active { 
-
 	background-color:#ffffff;
 	width:390px;
 	height:112px;

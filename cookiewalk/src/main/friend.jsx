@@ -6,6 +6,15 @@ export default function Friend() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleFocus = (event) => {
+    event.target.placeholder = '';
+  };
+
+  const handleBlur = (event, placeholderText) => {
+    event.target.placeholder = placeholderText;
+  
+  };
   return (
     <div className="friend-page">
       <div className='friendnav'>
@@ -14,19 +23,26 @@ export default function Friend() {
         <div className="friend_line1"></div>
       </div>
 
-      <div className="friend_searchbar"></div>
-      <span className="friend_searchbar_text">함께할 친구를 찾아보세요!</span>
-      <div className="friend_search"><img className="friend_search_icon" src="./icon/search.svg" alt="" /></div>
+      <input
+          className="fa_searchbar"
+          type="text"
+          placeholder="함께할 친구를 찾아보세요!"
+          onFocus={handleFocus}
+          onBlur={(event) => handleBlur(event, '함께할 친구를 찾아보세요!')}
+        />
+      <div className="fa_search"><img className='fa_search_icon' src="./icon/search.svg" alt="" /></div>
 
       <div className="friend1">
-        <img className="friend1_profile" src="./images/ellipse_11.png" alt="" />
-        <div className="friend1_text">
-          <div className="friend1_id">good_running_day</div>
-          <div className="friend1_name">박민준</div>
-        </div>
-        <div className="friend1_follow"></div>
-        <div className="friend1_follow_text">팔로우</div>
-        <div className="friend1_line"></div>
+        <Link to="/personal_profile">
+          <img className="friend1_profile" src="./images/ellipse_11.png" alt="" />
+          <div className="friend1_text">
+            <div className="friend1_id">good_running_day</div>
+            <div className="friend1_name">박민준</div>
+          </div>
+          <div className="friend1_follow"></div>
+          <div className="friend1_follow_text">팔로우</div>
+          <div className="friend1_line"></div>
+        </Link>
       </div>
 
       <div className="friend2">

@@ -8,6 +8,7 @@ export const useToken = () => useContext(TokenContext);
 
 export const TokenProvider = ({children}) => {
   const [user,setUser]= useState(null);
+  const [userInfo,setUserInfo]= useState(null);
 
   useEffect(()=> {
     async function checkUser(){
@@ -26,13 +27,17 @@ export const TokenProvider = ({children}) => {
       }else{
         setUser(null);
       }
+        if(error){
+        console.error('오류발생', UserError)
+      }
+      
     }
 
     checkUser();
   },[]);
 
   return (
-    <TokenContext.Provider value={{user, setUser}}>
+    <TokenContext.Provider value={{user,setUser}}>
       {children}
     </TokenContext.Provider>
   )
