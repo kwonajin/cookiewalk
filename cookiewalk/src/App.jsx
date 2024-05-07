@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
+import FindPassword from './login/FindPassword.jsx';
+import FindPassword2 from './login/FindPassword2.jsx';
+
 import Home from "./main/home";
 import MapSearch from './map/map';
 // import Pause from "./startpage/pause";
@@ -34,6 +37,8 @@ export default function App() {
       <TokenProvider>
         <Routes>
             <Route path="/" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} />
+            <Route path="/find_ps" element={<ProtectedRoute_2><FindPassword /></ProtectedRoute_2>} />
+            <Route path="/find_ps2" element={<ProtectedRoute_2><FindPassword2 /></ProtectedRoute_2>} />
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/signup" element={<ProtectedRoute_2><Signup/></ProtectedRoute_2>} />
             <Route path="/signup2" element={<ProtectedRoute_2><Signup2/></ProtectedRoute_2>} />
