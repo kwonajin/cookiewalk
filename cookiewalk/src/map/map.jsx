@@ -87,7 +87,9 @@ export default function MapSearch() {
                 ))}
             </div>
             
-            
+            <div className="fixed-button">
+                <img className='fixed_button_icon' src="/icon/write.svg"/>
+            </div>
 
         <div className="navbar">
         <Link to="/home"><div className="home"><img className="map_home_icon" src="./icon/home.svg" alt="" /></div></Link>

@@ -139,7 +139,7 @@ body{
 	height:0px;
 	position:absolute;
 	left:0px;
-	top:45px;
+	top:50px;
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
 
@@ -340,3 +340,25 @@ body{
 	left:0.1666717529296875px;
 	top:2.166656494140625px;
 }
+
+.fixed-button {
+	position: fixed;
+	bottom: 100px; /* 원하는 위치로 조정하세요 */
+	right: 20px; /* 원하는 위치로 조정하세요 */
+	width: 40px;
+	height: 40px;
+	background-color: #7ca0c1;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000; /* 다른 요소 위에 표시되도록 설정합니다. */
+	cursor: pointer;
+}
+  
+.fixed_button_icon {
+	filter: brightness(0) invert(1);
+	width: 25px; /* 버튼 내 아이콘 크기 조절 */
+	height: 25px; /* 버튼 내 아이콘 크기 조절 */
+}
+  

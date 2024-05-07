@@ -37,11 +37,13 @@ export default function Start() {
                 <div className="start_value_time">00:00:00</div>
 
 
-                <div className="pause_button">
-                    <div className="button_circle"></div>
-                    <div className="button_bar1"></div>
-                    <div className="button_bar2"></div>
-                </div>
+                <Link to='/Pause'>
+                    <div className="pause_button">
+                        <div className="button_circle"></div>
+                        <div className="button_bar1"></div>
+                        <div className="button_bar2"></div>
+                    </div>
+                </Link>
             </>
         )}
         </div>

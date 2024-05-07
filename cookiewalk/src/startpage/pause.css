@@ -195,6 +195,8 @@
   .button-label-restart{
     width: 100px;
     height: 25px;
+    position: relative;
+    top: 25px;
     font-size: 24px;
     font-family: Noto Sans KR;
     font-weight: bold;
@@ -202,3 +204,6 @@
     text-align: center;
     margin-top: 28px;
   }
+.restart_link{
+  text-decoration: none;
+}
