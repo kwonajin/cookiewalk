@@ -557,8 +557,7 @@ body{
 }
 
 .my_home_icon { 
-	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
-	width:28px;
+	filter: invert(63%) sepia(6%) saturate(1742%) hue-rotate(167deg) brightness(95%) contrast(99%);	width:28px;
 	height:28px;
 	position:absolute;
 	left:32px;
@@ -625,7 +624,7 @@ body{
 }
 
 .my_my_icon { 
-	filter: invert(63%) sepia(6%) saturate(1742%) hue-rotate(167deg) brightness(95%) contrast(99%);
+	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:23px;
 	height:23px;
 	position:absolute;

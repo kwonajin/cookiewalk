@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
+import FindPassword from './login/FindPassword.jsx';
+import FindPassword2 from './login/FindPassword2.jsx';
+
 import Home from "./main/home";
 import MapSearch from './map/map';
 // import Pause from "./startpage/pause";
@@ -21,6 +24,7 @@ import MyGroupDetail from './mypage/mygroup_detail'
 import ProfileEdit from './mypage/profile_edit.jsx'
 import PersonalProfile from './personal/personal_profile.jsx'
 import HomePersonalProfile from './main/home_personal_profile.jsx';
+import MypageMenu from './mypage/mypage_menu.jsx';
 
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
@@ -39,6 +43,8 @@ export default function App() {
         <NavermapsProvider ncpClientId={naverMapClientID}>
           <Routes>
             <Route path="/" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} />
+            <Route path="/find_ps" element={<ProtectedRoute_2><FindPassword /></ProtectedRoute_2>} />
+            <Route path="/find_ps2" element={<ProtectedRoute_2><FindPassword2 /></ProtectedRoute_2>} />
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/signup" element={<ProtectedRoute_2><Signup/></ProtectedRoute_2>} />
             <Route path="/signup2" element={<ProtectedRoute_2><Signup2/></ProtectedRoute_2>} />
@@ -63,6 +69,7 @@ export default function App() {
             <Route path="/profile_edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
             <Route path="/personal_profile" element={<ProtectedRoute><PersonalProfile /></ProtectedRoute>} />
             <Route path="/home_personal_profile" element={<ProtectedRoute><HomePersonalProfile /></ProtectedRoute>} />
+            <Route path="/mypage_menu" element={<ProtectedRoute><MypageMenu /></ProtectedRoute>} />
           </Routes>
         </NavermapsProvider>
       </TokenProvider>
