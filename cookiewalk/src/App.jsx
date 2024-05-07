@@ -21,6 +21,7 @@ import MyGroupDetail from './mypage/mygroup_detail'
 import ProfileEdit from './mypage/profile_edit.jsx'
 import PersonalProfile from './personal/personal_profile.jsx'
 import HomePersonalProfile from './main/home_personal_profile.jsx';
+import MypageMenu from './mypage/mypage_menu.jsx';
 
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
@@ -63,6 +64,7 @@ export default function App() {
             <Route path="/profile_edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
             <Route path="/personal_profile" element={<ProtectedRoute><PersonalProfile /></ProtectedRoute>} />
             <Route path="/home_personal_profile" element={<ProtectedRoute><HomePersonalProfile /></ProtectedRoute>} />
+            <Route path="/mypage_menu" element={<ProtectedRoute><MypageMenu /></ProtectedRoute>} />
           </Routes>
         </NavermapsProvider>
       </TokenProvider>
