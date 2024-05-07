@@ -148,7 +148,7 @@ export default function LogIn() {
         </form>
         <a href='#' className="find_id">아이디 찾기</a>
         <div className="id_pw"></div>
-        <a href='#' className="find_password">비밀번호 찾기</a>
+        <Link to='/find_ps'><div className="find_password">비밀번호 찾기</div></Link>
         <Link to="/signup"><div className="signup">회원가입</div></Link>
         <div className="line"></div>
         <div className="or">또는</div>
