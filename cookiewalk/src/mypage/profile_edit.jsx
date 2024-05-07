@@ -28,6 +28,7 @@ export default function ProfileEdit() {
   //수정할 유저 이미지 파일
   const [imageFile, setImageFile]=useState('')
 
+  const nicknamePattern = /^[a-z0-9_]+$/;
 
 
   //유저 테이블에서 정보 가져오기
@@ -116,6 +117,11 @@ export default function ProfileEdit() {
 
     //name, nickname, intro 데이터 처리
     if(nickname && nickname !== currentNickname){   //닉네임을 수정했을시 중복검사 //''여기서띄어쓰기 했다가 오류남
+      if (!nicknamePattern.test(nickname)) {
+        alert("닉네임은 영어 소문자, 숫자, 언더스코어(_)로만 이루어져야 합니다.");
+        setConfirmNickname(false);
+        return;
+      }
       const {data, error}= await supabase
       .from('user')
       .select('nick_name')

@@ -31,7 +31,7 @@ const ProtectedRoute_2 = ({children}) => {
   }
 
   if (authenticated) {
-    // 사용자 인증 실패시 로그인 페이지로 리다이렉트
+    // 사용자 인증 정보 있을시 홈페이지로 리다이렉트
     return <Navigate to="/home" state={{ from: location }} replace />;
   }
 

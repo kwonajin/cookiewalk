@@ -31,11 +31,16 @@ import ProtectedRoute from './ProtectedRoute.jsx';
 import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 
+import { NavermapsProvider } from 'react-naver-maps';
 
 export default function App() {
+
+  const naverMapClientID = import.meta.env.VITE_NAVER_CLIENT_ID;
+
   return (
       <TokenProvider>
-        <Routes>
+        <NavermapsProvider ncpClientId={naverMapClientID}>
+          <Routes>
             <Route path="/" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} />
             <Route path="/find_ps" element={<ProtectedRoute_2><FindPassword /></ProtectedRoute_2>} />
             <Route path="/find_ps2" element={<ProtectedRoute_2><FindPassword2 /></ProtectedRoute_2>} />
@@ -63,12 +68,8 @@ export default function App() {
             <Route path="/profile_edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
             <Route path="/personal_profile" element={<ProtectedRoute><PersonalProfile /></ProtectedRoute>} />
             <Route path="/home_personal_profile" element={<ProtectedRoute><HomePersonalProfile /></ProtectedRoute>} />
-
-            
-
-
-
-      </Routes>
+          </Routes>
+        </NavermapsProvider>
       </TokenProvider>
 
   );
