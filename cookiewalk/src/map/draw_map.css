@@ -1,7 +1,0 @@
-#map { height: 400px; }
-.legend { display: flex; justify-content: center; margin-top: 20px; }
-.legend-item { margin-right: 20px; align-items: center; display: flex; }
-.color-dot { height: 14px; width: 14px; border-radius: 50%; margin-right: 5px; }
-.red { background-color: #FF0000; }
-.green { background-color: #00FF00; }
-.blue { background-color: #0000FF; }
