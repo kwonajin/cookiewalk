@@ -9,7 +9,7 @@
   padding: 0px;
 }
 
-.friend-page {
+/* .friend-page {
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -19,18 +19,18 @@
   background-color: white;
   animation-name: slide-up;
   animation-name: slide-up-friend;
-  animation-duration: 0.2s; /* 애니메이션 지속 시간 */
-  animation-timing-function: ease-out; /* 애니메이션 가속도 */
+  animation-duration: 0.2s; 
+  animation-timing-function: ease-out; 
 }
 
 @keyframes slide-up-friend{
   from {
-    transform: translateX(100%); /* 시작 지점: 오른쪽에서 왼쪽으로 이동 */
+    transform: translateX(100%); 
   }
   to {
-    transform: translateX(0); /* 종료 지점: 원래 위치로 이동 */
+    transform: translateX(0); 
   }
-}
+} */
 
 .friendnav{
 	position: fixed;
@@ -81,41 +81,36 @@
 }
 
 
-.friend_searchbar { 
+.fa_searchbar { 
 	background-color:rgba(239.04590249061584, 239.04590249061584, 239.04590249061584, 1);
-	width:370px;
+	width:355px;
 	height:45px;
 	position:absolute;
-	left:10px;
-	top:61px;
-	border-radius: 5px;
+	left:12px;
+	top:59px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	padding-left: 10px;
+	border: none;
+	outline: none;
 }
 
-.friend_searchbar_text { 
-	color:rgba(154.04589235782623, 154.04589235782623, 154.04589235782623, 1);
-	width:173px;
-	height:25px;
-	position:absolute;
-	left:20px;
-	top:71px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:15px;
-	letter-spacing:0;
-}
-
-.friend_search { 
+.fa_search { 
 	width:30px;
 	height:30px;
 	position:absolute;
 	left:336px;
 	top:68px;
+	cursor: pointer;
 }
-.friend_search_icon { 
-	width:25px;
-	height:25px;
+
+.fa_search_icon { 
+	width:23.630462646484375px;
+	height:23.621051788330078px;
 	position:absolute;
-	left:4.994609355926514px;
+	left:3px;
 	top:1.9102697372436523px;
 }
 

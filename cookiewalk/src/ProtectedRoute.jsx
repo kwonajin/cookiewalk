@@ -32,7 +32,7 @@ const ProtectedRoute = ({children}) => {
 
   if (!authenticated) {
     // 사용자 인증 실패시 로그인 페이지로 리다이렉트
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   return children;  // 사용자 인증선공시 자식 컴포넌트 렌더링

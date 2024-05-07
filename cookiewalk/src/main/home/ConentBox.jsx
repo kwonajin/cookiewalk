@@ -1,11 +1,14 @@
 import { supabase } from "../../supabaseClient"
+import { Link } from "react-router-dom"
 
 export default function ContentBox() {
     return(
       <div className='content_box'>
-      <div><img className='home_profile_img' src='./images/ellipse_7.png'/></div>
-      <div className="name">running_go</div>
-      <div className="home_place">부산 광안리</div>
+      <Link to="/home_personal_profile" style={{ textDecoration: 'none' }}>
+        <div><img className='home_profile_img' src='./images/ellipse_7.png'/></div>
+        <div className="name">running_go</div>
+        <div className="home_place">부산 광안리</div>
+      </Link>
       <div className="dotmenu"><img className="dotmenu_icon" src="./icon/dotmenu.svg" alt="" /></div>
       <div className=""><img className='content_img' src='./images/rectangle_2.png'/></div>
       <div className="comment_name">running_go</div>

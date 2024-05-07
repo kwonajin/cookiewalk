@@ -57,6 +57,7 @@ body{
 	font-size:16px;
 	letter-spacing:2px;
   font-weight: 600;
+	cursor: pointer;
 }
 
 .pe_line { 
@@ -90,6 +91,7 @@ body{
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
+	cursor: pointer;
 }
 .pe_img_mod_text { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
@@ -103,6 +105,7 @@ body{
 	font-size:12px;
 	letter-spacing:0;
 	font-weight: 600;
+	cursor: pointer;
 }
 
 .pe_line1 { 

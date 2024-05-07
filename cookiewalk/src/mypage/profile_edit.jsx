@@ -28,6 +28,7 @@ export default function ProfileEdit() {
   //수정할 유저 이미지 파일
   const [imageFile, setImageFile]=useState('')
 
+  const nicknamePattern = /^[a-z0-9_]+$/;
 
 
   //유저 테이블에서 정보 가져오기
@@ -40,6 +41,7 @@ export default function ProfileEdit() {
       if(error){
         console.error('오류발생', error)
       }
+
       if (data){
         const userProfile = data[0]
         setCurrentname(userProfile.name)          
@@ -71,9 +73,20 @@ export default function ProfileEdit() {
   }
 
   const ImageFileUpload = async ()=>{
+    const randomNumber = Math.floor(10000000 + Math.random() * 90000000); //랜덤 8자리숫자
     const fileExtnesion = imageFile.name.split('.').pop();    //파일확장자추출
-    const newFilename=`Profile/${userID}.${fileExtnesion}` //새 파일명 설정 profile폴더에 넣을거라 폴더 경로 추가
-  
+    const newFilename=`Profile/${randomNumber}.${fileExtnesion}` //새 파일명 설정 profile폴더에 넣을거라 폴더 경로 추가
+    // if(imageUrl !== 'https://rbdbdnushdupstmiydea.supabase.co/storage/v1/object/public/image/Profile/defaultProfileImage.png'){
+    //   const {data:removeData, error: removeError} =await supabase.storage
+    //     .from('image')
+    //     .remove([imageUrl])
+    //   if(removeError){
+    //     console.error(removeError)
+    //   }
+    // if(removeData){
+    //   console.log(removeData)
+    // }
+    // }
     const {data, error} = await supabase.storage
       .from('image')
       .upload(newFilename, imageFile, {upsert: true}); //prifile 폴더내에 저장
@@ -104,6 +117,11 @@ export default function ProfileEdit() {
 
     //name, nickname, intro 데이터 처리
     if(nickname && nickname !== currentNickname){   //닉네임을 수정했을시 중복검사 //''여기서띄어쓰기 했다가 오류남
+      if (!nicknamePattern.test(nickname)) {
+        alert("닉네임은 영어 소문자, 숫자, 언더스코어(_)로만 이루어져야 합니다.");
+        setConfirmNickname(false);
+        return;
+      }
       const {data, error}= await supabase
       .from('user')
       .select('nick_name')
@@ -135,7 +153,9 @@ export default function ProfileEdit() {
         console.error('오류발생', error)
       }
       console.log('저장완료', userDatabase)
-      navigate('/mypage');
+      setTimeout(()=>{
+        navigate('/mypage');
+      },1000)
     }
   }
   

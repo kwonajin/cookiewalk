@@ -46,13 +46,12 @@ body{
 
 .user_id { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:120px;
-	height:25px;
 	position:absolute;
-	left:139px;
 	top:10px;
+	left: 50%; /* 화면 좌측에서 절반 너비에 위치 */
+	transform: translate(-50%, -0%);
 	font-family:Noto Sans;
-	text-align:left;
+	text-align:center;
 	font-size:20px;
 	letter-spacing:0;
 	font-weight: 600;
@@ -179,8 +178,7 @@ body{
 
 .user_name { 
 	color:rgba(0, 0, 0, 1);
-	width:60px;
-	height:23px;
+	width:370px;
 	position:absolute;
 	left:11px;
 	top:147px;
@@ -590,7 +588,7 @@ body{
 	/* z-index: 999; */
 }
 
-.my_home_icon { 
+.mp_my_home_icon { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:28px;
 	height:28px;
@@ -607,7 +605,7 @@ body{
 	top:27.5px;
 }
 
-.my_map_icon { 
+.mp_my_map_icon { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:21.8751163482666px;
 	height:21.28816032409668px;
@@ -624,7 +622,7 @@ body{
 	top:27px;
 }
 
-.my_run_icon { 
+.mp_my_run_icon { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:25px;
 	height:25px;
@@ -641,7 +639,7 @@ body{
 	top:25px;
 }
 
-.my_group_icon { 
+.mp_my_group_icon { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:28px;
 	height:27px;
@@ -658,7 +656,7 @@ body{
 	top:27.5px;
 }
 
-.my_my_icon { 
+.mp_my_my_icon { 
 	filter: invert(63%) sepia(6%) saturate(1742%) hue-rotate(167deg) brightness(95%) contrast(99%);
 	width:23px;
 	height:23px;

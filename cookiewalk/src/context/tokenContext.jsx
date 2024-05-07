@@ -11,28 +11,46 @@ export const TokenProvider = ({children}) => {
 
   useEffect(()=> {
     async function checkUser(){
-      // const tokenString = window.localStorage.getItem('sb-rbdbdnushdupstmiydea-auth-token');
-      // const tokenData = JSON.parse(tokenString);
-      // console.log('Token Data:', tokenData);
-      // const {data: AuthChange}=supabase.auth.onAuthStateChange((event, session) => {
-      //   setTimeout(async () => {
-      //     console.log('event: ',event ,'session :',session )
-      //   }, 0)
-      // })
+    //   const tokenString = window.localStorage.getItem('sb-rbdbdnushdupstmiydea-auth-token');
+    //   const tokenData = JSON.parse(tokenString);
+    //   console.log('Token Data:', tokenData);
+      const {subscription}=supabase.auth.onAuthStateChange((event, session) => {
+        setTimeout(async () => {
+          console.log('event: ',event ,'session :',session )
+        }, 0)
+      })
       const {data, error} =await supabase.auth.getSession();
-      console.log(data.session.user.id)
-      if(data){
+      // console.log(data.session.user.id)
+      if(data && data.session && data.session.user){
         setUser(data.session.user.id);
       }else{
         setUser(null);
       }
+        if(error){
+        console.error('오류발생', UserError)
+      }
+      
     }
-
     checkUser();
+    const {subscription}=supabase.auth.onAuthStateChange((event, session) => {
+      if(session && session.user){
+        setUser(session.user.id)
+      }else{
+        setUser(null);
+      }
+
+      return ()=> {
+        subscription?.unsubscrible();
+      }
+      
+      // setTimeout(async () => {
+      //   console.log('event: ',event ,'session :',session )
+      // }, 0)
+    })
   },[]);
 
   return (
-    <TokenContext.Provider value={{user, setUser}}>
+    <TokenContext.Provider value={{user,setUser}}>
       {children}
     </TokenContext.Provider>
   )
