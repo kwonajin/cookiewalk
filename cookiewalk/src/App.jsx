@@ -29,7 +29,6 @@ import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 
 import { NavermapsProvider } from 'react-naver-maps';
-// import NaverMapContainer from './NaverMapContainer'
 
 export default function App() {
 
