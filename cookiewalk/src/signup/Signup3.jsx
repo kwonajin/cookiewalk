@@ -12,6 +12,8 @@ export default function DetailedInfo() {
     const [consfirmNickname, setConfirmNickname]=useState(false)
     const [gender, setGender] = useState('M'); // 성별 상태
 
+    const nicknamePattern = /^[a-z0-9_]+$/;
+
     const userInfo=useToken();
     // console.log(userInfo.user.session.user.id)
     // 성별 선택 핸들러
@@ -22,6 +24,11 @@ export default function DetailedInfo() {
     //닉네임 중복 검사 요청
     const onSubmitHandlerNick = async(e) =>{
         e.preventDefault();
+        if (!nicknamePattern.test(nickname)) {
+            alert("닉네임은 영어 소문자, 숫자, 언더스코어(_)로만 이루어져야 합니다.");
+            setConfirmNickname(false);
+            return;
+        }
         const {data, error}= await supabase
             .from('user')
             .select('nick_name')
