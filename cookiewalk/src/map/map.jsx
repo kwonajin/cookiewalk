@@ -37,7 +37,7 @@ export default function MapSearch() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
+    }, []);
 
     return(
     <div className="map_search_container">
