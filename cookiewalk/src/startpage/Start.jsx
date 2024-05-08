@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
 import './Start.css'
-import { Link } from "react-router-dom";
+import {Container as MapDiv, NaverMap, Marker, useNavermaps} from 'react-naver-maps'
+import { Link ,useLocation} from "react-router-dom";
+
+function MyMap(){
+
+    const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
+    return(
+    //기본값 또는 현재위치로 중심좌표 설정
+    <NaverMap defaultCenter={new  navermaps.LatLng(37.3595704, 127.105399)}  defaultZoom={15}>
+        <Marker defaultPosition={new navermaps.LatLng(37.3595704, 127.105399)}/>
+    </NaverMap>
+    )
+}
+
 
 export default function Start() {
+
+    const location = useLocation();
+    console.log(location.state)
+
     // expanded_content의 상태를 관리하는 state
     const [isExpanded, setIsExpanded] = useState(true);
+
 
     // icon3 클릭 시 실행되는 함수
     const toggleExpand = () => {
@@ -16,13 +34,13 @@ export default function Start() {
     
     return (
         <div className="Start_container">
-
-
             <div className="close-button">CLOSE</div>
             <div><img className='e118_456' src="./icon/setting.svg"/></div>
 
             {/* 지도 넣을 곳 */}
-            <img className="e118_443" src="./images/image 229_4174.png" alt="Icon 2" />
+            {/* <img className="e118_443" src="./images/image 229_4174.png" alt="Icon 2" /> */}
+            <MapDiv className='MapStyle_start'><MyMap/></MapDiv>
+            {/* <MapDiv style={{width: '100%', height: '600px'}}><MyMapStart/></MapDiv> */}
 
             
             {/* 아이콘3과 expanded_content의 위치와 표시 방식을 변경합니다. */}
@@ -47,7 +65,7 @@ export default function Start() {
             </>
         )}
         </div>
-    
+
     </div>
     );
 }
