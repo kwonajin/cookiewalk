@@ -5,29 +5,28 @@ body{
     /* justify-content: center; */
     align-items: center;
 }
-.expanded {
-	max-height: 500px; /* 컨텐츠가 확장될 때의 최대 높이 */
+.s_expanded {
 	top: 420px;
 }
 
-.collapsed {
+.s_collapsed {
 	max-height: 30px; /* 컨텐츠가 접혔을 때의 최대 높이 */
 	padding: 20px 0; /* 접혔을 때 상단 패딩 유지 */
 	top: 733px;
 }
 
-.icon3-expanded {
+.s_icon3-expanded {
 	/* 펼쳐졌을 때의 아이콘 위치 */
 	top: 0px;
 }
-.icon3-collapsed {
+.s_icon3-collapsed {
 	top: 0px; /* 예시 값, 실제 필요에 따라 조정 */
 }
 
-.expanded_content{
-	position: relative;
+.start_expanded_content{
+	position: absolute;
 	/* top: 420px; */
-	bottom: auto;
+	bottom: 0;
 	width: 390px;
 	height: 380px;
 	display: flex;
@@ -39,14 +38,17 @@ body{
 }
 
 .Start_container{
-	overflow: hidden;
     background-color:rgba(255, 255, 255, 1);
 	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
 	width:390px;
 	height:100%;
     min-height: 800px;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
 	position:relative;
 }
+
 .close-button {
     position: absolute;
     left: 12px;
@@ -65,22 +67,23 @@ body{
 	left:346px;
 	top:10px;
 }
-
 .MapStyle_start{
 	width:390px;
 	height:751px;
 	position:absolute;
 	left:0px;
-	top:49px;
+	top:0px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
+
+
 .e118_443 { 
 	width:390px;
 	height:751px;
 	position:absolute;
 	left:0px;
-	top:49px;
+	top:0px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -92,9 +95,8 @@ body{
 	left:72px;
 	top:50px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	font-weight: 700;
 	font-size:16px;
-	letter-spacing:0;
 }
 .start_label_time { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
