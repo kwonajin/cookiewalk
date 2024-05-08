@@ -90,7 +90,7 @@ body{
 	font-size:16px;
 	letter-spacing:0;
 }
-.e118_433 { 
+.start_button_label { 
 	color: rgba(253,253,253,1);
 	width:36px;
 	height:19px;
@@ -131,4 +131,7 @@ body{
 	position:absolute;
 	left:257px;
 	top:497px;
+}
+.startpage_link{
+	cursor: pointer;
 }

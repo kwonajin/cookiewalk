@@ -67,6 +67,16 @@ body{
 	left:346px;
 	top:10px;
 }
+.MapStyle_start{
+	width:390px;
+	height:751px;
+	position:absolute;
+	left:0px;
+	top:0px;
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+
 
 .e118_443 { 
 	width:390px;
