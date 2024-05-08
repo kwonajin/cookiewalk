@@ -340,3 +340,25 @@ body{
 	left:0.1666717529296875px;
 	top:2.166656494140625px;
 }
+
+/* 네비게이션 바 내에 + 버튼 위치 조정 */
+.navbar .add-map {
+	display: inline-block;
+	vertical-align: middle; /* 수직 정렬 */
+	margin-left: auto; /* 왼쪽 마진 자동으로 설정하여 오른쪽에 버튼이 위치하도록 함 */
+	margin-right: 20px; /* 오른쪽 공간 추가 */
+}
+
+
+.navbar .floating-add-button {
+	position: absolute; /* 네비게이션 바 내에서 절대 위치 설정 */
+	right: 0px; /* 오른쪽에서 10px 떨어진 곳에 위치 */
+	bottom: 70px; /* 하단에서 10px 떨어진 곳에 위치 */
+	z-index: 1000; /* 다른 요소 위에 레이어링 */
+}
+
+.navbar .floating-add-button img {
+width: 80px; /* 이미지의 너비를 80px로 조정 */
+height: 80px; /* 이미지의 높이를 80px로 조정 */
+cursor: pointer; /* 포인터 커서 설정 */
+}
