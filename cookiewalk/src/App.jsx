@@ -5,6 +5,7 @@ import FindPassword2 from './login/FindPassword2.jsx';
 
 import Home from "./main/home";
 import MapSearch from './map/map';
+import DrawMap from './map/draw_map';
 // import Pause from "./startpage/pause";
 import BeforeStart from './startpage/BeforeStart'
 import Group from "./group/group";
@@ -53,6 +54,7 @@ export default function App() {
             {/* <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} /> */}
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/map" element={<ProtectedRoute><MapSearch /></ProtectedRoute>} />
+            <Route path="/drawmap" element={<ProtectedRoute><DrawMap /></ProtectedRoute>} />
             <Route path="/BeforeStart" element={<ProtectedRoute><BeforeStart /></ProtectedRoute>} />
             <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />
             <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
