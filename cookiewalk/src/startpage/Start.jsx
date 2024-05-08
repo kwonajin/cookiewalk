@@ -48,13 +48,22 @@ export default function Start() {
         }
     }
 
+    //경로 추적 중지
+    const stopTracking = () =>{
+        if(watchIdRef.current !== null){
+            navigator.geolocation.clearWatch(watchIdRef.current);
+            watchIdRef.current = null;
+        }
+        setTracking(false);
+    }
+
 
 
 
     // icon3 클릭 시 실행되는 함수
     const toggleExpand = () => {
     setIsExpanded(!isExpanded); // 상태 반전
-};
+    };
     //아이콘 경로 조건부 설정
     const icon3Path = isExpanded ? "./icon/mdi--arrow-down-drop.svg" : "./icon/mdi--arrow-drop-up.svg";
     
