@@ -1,5 +1,6 @@
 import react from 'react';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps } from 'react-naver-maps'
+import './draw_map.css'
 
 function MyMap() {
   // instead of window.naver.maps
@@ -20,8 +21,8 @@ function MyMap() {
 export default function draw_map(){
     
   return(
-    <div>
-      <MapDiv style={{width:'500px' ,height: '500px'}}><MyMap/></MapDiv>
+    <div className='draw_map_container'>
+      <MapDiv style={{width:'100%' ,height: '500px'}}><MyMap/></MapDiv>
     </div>
   )
 
