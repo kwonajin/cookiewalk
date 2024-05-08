@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #map { height: 400px; }
         .legend { display: flex; justify-content: center; margin-top: 20px; }
         .legend-item { margin-right: 20px; align-items: center; display: flex; }
@@ -5,3 +6,21 @@
         .red { background-color: #FF0000; }
         .green { background-color: #00FF00; }
         .blue { background-color: #0000FF; }
+=======
+body{
+	background-color: white;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+.draw_map_container{ 
+	/* overflow: hidden; */
+    background-color:rgba(255, 255, 255, 1);
+	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
+	width:390px;
+	height:100%;
+  min-height: 800px;
+	position:relative;
+}
+>>>>>>> 42e60c2da5e691f89f9a783e0580e5ed2170f35d

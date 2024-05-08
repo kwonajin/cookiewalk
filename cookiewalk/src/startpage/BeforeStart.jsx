@@ -21,12 +21,13 @@ export default function BeforeStart(){
     //현재 위치 저장 state
     const [currentPosition, setCurrentPosition]=useState(null);
     const [loading, setLoading]=useState(true); // 로딩 상태 추가
-    const mapRef = useRef(null);
+
+    // const mapRef = useRef(null);
 
     //패시브 이벤트 리스너 추가 함수
-    const addPassiveEventListener = (type, element) =>{
-        element.addEventListener(type, function() {}, {passive:true});
-    }
+    // const addPassiveEventListener = (type, element) =>{
+    //     element.addEventListener(type, function() {}, {passive:true});
+    // }
 
     const fetchCurrentPosition=()=>{
         if (navigator.geolocation){
@@ -57,11 +58,11 @@ export default function BeforeStart(){
     useEffect(() => {
         window.scrollTo(0, 0);
 
-        if(mapRef.current){
-            addPassiveEventListener('mousewheel',mapRef.current);
-            addPassiveEventListener('touchstart',mapRef.current);
-            addPassiveEventListener('touchmove',mapRef.current);
-        }
+        // if(mapRef.current){
+        //     addPassiveEventListener('mousewheel',mapRef.current);
+        //     addPassiveEventListener('touchstart',mapRef.current);
+        //     addPassiveEventListener('touchmove',mapRef.current);
+        // }
         fetchCurrentPosition(); // 현재 위치 가져오기
     }, []);
 
