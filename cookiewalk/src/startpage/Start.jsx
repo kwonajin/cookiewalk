@@ -39,13 +39,13 @@ export default function Start() {
 
             {/* 지도 넣을 곳 */}
             {/* <img className="e118_443" src="./images/image 229_4174.png" alt="Icon 2" /> */}
-            <MapDiv className='MapStyle_start'><MyMap/></MapDiv>
+            <MapDiv className='e118_443'><MyMap/></MapDiv>
             {/* <MapDiv style={{width: '100%', height: '600px'}}><MyMapStart/></MapDiv> */}
 
             
             {/* 아이콘3과 expanded_content의 위치와 표시 방식을 변경합니다. */}
-            <div className={`expanded_content ${isExpanded ? 'expanded' : 'collapsed'}`}>
-            <img className={`icon3 ${isExpanded ? 'icon3-expanded' : 'icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
+            <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
+            <img className={`icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
 
             {isExpanded && (
             <>
