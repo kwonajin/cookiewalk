@@ -6,6 +6,7 @@ import HomeNav from './home/HomeNav';
 import Active from './home/Active';
 import ContentBox from './home/ConentBox';
 import NavBar from './home/NavBar';
+import { supabase } from '../supabaseClient';
 
 
 export default function Home() {

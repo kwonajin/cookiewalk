@@ -24,6 +24,9 @@ export default function Write() {
       .from('image')
       .upload(filePath, file);
 
+      console.log(file)
+      console.log(filePath)
+
     if (uploadError) {
       throw new Error('Failed to upload image');
     }
