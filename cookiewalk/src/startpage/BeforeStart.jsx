@@ -1,7 +1,7 @@
 import react, {useEffect ,useState, useRef} from 'react';
 import {Container as MapDiv, NaverMap, Marker, useNavermaps} from 'react-naver-maps'
 import './BeforeStart.css'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function MyMap({center}){
 
@@ -16,6 +16,8 @@ function MyMap({center}){
 
 export default function BeforeStart(){
     
+    const  navigate = useNavigate();
+
     //현재 위치 저장 state
     const [currentPosition, setCurrentPosition]=useState(null);
     const [loading, setLoading]=useState(true); // 로딩 상태 추가
@@ -71,12 +73,17 @@ export default function BeforeStart(){
         )
     }
 
+    function startPage(e){
+        e.preventDefault();
+        navigate('/start', {state: {currentPosition}})
+    }
+
     return(
         <div className="BeforeStart_container">
             <div><img className='e118_437' src="./icon/arrow.svg"/></div>
             <div><img className='e118_439' src="./icon/setting.svg"/></div>
             
-            <MapDiv style={{width: '100%',height: '490px',}}><MyMap center={currentPosition} /></MapDiv>
+            <MapDiv className='MapStyle'><MyMap center={currentPosition} /></MapDiv>
             {/* 지도 넣는 곳 */}
             {/* <div><img className="e118_427" src="./images/image 229_4174.png" alt="map" /></div> */}
 
@@ -93,11 +100,11 @@ export default function BeforeStart(){
                 <span className="e118_434">미완성 경로</span>
             </Link>
             
-            <Link to="/Start">
+            <div onClick={startPage}>
                 <span className="e118_433">시작</span>
                 <div><img className='start_logo' src="./images/cookie-run-white.png"/></div>
                 <div className="start_button_circle"></div>
-            </Link>
+            </div>
         </div>
     );
 }
