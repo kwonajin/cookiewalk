@@ -5,7 +5,7 @@ import FindPassword2 from './login/FindPassword2.jsx';
 
 import Home from "./main/home";
 import MapSearch from './map/map';
-// import Pause from "./startpage/pause";
+import Pause from "./startpage/pause";
 import BeforeStart from './startpage/BeforeStart'
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
@@ -57,6 +57,7 @@ export default function App() {
             <Route path="/draw_map" element={<ProtectedRoute><Draw_map /></ProtectedRoute>} />
             <Route path="/BeforeStart" element={<ProtectedRoute><BeforeStart /></ProtectedRoute>} />
             <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />
+            <Route path="/Pause" element={<ProtectedRoute><Pause /></ProtectedRoute>} />
             <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
             <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />

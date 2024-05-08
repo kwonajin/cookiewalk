@@ -82,8 +82,8 @@ export default function Start() {
 
             
             {/* 아이콘3과 expanded_content의 위치와 표시 방식을 변경합니다. */}
-            <div className={`expanded_content ${isExpanded ? 'expanded' : 'collapsed'}`}>
-            <img className={`icon3 ${isExpanded ? 'icon3-expanded' : 'icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
+            <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
+            <img className={`icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
 
             {isExpanded && (
             <>

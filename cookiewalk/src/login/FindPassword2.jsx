@@ -50,23 +50,23 @@ return (
         <div><img className="FindsPassword2_logo2" src="./images/new_cookie_logo.png" alt="" /></div>
 
         <form method='/'>
-            <input type={passwordVisible ? "text" : "password"} className="userPwInput" name="password" onChange={confirmFuntion} placeholder="비밀번호를 입력해주세요" required/>
-            <button type="button" className="e83_30" onClick={togglePasswordVisibility}>
-                <img className="e83_31" src={passwordVisible ? "./icon/mdi--eye.svg" : "./icon/mdi--eye-off.svg"} alt="Toggle Password Visibility"/>
+            <input type={passwordVisible ? "text" : "password"} className="FindPs_userPwInput" name="password" onChange={confirmFuntion} placeholder="비밀번호를 입력해주세요" required/>
+            <button type="button" className="FindPs_first_eye" onClick={togglePasswordVisibility}>
+                <img className="FindPs_e83_31" src={passwordVisible ? "./icon/mdi--eye.svg" : "./icon/mdi--eye-off.svg"} alt="Toggle Password Visibility"/>
             </button>
-            <div className="e83_21">
-                <div><img className="e83_22" src="./icon/ei--check.svg"/></div>
+            <div className="FindPs_first_check">
+                <div><img className="FindPs_first_check_icon" src="./icon/ei--check.svg"/></div>
             </div>
-            <span className="e83_24">영문 8자리이상 16자리 이하</span>
-            <div className="e83_25">
-            <div><img className="e83_26" src="./icon/ei--check.svg"/></div>
+            <span className="FindPs_first_check_label">영문 8자리이상 16자리 이하</span>
+            <div className="FindPs_second_check">
+            <div><img className="FindPs_second_check_icon" src="./icon/ei--check.svg"/></div>
             </div>
-            <span className="e83_29">숫자 포함</span>
-            <input type={passwordConfirmVisible ? "text" : "password"} className="userPwInput2" name="confirmPassword" onChange={confirmFuntion} placeholder="비밀번호를 재입력해주세요" required/>
-            <button type='button' className="e83_32" onClick={togglePasswordConfirmVisibility}>
-            <img className="e83_33"  src={passwordConfirmVisible ? "./icon/mdi--eye.svg" : "./icon/mdi--eye-off.svg"} alt="Toggle Password Confirm Visibility"/>
+            <span className="FindPs_second_check_label">숫자 포함</span>
+            <input type={passwordConfirmVisible ? "text" : "password"} className="FindPs_userPwInput2" name="confirmPassword" onChange={confirmFuntion} placeholder="비밀번호를 재입력해주세요" required/>
+            <button type='button' className="FindPs_second_eye" onClick={togglePasswordConfirmVisibility}>
+            <img className="FindPs_e83_33"  src={passwordConfirmVisible ? "./icon/mdi--eye.svg" : "./icon/mdi--eye-off.svg"} alt="Toggle Password Confirm Visibility"/>
             </button>
-            <button  type="button" className='next1'>재설정 완료</button>
+            <button  type="button" className='Ps_reset'>재설정 완료</button>
         </form>
 
         
