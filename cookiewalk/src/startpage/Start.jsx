@@ -30,11 +30,13 @@ export default function Start() {
     // 'pause' 버튼 클릭 시 실행되는 함수
     const togglePause = () => {
         setIsPaused(!isPaused); // 상태 반전
+        stopTracking(); //위치추적 중지
     };
     // 재시작 버튼 클릭 시 실행되는 함수
     const restart = () => {
         setIsPaused(false); // 일시정지 상태를 해제하여 일시정지 버튼을 다시 보이게 함
     // 여기에 위치 추적을 재시작하는 로직을 추가할 수 있습니다!
+        startTracking() //위치추적 재시작
     };
 
     // 경로 추적 시작
@@ -45,6 +47,7 @@ export default function Start() {
                 (position)=>{
                     const {latitude,longitude} = position.coords;
                     setCurrentPosition({lat:latitude, lng:longitude});
+                    console.log(position.coords)
                 },                
                 (error) => {
                     console.error('위치추적 실패', error);
@@ -52,7 +55,6 @@ export default function Start() {
                 {
                     enableHighAccuracy:true,
                     timeout:10000,
-                    maximumAge:0
                 }
             );
         }else{
@@ -70,7 +72,7 @@ export default function Start() {
     }
 
     useEffect(()=>{
-        // startTracking();
+        startTracking();
     },[])
 
 

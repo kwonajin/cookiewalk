@@ -34,6 +34,7 @@ export default function BeforeStart(){
             navigator.geolocation.getCurrentPosition(
                 (position)=>{
                     const {latitude, longitude} = position.coords;
+                    console.log(position.coords)
                     setCurrentPosition({lat:latitude, lng:longitude});
                     setLoading(false)
                 },
