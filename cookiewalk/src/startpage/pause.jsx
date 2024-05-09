@@ -38,11 +38,9 @@ export default function pause(){
                 <div className="button1">
                   <div className="button-label-end">종료</div>
                 </div>
-                <Link to='/Start' className='restart_link'>
-                  <div className="button2">
-                    <div className="button-label-restart">재시작</div>
-                  </div>
-                </Link>
+                <div className="button2">
+                  <div className="button-label-restart">재시작</div>
+                </div>
               </div>
             </>
           )}
