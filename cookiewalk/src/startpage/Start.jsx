@@ -76,7 +76,6 @@ export default function Start() {
         <div className="Start_container">
             {/* 'isPaused' 상태에 따라 'close' 버튼을 조건부 렌더링 */}
             {isPaused && <div className="close-button">CLOSE</div>}
-            <div><img className='e118_456' src="./icon/setting.svg"/></div>
 
             {/* 지도 넣을 곳 */}
             {/* <img className="e118_443" src="./images/image 229_4174.png" alt="Icon 2" /> */}
