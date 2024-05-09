@@ -20,10 +20,22 @@ export default function Start() {
 
     // expanded_content의 상태를 관리하는 state
     const [isExpanded, setIsExpanded] = useState(true);
+    // 'pause' 버튼의 상태를 관리하는 state 추가
+    const [isPaused, setIsPaused] = useState(false);
 
     const [currentPosition, setCurrentPosition] =useState(location.state.currentPosition)
     const [tracking, setTracking]=useState(false);
     const watchIdRef = useRef(null);
+
+    // 'pause' 버튼 클릭 시 실행되는 함수
+    const togglePause = () => {
+        setIsPaused(!isPaused); // 상태 반전
+    };
+    // 재시작 버튼 클릭 시 실행되는 함수
+    const restart = () => {
+        setIsPaused(false); // 일시정지 상태를 해제하여 일시정지 버튼을 다시 보이게 함
+    // 여기에 위치 추적을 재시작하는 로직을 추가할 수 있습니다!
+    };
 
     // 경로 추적 시작
     const startTracking = () =>{
@@ -86,7 +98,7 @@ export default function Start() {
             
             {/* 아이콘3과 expanded_content의 위치와 표시 방식을 변경합니다. */}
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
-            <img className={`icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
+            <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
 
             {isExpanded && (
             <>
@@ -95,11 +107,23 @@ export default function Start() {
                 <div className="start_label_time">시간</div>
                 <div className="start_value_time">00:00:00</div>
 
-                <div className="pause_button">
+            {/* 조건부 렌더링을 사용하여 'pause' 버튼 또는 '종료'와 '재시작' 버튼을 렌더링 */}
+            {!isPaused ? (
+                <div className="pause_button" onClick={togglePause}>
                     <div className="button_circle"></div>
                     <div className="button_bar1"></div>
                     <div className="button_bar2"></div>
                 </div>
+            ) : (
+                <div className="button-container">
+                    <div className="button1" onClick={() => { /* 종료 로직을 여기에 추가 */ }}>
+                        <div className="button-label-end">종료</div>
+                    </div>
+                    <div className="button2" onClick={restart}>
+                        <div className="button-label-restart">재시작</div>
+                    </div>
+                </div>
+            )}
             </>
         )}
         </div>
