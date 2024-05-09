@@ -1,0 +1,236 @@
+body{
+	background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+		/* height: auto; */
+}
+
+.as_background { 
+	min-height: 850px;
+	box-shadow: 0px 10px 15px #00000040;
+	top: 0px;
+	background-color:#ffffff;
+	width:390px;
+	height:100vh;
+	position:relative;
+	padding-bottom: 50px;
+}
+
+
+.as_back { 
+	width:25px;
+	height:25px;
+	position:absolute;
+	left:6px;
+	top:10px;
+}
+
+.as_back_icon { 
+  filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
+	width:25px;
+	height:25px;
+	position:absolute;
+	left:2.098771095275879px;
+	top:5px;
+}
+
+
+.as_title { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	height:25px;
+	position:absolute;
+	left:50%;
+	transform: translate(-50%, -0%);
+	top:10px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+	font-weight: 600;
+}
+
+.as_line { 
+	transform: rotate(-2.4848166388360215e-17deg);
+	width:100%;
+	height:0px;
+	position:absolute;
+	left:0px;
+	top:50px;
+	border:0.1px solid #bfbfbf;
+}
+
+.as_profile_img { 
+	border-radius:500px;
+	width:125px;
+	height:125px;
+	position:absolute;
+	left:132px;
+	top:69px;
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+
+
+.as_nickname { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:113px;
+	height:21px;
+	position:absolute;
+	left:138px;
+	top:205px;
+	font-family:Noto Sans KR;
+	text-align:center;
+	font-size:14px;
+	letter-spacing:0;
+}
+.as_username { 
+	color:rgba(196.54589742422104, 196.54589742422104, 196.54589742422104, 1);
+	width:113px;
+	height:21px;
+	position:absolute;
+	left:138px;
+	top:227px;
+	font-family:Noto Sans KR;
+	text-align:center;
+	font-size:14px;
+	letter-spacing:0;
+}
+
+
+.as_line1 { 
+	transform: rotate(-2.4848166388360215e-17deg);
+	width:100%;
+	height:0px;
+	position:absolute;
+	left:0px;
+	top:260px;
+	border:0.1px solid #bfbfbf;
+}
+
+.as_contents { 
+	width:390px;
+	height:173px;
+	position:absolute;
+	left:0px;
+	top:260px;
+}
+
+.as_email { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:77px;
+	height:21px;
+	position:absolute;
+	left:11px;
+	top:13px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:14px;
+	letter-spacing:0;
+}
+
+
+.as_user_email { 
+	color:rgba(196.54589742422104, 196.54589742422104, 196.54589742422104, 1);
+	width:273px;
+	height:21px;
+	position:absolute;
+	left:105px;
+	top:13px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:14px;
+	letter-spacing:0;
+	border: none;
+}
+
+.as_line_1 { 
+	width:285px;
+	height:0px;
+	position:absolute;
+	left:99px;
+	top:45px;
+	border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
+}
+
+.as_password { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:77px;
+	height:21px;
+	position:absolute;
+	left:11px;
+	top:58px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:14px;
+	letter-spacing:0;
+}
+
+.as_user_password { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:273px;
+	height:21px;
+	position:absolute;
+	left:105px;
+	top:58px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:14px;
+	letter-spacing:0;
+	border: none;
+}
+
+.as_user_password:focus{
+	outline: none;
+}
+
+.as_user_password::placeholder{
+	color:rgba(196.54589742422104, 196.54589742422104, 196.54589742422104, 1);
+	font-weight: 500;
+}
+
+.as_user_password:focus::placeholder {
+	color: transparent; /* 클릭하면 placeholder가 사라짐 */
+}
+
+.as_line_1 { 
+	width:285px;
+	height:0px;
+	position:absolute;
+	left:99px;
+	top:45px;
+	border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
+}
+
+.as_line_2 { 
+	width:290px;
+	height:0px;
+	position:absolute;
+	left:99px;
+	top:90px;
+	border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
+}
+
+
+.as_password_change_btn { 
+	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
+	width:339px;
+	height:49px;
+	position:absolute;
+	left:25px;
+	top:124px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+}
+.as_password_change { 
+	color:rgba(252.8617027401924, 252.8617027401924, 252.8617027401924, 1);
+	position:absolute;
+	left:132px;
+	top:136px;
+	font-family:Inter;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:3;
+}
