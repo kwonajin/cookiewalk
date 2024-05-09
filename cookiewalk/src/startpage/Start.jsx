@@ -57,6 +57,9 @@ export default function Start() {
         setTracking(false);
     }
 
+    useEffect(()=>{
+        // startTracking();
+    },[])
 
 
 
@@ -77,7 +80,7 @@ export default function Start() {
             {/* 지도 넣을 곳 */}
             {/* <img className="e118_443" src="./images/image 229_4174.png" alt="Icon 2" /> */}
 
-            <MapDiv className='MapStyle_start'><MyMap path={[]} center={currentPosition}/></MapDiv>
+            <MapDiv className='e118_443'><MyMap path={[]} center={currentPosition}/></MapDiv>
             {/* <MapDiv style={{width: '100%', height: '600px'}}><MyMapStart/></MapDiv> */}
 
             
