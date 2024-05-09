@@ -48,6 +48,7 @@ export default function Start() {
                     const {latitude,longitude} = position.coords;
                     setCurrentPosition({lat:latitude, lng:longitude});
                     console.log(position.coords)
+                    console.log(position.coords.speed)
                 },                
                 (error) => {
                     console.error('위치추적 실패', error);
@@ -109,7 +110,7 @@ export default function Start() {
                 <div className="start_label_time">시간</div>
                 <div className="start_value_time">00:00:00</div>
 
-            {/* 조건부 렌더링을 사용하여 'pause' 버튼 또는 '종료'와 '재시작' 버튼을 렌더링 */}
+            {/* 조건부 렌더링을 사용하여  'pause' 버튼 또는 '종료'와 '재시작' 버튼을 렌더링 */}
             {!isPaused ? (
                 <div className="pause_button" onClick={togglePause}>
                     <div className="button_circle"></div>
