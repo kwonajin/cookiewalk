@@ -149,6 +149,7 @@ body{
 	position:absolute;
 	left:151px;
 	bottom: 78px;
+	cursor: pointer;
 }
 .button_circle { 
 	border-radius:500px;
@@ -226,5 +227,6 @@ body{
 	color: #fdfdfd;
 	text-align: center;
 	margin-top: 28px;
+	cursor: pointer;
 }
 
