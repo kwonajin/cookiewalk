@@ -2,11 +2,6 @@ import React, { useState, useEffect, useRef} from 'react';
 import './Start.css'
 import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
 import { Link ,useLocation, useNavigate} from "react-router-dom";
-//35.132757, 129.106966
-//35.142465, 129.107140
-//35.131721, 129.106824
-//35.131706, 129.106410
-
 
 function MyMap({path ,center}){
 
@@ -44,6 +39,10 @@ export default function Start() {
     const [tracking, setTracking]=useState(false);
     const watchIdRef = useRef(null);
     const [path, setPath]= useState([currentPosition])
+
+    const [totalDistance, setTotalDistance]=useState(0);  //총 걸은 거리
+    const [time, setTime]=useState(0);  // 총 시간(초)
+    const timerRef = useRef(null);
 
     // 'pause' 버튼 클릭 시 실행되는 함수
     const togglePause = () => {
@@ -88,16 +87,12 @@ export default function Start() {
             watchIdRef.current = null;
         }
         setTracking(false);
+        // stopTimer();
     }
-
-//35.132757, 129.106966
-//35.142465, 129.107140
-//35.131721, 129.106824
-//35.131706, 129.106410
-
     useEffect(()=>{
         console.log(currentPosition)
     },[currentPosition])
+
     //연습 함수
     const example = () =>{
         setTimeout(function(){
@@ -123,10 +118,34 @@ export default function Start() {
     }
 
     useEffect(()=>{
-        startTracking();
-        // example();
-    },[])
+        if (isPaused) {
+            stopTimer();
+            stopTracking();
+        } else {
+            startTimer();
+            startTracking();
+        }
+        console.log(isPaused)
+    },[isPaused])
 
+    const startTimer = () => {
+        if (timerRef.current === null) {
+            timerRef.current = setInterval(()=>{
+                setTime((prevTime)=>(prevTime+1))
+            }, 1000)
+    }   
+    }
+    const stopTimer = () => {
+        console.log('시간중지')
+        clearInterval(timerRef.current)
+        timerRef.current = null;
+    }
+    const formatTime = (seconds) => {
+        const hours = Math.floor(seconds /3600);
+        const minutes = Math.floor((seconds % 3600) /60);
+        const secs = seconds % 60;
+        return `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}: ${String(secs).padStart(2,'0')}`;
+    };
 
 
     // icon3 클릭 시 실행되는 함수
@@ -160,7 +179,7 @@ export default function Start() {
                 <div className="start_label_distance">Km</div>
                 <div className="start_value_distance">0.00</div>
                 <div className="start_label_time">시간</div>
-                <div className="start_value_time">00:00:00</div>
+                <div className="start_value_time">{formatTime(time)}</div>
 
             {/* 조건부 렌더링을 사용하여  'pause' 버튼 또는 '종료'와 '재시작' 버튼을 렌더링 */}
             {!isPaused ? (
