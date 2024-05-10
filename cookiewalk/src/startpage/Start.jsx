@@ -1,22 +1,39 @@
 import React, { useState, useEffect, useRef} from 'react';
 import './Start.css'
-import {Container as MapDiv, NaverMap, Marker, useNavermaps} from 'react-naver-maps'
+import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
 import { Link ,useLocation, useNavigate} from "react-router-dom";
+//35.132757, 129.106966
+//35.142465, 129.107140
+//35.131721, 129.106824
+//35.131706, 129.106410
+
 
 function MyMap({path ,center}){
 
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
     return(
     //기본값 또는 현재위치로 중심좌표 설정
-    <NaverMap defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng): new  navermaps.LatLng((37.3595704, 127.105399))}  defaultZoom={15}>
-        {center &&(<Marker defaultPosition={new navermaps.LatLng(center.lat , center.lng)}/>)}
+    <NaverMap 
+        defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng): new  navermaps.LatLng((37.3595704, 127.105399))}  defaultZoom={15}
+        center={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng(37.3595704, 127.105399)}>
+        {center &&(
+        <Marker position={new navermaps.LatLng(center.lat , center.lng)}/>)}
+        {path.length > 1 && (
+            <Polyline
+            path={path.map(p => new navermaps.LatLng(p.lat,p.lng))}
+            strokeColor='blue' // 선색깔
+            strokeWeight={2} //선두께
+            strokeOpacity={0.8} //투명도
+            strokeStyle="solid"
+            />
+        )}
     </NaverMap>
     )
 }
 
 export default function Start() {
     const location = useLocation();
-    console.log(location.state)
+    // console.log(location.state)
 
     // expanded_content의 상태를 관리하는 state
     const [isExpanded, setIsExpanded] = useState(true);
@@ -26,6 +43,7 @@ export default function Start() {
     const [currentPosition, setCurrentPosition] =useState(location.state.currentPosition)
     const [tracking, setTracking]=useState(false);
     const watchIdRef = useRef(null);
+    const [path, setPath]= useState([currentPosition])
 
     // 'pause' 버튼 클릭 시 실행되는 함수
     const togglePause = () => {
@@ -45,17 +63,17 @@ export default function Start() {
             setTracking(true);
             watchIdRef.current=navigator.geolocation.watchPosition(
                 (position)=>{
-                    const {latitude,longitude} = position.coords;
+                    const {latitude,longitude, speed} = position.coords;
+                    const newPosition = {lat : latitude , lng: longitude};
                     setCurrentPosition({lat:latitude, lng:longitude});
-                    console.log(position.coords)
-                    console.log(position.coords.speed)
+                    setPath((prevPath)=> [...prevPath, newPosition])
                 },                
                 (error) => {
                     console.error('위치추적 실패', error);
                 },
                 {
                     enableHighAccuracy:true,
-                    timeout:10000,
+                    timeout:20000,
                 }
             );
         }else{
@@ -72,8 +90,41 @@ export default function Start() {
         setTracking(false);
     }
 
+//35.132757, 129.106966
+//35.142465, 129.107140
+//35.131721, 129.106824
+//35.131706, 129.106410
+
+    useEffect(()=>{
+        console.log(currentPosition)
+    },[currentPosition])
+    //연습 함수
+    const example = () =>{
+        setTimeout(function(){
+            const newPosition = {lat :35.132757 , lng: 129.106966};
+            setCurrentPosition(newPosition);
+            setPath((prevPath)=> [...prevPath, newPosition])
+        },2000)
+        setTimeout(function(){
+            const newPosition = {lat:35.142465, lng:129.107140};
+            setCurrentPosition(newPosition);
+            setPath((prevPath)=> [...prevPath, newPosition])
+        },4000)
+        setTimeout(function(){
+            const newPosition = {lat:35.131721, lng:129.106824};
+            setCurrentPosition(newPosition);
+            setPath((prevPath)=> [...prevPath, newPosition])
+        },6000)
+        setTimeout(function(){
+            const newPosition = {lat:35.131706, lng:129.106410};
+            setCurrentPosition(newPosition);
+            setPath((prevPath)=> [...prevPath, newPosition])
+        },8000)
+    }
+
     useEffect(()=>{
         startTracking();
+        // example();
     },[])
 
 
@@ -96,7 +147,7 @@ export default function Start() {
             {/* 지도 넣을 곳 */}
             {/* <img className="e118_443" src="./images/image 229_4174.png" alt="Icon 2" /> */}
 
-            <MapDiv className='e118_443'><MyMap path={[]} center={currentPosition}/></MapDiv>
+            <MapDiv className='e118_443'><MyMap path={path} center={currentPosition}/></MapDiv>
             {/* <MapDiv style={{width: '100%', height: '600px'}}><MyMapStart/></MapDiv> */}
 
             
