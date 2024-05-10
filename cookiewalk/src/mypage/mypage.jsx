@@ -135,7 +135,7 @@ export const Tab = () => {
         <div className="profile_edit"></div>
         <Link to="/profile_edit"><div className="profile_edit_text">프로필 편집</div></Link>
         <div className="profile_share"></div>
-        <div className="profile_share_text">프로필 공유</div>
+        <div className="profile_share_text">완성한 그림</div>
         <div>
           <div className='TabMenu'>
             {menuArr.map((el, index) => (

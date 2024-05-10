@@ -30,14 +30,12 @@ export default function MypageMenu() {
         <img className="darkmode_icon" src="./icon/bright.svg" alt="" />
         <div className={`darkmode_onoff ${darkMode ? 'on' : ''}`} onClick={toggleDarkMode}></div>
       </div>
-      {/* <div className="darkmode"><img className="darkmode_icon" src="./icon/bright.svg" alt="" /></div> */}
       <span className="darkmode_text">다크모드</span>
-      {/* <div className={darkMode ? "darkmode_onoff dark-mode-on" : "darkmode_onoff"}></div> */}
       <div className="division1"></div>
 
       <span className="menu2">내활동 관리</span>
       <div className="saved"><img className="saved_icon" src="./icon/save.svg" alt="" /></div>
-      <span className="saved_text">저장한 게시물</span>
+      <span className="saved_text">저장한 경로</span>
       <div className="go2"><img className='go2_icon' src="./icon/arrow.svg" alt="" /></div>
 
       <div className="mm_line2"></div>
