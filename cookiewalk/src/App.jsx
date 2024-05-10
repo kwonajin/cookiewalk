@@ -55,11 +55,7 @@ export default function App() {
             {/* <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} /> */}
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/map" element={<ProtectedRoute><MapSearch /></ProtectedRoute>} />
-<<<<<<< HEAD
             <Route path="/drawmap" element={<ProtectedRoute><DrawMap /></ProtectedRoute>} />
-=======
-            <Route path="/draw_map" element={<ProtectedRoute><Draw_map /></ProtectedRoute>} />
->>>>>>> 42e60c2da5e691f89f9a783e0580e5ed2170f35d
             <Route path="/BeforeStart" element={<ProtectedRoute><BeforeStart /></ProtectedRoute>} />
             <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />
             <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
