@@ -27,6 +27,7 @@ import MypageMenu from './mypage/mypage_menu.jsx';
 import DrawMap from './map/draw_map.jsx';
 import AccountSetting from './mypage/account_setting.jsx';
 import AccountSetting2 from './mypage/account_setting2.jsx';
+import FinishedArt from './mypage/finished_art.jsx';
 
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
@@ -35,6 +36,7 @@ import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 
 import { NavermapsProvider } from 'react-naver-maps';
+
 
 export default function App() {
 
@@ -74,6 +76,8 @@ export default function App() {
             <Route path="/mypage_menu" element={<ProtectedRoute><MypageMenu /></ProtectedRoute>} />
             <Route path="/account_setting" element={<ProtectedRoute><AccountSetting /></ProtectedRoute>} />
             <Route path="/account_setting2" element={<ProtectedRoute><AccountSetting2 /></ProtectedRoute>} />
+            <Route path="/finished_art" element={<ProtectedRoute><FinishedArt /></ProtectedRoute>} />
+
 
           </Routes>
         </NavermapsProvider>

@@ -83,8 +83,7 @@ export default function BeforeStart(){
 
     return(
         <div className="BeforeStart_container">
-            <Link to='/home'><div><img className='e118_437' src="./icon/arrow.svg"/></div></Link>
-            <div><img className='e118_439' src="./icon/setting.svg"/></div>
+            <Link to='/home'><div><img className='Before_start_backarrow' src="./icon/arrow.svg"/></div></Link>
             
             <MapDiv className='MapStyle'><MyMap center={currentPosition} /></MapDiv>
             {/* 지도 넣는 곳 */}
