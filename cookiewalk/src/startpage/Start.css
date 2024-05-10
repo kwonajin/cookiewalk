@@ -5,29 +5,28 @@ body{
     /* justify-content: center; */
     align-items: center;
 }
-.expanded {
-	max-height: 500px; /* 컨텐츠가 확장될 때의 최대 높이 */
+.s_expanded {
 	top: 420px;
 }
 
-.collapsed {
+.s_collapsed {
 	max-height: 30px; /* 컨텐츠가 접혔을 때의 최대 높이 */
 	padding: 20px 0; /* 접혔을 때 상단 패딩 유지 */
 	top: 733px;
 }
 
-.icon3-expanded {
+.s_icon3-expanded {
 	/* 펼쳐졌을 때의 아이콘 위치 */
 	top: 0px;
 }
-.icon3-collapsed {
+.s_icon3-collapsed {
 	top: 0px; /* 예시 값, 실제 필요에 따라 조정 */
 }
 
-.expanded_content{
-	position: relative;
+.start_expanded_content{
+	position: absolute;
 	/* top: 420px; */
-	bottom: auto;
+	bottom: 0;
 	width: 390px;
 	height: 380px;
 	display: flex;
@@ -39,14 +38,17 @@ body{
 }
 
 .Start_container{
-	overflow: hidden;
     background-color:rgba(255, 255, 255, 1);
 	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
 	width:390px;
 	height:100%;
     min-height: 800px;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
 	position:relative;
 }
+
 .close-button {
     position: absolute;
     left: 12px;
@@ -65,22 +67,23 @@ body{
 	left:346px;
 	top:10px;
 }
-
 .MapStyle_start{
 	width:390px;
 	height:751px;
 	position:absolute;
 	left:0px;
-	top:49px;
+	top:0px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
+
+
 .e118_443 { 
 	width:390px;
 	height:751px;
 	position:absolute;
 	left:0px;
-	top:49px;
+	top:0px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -92,9 +95,8 @@ body{
 	left:72px;
 	top:50px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	font-weight: 700;
 	font-size:16px;
-	letter-spacing:0;
 }
 .start_label_time { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
@@ -132,11 +134,7 @@ body{
 	font-size:32px;
 	letter-spacing:0;
 }
-
-
-
-
-.icon3 {
+.s_icon3 {
     position: absolute;
     left: 170px;
     width: 50px;
@@ -151,6 +149,7 @@ body{
 	position:absolute;
 	left:151px;
 	bottom: 78px;
+	cursor: pointer;
 }
 .button_circle { 
 	border-radius:500px;
@@ -177,5 +176,57 @@ body{
 	left:52px;
 	top:31px;
 }
-
+.button-container {
+	width: 300px;
+	height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	position: absolute; /* 절대 위치로 설정합니다. */
+	bottom: 0; /* 하단에 배치됩니다. */
+	left: 50%; /* 가운데 정렬을 위해 왼쪽으로 50% 이동합니다. */
+	transform: translateX(-50%);/* 자체의 가로 길이의 절반만큼 다시 왼쪽으로 이동하여 가운데 정렬합니다. */
+	margin-bottom: 20%;
+	}
+	
+.button1{
+	width: 95px;
+	height: 95px;
+	background-color: #7ca0c1;
+	border-radius: 50%;
+	margin-right: 20px;
+}
+  
+.button2 {
+	width: 95px;
+	height: 95px;
+	background-color: #7ca0c1;
+	border-radius: 50%;
+}
+  
+.button-label-end{
+	position: relative;
+	left: -3px;
+	width: 100px;
+	height: 25px;
+	font-size: 24px;
+	font-family: Noto Sans KR;
+	font-weight: bold;
+	color: #fdfdfd;
+	text-align: center;
+	margin-top: 28px;
+}
+.button-label-restart{
+	width: 100px;
+	height: 25px;
+	position: relative;
+	top: 0px;
+	font-size: 24px;
+	font-family: Noto Sans KR;
+	font-weight: bold;
+	color: #fdfdfd;
+	text-align: center;
+	margin-top: 28px;
+	cursor: pointer;
+}
 

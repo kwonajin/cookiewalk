@@ -81,7 +81,7 @@ export default function BeforeStart(){
 
     return(
         <div className="BeforeStart_container">
-            <div><img className='e118_437' src="./icon/arrow.svg"/></div>
+            <Link to='/home'><div><img className='e118_437' src="./icon/arrow.svg"/></div></Link>
             <div><img className='e118_439' src="./icon/setting.svg"/></div>
             
             <MapDiv className='MapStyle'><MyMap center={currentPosition} /></MapDiv>
@@ -101,8 +101,8 @@ export default function BeforeStart(){
                 <span className="e118_434">미완성 경로</span>
             </Link>
             
-            <div onClick={startPage}>
-                <span className="e118_433">시작</span>
+            <div className='startpage_link' onClick={startPage}>
+                <span className="start_button_label">시작</span>
                 <div><img className='start_logo' src="./images/cookie-run-white.png"/></div>
                 <div className="start_button_circle"></div>
             </div>

@@ -139,7 +139,7 @@ body{
 	height:0px;
 	position:absolute;
 	left:0px;
-	top:45px;
+	top:50px;
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
 
@@ -341,24 +341,26 @@ body{
 	top:2.166656494140625px;
 }
 
-/* 네비게이션 바 내에 + 버튼 위치 조정 */
-.navbar .add-map {
-	display: inline-block;
-	vertical-align: middle; /* 수직 정렬 */
-	margin-left: auto; /* 왼쪽 마진 자동으로 설정하여 오른쪽에 버튼이 위치하도록 함 */
-	margin-right: 20px; /* 오른쪽 공간 추가 */
-}
+/* 네비게이션 바 내에 버튼 위치 조정 */
 
-
-.navbar .floating-add-button {
+.floating-add-button {
 	position: absolute; /* 네비게이션 바 내에서 절대 위치 설정 */
-	right: 0px; /* 오른쪽에서 10px 떨어진 곳에 위치 */
-	bottom: 70px; /* 하단에서 10px 떨어진 곳에 위치 */
+	right: 10px; /* 오른쪽에서 10px 떨어진 곳에 위치 */
+	width: 40px;
+	height: 40px;
+	bottom: 100px; /* 하단에서 100px 떨어진 곳에 위치 */
 	z-index: 1000; /* 다른 요소 위에 레이어링 */
+	background-color: #7ca0c1;
+	border-radius: 50%;
+	display: flex; /* Flexbox 레이아웃 사용 */
+	justify-content: center; /* 가로축 중앙 정렬 */
+	align-items: center; /* 세로축 중앙 정렬 */
 }
 
-.navbar .floating-add-button img {
-width: 80px; /* 이미지의 너비를 80px로 조정 */
-height: 80px; /* 이미지의 높이를 80px로 조정 */
-cursor: pointer; /* 포인터 커서 설정 */
+
+.floating-add-button-icon{
+	filter: brightness(0) invert(1);
+	width: 25px; /* 이미지의 너비를 80px로 조정 */
+	height: 25px; /* 이미지의 높이를 80px로 조정 */
+	cursor: pointer; /* 포인터 커서 설정 */
 }

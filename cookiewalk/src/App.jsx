@@ -5,13 +5,11 @@ import FindPassword2 from './login/FindPassword2.jsx';
 
 import Home from "./main/home";
 import MapSearch from './map/map';
-import DrawMap from './map/draw_map';
 // import Pause from "./startpage/pause";
 import BeforeStart from './startpage/BeforeStart'
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
 import Signup from './signup/Signup';
-import Signup2 from "./signup/Signup2";
 import Signup3 from "./signup/Signup3";
 import Signup4 from "./signup/Signup4";
 import Write from "./main/write"; 
@@ -26,7 +24,9 @@ import ProfileEdit from './mypage/profile_edit.jsx'
 import PersonalProfile from './personal/personal_profile.jsx'
 import HomePersonalProfile from './main/home_personal_profile.jsx';
 import MypageMenu from './mypage/mypage_menu.jsx';
-import Draw_map from './map/draw_map.jsx';
+import DrawMap from './map/draw_map.jsx';
+import AccountSetting from './mypage/account_setting.jsx';
+import AccountSetting2 from './mypage/account_setting2.jsx';
 
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
@@ -49,7 +49,6 @@ export default function App() {
             <Route path="/find_ps2" element={<ProtectedRoute_2><FindPassword2 /></ProtectedRoute_2>} />
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/signup" element={<ProtectedRoute_2><Signup/></ProtectedRoute_2>} />
-            <Route path="/signup2" element={<ProtectedRoute_2><Signup2/></ProtectedRoute_2>} />
             <Route path="/signup3" element={<ProtectedRoute><Signup3/></ProtectedRoute>} />
             <Route path="/signup4" element={<ProtectedRoute><Signup4 /></ProtectedRoute>} />
             {/* <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} /> */}
@@ -57,7 +56,7 @@ export default function App() {
             <Route path="/map" element={<ProtectedRoute><MapSearch /></ProtectedRoute>} />
             <Route path="/drawmap" element={<ProtectedRoute><DrawMap /></ProtectedRoute>} />
             <Route path="/BeforeStart" element={<ProtectedRoute><BeforeStart /></ProtectedRoute>} />
-            <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />
+            <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />            
             <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
             <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
@@ -73,6 +72,9 @@ export default function App() {
             <Route path="/personal_profile" element={<ProtectedRoute><PersonalProfile /></ProtectedRoute>} />
             <Route path="/home_personal_profile" element={<ProtectedRoute><HomePersonalProfile /></ProtectedRoute>} />
             <Route path="/mypage_menu" element={<ProtectedRoute><MypageMenu /></ProtectedRoute>} />
+            <Route path="/account_setting" element={<ProtectedRoute><AccountSetting /></ProtectedRoute>} />
+            <Route path="/account_setting2" element={<ProtectedRoute><AccountSetting2 /></ProtectedRoute>} />
+
           </Routes>
         </NavermapsProvider>
       </TokenProvider>
