@@ -34,7 +34,9 @@ export default function BeforeStart(){
             navigator.geolocation.getCurrentPosition(
                 (position)=>{
                     const {latitude, longitude} = position.coords;
+                    console.log(position.coords)
                     setCurrentPosition({lat:latitude, lng:longitude});
+                    console.log(currentPosition)
                     setLoading(false)
                 },
                 (error)=>{
@@ -44,7 +46,7 @@ export default function BeforeStart(){
                 },
                 {
                 enableHighAccuracy: true, //높은 정확도로 위치정보 가져오기
-                timeout:10000,            //위치가져오기 제한시간 설정
+                timeout:20000,            //위치가져오기 제한시간 설정
                 maximumAge:0              //캐시된 위치 정보 사용 x
                 }
             );
@@ -81,8 +83,7 @@ export default function BeforeStart(){
 
     return(
         <div className="BeforeStart_container">
-            <Link to='/home'><div><img className='e118_437' src="./icon/arrow.svg"/></div></Link>
-            <div><img className='e118_439' src="./icon/setting.svg"/></div>
+            <Link to='/home'><div><img className='Before_start_backarrow' src="./icon/arrow.svg"/></div></Link>
             
             <MapDiv className='MapStyle'><MyMap center={currentPosition} /></MapDiv>
             {/* 지도 넣는 곳 */}

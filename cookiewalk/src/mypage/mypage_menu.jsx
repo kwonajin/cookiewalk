@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './mypage_menu.css'
+import {supabase} from '../supabaseClient'
 
 export default function MypageMenu() {
   const [darkMode, setDarkMode] = useState(false);
@@ -9,6 +10,18 @@ export default function MypageMenu() {
     setDarkMode(!darkMode);
     // 여기서 다크 모드를 활성화 또는 비활성화하는 코드를 추가할 수 있습니다.
   };
+
+  async function signOut() {
+    const { error } = await supabase.auth.signOut()
+    if(error){
+      console.log(error)
+    }
+    navigate('/')
+  }
+  function logouthandle(e){
+    e.preventDefault();
+    signOut();
+  }
 
   return (
     <div className="mm_background">
@@ -63,7 +76,7 @@ export default function MypageMenu() {
       <div className="division3"></div>
 
       <span className="menu4">로그인 관리</span>
-      <span className="logout">로그아웃</span>
+      <span className="logout" onClick={logouthandle}>로그아웃</span>
     </div>
   );
 }
