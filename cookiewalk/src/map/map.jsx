@@ -87,8 +87,6 @@ export default function MapSearch() {
                 ))}
             </div>
 
-
-
         
 
         <div className="navbar">
@@ -98,13 +96,12 @@ export default function MapSearch() {
         <Link to="/group"><div className="group"><img className="map_group_icon" src="./icon/group.svg" alt="" /></div></Link>
         <Link to="/mypage"><div className="my"><img className="map_my_icon" src="./icon/my.svg" alt="" /></div></Link>
          {/* 추가된 + 버튼 */}
-        <Link to="/draw_map" className="floating-add-button">
+        <Link to="/drawmap" className="floating-add-button">
             <img className='floating-add-button-icon' src="./icon/write.svg" alt="Add Map" />
         </Link>
         </div>
 
 
-        
     
     </div>  
 );
