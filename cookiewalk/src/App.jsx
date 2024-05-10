@@ -9,7 +9,6 @@ import BeforeStart from './startpage/BeforeStart'
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
 import Signup from './signup/Signup';
-
 import Signup3 from "./signup/Signup3";
 import Signup4 from "./signup/Signup4";
 import Write from "./main/write"; 
@@ -25,6 +24,8 @@ import PersonalProfile from './personal/personal_profile.jsx'
 import HomePersonalProfile from './main/home_personal_profile.jsx';
 import MypageMenu from './mypage/mypage_menu.jsx';
 import Draw_map from './map/draw_map.jsx';
+import AccountSetting from './mypage/account_setting.jsx';
+import AccountSetting2 from './mypage/account_setting2.jsx';
 
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
@@ -54,8 +55,7 @@ export default function App() {
             <Route path="/map" element={<ProtectedRoute><MapSearch /></ProtectedRoute>} />
             <Route path="/draw_map" element={<ProtectedRoute><Draw_map /></ProtectedRoute>} />
             <Route path="/BeforeStart" element={<ProtectedRoute><BeforeStart /></ProtectedRoute>} />
-            <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />
-            <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
+            <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />            <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
             <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
@@ -70,6 +70,9 @@ export default function App() {
             <Route path="/personal_profile" element={<ProtectedRoute><PersonalProfile /></ProtectedRoute>} />
             <Route path="/home_personal_profile" element={<ProtectedRoute><HomePersonalProfile /></ProtectedRoute>} />
             <Route path="/mypage_menu" element={<ProtectedRoute><MypageMenu /></ProtectedRoute>} />
+            <Route path="/account_setting" element={<ProtectedRoute><AccountSetting /></ProtectedRoute>} />
+            <Route path="/account_setting2" element={<ProtectedRoute><AccountSetting2 /></ProtectedRoute>} />
+
           </Routes>
         </NavermapsProvider>
       </TokenProvider>

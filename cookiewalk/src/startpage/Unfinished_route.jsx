@@ -21,7 +21,7 @@ return (
         <Unfinished_active></Unfinished_active>
         
 
-        <Unfinished_List></Unfinished_List>
+        <Link to='/BeforeStart'><Unfinished_List></Unfinished_List></Link>
         <Unfinished_List></Unfinished_List>
         <Unfinished_List></Unfinished_List>
         <Unfinished_List></Unfinished_List>

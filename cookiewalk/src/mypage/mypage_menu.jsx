@@ -18,9 +18,13 @@ export default function MypageMenu() {
       <div className="mm_line"></div>
 
       <span className="menu1">계정 및 앱 설정</span>
-      <div className="account"><img className='account_icon' src="./icon/profile.svg" alt="" /></div>
-      <span className="account_info">계정 정보</span>
-      <div className="go1"><img className='go1_icon' src="./icon/arrow.svg" alt="" /></div>
+      <Link to="/account_setting">
+        <div className='account_info_box'>
+          <div className="account"><img className='account_icon' src="./icon/profile.svg" alt="" /></div>
+          <span className="account_info">계정 정보</span>
+          <div className="go1"><img className='go1_icon' src="./icon/arrow.svg" alt="" /></div>
+        </div>
+      </Link>
       <div className="mm_line1"></div>
       <div className="darkmode" onClick={toggleDarkMode}>
         <img className="darkmode_icon" src="./icon/bright.svg" alt="" />
