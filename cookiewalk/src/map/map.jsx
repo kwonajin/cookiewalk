@@ -86,8 +86,8 @@ export default function MapSearch() {
                     <MapList key={index}></MapList>
                 ))}
             </div>
-            
-            
+
+        
 
         <div className="navbar">
         <Link to="/home"><div className="home"><img className="map_home_icon" src="./icon/home.svg" alt="" /></div></Link>
@@ -95,7 +95,14 @@ export default function MapSearch() {
         <Link to="/BeforeStart"><div className="run"><img className="map_run_icon" src="./icon/record.svg" alt="" /></div></Link>
         <Link to="/group"><div className="group"><img className="map_group_icon" src="./icon/group.svg" alt="" /></div></Link>
         <Link to="/mypage"><div className="my"><img className="map_my_icon" src="./icon/my.svg" alt="" /></div></Link>
+         {/* 추가된 + 버튼 */}
+        <Link to="/drawmap" className="floating-add-button">
+            <img className='floating-add-button-icon' src="./icon/write.svg" alt="Add Map" />
+        </Link>
         </div>
+
+
+    
     </div>  
 );
 }
