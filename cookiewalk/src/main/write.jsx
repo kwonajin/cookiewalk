@@ -8,11 +8,11 @@ export default function Write() {
   const navigate = useNavigate();
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const userInfo = useToken();
   const userID = userInfo.user;
 
-  // 파일 업로드 함수
   const handleFileUpload = async () => {
     if (!file) return null;
 
@@ -24,73 +24,71 @@ export default function Write() {
       .from('image')
       .upload(filePath, file);
 
-      console.log(file)
-      console.log(filePath)
-
     if (uploadError) {
       throw new Error('Failed to upload image');
     }
 
-    // 파일 URL 반환
-    return uploadData.Key;
+    // Assuming the bucket 'image' is set to public, construct the URL directly
+    return `https://rbdbdnushdupstmiydea.supabase.co/storage/v1/object/public/image/${filePath}`;
   };
 
-  // 게시물 제출 함수
-  const submitPost = async (e) => {
-    e.preventDefault();
+  const submitPost = async () => {
+    if (!text || !file) {
+      alert('모든 필드를 채워주세요.');
+      return;
+    }
+    setIsLoading(true);
     try {
-      // 파일 업로드
-      const filePath = await handleFileUpload();
-      const createdAt = new Date();
-      const postID = `${userID}_${createdAt.toISOString()}`;
-
-      // 파일 URL을 public URL로 변환
-      const { publicURL, error: urlError } = supabase.storage
-        .from('image')
-        .getPublicUrl(filePath);
-
-      if (urlError) throw new Error('Failed to get public URL');
-
-      // 게시물 데이터 삽입
+      const newImageUrl = await handleFileUpload();
+    
+      const createdAt = new Date().toISOString();
+      const postID = `${userID}_${createdAt}`;
+    
       const { data, error } = await supabase.from('post').insert({
         post_id: postID,
         user_id: userID,
-        walking_record_id: 'example',
+        walking_record_id: 'example', // Update this value according to your context
         content: text,
-        image: publicURL,
+        image: newImageUrl,
         locate: '부산',
         created_at: createdAt
       });
-
-      if (error) throw new Error('Failed to insert post');
-
+    
+      if (error) {
+        throw new Error('Failed to insert post');
+      }
+    
       console.log('Insert success:', data);
-      navigate('/home'); // 성공적으로 게시 후 홈으로 리다이렉션
+      navigate('/home');
     } catch (error) {
       console.error('Error:', error.message);
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
-
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
   return (
     <div className="write-page">
-      <Link to="/home"><div className="write_back"><img className='write_back_icon' src="./icon/arrow.svg" alt="" /></div></Link>
+      <Link to="/home">
+        <div className="write_back">
+          <img className='write_back_icon' src="./icon/arrow.svg" alt="Back" />
+        </div>
+      </Link>
       <div className="write_title">새 게시물</div>
-      <div className="write_add" onClick={submitPost}>작성</div>
+      <button className="write_add" onClick={submitPost} disabled={isLoading}>
+        {isLoading ? '작성 중...' : '작성'}
+      </button>
       <textarea className="write_text" placeholder="나의 활동을 공유하세요!" value={text} onChange={(e) => setText(e.target.value)} />
       <div className="write_navbar">
-        <input className='picture_add' type="file" accept='image/*' onChange={handleFileChange} />
+        <input className='picture_add' type="file" accept='image/*' onChange={(e) => setFile(e.target.files[0])} />
         <div className="picture1"></div>
         <div className="picture2"></div>
       </div>
     </div>
   );
 }
-    
