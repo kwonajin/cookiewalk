@@ -5,7 +5,8 @@ import FindPassword2 from './login/FindPassword2.jsx';
 
 import Home from "./main/home";
 import MapSearch from './map/map';
-// import Pause from "./startpage/pause";
+import Map_detail from './map/map_detail.jsx';
+
 import BeforeStart from './startpage/BeforeStart'
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
@@ -30,6 +31,7 @@ import AccountSetting2 from './mypage/account_setting2.jsx';
 
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
+import Activity_save from './startpage/activity_save.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
@@ -54,10 +56,12 @@ export default function App() {
             {/* <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} /> */}
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/map" element={<ProtectedRoute><MapSearch /></ProtectedRoute>} />
+            <Route path="/mapDetail" element={<ProtectedRoute><Map_detail /></ProtectedRoute>} />
             <Route path="/drawmap" element={<ProtectedRoute><DrawMap /></ProtectedRoute>} />
             <Route path="/BeforeStart" element={<ProtectedRoute><BeforeStart /></ProtectedRoute>} />
             <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />            
             <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
+            <Route path="/Activity_Save" element={<ProtectedRoute><Activity_save /></ProtectedRoute>} />
             <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
