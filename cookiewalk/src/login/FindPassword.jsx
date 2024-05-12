@@ -7,7 +7,7 @@ export default function FindPassword() {
 return (
     <div className="FindPassword_container">
 
-        <Link to='/Login'><div><img className="find_ps_back_icon" src="./icon/ic--round-arrow-back.svg" alt="" /></div></Link>
+        <Link to='/'><div><img className="find_ps_back_icon" src="./icon/ic--round-arrow-back.svg" alt="" /></div></Link>
         
         <span className="FindPassword_logo1">CookieWalk</span>
         <div><img className="FindsPassword_logo2" src="./images/new_cookie_logo.png" alt="" /></div>

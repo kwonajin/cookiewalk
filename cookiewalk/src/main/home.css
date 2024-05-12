@@ -396,7 +396,7 @@ body{
 	height:25px;
 	position:relative;
 	left:8px;
-	top:-50px;
+	top:-12px;
 }
 
 .heart_icon { 
@@ -413,7 +413,7 @@ body{
 	height:24px;
 	position:relative;
 	left:73px;
-	top:-74px;
+	top:-36px;
 }
 
 .comment_icon { 
@@ -425,28 +425,28 @@ body{
 	transform:rotate(180deg);
 }
 
-.save { 
+/* .save { 
 	width:24px;
 	height:24px;
 	position:relative;
 	left:357px;
 	top:-100px;
-}
+} */
 
-.save_icon { 
+/* .save_icon { 
 	width:24px;
 	height:24px;
 	position:relative;
 	left:1.0800000429153442px;
 	top:2.0399999618530273px;
-}
+} */
 
 .share { 
 	width:24px;
 	height:24px;
 	position:relative;
 	left:90px;
-	top:-122px;
+	top:-61px;
 }
 
 .share_icon { 

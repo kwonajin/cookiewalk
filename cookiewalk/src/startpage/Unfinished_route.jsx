@@ -12,11 +12,11 @@ export default function Unfinished_route() {
 
 return (
     <div className="Unfinished_route_container">
-        <Link to='/BeforeStart'><div><img className="Unfinished_back_arrow" src="./icon/arrow.svg"/></div></Link>
-        
-
-        <div className="Unfinished_route_title">미완성 경로</div>
-        <div className="Unfinished_title_active_line"></div>
+        <div className='Unfinished_nav'>
+            <Link to='/BeforeStart'><div><img className="Unfinished_back_arrow" src="./icon/arrow.svg"/></div></Link>
+            <div className="Unfinished_route_title">미완성 경로</div>
+            <div className="Unfinished_title_active_line"></div>
+        </div>
 
         <Unfinished_active></Unfinished_active>
         
