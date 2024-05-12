@@ -103,6 +103,7 @@ export default function Start() {
         console.log(currentPosition)
     },[currentPosition])
 
+
     //연습 함수
     const example = () =>{
         // setTimeout(function(){
