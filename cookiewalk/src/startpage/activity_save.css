@@ -13,7 +13,7 @@ body{
     min-height: 1000px;
 	position:relative;
 }
-.e289_15 { 
+.activity_save_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:80px;
 	height:24px;
@@ -26,9 +26,12 @@ body{
 	font-weight: 600;
 	letter-spacing:0;
 }
-.e289_20 { 
+.activity_save_remove_button { 
+	border: none;
+	background-color: transparent;
 	color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
-	width:31px;
+	padding: 0;
+	width:46px;
 	height:23px;
 	position:absolute;
 	left:345px;
@@ -38,6 +41,7 @@ body{
 	font-size:16px;
 	font-weight: 600;
 	letter-spacing:4;
+	cursor: pointer;
 }
 .e298_23 { 
 	width:390px;
@@ -46,7 +50,7 @@ body{
 	left:0px;
 	top:58px;
 }
-.e298_25 { 
+.activity_save_record_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:126px;
 	height:15px;
@@ -59,7 +63,7 @@ body{
 	font-weight: 800;
 	letter-spacing:0;
 }
-.e298_30 { 
+.activity_save_distance_label { 
 	color:rgba(137.2229638695717, 137.2229638695717, 137.2229638695717, 1);
 	width:60px;
 	height:15px;
@@ -72,19 +76,19 @@ body{
 	font-weight: 700;
 	letter-spacing:0;
 }
-.e298_27 { 
+.activity_save_distance_value { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:75px;
 	height:23px;
 	position:absolute;
 	left:9px;
-	top:523px;
+	top:515px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:18px;
 	letter-spacing:0;
 }
-.e298_33 { 
+.activiity_save_label_divide_line { 
 	transform: rotate(90deg);
 	width:56px;
 	height:0px;
@@ -93,7 +97,7 @@ body{
 	top:520px;
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
-.e298_31 { 
+.activity_save_time_label { 
 	color:rgba(137.2229638695717, 137.2229638695717, 137.2229638695717, 1);
 	width:60px;
 	height:15px;
@@ -106,45 +110,19 @@ body{
 	font-weight: 700;
 	letter-spacing:0;
 }
-.e298_28 { 
+.activity_save_time_value { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:75px;
 	height:23px;
 	position:absolute;
 	left:111px;
-	top:523px;
+	top:515px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:18px;
 	letter-spacing:0;
 }
-.e298_37 { 
-	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:126px;
-	height:15px;
-	position:absolute;
-	left:9px;
-	top:572px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:16px;
-	font-weight: 700;
-	letter-spacing:0;
-}
-.e299_44 { 
-	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:126px;
-	height:15px;
-	position:absolute;
-	left:9px;
-	top:644px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:16px;
-	font-weight: 700;
-	letter-spacing:0;
-}
-.e298_34 { 
+.activity_save_line1 { 
 	transform: rotate(-2.4848166388360215e-17deg);
 	width:390px;
 	height:0px;
@@ -153,8 +131,56 @@ body{
 	top:559px;
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
-
-.e298_38 { 
+.activity_save_route_title { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:126px;
+	height:15px;
+	position:absolute;
+	left:9px;
+	top:568px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:16px;
+	font-weight: 700;
+	letter-spacing:0;
+}
+.activity_save_route_title_contents { 
+	color:rgb(0, 0, 0);
+	width:222px;
+	height:17px;
+	position:absolute;
+	border: none;
+	left:9px;
+	top:599px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:16px;
+	letter-spacing:0;
+}
+.activity_save_route_title_contents::placeholder {
+    color: rgba(137.2229638695717, 137.2229638695717, 137.2229638695717, 1);
+}
+.acitivity_save_location_label { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:126px;
+	height:15px;
+	position:absolute;
+	left:9px;
+	top:641px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:16px;
+	font-weight: 700;
+	letter-spacing:0;
+}
+.acitivity_save_location_icon { 
+	width:25px;
+	height:25px;
+	position:absolute;
+	left:9px;
+	top:673px;
+}
+.activity_save_line2 { 
 	transform: rotate(-2.4848166388360215e-17deg);
 	width:390px;
 	height:0px;
@@ -163,43 +189,7 @@ body{
 	top:634px;
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
-.e289_22 { 
-	color:rgba(137.2229638695717, 137.2229638695717, 137.2229638695717, 1);
-	width:222px;
-	height:17px;
-	position:absolute;
-	left:9px;
-	top:599px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:16px;
-	letter-spacing:0;
-}
-.e299_39 { 
-	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
-	width:316px;
-	height:59px;
-	position:absolute;
-	left:33px;
-	top:754px;
-	border-top-left-radius:5px;
-	border-top-right-radius:5px;
-	border-bottom-left-radius:5px;
-	border-bottom-right-radius:5px;
-}
-.e299_40 { 
-	color:rgba(252.8617027401924, 252.8617027401924, 252.8617027401924, 1);
-	width:128px;
-	height:19px;
-	position:absolute;
-	left:136px;
-	top:770px;
-	font-family:Inter;
-	text-align:left;
-	font-size:20px;
-	letter-spacing:0;
-}
-.e299_41 { 
+.acitivity_save_location { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:309px;
 	height:24px;
@@ -211,11 +201,42 @@ body{
 	font-size:17px;
 	letter-spacing:0;
 }
-.e299_42 { 
-	width:25px;
-	height:25px;
-	position:absolute;
-	left:9px;
-	top:673px;
-}
 
+.Unfinished_SaveRoute_button { 
+	background-color:rgb(183, 202, 220);
+	color: white;
+	font-size: 22px;
+	font-weight: 700;
+	font-family: Noto Sans KR;
+	letter-spacing: 3px;
+	width:323px;
+	height:53px;
+	position:absolute;
+	left:34px;
+	top:740px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border: none;
+	cursor: pointer;
+}
+.Finished_SaveRoute_button { 
+	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
+	color: white;
+	font-size: 22px;
+	font-weight: 700;
+	font-family: Noto Sans KR;
+	letter-spacing: 3px;
+	width:323px;
+	height:53px;
+	position:absolute;
+	left:34px;
+	top:810px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border: none;
+	cursor: pointer;
+}
