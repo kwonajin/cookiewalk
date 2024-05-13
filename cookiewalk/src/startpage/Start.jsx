@@ -251,10 +251,12 @@ export default function Start() {
                 </div>
             ) : (
                 <div className="button-container">
-                    <div className="button1" onClick={() => { /* 종료 로직을 여기에 추가 */ }}>
-                        <div className="button-label-end">종료</div>
-                    </div>
-                    <div className="button2" onClick={restart}>
+                    <Link className="start_button1" to='/Activity_Save'>
+                        <div>
+                            <div className="button-label-end">종료</div>
+                        </div>
+                    </Link>
+                    <div className="start_button2" onClick={restart}>
                         <div className="button-label-restart">재시작</div>
                     </div>
                 </div>

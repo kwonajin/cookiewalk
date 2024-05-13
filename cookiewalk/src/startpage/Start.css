@@ -182,15 +182,16 @@ body{
 	margin-bottom: 20%;
 	}
 	
-.button1{
+.start_button1{
 	width: 95px;
 	height: 95px;
 	background-color: #7ca0c1;
 	border-radius: 50%;
 	margin-right: 20px;
+	text-decoration: none;
 }
   
-.button2 {
+.start_button2 {
 	width: 95px;
 	height: 95px;
 	background-color: #7ca0c1;

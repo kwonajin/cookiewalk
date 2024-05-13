@@ -15,6 +15,10 @@ body{
 	position:relative;
 }
 
+.map_list_link{
+	text-decoration: none;
+}
+
 .map_searchbar { 
 	background-color:rgba(239.04590249061584, 239.04590249061584, 239.04590249061584, 1);
 	width:355px;
