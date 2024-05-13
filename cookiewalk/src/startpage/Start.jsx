@@ -27,7 +27,12 @@ function MyMap({path ,center}){
 }
 
 export default function Start() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const location = useLocation();
+    const navigate = useNavigate();
     // console.log(location.state)
 
     // expanded_content의 상태를 관리하는 state
@@ -55,6 +60,16 @@ export default function Start() {
         setIsPaused(false); // 일시정지 상태를 해제하여 일시정지 버튼을 다시 보이게 함
     // 여기에 위치 추적을 재시작하는 로직을 추가할 수 있습니다!
         startTracking() //위치추적 재시작
+    };
+    // close 버튼 클릭 시 호출되는 함수
+    const handleCloseClick = () => {
+        // confirm 함수를 사용하여 사용자에게 경고 창을 표시합니다.
+        const confirmLeave = window.confirm("경로를 저장하지 않고 종료하시겠습니까?");
+        
+        // 사용자가 '확인'을 클릭한 경우
+        if (confirmLeave) {
+            navigate('/home');
+        }
     };
 
     // 경로 추적 시작
@@ -222,7 +237,7 @@ export default function Start() {
     return (
         <div className="Start_container">
             {/* 'isPaused' 상태에 따라 'close' 버튼을 조건부 렌더링 */}
-            {isPaused && <div className="close-button">CLOSE</div>}
+            {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
 
             {/* 지도 넣을 곳 */}
             {/* <img className="e118_443" src="./images/image 229_4174.png" alt="Icon 2" /> */}

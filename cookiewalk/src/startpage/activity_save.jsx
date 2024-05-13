@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import './activity_save.css'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Activity_save() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    const navigate = useNavigate();
     // 경로 삭제 함수
     const removeActivity = () => {
         const isConfirmed = window.confirm("경로를 저장하지 않고 삭제하시겠습니까?");
+       // 사용자가 '확인'을 클릭한 경우
         if (isConfirmed) {
-            console.log("경로 삭제 로직 실행");
-            // 여기에 실제로 경로를 삭제하는 코드를 추가해주세요!
-        } else {
-            console.log("삭제 취소");
-        }
+        navigate('/home');
+    }
     };
     return(
         <div className="activity_save_container">
