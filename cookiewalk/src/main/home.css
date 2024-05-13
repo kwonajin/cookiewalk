@@ -326,7 +326,6 @@ body{
 
 .dropdown_menu > div:hover {
   background-color: #f2f2f2; /* 마우스를 올렸을 때의 배경색 */
-  color: #000; /* 마우스를 올렸을 때의 글자색 */
   cursor: pointer; /* 마우스 커서를 포인터 모양으로 변경 */
 }
 
