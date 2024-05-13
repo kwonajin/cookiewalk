@@ -297,6 +297,58 @@ body{
 	height:24px;
 	position:relative;
 	top:1px;
+	cursor: pointer;
+}
+
+.main_content_box {
+	position: relative; /* 이 부분이 중요 */
+	margin-bottom: -70px;
+}
+
+.dropdown_menu {
+  position: absolute; /* 부모 요소 기준으로 위치 지정 */
+  top: 219px; /* dotmenu 아이콘의 바로 아래에 위치하도록 설정 */
+  right: 0; /* 오른쪽 정렬 */
+  background-color: white; /* 배경색 설정 */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* 드롭다운 메뉴에 그림자 효과 추가 */
+  z-index: 1; /* 다른 요소들 위에 나타나도록 설정 */
+	font-size: 14px;
+}
+
+.dropdown_menu > div {
+  padding: 8px 16px; /* 패딩 설정 */
+  border-bottom: 1px solid #dddddd; /* 하단 테두리 추가 */
+}
+
+.dropdown_menu > div:last-child {
+  border-bottom: none; /* 마지막 요소의 하단 테두리 제거 */
+}
+
+.dropdown_menu > div:hover {
+  background-color: #f2f2f2; /* 마우스를 올렸을 때의 배경색 */
+  cursor: pointer; /* 마우스 커서를 포인터 모양으로 변경 */
+}
+
+.dropdown_icon{
+	margin-left: -4px;
+	padding-right: 6px;
+	padding-top: 3px;
+}
+
+.menu_title{
+	padding-top: 2px;
+}
+
+.dropdown_icon2{
+	filter: invert(36%) sepia(33%) saturate(766%) hue-rotate(314deg) brightness(117%) contrast(109%);
+	margin-left: -4px;
+	padding-right: 6px;
+	padding-top: 3px;
+}
+
+.menu_title2{
+	padding-top: 2px;
+	color: #ca5959;
 }
 
 .content_img { 

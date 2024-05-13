@@ -47,9 +47,13 @@ export default function MypageMenu() {
       <div className="division1"></div>
 
       <span className="menu2">내활동 관리</span>
-      <div className="saved"><img className="saved_icon" src="./icon/save.svg" alt="" /></div>
-      <span className="saved_text">저장한 경로</span>
-      <div className="go2"><img className='go2_icon' src="./icon/arrow.svg" alt="" /></div>
+      <Link to="/saved">
+        <div className='saved_box'>
+          <div className="saved"><img className="saved_icon" src="./icon/save.svg" alt="" /></div>
+          <span className="saved_text">저장한 경로</span>
+          <div className="go2"><img className='go2_icon' src="./icon/arrow.svg" alt="" /></div>
+        </div>
+      </Link>
 
       <div className="mm_line2"></div>
       <div className="liked"><img className="liked_icon" src="./icon/heart.svg" alt="" /></div>

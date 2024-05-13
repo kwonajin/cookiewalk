@@ -11,16 +11,15 @@ export default function FinishedArt() {
     }, []);
 
 return (
-    <div className="Unfinished_route_container">
-        <div className='Unfinished_nav'>
-            <Link to='/mypage'><div><img className="Unfinished_back_arrow" src="./icon/arrow.svg"/></div></Link>
-            <div className="Unfinished_route_title">완성한 그림</div>
-            <div className="Unfinished_title_active_line"></div>
+    <div className="finished_route_container">
+        <div className='finished_nav'>
+            <Link to='/mypage'><div><img className="finished_back_arrow" src="./icon/arrow.svg"/></div></Link>
+            <div className="finished_route_title">완성한 그림</div>
+            <div className="finished_title_active_line"></div>
         </div>
 
         <Finished_active></Finished_active>
         
-
 
         <Finished_List></Finished_List>
         <Finished_List></Finished_List>
