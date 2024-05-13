@@ -83,10 +83,13 @@ export default function MapSearch() {
         
             <div className="map-list-container" style={{ minHeight: `${minHeight}px` }}>
                 {mapLists.map((_, index) => (
-                    <MapList key={index}></MapList>
+                    <Link className='map_list_link' to={`/mapDetail`} key={index}>
+                        <MapList></MapList>
+                    </Link>
                 ))}
             </div>
-
+            
+            {/* <Link to={`/mapDetail${map.id}`} key={index}></Link> 나중에 맵 아이디 같은 식별자 나오면 쓰기*/}
         
 
         <div className="navbar">
