@@ -9,9 +9,30 @@ export default function Write() {
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [previewUrl, setPreviewUrl] = useState(null); // 미리보기 URL 상태 추가
+  
   const userInfo = useToken();
   const userID = userInfo.user;
+
+    // 파일 인풋을 트리거하는 함수
+    const triggerFileInput = () => {
+      document.getElementById('fileInput').click();
+    };
+
+    // 파일 선택 시 실행될 함수
+    const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFile(file);
+      // FileReader를 사용하여 파일 읽기
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // 읽기가 완료되면 결과를 previewUrl 상태에 저장
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleFileUpload = async () => {
     if (!file) return null;
@@ -79,16 +100,25 @@ export default function Write() {
           <img className='write_back_icon' src="./icon/arrow.svg" alt="Back" />
         </div>
       </Link>
+      
       <div className="write_title">새 게시물</div>
       <button className="write_add" onClick={submitPost} disabled={isLoading}>
         {isLoading ? '작성 중...' : '작성'}
       </button>
+
+      {/* <div className='Picture_add_box'><input className='picture_add' type="file" accept='image/*' onChange={(e) => setFile(e.target.files[0])} /></div> */}
+
+      <div className='Picture_add_box'>
+        {/* 숨겨진 파일 인풋 */}
+        <input id="fileInput" className='picture_add' type="file" accept='image/*' onChange={handleFileChange} />
+        {/* 사용자 정의 아이콘으로 파일 인풋 트리거 - 이미지가 없을 때만 보여줍니다 */}
+        {!previewUrl && <img src='./icon/camera.svg' className="picture_add_icon" onClick={() => document.getElementById('fileInput').click()} alt="Upload" />}
+        {/* 이미지 미리보기 - 이미지가 있을 때만 보여줍니다 */}
+        {previewUrl && <img src={previewUrl} alt="Preview" className="image_preview" />}
+      </div>  
+
+
       <textarea className="write_text" placeholder="나의 활동을 공유하세요!" value={text} onChange={(e) => setText(e.target.value)} />
-      <div className="write_navbar">
-        <input className='picture_add' type="file" accept='image/*' onChange={(e) => setFile(e.target.files[0])} />
-        <div className="picture1"></div>
-        <div className="picture2"></div>
-      </div>
     </div>
   );
 }

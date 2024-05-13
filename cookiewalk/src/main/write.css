@@ -50,7 +50,7 @@
 	top:10px;
 }
 .write_back_icon { 
-  filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
+	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:25px;
 	height:25px;
 	position:absolute;
@@ -73,15 +73,19 @@
 }
 
 .write_add { 
+	background-color: transparent;
+	border: none;
 	color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
 	position:absolute;
+	padding: 0;
 	left:346px;
 	top:14px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
 	letter-spacing:2px;
-  font-weight: 600;
+	font-weight: 600;
+	cursor: pointer;
 }
 
 .write_line1 { 
@@ -135,12 +139,12 @@
 }
 
 .write_text { 
-	color:rgba(137.2229638695717, 137.2229638695717, 137.2229638695717, 1);
+	color:rgb(0, 0, 0);
 	width:355px;
-	height:450px;
+	height:200px;
 	position:absolute;
 	left:15px;
-	top:120px;
+	top:380px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:17px;
@@ -151,14 +155,8 @@
   max-height: 450px; /* 최대 높이 설정 */
   word-wrap: break-word; /* 단어 단위로 줄 바꿈 */
 }
-
-.write_navbar { 
-  position: fixed;
-  bottom: 0px;
-	box-shadow:0px 24px 48px rgba(15.959998592734337, 23.62182006239891, 40.040005668997765, 0.25);
-	background-color:rgba(255, 255, 255, 1);
-	width:390px;
-	height:131px;
+.write_text::placeholder {
+    color: rgba(137.2229638695717, 137.2229638695717, 137.2229638695717, 1);
 }
 
 .picture_add { 
@@ -168,12 +166,33 @@
 	position:absolute;
 	left:0px;
 	top:0px;
-  width:100px;
-	height:100px;
-	position:absolute;
+	width:200px;
+	height:200px;
 	left:23px;
 	top:15.5px;
+	display: none;
 }
+.picture_add_icon {
+	position: absolute;
+	cursor: pointer;
+	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
+	width: 100px;
+	height: 100px;
+	left: 72.5px;
+	top: 60px;
+}
+.Picture_add_box{
+	position: absolute;
+	top: 100px; 
+	left: 71.7px; 
+}
+.image_preview {
+	position: absolute;
+	left: 56px;
+	max-width: 200px; /* 또는 원하는 크기 */
+	max-height: 200px; /* 또는 원하는 크기 */
+}
+
 
 .camera_icon { 
   filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
