@@ -78,7 +78,8 @@ export default function BeforeStart(){
 
     function startPage(e){
         e.preventDefault();
-        navigate('/start', {state: {currentPosition}})
+        const startTime = new Date()
+        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime}})
     }
 
     return(
