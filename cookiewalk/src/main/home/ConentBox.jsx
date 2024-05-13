@@ -10,7 +10,7 @@ export default function ContentBox() {
     };
 
     return(
-      <div className='content_box'>
+      <div className='main_content_box'>
         <Link to="/home_personal_profile" style={{ textDecoration: 'none' }}>
           <div><img className='home_profile_img' src='./images/ellipse_7.png'/></div>
           <div className="name">running_go</div>
@@ -19,9 +19,9 @@ export default function ContentBox() {
         <div className="dotmenu" onClick={handleMenuToggle}><img className="dotmenu_icon" src="./icon/dotmenu.svg" alt="" /></div>
         {showMenu && ( // 메뉴가 보이는 경우에만 렌더링
           <div className="dropdown_menu">
-            <div>팔로우 취소</div>
-            <div>차단</div>
-            <div>숨기기</div>
+            <div className='menu_title'><img className='dropdown_icon' src="./icon/follow_minus.svg" alt="" />팔로우 취소</div>
+            <div className='menu_title'><img className='dropdown_icon' src="./icon/block.svg" alt="" />차단</div>
+            <div className='menu_title'><img className='dropdown_icon' src="./icon/hide.svg" alt="" />숨기기</div>
           </div>
         )}
         <div className=""><img className='content_img' src='./images/rectangle_2.png'/></div>

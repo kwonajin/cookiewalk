@@ -28,6 +28,7 @@ import DrawMap from './map/draw_map.jsx';
 import AccountSetting from './mypage/account_setting.jsx';
 import AccountSetting2 from './mypage/account_setting2.jsx';
 import FinishedArt from './mypage/finished_art.jsx';
+import Saved from './mypage/saved.jsx';
 
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
@@ -77,6 +78,8 @@ export default function App() {
             <Route path="/account_setting" element={<ProtectedRoute><AccountSetting /></ProtectedRoute>} />
             <Route path="/account_setting2" element={<ProtectedRoute><AccountSetting2 /></ProtectedRoute>} />
             <Route path="/finished_art" element={<ProtectedRoute><FinishedArt /></ProtectedRoute>} />
+            <Route path="/saved" element={<ProtectedRoute><Saved /></ProtectedRoute>} />
+
 
 
           </Routes>

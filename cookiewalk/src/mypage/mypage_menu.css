@@ -162,14 +162,7 @@ body{
 	letter-spacing:0;
 }
 
-/* .darkmode_onoff { 
-	width:35px;
-	height:19.6875px;
-	background-color: #ccc;
-	position:absolute;
-	left:340px;
-	top:7px;
-} */
+
 .darkmode_onoff {
   width: 38px;
   height: 20px;
@@ -234,6 +227,12 @@ body{
 	text-align:left;
 	font-size:14px;
 	letter-spacing:0;
+}
+
+.saved_box{
+	width: 390px;
+	height: 45px;
+	padding-top: 96px;
 }
 
 .saved { 
