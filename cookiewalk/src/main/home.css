@@ -340,6 +340,18 @@ body{
 	padding-top: 2px;
 }
 
+.dropdown_icon2{
+	filter: invert(36%) sepia(33%) saturate(766%) hue-rotate(314deg) brightness(117%) contrast(109%);
+	margin-left: -4px;
+	padding-right: 6px;
+	padding-top: 3px;
+}
+
+.menu_title2{
+	padding-top: 2px;
+	color: #ca5959;
+}
+
 .content_img { 
 	width:390px;
 	height:390px;

@@ -30,9 +30,10 @@ export default function ContentBox({
             <div className='menu_title'><img className='dropdown_icon' src="./icon/follow_minus.svg" alt="" />팔로우 취소</div>
             <div className='menu_title'><img className='dropdown_icon' src="./icon/block.svg" alt="" />차단</div>
             <div className='menu_title'><img className='dropdown_icon' src="./icon/hide.svg" alt="" />숨기기</div>
+            <div className='menu_title2'><img className='dropdown_icon2' src="./icon/trash.svg" alt="" />삭제</div>
           </div>
         )}
-        <div className=""><img className='content_img' src={contentImage}/></div>
+        <div className="content_img_box"><img className='content_img' src={contentImage}/></div>
         <div className="comment_name">{profileName}</div>
         <div className="contents">{contentText}</div>
         <div className="comment_num">댓글 3개 모두 보기</div>
