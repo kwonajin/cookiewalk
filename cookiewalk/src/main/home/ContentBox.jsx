@@ -10,6 +10,7 @@ export default function ContentBox({
   contentImage,
   contentText,
   createdAt,
+  key
 }) {
     const [showMenu, setShowMenu] = useState(false); // 상태 추가
 
@@ -19,11 +20,11 @@ export default function ContentBox({
 
     return(
       <div className='main_content_box'>
-        <Link to="/home_personal_profile" style={{ textDecoration: 'none' }}>
+        <Link to="/home_personal_profile" state={{key : key}} style={{ textDecoration: 'none' }}>
           <div><img className='home_profile_img' src={profileImage}/></div>
           <div className="name">{profileName}</div>
           <div className="home_place">{location}</div>
-        </Link>
+        </Link> 
         <div className="dotmenu" onClick={handleMenuToggle}><img className="dotmenu_icon" src="./icon/dotmenu.svg" alt="" /></div>
         {showMenu && ( // 메뉴가 보이는 경우에만 렌더링
           <div className="dropdown_menu">
