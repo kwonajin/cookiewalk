@@ -52,7 +52,7 @@ body{
 
 .mm_line { 
 	transform: rotate(-2.4848166388360215e-17deg);
-	width:100%;
+	width:388px;
 	height:0px;
 	position:absolute;
 	left:0px;
@@ -74,9 +74,10 @@ body{
 }
 
 .account_info_box{
+	position: absolute;
 	width: 390px;
-	height: 45px;
-	padding-top: 85px;
+	height: 45px;	
+	top: 85px;
 }
 
 .account { 
@@ -84,7 +85,7 @@ body{
 	height:25px;
 	position:absolute;
 	left:13px;
-	top:95px;
+	top:12px;
 }
 
 
@@ -102,7 +103,7 @@ body{
 	height:21px;
 	position:absolute;
 	left:51px;
-	top:95px;
+	top:12px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -115,7 +116,7 @@ body{
 	height:20px;
 	position:absolute;
 	left:370px;
-	top:102px;
+	top:20px;
 }
 .go1_icon { 
 	width:22px;
@@ -230,9 +231,10 @@ body{
 }
 
 .saved_box{
+	position: absolute;
 	width: 390px;
 	height: 45px;
-	padding-top: 96px;
+	top: 228px;
 }
 
 .saved { 
@@ -240,7 +242,7 @@ body{
 	height:24px;
 	position:absolute;
 	left:14px;
-	top:234px;
+	top:5px;
 }
 .saved_icon { 
 	width:23px;
@@ -257,7 +259,7 @@ body{
 	height:21px;
 	position:absolute;
 	left:51px;
-	top:234px;
+	top:6px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -270,7 +272,7 @@ body{
 	height:20px;
 	position:absolute;
 	left:370px;
-	top:243px;
+	top:13px;
 }
 .go2_icon { 
 	width:22px;
@@ -282,7 +284,7 @@ body{
 
 .mm_line2 { 
 	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
+	width:388px;
 	height:0px;
 	position:absolute;
 	left:0px;
@@ -290,12 +292,19 @@ body{
 	border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
 
+.liked_box{
+	position: absolute;
+	width: 390px;
+	height: 52px;
+	top: 275px;
+}
+
 .liked { 
 	width:27px;
 	height:25px;
 	position:absolute;
 	left:13px;
-	top:286px;
+	top:11px;
 }
 .liked_icon { 
 	width:24px;
@@ -311,7 +320,7 @@ body{
 	height:21px;
 	position:absolute;
 	left:51px;
-	top:288px;
+	top:13px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -324,7 +333,7 @@ body{
 	height:20px;
 	position:absolute;
 	left:370px;
-	top:300px;
+	top:20px;
 }
 .go3_icon { 
 	width:22px;
@@ -336,7 +345,7 @@ body{
 
 .mm_line3 { 
 	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
+	width:388px;
 	height:0px;
 	position:absolute;
 	left:0px;
@@ -390,7 +399,7 @@ body{
 }
 
 .mm_line4 { 
-	width:390px;
+	width:388px;
 	height:0px;
 	position:absolute;
 	left:0px;
@@ -398,12 +407,19 @@ body{
 	border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
 
+.blocked_box{
+	position: absolute;
+	width: 390px;
+	height: 52px;
+	top: 387px;
+}
+
 .block { 
 	width:27px;
 	height:27px;
 	position:absolute;
 	left:14px;
-	top:401px;
+	top:13px;
 }
 .block_icon { 
 	width:23px;
@@ -419,7 +435,7 @@ body{
 	height:21px;
 	position:absolute;
 	left:52px;
-	top:402px;
+	top:14px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -432,7 +448,7 @@ body{
 	height:20px;
 	position:absolute;
 	left:370px;	
-	top:410px;
+	top:23px;
 }
 .go5_icon { 
 	width:22px;
@@ -444,7 +460,7 @@ body{
 
 .division2 { 
 	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
+	width:383px;
 	height:0px;
 	position:absolute;
 	left:0px;
@@ -511,7 +527,7 @@ body{
 
 .division3 { 
 	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
+	width:383px;
 	height:0px;
 	position:absolute;
 	left:0px;
