@@ -6,18 +6,21 @@ import { Link ,useLocation, useNavigate} from "react-router-dom";
 function MyMap({path ,center}){
 
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
+
+    const markerIcon = {
+        content: '<div style="background-color: blue; width: 10px; height: 10px; border-radius: 50%; transform: translate(-50%, -50%);"></div>'
+    }
     return(
     //기본값 또는 현재위치로 중심좌표 설정
     <NaverMap 
-        defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng): new  navermaps.LatLng((37.3595704, 127.105399))}  defaultZoom={15}
-        center={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng(37.3595704, 127.105399)}>
+        defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng): new  navermaps.LatLng((37.3595704, 127.105399))}  defaultZoom={15}>
         {center &&(
-        <Marker position={new navermaps.LatLng(center.lat , center.lng)}/>)}
+        <Marker icon={markerIcon} position={new navermaps.LatLng(center.lat , center.lng)}/>)}
         {path.length > 1 && (
             <Polyline
             path={path.map(p => new navermaps.LatLng(p.lat,p.lng))}
             strokeColor='blue' // 선색깔
-            strokeWeight={2} //선두께
+            strokeWeight={4} //선두께
             strokeOpacity={0.8} //투명도
             strokeStyle="solid"
             />
@@ -162,8 +165,8 @@ export default function Start() {
         //         return newPath
         //     });
         // },8000)
-        const coord1 = { lat:35.131721, lng:129.106824}; // New York City
-        const coord2 = { lat:35.131706, lng:129.106410 }; // Los Angeles 
+        const coord1 = { lat:35.131721, lng:129.106824}; 
+        const coord2 = { lat:35.131706, lng:129.106410 };
         const distance = calculateDistance(coord1, coord2);
         console.log(distance)
     }
