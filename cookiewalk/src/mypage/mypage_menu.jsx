@@ -56,9 +56,13 @@ export default function MypageMenu() {
       </Link>
 
       <div className="mm_line2"></div>
-      <div className="liked"><img className="liked_icon" src="./icon/heart.svg" alt="" /></div>
-      <span className="liked_text">좋아요한 게시물</span>
-      <div className="go3"><img className='go3_icon' src="./icon/arrow.svg" alt="" /></div>
+      <Link to="/liked">
+        <div className='liked_box'>
+          <div className="liked"><img className="liked_icon" src="./icon/heart.svg" alt="" /></div>
+          <span className="liked_text">좋아요한 게시물</span>
+          <div className="go3"><img className='go3_icon' src="./icon/arrow.svg" alt="" /></div>
+      </div>
+      </Link>
 
       <div className="mm_line3"></div>
       <div className="commented"><img className="commented_icon" src="./icon/comment.svg" alt="" /></div>
@@ -66,10 +70,14 @@ export default function MypageMenu() {
       <div className="go4"><img className='go4_icon' src="./icon/arrow.svg" alt="" /></div>
 
       <div className="mm_line4"></div>
-      <div className="block"><img className="block_icon" src="./icon/block.svg" alt="" /></div>
-      <span className="block_text">차단한 사용자</span>
-      <div className="go5"><img className='go5_icon' src="./icon/arrow.svg" alt="" /></div>
-
+      <Link to='/blocked'>
+        <div className='blocked_box'>
+          <div className="block"><img className="block_icon" src="./icon/block.svg" alt="" /></div>
+          <span className="block_text">차단한 사용자</span>
+          <div className="go5"><img className='go5_icon' src="./icon/arrow.svg" alt="" /></div>
+        </div>
+  
+      </Link>
       <div className="division2"></div>
 
       <span className="menu3">더많은 지원</span>
