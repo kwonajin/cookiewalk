@@ -1,84 +1,88 @@
-import React, { useEffect }  from 'react';
-import './home.css'; // CSS 파일을 import 합니다.
-import { Link , useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import './home.css';
+import { Link, useNavigate } from "react-router-dom";
 import { useToken } from '../context/tokenContext';
 import HomeNav from './home/HomeNav';
 import Active from './home/Active';
-import ContentBox from './home/ConentBox';
+import ContentBox from './home/ContentBox';
 import NavBar from './home/NavBar';
 import { supabase } from '../supabaseClient';
 
-
 export default function Home() {
   const navigate = useNavigate();
+  const userInfo = useToken();
+  const userID = userInfo.user;
+  const [postList, setPostList] = useState([]);
 
-  const userInfo= useToken();
-  const userID= userInfo.user
-  console.log(userID)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (userID) {
+      checkNickname();
+      fetchPosts();
+    }
+  }, [userID]);
 
-  const checkNickname = async ()=> {
-    const { data: firstLoginData, error:firstLoginError }=await supabase
+  const checkNickname = async () => {
+    const { data: firstLoginData, error: firstLoginError } = await supabase
       .from('user')
       .select('nick_name')
       .eq('user_id', userID)
-      .is('nick_name',null)
-    console.log(firstLoginData)
-    if(firstLoginData.length>0){
-      navigate('/signup3')
-    }   
-  }
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    if(userID !=null){
-      checkNickname()
+      .is('nick_name', null);
+    if (firstLoginData.length > 0) {
+      navigate('/signup3');
+    }
+  };
+
+  const fetchPosts = async () => {
+    const { data, error } = await supabase
+      .from('post')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching posts:', error.message);
+      return;
     }
 
-    
-  }, [userID]);
+    // 사용자의 닉네임과 프로필 이미지를 포함한 게시물 정보를 저장할 배열
+    const postsWithUserInfo = await Promise.all(data.map(async (post) => {
+      const { data: userData } = await supabase
+        .from('user')
+        .select('nick_name, profile_image')
+        .eq('user_id', post.user_id)
+        .single();
+      
+      return {
+        ...post,
+        user_name: userData ? userData.nick_name : 'Unknown', // 닉네임이 없는 경우 대비
+        user_image: userData ? userData.profile_image : 'default_image.png' // 프로필 이미지 기본값 설정
+      };
+    }));
 
-  
+    setPostList(postsWithUserInfo);
+  };
+
   return (
-    <><div className="home_background">
-      <div className="topnav">
-        <div className="homenav">
-          <Link to="/write"><div className="write"><img className="write_icon" src="./icon/write.svg" alt="" /></div></Link>
-          <div className="home_title">홈</div>
-          <Link to="/notice"><div className="notification"><img className="notification_icon" src="./icon/notification.svg" alt="" /></div></Link>
-          <Link to="/friend"><div className="friendadd"><img className="friendadd_icon" src="./icon/friendadd.svg" alt="" /></div></Link>
-          <div className="homenav_line"></div>
+    <>
+      <div className="home_background">
+        <div className="topnav">
+          <HomeNav />
+          <Active />
         </div>
-
-        <div className="active">
-          <div className="my_active">나의 이번주 활동</div>
-          <div className="detail">자세히보기</div>
-          <div className="art">완성한 그림 수</div>
-          <div className="art_num">0개</div>
-          <div className="home_line1"></div>
-          <div className="active_distance">활동 거리</div>
-          <div className="active_distance_num">0.00km</div>
-          <div className="home_line2"></div>
-          <div className="active_time">활동 시간</div>
-          <div className="active_time_num">0h 0m</div>
-
-
-        </div>
+        {postList.map(post => (
+          <ContentBox
+            key={post.post_id}
+            profileName={post.user_name}
+            profileImage={post.user_image}
+            location={post.locate}
+            likes={post.likes}
+            contentImage={post.image}
+            contentText={post.content}
+            createdAt={new Date(post.created_at).toLocaleString()}
+          />
+        ))}
       </div>
-
-     <ContentBox></ContentBox>
-     <ContentBox></ContentBox>
-     <ContentBox></ContentBox>
-     <ContentBox></ContentBox>
-     <ContentBox></ContentBox>
-     <ContentBox></ContentBox>
-     <ContentBox></ContentBox>
-     <ContentBox></ContentBox>
-     <ContentBox></ContentBox>
-
-
-
-    </div>
-    
-    <NavBar></NavBar>
+      <NavBar />
     </>
   );
 }
