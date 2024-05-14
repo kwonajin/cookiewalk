@@ -5,14 +5,16 @@ import FindPassword2 from './login/FindPassword2.jsx';
 
 import Home from "./main/home";
 import MapSearch from './map/map';
-// import Pause from "./startpage/pause";
+import Map_detail from './map/map_detail.jsx';
+
 import BeforeStart from './startpage/BeforeStart'
 import Group from "./group/group";
 import MyPage from "./mypage/mypage";
 import Signup from './signup/Signup';
 import Signup3 from "./signup/Signup3";
 import Signup4 from "./signup/Signup4";
-import Write from "./main/write"; 
+import Write from "./main/write";
+import Write_map from './main/write_map.jsx'; 
 import Notice from './main/notice';
 import Friend from './main/friend';
 import Follower from './mypage/follower';
@@ -27,14 +29,20 @@ import MypageMenu from './mypage/mypage_menu.jsx';
 import DrawMap from './map/draw_map.jsx';
 import AccountSetting from './mypage/account_setting.jsx';
 import AccountSetting2 from './mypage/account_setting2.jsx';
+import FinishedArt from './mypage/finished_art.jsx';
+import Saved from './mypage/saved.jsx';
+import Liked from './mypage/liked.jsx';
+import Blocked from './mypage/blocked.jsx';
 
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
+import Activity_save from './startpage/activity_save.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 
 import { NavermapsProvider } from 'react-naver-maps';
+
 
 export default function App() {
 
@@ -54,13 +62,16 @@ export default function App() {
             {/* <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} /> */}
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/map" element={<ProtectedRoute><MapSearch /></ProtectedRoute>} />
+            <Route path="/mapDetail" element={<ProtectedRoute><Map_detail /></ProtectedRoute>} />
             <Route path="/drawmap" element={<ProtectedRoute><DrawMap /></ProtectedRoute>} />
             <Route path="/BeforeStart" element={<ProtectedRoute><BeforeStart /></ProtectedRoute>} />
             <Route path="/Start" element={<ProtectedRoute><Start /></ProtectedRoute>} />            
             <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
+            <Route path="/Activity_Save" element={<ProtectedRoute><Activity_save /></ProtectedRoute>} />
             <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
+            <Route path="/write_map" element={<ProtectedRoute><Write_map /></ProtectedRoute>} />
             <Route path="/notice" element={<ProtectedRoute><Notice /></ProtectedRoute>} />
             <Route path="/friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />
             <Route path="/follower" element={<ProtectedRoute><Follower /></ProtectedRoute>} />
@@ -74,6 +85,14 @@ export default function App() {
             <Route path="/mypage_menu" element={<ProtectedRoute><MypageMenu /></ProtectedRoute>} />
             <Route path="/account_setting" element={<ProtectedRoute><AccountSetting /></ProtectedRoute>} />
             <Route path="/account_setting2" element={<ProtectedRoute><AccountSetting2 /></ProtectedRoute>} />
+            <Route path="/finished_art" element={<ProtectedRoute><FinishedArt /></ProtectedRoute>} />
+            <Route path="/saved" element={<ProtectedRoute><Saved /></ProtectedRoute>} />
+            <Route path="/liked" element={<ProtectedRoute><Liked /></ProtectedRoute>} />
+            <Route path="/blocked" element={<ProtectedRoute><Blocked /></ProtectedRoute>} />
+
+
+
+
 
           </Routes>
         </NavermapsProvider>

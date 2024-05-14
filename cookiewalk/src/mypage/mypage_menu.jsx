@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './mypage_menu.css'
+import {supabase} from '../supabaseClient'
 
 export default function MypageMenu() {
   const [darkMode, setDarkMode] = useState(false);
@@ -9,6 +10,18 @@ export default function MypageMenu() {
     setDarkMode(!darkMode);
     // 여기서 다크 모드를 활성화 또는 비활성화하는 코드를 추가할 수 있습니다.
   };
+
+  async function signOut() {
+    const { error } = await supabase.auth.signOut()
+    if(error){
+      console.log(error)
+    }
+    navigate('/')
+  }
+  function logouthandle(e){
+    e.preventDefault();
+    signOut();
+  }
 
   return (
     <div className="mm_background">
@@ -30,20 +43,26 @@ export default function MypageMenu() {
         <img className="darkmode_icon" src="./icon/bright.svg" alt="" />
         <div className={`darkmode_onoff ${darkMode ? 'on' : ''}`} onClick={toggleDarkMode}></div>
       </div>
-      {/* <div className="darkmode"><img className="darkmode_icon" src="./icon/bright.svg" alt="" /></div> */}
       <span className="darkmode_text">다크모드</span>
-      {/* <div className={darkMode ? "darkmode_onoff dark-mode-on" : "darkmode_onoff"}></div> */}
       <div className="division1"></div>
 
       <span className="menu2">내활동 관리</span>
-      <div className="saved"><img className="saved_icon" src="./icon/save.svg" alt="" /></div>
-      <span className="saved_text">저장한 게시물</span>
-      <div className="go2"><img className='go2_icon' src="./icon/arrow.svg" alt="" /></div>
+      <Link to="/saved">
+        <div className='saved_box'>
+          <div className="saved"><img className="saved_icon" src="./icon/save.svg" alt="" /></div>
+          <span className="saved_text">저장한 경로</span>
+          <div className="go2"><img className='go2_icon' src="./icon/arrow.svg" alt="" /></div>
+        </div>
+      </Link>
 
       <div className="mm_line2"></div>
-      <div className="liked"><img className="liked_icon" src="./icon/heart.svg" alt="" /></div>
-      <span className="liked_text">좋아요한 게시물</span>
-      <div className="go3"><img className='go3_icon' src="./icon/arrow.svg" alt="" /></div>
+      <Link to="/liked">
+        <div className='liked_box'>
+          <div className="liked"><img className="liked_icon" src="./icon/heart.svg" alt="" /></div>
+          <span className="liked_text">좋아요한 게시물</span>
+          <div className="go3"><img className='go3_icon' src="./icon/arrow.svg" alt="" /></div>
+      </div>
+      </Link>
 
       <div className="mm_line3"></div>
       <div className="commented"><img className="commented_icon" src="./icon/comment.svg" alt="" /></div>
@@ -51,10 +70,14 @@ export default function MypageMenu() {
       <div className="go4"><img className='go4_icon' src="./icon/arrow.svg" alt="" /></div>
 
       <div className="mm_line4"></div>
-      <div className="block"><img className="block_icon" src="./icon/block.svg" alt="" /></div>
-      <span className="block_text">차단한 사용자</span>
-      <div className="go5"><img className='go5_icon' src="./icon/arrow.svg" alt="" /></div>
-
+      <Link to='/blocked'>
+        <div className='blocked_box'>
+          <div className="block"><img className="block_icon" src="./icon/block.svg" alt="" /></div>
+          <span className="block_text">차단한 사용자</span>
+          <div className="go5"><img className='go5_icon' src="./icon/arrow.svg" alt="" /></div>
+        </div>
+  
+      </Link>
       <div className="division2"></div>
 
       <span className="menu3">더많은 지원</span>
@@ -65,7 +88,7 @@ export default function MypageMenu() {
       <div className="division3"></div>
 
       <span className="menu4">로그인 관리</span>
-      <span className="logout">로그아웃</span>
+      <span className="logout" onClick={logouthandle}>로그아웃</span>
     </div>
   );
 }

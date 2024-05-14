@@ -16,7 +16,7 @@ export const TokenProvider = ({children}) => {
     //   console.log('Token Data:', tokenData);
       const {subscription}=supabase.auth.onAuthStateChange((event, session) => {
         setTimeout(async () => {
-          console.log('event: ',event ,'session :',session )
+          // console.log('event: ',event ,'session :',session )
         }, 0)
       })
       const {data, error} =await supabase.auth.getSession();
