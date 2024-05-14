@@ -337,6 +337,7 @@ body{
 
 .menu_title{
 	padding-top: 2px;
+	font-family: Noto Sans KR;
 }
 
 .dropdown_icon2{
@@ -617,14 +618,15 @@ body{
 
 .write_dropdown_menu {
 	position: absolute; /* 부모 요소 기준으로 위치 지정 */
-	padding: 3PX;
+	padding: 13px 14px ;
 	top: 52px; /* dotmenu 아이콘의 바로 아래에 위치하도록 설정 */
 	left: 0; /* 오른쪽 정렬 */
 	background-color: white; /* 배경색 설정 */
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* 드롭다운 메뉴에 그림자 효과 추가 */
 	z-index: 1; /* 다른 요소들 위에 나타나도록 설정 */
 	font-size: 15px;
-	font-weight: 600;
+	/* font-weight: 600; */
+	font-family: Noto Sans KR;
 }
 
 .write_dropdown_menu > div {
@@ -641,14 +643,24 @@ body{
 }
 
 .write_dropdown_icon{
-	margin-left: 2px;
-	padding-right: 10px;
+	padding-right: 15px;
 	padding-top: 3px;
 }
 
-.write_menu_title{
-	padding-top: 2px;
+
+.write_menu_title1{
+	padding-bottom: 5px;
 }
+
+hr{
+	color: #f5f5f5;
+	width: 117px;
+	margin-left: -15px;
+	margin-right: -20px;
+	margin-top: 12px;
+	opacity : 0.5;
+}
+
 
 .homenav_dropdown_link{
 	text-decoration: none;

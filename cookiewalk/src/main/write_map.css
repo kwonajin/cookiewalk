@@ -78,8 +78,9 @@
 	color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
 	position:absolute;
 	padding: 0;
-	left:346px;
+	left:336px;
 	top:14px;
+	width: 60px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -87,6 +88,7 @@
 	font-weight: 600;
 	cursor: pointer;
 }
+
 
 .writeMap_Picture_add_box{
 	position: absolute;

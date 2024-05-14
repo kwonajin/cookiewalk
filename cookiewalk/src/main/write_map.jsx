@@ -103,7 +103,7 @@ export default function Write_map() {
       
       <div className="write_map_title">새 게시물</div>
       <button className="write_map_add" onClick={submitPost} disabled={isLoading}>
-        {isLoading ? '작성 중...' : '작성'}
+        {isLoading ? '등록중' : '작성'}
       </button>
 
       {/* <div className='Picture_add_box'><input className='picture_add' type="file" accept='image/*' onChange={(e) => setFile(e.target.files[0])} /></div> */}
