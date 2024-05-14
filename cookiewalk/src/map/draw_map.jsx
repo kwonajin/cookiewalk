@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps } from 'react-naver-maps';
 import './draw_map.css';
 
-function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker }) {
+function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
   const navermaps = useNavermaps();
   const [position, setPosition] = useState(null);
   const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));
@@ -37,7 +37,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
   };
 
   const handleRedMarkerClick = () => {
-    if (!redMarkerClicked) {
+    if (drawing && !redMarkerClicked) {
       setRedMarkerClicked(true);
       setPath(currentPath => {
         const newPath = [...currentPath, currentPath[0]];
@@ -60,7 +60,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
       onClick={handleMapClick}
     >
       {position && <Marker position={position} icon={iconFactory('black')} />}
-      {path.length > 0 && <Polyline path={path} map={navermaps} />}
+      {path.length > 0 && <Polyline path={path} strokeColor={selectedColor} strokeWeight={5} />}
       {path.length > 0 && (
         <Marker
           position={path[0]}
@@ -82,10 +82,13 @@ export default function DrawMap() {
   const [startPoint, setStartPoint] = useState(null);
   const [endPoint, setEndPoint] = useState(null);
   const [redMarkerClicked, setRedMarkerClicked] = useState(false);
+  const [selectedColor, setSelectedColor] = useState('#000000'); // 기본 색상 설정
 
   const toggleDrawing = () => {
     setDrawing(prevDrawing => !prevDrawing);
-    if (!drawing) { // 그리기 시작 시 모든 상태를 초기화
+    if (drawing) { // 그리기 종료 시
+      setPath(currentPath => [...currentPath]);  // 경로 유지
+    } else { // 그리기 시작 시 모든 상태를 초기화
       setPath([]);
       setPathAfterRedMarker([]);
       setStartPoint(null);
@@ -121,6 +124,10 @@ export default function DrawMap() {
     }
   };
 
+  const handleColorChange = (e) => {
+    setSelectedColor(e.target.value);
+  };
+
   return (
     <div className='draw_map_container'>
       <button onClick={toggleDrawing} style={{ position: 'absolute', zIndex: 1000 }}>
@@ -136,8 +143,14 @@ export default function DrawMap() {
           </button>
         </>
       )}
+      <input 
+        type="color" 
+        value={selectedColor} 
+        onChange={handleColorChange} 
+        style={{ position: 'absolute', zIndex: 1000, left: '240px' }} 
+      />
       <MapDiv style={{ width: '100%', height: '500px' }}>
-        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} />
+        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} selectedColor={selectedColor} />
       </MapDiv>
     </div>
   );
