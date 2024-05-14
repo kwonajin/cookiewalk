@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './activity_save.css'
 import { Link } from "react-router-dom";
 import {useToken} from '../context/tokenContext'
@@ -25,6 +25,7 @@ export default function Activity_save() {
     const {state} = useLocation()
     const userInfo=useToken();
     const userID= userInfo.user
+    const navigate = useNavigate();
 
     console.log(state)
     console.log(state.path[0])
