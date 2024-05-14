@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import './write.css'; 
+import './write_map.css'; 
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from '../supabaseClient'
 import { useToken } from '../context/tokenContext'
 
-export default function Write() {
+export default function Write_map() {
   const navigate = useNavigate();
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
@@ -94,31 +94,31 @@ export default function Write() {
   }, []);
 
   return (
-    <div className="write-page">
+    <div className="write-map-page">
       <Link to="/home">
-        <div className="write_back">
-          <img className='write_back_icon' src="./icon/arrow.svg" alt="Back" />
+        <div className="write_map_back">
+          <img className='write_map_back_icon' src="./icon/arrow.svg" alt="Back" />
         </div>
       </Link>
       
-      <div className="write_title">새 게시물</div>
-      <button className="write_add" onClick={submitPost} disabled={isLoading}>
+      <div className="write_map_title">새 게시물</div>
+      <button className="write_map_add" onClick={submitPost} disabled={isLoading}>
         {isLoading ? '등록중' : '작성'}
       </button>
 
       {/* <div className='Picture_add_box'><input className='picture_add' type="file" accept='image/*' onChange={(e) => setFile(e.target.files[0])} /></div> */}
 
-      <div className='Picture_add_box'>
+      <div className='writeMap_Picture_add_box'>
         {/* 숨겨진 파일 인풋 */}
-        <input id="fileInput" className='picture_add' type="file" accept='image/*' onChange={handleFileChange} />
+        <input id="fileInput" className='writeMap_picture_add' type="file" accept='image/*' onChange={handleFileChange} />
         {/* 사용자 정의 아이콘으로 파일 인풋 트리거 - 이미지가 없을 때만 보여줍니다 */}
-        {!previewUrl && <img src='./icon/camera.svg' className="picture_add_icon" onClick={() => document.getElementById('fileInput').click()} alt="Upload" />}
+        {!previewUrl && <img src='./icon/map.svg' className="writeMap_picture_add_icon" onClick={() => document.getElementById('fileInput').click()} alt="Upload" />}
         {/* 이미지 미리보기 - 이미지가 있을 때만 보여줍니다 */}
-        {previewUrl && <img src={previewUrl} alt="Preview" className="image_preview" />}
+        {previewUrl && <img src={previewUrl} alt="Preview" className="writeMap_image_preview" />}
       </div>  
 
 
-      <textarea className="write_text" placeholder="나의 활동을 공유하세요!" value={text} onChange={(e) => setText(e.target.value)} />
+      <textarea className="writeMap_text" placeholder="나의 활동을 공유하세요!" value={text} onChange={(e) => setText(e.target.value)} />
     </div>
   );
 }
