@@ -295,19 +295,6 @@ body{
   text-align: center;
 }
 
-.carousel { 
-	background-color:rgba(247.00000047683716, 247.00000047683716, 247.00000047683716, 1);
-	width:365px;
-	height:345px;
-	position:absolute;
-	left:13px;
-	top:308px;
-	border-top-left-radius:5px;
-	border-top-right-radius:5px;
-	border-bottom-left-radius:5px;
-	border-bottom-right-radius:5px;
-}
-
 .carousel_right { 
 	transform: rotate(180deg);
 	width:30px;
@@ -347,7 +334,7 @@ body{
 	height:23px;
 	position:absolute;
 	left:13px;
-	top:672px;
+	top:687px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -361,7 +348,7 @@ body{
 	height:16px;
 	position:absolute;
 	left:100px;
-	top:676px;
+	top:691px;
 }
 
 .badge_go_icon { 
@@ -378,7 +365,7 @@ body{
 	height:90px;
 	position:absolute;
 	left:13px;
-	top:703px;
+	top:718px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
@@ -435,7 +422,7 @@ body{
 	height:23px;
 	position:absolute;
 	left:13px;
-	top:812px;
+	top:827px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
@@ -449,7 +436,7 @@ body{
 	height:16px;
 	position:absolute;
 	left:130px;
-	top:816px;
+	top:831px;
 }
 
 .group_go_icon { 
@@ -466,7 +453,7 @@ body{
 	height:100px;
 	position:absolute;
 	left:13px;
-	top:845px;
+	top:860px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
@@ -478,7 +465,7 @@ body{
 	height:78px;
 	position:absolute;
 	left:26px;
-	top:857px;
+	top:872px;
 }
 
 .group1_img { 
@@ -513,7 +500,7 @@ body{
 	height:78px;
 	position:absolute;
 	left:131px;
-	top:857px;
+	top:872px;
 }
 
 .group2_img { 
@@ -548,7 +535,7 @@ body{
 	height:78px;
 	position:absolute;
 	left:237px;
-	top:857px;
+	top:872px;
 }
 
 .group3_img { 
@@ -663,4 +650,22 @@ body{
 	position:absolute;
 	left:0.1666717529296875px;
 	top:2.166656494140625px;
+}
+
+.carousel_image{
+	width:365px;
+	height:345px;
+}
+
+.carousel { 
+	background-color:rgba(247.00000047683716, 247.00000047683716, 247.00000047683716, 1);
+	width:365px;
+	height:345px;
+	position:absolute;
+	left:13px;
+	top:308px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
 }
