@@ -3,6 +3,11 @@ import { Link, redirect , useNavigate} from 'react-router-dom';
 import './mypage.css'
 import {supabase} from '../supabaseClient'
 import { useToken } from '../context/tokenContext.jsx'
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+
 
 export const Tab = () => {
   const [currentTab, clickTab] = useState(0);
@@ -41,6 +46,7 @@ export const Tab = () => {
     e.preventDefault();
     signOut();
   }
+  
 
   //유저 테이블에서 정보 가져오기
   const User = async()=>{
@@ -96,7 +102,14 @@ export const Tab = () => {
         console.log(following)
       }
   }
-  
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -153,21 +166,21 @@ export const Tab = () => {
               {menuArr[currentTab].content}
               {currentTab === 0 && (
                 <>
-                  <div className="carousel"></div>
-                  <div className="carousel_right">
-                    <img
-                      className="carousel_right_icon"
-                      src="./icon/arrow.svg"
-                      alt=""
-                    />
+                  <div className="carousel">
+                    <Slider {...settings}>
+                      <div>
+                        <img className='carousel_image' src="./images/ellipse_7.png" alt="이미지1" />
+                      </div>
+                      <div>
+                        <img className='carousel_image' src="./images/ellipse_11.png" alt="이미지2" />
+                      </div>
+                      <div>
+                        <img className='carousel_image' src="./images/ellipse_11.png" alt="이미지3" />
+                      </div>
+                    </Slider>
                   </div>
-                  <div className="carousel_left">
-                    <img
-                      className="carousel_left_icon"
-                      src="./icon/arrow.svg"
-                      alt=""
-                    />
-                  </div>
+
+
                   <div className="badge">획득한 뱃지</div>
                   <div className="badge_go">
                     <img
@@ -204,42 +217,6 @@ export const Tab = () => {
               )}
               {currentTab === 1 && (
                 <>
-                  {/* <div className="badge">획득한 뱃지</div>
-                  <div className="badge_go">
-                    <img
-                      className='badge_go_icon'
-                      src="./icon/arrow.svg"
-                      alt=""
-                    />
-                  </div>
-                  <div className="badge_list">
-                    <div className="badge1"></div>
-                    <div className="badge2"></div>
-                    <div className="badge3"></div>
-                    <div className="badge4"></div>
-                  </div>
-  
-                  <div className="myjoingroup">내가 가입한 그룹</div>
-                  <div className="group_go">
-                    <img
-                      className='group_go_icon'
-                      src="./icon/arrow.svg"
-                      alt=""
-                    />
-                  </div>
-                  <div className="myjoingroup_list"></div>
-                  <div className="group1">
-                    <div className="group1_img"></div>
-                    <div className="group1_tilte">전국 한반도 그리기</div>
-                  </div>
-                  <div className="group2">
-                    <div className="group2_img"></div>
-                    <div className="group2_tilte">부산 토끼 그려요</div>
-                  </div>
-                  <div className="group3">
-                    <div className="group3_img"></div>
-                    <div className="group3_tilte">폼폼푸린 🍮</div>
-                  </div> */}
                 </>
               )}
             </div>

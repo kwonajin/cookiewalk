@@ -14,7 +14,7 @@ import Signup from './signup/Signup';
 import Signup3 from "./signup/Signup3";
 import Signup4 from "./signup/Signup4";
 import Write from "./main/write";
-import WritePath from './main/writePath.jsx'; 
+import Write_map from './main/write_map.jsx'; 
 import Notice from './main/notice';
 import Friend from './main/friend';
 import Follower from './mypage/follower';
@@ -71,7 +71,7 @@ export default function App() {
             <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
-            <Route path="/writePath" element={<ProtectedRoute><WritePath /></ProtectedRoute>} />
+            <Route path="/write_map" element={<ProtectedRoute><Write_map /></ProtectedRoute>} />
             <Route path="/notice" element={<ProtectedRoute><Notice /></ProtectedRoute>} />
             <Route path="/friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />
             <Route path="/follower" element={<ProtectedRoute><Follower /></ProtectedRoute>} />
