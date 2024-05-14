@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps } from 'react-naver-maps';
 import './draw_map.css';
 import customIcon from '../../public/images/logo.png';  // 이미지 경로를 불러옵니다.
+import { supabase } from '../supabaseClient';
+import { useToken } from '../context/tokenContext';
+import axios from 'axios'
 
 function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
   const navermaps = useNavermaps();
@@ -92,6 +95,11 @@ export default function DrawMap() {
   const [redMarkerClicked, setRedMarkerClicked] = useState(false);
   const [selectedColor, setSelectedColor] = useState('#000000'); // 기본 색상 설정
 
+  const userInfo=useToken();
+  const userID = userInfo.user;
+  const [address, setAddress]=useState('')
+
+
   const toggleDrawing = () => {
     setDrawing(prevDrawing => !prevDrawing);
     if (drawing) { // 그리기 종료 시
@@ -136,6 +144,69 @@ export default function DrawMap() {
     setSelectedColor(e.target.value);
   };
 
+  //경로 위치정보 가져오는 함수
+  async function getReverseGeocode(latitude, longitude){
+    const url =`http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
+    try{
+        const response = await axios.get(url, {latitude, longitude});
+        console.log(response.data.results[1].region)
+        const area1=response.data.results[1].region.area1.name
+        const area2=response.data.results[1].region.area2.name
+        const area3=response.data.results[1].region.area3.name
+        const area= `${area1} ${area2} ${area3}`
+        setAddress(area)
+        console.log(area)
+        return area;
+    }catch (error){
+        console.error(error)
+        throw error;
+    }
+};
+  //경로 저장 함수 
+  async function submitRoute(){
+    if(path.length >2){
+      const created_time=new Date();
+
+      const {data: countData, error: countError, count}= await supabase
+        .from('draw_map_collection')
+        .select('*', {count: 'exact'});
+      if(countError){
+        console.error(countError)
+      }
+      console.log(count)
+      //getReverseGeocode(path[0]._lat, path[0]._lng)
+      const {data: insertCollection, error: insertCollectionError}= await supabase 
+        .from('draw_map_collection')
+        .insert([
+          {
+            draw_m_c_id: `draw_${count+1}`,
+            created_at: created_time,
+            user_id: userID,
+            location: address,
+            color:selectedColor
+          }
+        ])
+      if(insertCollectionError){
+        console.error(insertCollectionError)
+      }
+      for (const [index, location] of path.entries()){
+        // console.log(location)
+        const {data: insertLocation, insertLocationError}= await supabase
+          .from('draw_map_c_location')
+          .insert([
+            {
+              draw_m_c_id: `draw_${count+1}`,
+              mark_order:index+1,
+              latitude: location._lat,
+              longitude: location._lng
+            }
+          ])
+        if(insertLocationError){
+          console.error(insertLocationError)
+        }
+      }
+    }
+  }
   return (
     <div className='draw_map_container'>
       <button onClick={toggleDrawing} style={{ position: 'absolute', zIndex: 1000 }}>
@@ -160,6 +231,9 @@ export default function DrawMap() {
       <MapDiv style={{ width: '100%', height: '500px' }}>
         <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} selectedColor={selectedColor} />
       </MapDiv>
+      {/* 임의로 만든 저장버튼 */}
+      <button onClick={submitRoute} >경로 저장</button>
+
     </div>
   );
 }

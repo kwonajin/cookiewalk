@@ -70,15 +70,15 @@ export default function Activity_save() {
         }
         for (const [index, location] of state.path.entries() ){
             const {data: insertLocationData, error: insertLocationError}= await supabase
-            .from('walking_record_location')
-            .insert([
-                {
-                    walking_record_id:`record_${count+1}`,
-                    mark_order: index+1,
-                    latitude: location.lat,
-                    longitude: location.lng
-                }
-            ])
+                .from('walking_record_location')
+                .insert([
+                    {
+                        walking_record_id:`record_${count+1}`,
+                        mark_order: index+1,
+                        latitude: location.lat,
+                        longitude: location.lng
+                    }
+                ])
             if(insertLocationError){
                 console.log(insertLocationError)
             }
@@ -144,11 +144,11 @@ export default function Activity_save() {
             throw error;
         }
     };
-    useEffect(()=>{
-        if(!address){
-            const data=getReverseGeocode(state.path[0].lat, state.path[0].lng)
-        }
-    },[address])
+    //useEffect(()=>{
+    //     if(!address){
+    //         const data=getReverseGeocode(state.path[0].lat, state.path[0].lng)
+    //     }
+    // },[address])
     // 경로 삭제 함수
     const removeActivity = () => {
         const isConfirmed = window.confirm("경로를 저장하지 않고 삭제하시겠습니까?");
