@@ -7,6 +7,7 @@ import Active from './home/Active'; // 활동 관련 컴포넌트
 import ContentBox from './home/ContentBox'; // 각 게시물을 표시하는 컴포넌트
 import NavBar from './home/NavBar'; // 페이지 하단의 네비게이션 바 컴포넌트
 import { supabase } from '../supabaseClient'; // Supabase 클라이언트
+import mainContext from '../context/MainContext';
 
 export default function Home() {
   const navigate = useNavigate(); // 페이지 네비게이션을 위한 훅
