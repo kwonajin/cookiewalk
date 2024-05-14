@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps } from 'react-naver-maps';
 import './draw_map.css';
+import customIcon from '../../public/images/logo.png';  // 이미지 경로를 불러옵니다.
 
 function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
   const navermaps = useNavermaps();
@@ -53,13 +54,20 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
     anchor: new navermaps.Point(7.5, 7.5)
   });
 
+  const customIconFactory = () => ({
+    url: customIcon,
+    size: new navermaps.Size(30,40 ),  // 이미지 크기를 설정합니다.
+    scaledSize: new navermaps.Size(30, 40),
+    anchor: new navermaps.Point(15, 25)
+  });
+
   return (
     <NaverMap
       center={center}
       defaultZoom={15}
       onClick={handleMapClick}
     >
-      {position && <Marker position={position} icon={iconFactory('black')} />}
+      {position && <Marker position={position} icon={customIconFactory()} />}  // 사용자의 현재 위치를 로고 이미지로 표시
       {path.length > 0 && <Polyline path={path} strokeColor={selectedColor} strokeWeight={5} />}
       {path.length > 0 && (
         <Marker
