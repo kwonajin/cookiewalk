@@ -6,18 +6,21 @@ import { Link ,useLocation, useNavigate} from "react-router-dom";
 function MyMap({path ,center}){
 
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
+
+    const markerIcon = {
+        content: '<div style="background-color: blue; width: 10px; height: 10px; border-radius: 50%; transform: translate(-50%, -50%);"></div>'
+    }
     return(
     //기본값 또는 현재위치로 중심좌표 설정
     <NaverMap 
-        defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng): new  navermaps.LatLng((37.3595704, 127.105399))}  defaultZoom={15}
-        center={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng(37.3595704, 127.105399)}>
+        defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng): new  navermaps.LatLng((37.3595704, 127.105399))}  defaultZoom={15}>
         {center &&(
-        <Marker position={new navermaps.LatLng(center.lat , center.lng)}/>)}
+        <Marker icon={markerIcon} position={new navermaps.LatLng(center.lat , center.lng)}/>)}
         {path.length > 1 && (
             <Polyline
             path={path.map(p => new navermaps.LatLng(p.lat,p.lng))}
             strokeColor='blue' // 선색깔
-            strokeWeight={2} //선두께
+            strokeWeight={4} //선두께
             strokeOpacity={0.8} //투명도
             strokeStyle="solid"
             />
@@ -32,8 +35,8 @@ export default function Start() {
     }, []);
 
     const location = useLocation();
-    const navigate = useNavigate();
-    // console.log(location.state)
+    const  navigate = useNavigate();
+    // console.log(location.state.currentPosition)
 
     // expanded_content의 상태를 관리하는 state
     const [isExpanded, setIsExpanded] = useState(true);
@@ -48,7 +51,6 @@ export default function Start() {
     const [totalDistance, setTotalDistance]=useState(0);  //총 걸은 거리
     const [time, setTime]=useState(0);  // 총 시간(초)
     const timerRef = useRef(null);
-
 
     // 'pause' 버튼 클릭 시 실행되는 함수
     const togglePause = () => {
@@ -118,69 +120,38 @@ export default function Start() {
         console.log(currentPosition)
     },[currentPosition])
 
+    const sample= [
+        { lat: 35.132757, lng: 129.106966 },
+        { lat: 35.142465, lng: 129.107140 },
+        { lat: 35.131721, lng: 129.106824 },
+        { lat: 35.131706, lng: 129.106410 }
+    ];
     //연습 함수
     const example = () =>{
-        // setTimeout(function(){
-        //     const newPosition = {lat :35.132757 , lng: 129.106966};
-        //     setCurrentPosition(newPosition);
-        //     setPath((prevPath)=>{
-        //         const newPath = [...prevPath, newPosition];
-        //         const lastPosition = prevPath[prevPath.length -1];
+        sample.forEach((newPosition, index)=>{
+            setTimeout(()=> {
+                setCurrentPosition({newPosition});
+                setPath((prevPath)=>{
+                    const lastPosition = prevPath[prevPath.length -1];
 
-        //         if(lastPosition){
-        //             const distance = calculateDistance(lastPosition, newPosition);
-        //             setTotalDistance((prevDistance) => prevDistance + distance)
-        //         }
-        //         return newPath
-        //     });
-        // },2000)
-        // setTimeout(function(){
-        //     const newPosition = {lat:35.142465, lng:129.107140};
-        //     setCurrentPosition(newPosition);
-        //     setPath((prevPath)=>{
-        //         const newPath = [...prevPath, newPosition];
-        //         const lastPosition = prevPath[prevPath.length -1];
-
-        //         if(lastPosition){
-        //             const distance = calculateDistance(lastPosition, newPosition);
-        //             setTotalDistance((prevDistance) => prevDistance + distance)
-        //         }
-        //         return newPath
-        //     });
-        // },4000)
-        // setTimeout(function(){
-        //     const newPosition = {lat:35.131721, lng:129.106824};
-        //     setCurrentPosition(newPosition);
-        //     setPath((prevPath)=>{
-        //         const newPath = [...prevPath, newPosition];
-        //         const lastPosition = prevPath[prevPath.length -1];
-
-        //         if(lastPosition){
-        //             const distance = calculateDistance(lastPosition, newPosition);
-        //             setTotalDistance((prevDistance) => prevDistance + distance)
-        //         }
-        //         return newPath
-        //     });
-        // },6000)
-        // setTimeout(function(){
-        //     const newPosition = {lat:35.131706, lng:129.106410};
-        //     setCurrentPosition(newPosition);
-        //     setPath((prevPath)=>{
-        //         const newPath = [...prevPath, newPosition];
-        //         const lastPosition = prevPath[prevPath.length -1];
-
-        //         if(lastPosition){
-        //             const distance = calculateDistance(lastPosition, newPosition);
-        //             setTotalDistance((prevDistance) => prevDistance + distance)
-        //         }
-        //         return newPath
-        //     });
-        // },8000)
-        const coord1 = { lat:35.131721, lng:129.106824}; // New York City
-        const coord2 = { lat:35.131706, lng:129.106410 }; // Los Angeles 
-        const distance = calculateDistance(coord1, coord2);
-        console.log(distance)
+                    if (lastPosition && lastPosition.lat === newPosition.lat && lastPosition.lng === newPosition.lng) {
+                        return prevPath; // 같으면 경로 업데이트 없이 현재 상태 반환
+                    }
+                    const newPath = [...prevPath, newPosition];
+                    if(lastPosition){
+                        const distance = calculateDistance(lastPosition, newPosition);
+                        setTotalDistance((prevDistance) => prevDistance + distance)
+                    }
+                return newPath;
+                })
+            }, index *2000)
+        })
     }
+    useEffect(() => {
+        // if (path.length === sample.length) {
+            console.log(path);
+        // }
+    }, [path]);
 
     useEffect(()=>{
         if (isPaused) {
@@ -188,8 +159,8 @@ export default function Start() {
             stopTracking();
         } else {
             startTimer();
-            startTracking();
-            // example()
+            // startTracking();
+            example()
         }
         console.log(isPaused)
     },[isPaused])
@@ -206,6 +177,8 @@ export default function Start() {
         clearInterval(timerRef.current)
         timerRef.current = null;
     }
+
+    //시간 형식 변환 함수
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds /3600);
         const minutes = Math.floor((seconds % 3600) /60);
@@ -232,7 +205,19 @@ export default function Start() {
     //아이콘 경로 조건부 설정
     const icon3Path = isExpanded ? "./icon/mdi--arrow-down-drop.svg" : "./icon/mdi--arrow-drop-up.svg";
     
-
+    function activitySave(){
+        const endTime = new Date();
+        navigate('/Activity_Save',
+            {state : {
+                path : path, 
+                time: time, 
+                distance : totalDistance,
+                startTime: location.state.startTime,
+                endTime: endTime
+                }
+            }
+        )
+    }
 
     return (
         <div className="Start_container">
@@ -266,11 +251,10 @@ export default function Start() {
                 </div>
             ) : (
                 <div className="button-container">
-                    <Link className="start_button1" to='/Activity_Save'>
-                        <div>
-                            <div className="button-label-end">종료</div>
-                        </div>
-                    </Link>
+                    <div className="start_button1" onClick={activitySave}>
+                        <div className="button-label-end" >종료</div>
+                    </div>
+                
                     <div className="start_button2" onClick={restart}>
                         <div className="button-label-restart">재시작</div>
                     </div>
