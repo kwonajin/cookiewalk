@@ -1,4 +1,4 @@
-.write-page { 
+.write-map-page { 
 	min-height: 700px;
 	box-shadow: 0px 10px 15px #00000040;
 	top: 0px;
@@ -9,7 +9,7 @@
   padding: 0px;
 }
 
-.write-page {
+.write-map-page {
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -42,14 +42,14 @@
   z-index: 1;
 } */
 
-.write_back { 
+.write_map_back { 
 	width:25px;
 	height:25px;
 	position:absolute;
 	left:6px;
 	top:10px;
 }
-.write_back_icon { 
+.write_map_back_icon { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:25px;
 	height:25px;
@@ -58,7 +58,7 @@
 	top:5px;
 }
 
-.write_title { 
+.write_map_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:79px;
 	height:29px;
@@ -69,10 +69,10 @@
 	text-align:left;
 	font-size:20px;
 	letter-spacing:0;
-  font-weight: 600;
+	font-weight: 600;
 }
 
-.write_add { 
+.write_map_add { 
 	background-color: transparent;
 	border: none;
 	color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
@@ -88,78 +88,13 @@
 	cursor: pointer;
 }
 
-.write_line1 { 
-	width:390px;
-	height:0px;
-	position:absolute;
-	left:0px;
-	top:51px;
-	border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
+.writeMap_Picture_add_box{
+	position: absolute;
+	top: 100px; 
+	left: 71.7px; 
 }
 
-.write_place_add { 
-	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:63px;
-	height:23px;
-	position:absolute;
-	left:15px;
-	top:63px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:16px;
-	letter-spacing:0;
-}
-
-.place_add { 
-	transform: rotate(180deg);
-	width:20px;
-	height:20px;
-	position:absolute;
-	left:368px;
-	top:67px;
-}
-
-
-.place_add_icon { 
-  filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
-	width:15px;
-	height:15px;
-	position:absolute;
-	left:1.6790168285369873px;
-	top:4.179016590118408px;
-}
-
-.write_line2 { 
-	width:390px;
-	height:0px;
-	position:absolute;
-	left:0px;
-	top:100px;
-	border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
-}
-
-.write_text { 
-	color:rgb(0, 0, 0);
-	width:355px;
-	height:200px;
-	position:absolute;
-	left:15px;
-	top:380px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:17px;
-	letter-spacing:0;
-  border: none;
-  resize: none; /* 입력란 크기 조절 비활성화 */
-  overflow-y: auto; /* 세로 스크롤바 표시 */
-  max-height: 450px; /* 최대 높이 설정 */
-  word-wrap: break-word; /* 단어 단위로 줄 바꿈 */
-}
-.write_text::placeholder {
-    color: rgba(137.2229638695717, 137.2229638695717, 137.2229638695717, 1);
-}
-
-.picture_add { 
+.writeMap_picture_add { 
 	background-color:rgba(239.04590249061584, 239.04590249061584, 239.04590249061584, 1);
 	width:100px;
 	height:100px;
@@ -172,7 +107,7 @@
 	top:15.5px;
 	display: none;
 }
-.picture_add_icon {
+.writeMap_picture_add_icon {
 	position: absolute;
 	cursor: pointer;
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
@@ -181,28 +116,30 @@
 	left: 72.5px;
 	top: 60px;
 }
-.Picture_add_box{
-	position: absolute;
-	top: 100px; 
-	left: 71.7px; 
-}
-.image_preview {
+.writeMap_image_preview {
 	position: absolute;
 	left: 22px;
 	width: 200px; /* 또는 원하는 크기 */
 	height: 200px; /* 또는 원하는 크기 */
 }
 
-
-.camera_icon { 
-  filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
-	width:40px;
-	height:30px;
+.writeMap_text { 
+	color:rgb(0, 0, 0);
+	width:355px;
+	height:200px;
 	position:absolute;
-  width:40px;
-	height:30px;
-	position:absolute;
-	left:30px;
-	top:35px;
-  
+	left:15px;
+	top:380px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:17px;
+	letter-spacing:0;
+	border: none;
+  	resize: none; /* 입력란 크기 조절 비활성화 */
+ 	overflow-y: auto; /* 세로 스크롤바 표시 */
+  	max-height: 450px; /* 최대 높이 설정 */
+  	word-wrap: break-word; /* 단어 단위로 줄 바꿈 */
+}
+.writeMap_text::placeholder {
+    color: rgba(137.2229638695717, 137.2229638695717, 137.2229638695717, 1);
 }
