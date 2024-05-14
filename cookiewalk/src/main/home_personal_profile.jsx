@@ -1,14 +1,17 @@
-import React, {useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './home_personal_profile.css';
-import { Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate,useParams} from 'react-router-dom';
+import mainContext from '../context/MainContext';
 
 export default function HomePersonalProfile() {
+  const { userId } = useParams(); // URL에서 userId 추출
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    console.log(userId); // 추출한 userId 확인
+  }, [userId]);
 
   const [isFollowing, setIsFollowing] = useState(false); // 팔로우 상태를 관리합니다.
-  const navigate = useNavigate(); // useNavigate를 사용하여 navigate 함수를 가져옵니다.
+  const navigate = useNavigate(); // useNavigate를 사용하여 navigate 함수를 가져옵니다. 
 
   // 팔로우 버튼을 클릭할 때 실행되는 함수
   const handleFollowClick = () => {

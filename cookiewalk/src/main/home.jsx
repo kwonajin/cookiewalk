@@ -65,6 +65,7 @@ export default function Home() {
     setPostList(postsWithUserInfo); // 상태 업데이트
   };
 
+
   // 컴포넌트 렌더링 부분
   return (
     <>
@@ -74,16 +75,17 @@ export default function Home() {
           <Active />
         </div>
         {postList.map(post => ( // 게시물 데이터를 ContentBox 컴포넌트에 매핑
-          <ContentBox
-            key={post.post_id}
-            profileName={post.user_name}
-            profileImage={post.user_image}
-            location={post.locate}
-            likes={post.likes}
-            contentImage={post.image}
-            contentText={post.content}
-            createdAt={new Date(post.created_at).toLocaleString()}
-          />
+            <ContentBox
+              key={post.post_id}
+              userId={post.user_id}
+              profileName={post.user_name}
+              profileImage={post.user_image}
+              location={post.locate}
+              likes={post.likes}
+              contentImage={post.image}
+              contentText={post.content}
+              createdAt={new Date(post.created_at).toLocaleString()}
+            />
         ))}
       </div>
       <NavBar />
