@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import {useToken} from '../context/tokenContext'
 import { supabase } from '../supabaseClient';
 import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
+// import { getReverseGeocode } from '../getReverseGeocode';
+import axios from 'axios';
 
 function MyMap({path}){
     const navermaps = useNavermaps();
@@ -25,6 +27,7 @@ export default function Activity_save() {
     const {state} = useLocation()
     const userInfo=useToken();
     const userID= userInfo.user
+    const [address, setAddress]= useState('')
 
     console.log(state)
     console.log(state.path[0])
@@ -58,7 +61,8 @@ export default function Activity_save() {
                     distance: state.distance,
                     state: 'N',
                     user_id: userID,
-                    title: title
+                    title: title,
+                    location: address
                 }
             ])
         if(insertWalkError){
@@ -101,7 +105,8 @@ export default function Activity_save() {
                     distance: state.distance,
                     state: 'Y',
                     user_id: userID,
-                    title: title
+                    title: title,
+                    location: address
                 }
             ])
         if(insertWalkError){
@@ -122,12 +127,28 @@ export default function Activity_save() {
                 console.log(insertLocationError)
             }
         }
-
     }
-
+    async function getReverseGeocode(latitude, longitude){
+        const url =`http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
+        try{
+            const response = await axios.get(url, {latitude, longitude});
+            console.log(response.data.results[1].region)
+            const area1=response.data.results[1].region.area1.name
+            const area2=response.data.results[1].region.area2.name
+            const area3=response.data.results[1].region.area3.name
+            const area= `${area1} ${area2} ${area3}`
+            setAddress(area)
+            return area;
+        }catch (error){
+            console.error(error)
+            throw error;
+        }
+    };
     useEffect(()=>{
-        console.log(title)
-    },[title])
+        if(!address){
+            const data=getReverseGeocode(state.path[0].lat, state.path[0].lng)
+        }
+    },[address])
     // 경로 삭제 함수
     const removeActivity = () => {
         const isConfirmed = window.confirm("경로를 저장하지 않고 삭제하시겠습니까?");
@@ -158,7 +179,7 @@ export default function Activity_save() {
             <div className="activity_save_line2"></div>
             <span className="acitivity_save_location_label">위치</span>
             <div><img className="acitivity_save_location_icon" src="./icon/map_pin_icon.svg" alt="" /></div>
-            <span className="acitivity_save_location">부산 남구 대연동</span>
+            <span className="acitivity_save_location">{address}</span>
 
             <button className="Unfinished_SaveRoute_button" onClick={nonCompleteWalk}>미완성 경로 저장하기</button>
             <button className="Finished_SaveRoute_button" onClick={completeWalk}>완성한 그림 저장하기</button>
