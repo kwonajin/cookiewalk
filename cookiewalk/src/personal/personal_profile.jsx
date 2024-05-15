@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
 import './personal_profile.css';
-import { Link, redirect , useNavigate} from 'react-router-dom';
+import { Link, redirect , useNavigate, useLocation} from 'react-router-dom';
 
 export default function PersonalProfile() {
   useEffect(() => {
@@ -13,6 +13,9 @@ export default function PersonalProfile() {
   const handleFollowClick = () => {
     setIsFollowing(prevState => !prevState); // 팔로우 상태를 토글합니다.
   };
+
+  const postID=location.state.key
+  console.log(postID)
 
   return (
     <>
