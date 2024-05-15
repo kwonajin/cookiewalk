@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import './home_personal_profile.css';
 import { Link, useNavigate,useParams} from 'react-router-dom';
 import mainContext from '../context/MainContext';
+import { supabase } from '../supabaseClient'; // Supabase 클라이언트
 
 export default function HomePersonalProfile() {
   const { userId } = useParams(); // URL에서 userId 추출
@@ -24,19 +25,21 @@ export default function HomePersonalProfile() {
   };
 
 
+
+
   return (
     <>
     <div className="hpp_background">
       <div className='hppnav'>
         <div className="hpp_back" onClick={handleGoBack}>
-            <img className="hpp_back_icon" src="./icon/arrow.svg" alt="" />
+            <img className="hpp_back_icon" src="../../public/icon/arrow.svg" alt="" />
         </div>
         <div className="hpp_user_id">good_runnig_day</div>
         <div className="hpp_line"></div>
       </div>
 
   
-      <div><img className="h_profile_img" src="./images/ellipse_11.png" alt="" /></div>
+      <div><img className="h_profile_img" src="../../images/ellipse_11.png" alt="" /></div>
       <div className="hpp_total_distance_num">78km</div>
       <div className="hpp_total_distance">총거리</div>
       <div className="hpp_follower_num">793</div>
@@ -52,27 +55,15 @@ export default function HomePersonalProfile() {
       <div className="e216_19"></div>
       <div className="e216_20"></div>
       <div className="e216_21"></div>
-      <div className="e216_22"></div>
-      <div className="e216_23"></div>
-      <div className="e216_24"></div>
       <div className="e216_25"></div>
       <div className="e216_26"></div>
       <div className="e216_27"></div>
-      <div className="e216_28"></div>
-      <div className="e216_29"></div>
-      <div className="e216_30"></div>
       <div className="e216_31"></div>
       <div className="e216_32"></div>
       <div className="e216_33"></div>
-      <div className="e216_34"></div>
-      <div className="e216_35"></div>
-      <div className="e216_36"></div>
       <div className="e216_37"></div>
       <div className="e216_38"></div>
       <div className="e216_39"></div>
-      <div className="e216_40"></div>
-      <div className="e216_41"></div>
-      <div className="e216_42"></div>
       <div className="e216_43">
         <div className="e216_44">
           <div className="e216_45"></div>
@@ -86,11 +77,11 @@ export default function HomePersonalProfile() {
     
 
     <div className="navbar">
-      <Link to="/home"><div className="home"><img className="my_home_icon" src="./icon/home.svg" alt="" /></div></Link>
-      <Link to="/map"><div className="map"><img className="my_map_icon" src="./icon/map.svg" alt="" /></div></Link>
-      <Link to="/pause"><div className="run"><img className="my_run_icon" src="./icon/record.svg" alt="" /></div></Link>
-      <Link to="/group"><div className="group"><img className="my_group_icon" src="./icon/group.svg" alt="" /></div></Link>
-      <Link to="/mypage"><div className="my"><img className="my_my_icon" src="./icon/my.svg" alt="" /></div></Link>
+      <Link to="/home"><div className="home"><img className="my_home_icon" src="../../icon/home.svg" alt="" /></div></Link>
+      <Link to="/map"><div className="map"><img className="my_map_icon" src="../../icon/map.svg" alt="" /></div></Link>
+      <Link to="/pause"><div className="run"><img className="my_run_icon" src="../../icon/record.svg" alt="" /></div></Link>
+      <Link to="/group"><div className="group"><img className="my_group_icon" src="../../icon/group.svg" alt="" /></div></Link>
+      <Link to="/mypage"><div className="my"><img className="my_my_icon" src="../../icon/my.svg" alt="" /></div></Link>
     </div></>
   );
 }
