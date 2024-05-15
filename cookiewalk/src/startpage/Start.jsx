@@ -2,13 +2,12 @@ import React, { useState, useEffect, useRef} from 'react';
 import './Start.css'
 import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
 import { Link ,useLocation, useNavigate} from "react-router-dom";
-
 function MyMap({path ,center}){
 
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
 
     const markerIcon = {
-        content: '<div style="background-color: blue; width: 10px; height: 10px; border-radius: 50%; transform: translate(-50%, -50%);"></div>'
+        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>'
     }
     return(
     //기본값 또는 현재위치로 중심좌표 설정
@@ -159,8 +158,8 @@ export default function Start() {
             stopTracking();
         } else {
             startTimer();
-            // startTracking();
-            example()
+            startTracking();
+            // example()
         }
         console.log(isPaused)
     },[isPaused])
@@ -229,12 +228,11 @@ export default function Start() {
 
             <MapDiv className='e118_443'><MyMap path={path} center={currentPosition}/></MapDiv>
             {/* <MapDiv style={{width: '100%', height: '600px'}}><MyMapStart/></MapDiv> */}
-
             
             {/* 아이콘3과 expanded_content의 위치와 표시 방식을 변경합니다. */}
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
             <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
-
+            
             {isExpanded && (
             <>
                 <div className="start_label_distance">Km</div>
