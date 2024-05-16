@@ -132,10 +132,10 @@ export default function Activity_save() {
         const url =`http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
         try{
             const response = await axios.get(url, {latitude, longitude});
-            console.log(response.data.results[1].region)
-            const area1=response.data.results[1].region.area1.name
-            const area2=response.data.results[1].region.area2.name
-            const area3=response.data.results[1].region.area3.name
+            console.log(response.data.results[0].region)
+            const area1=response.data.results[0].region.area1.name
+            const area2=response.data.results[0].region.area2.name
+            const area3=response.data.results[0].region.area3.name
             const area= `${area1} ${area2} ${area3}`
             setAddress(area)
             return area;
@@ -144,11 +144,11 @@ export default function Activity_save() {
             throw error;
         }
     };
-    //useEffect(()=>{
-    //     if(!address){
-    //         const data=getReverseGeocode(state.path[0].lat, state.path[0].lng)
-    //     }
-    // },[address])
+    useEffect(()=>{
+        if(!address){
+            const data=getReverseGeocode(state.path[0].lat, state.path[0].lng)
+        }
+    },[address])
     // 경로 삭제 함수
     const removeActivity = () => {
         const isConfirmed = window.confirm("경로를 저장하지 않고 삭제하시겠습니까?");
