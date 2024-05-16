@@ -127,3 +127,7 @@ body{
 .startpage_link{
 	cursor: pointer;
 }
+.icon_size{
+	width: 15%;
+	height:15%;
+}

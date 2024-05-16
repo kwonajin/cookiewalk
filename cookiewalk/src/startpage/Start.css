@@ -224,4 +224,7 @@ body{
 	margin-top: 28px;
 	cursor: pointer;
 }
-
+.icon_size{
+	width: 15%;
+	height:15%;
+}
