@@ -144,11 +144,11 @@ export default function Activity_save() {
             throw error;
         }
     };
-    useEffect(()=>{
-        if(!address){
-            const data=getReverseGeocode(state.path[0].lat, state.path[0].lng)
-        }
-    },[address])
+    // useEffect(()=>{
+    //     if(!address){
+    //         const data=getReverseGeocode(state.path[0].lat, state.path[0].lng)
+    //     }
+    // },[address])
     // 경로 삭제 함수
     const removeActivity = () => {
         const isConfirmed = window.confirm("경로를 저장하지 않고 삭제하시겠습니까?");
