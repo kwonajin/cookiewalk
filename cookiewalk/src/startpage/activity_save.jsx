@@ -28,6 +28,7 @@ export default function Activity_save() {
     const userInfo=useToken();
     const userID= userInfo.user
     const [address, setAddress]= useState('')
+    const navigate = useNavigate();
 
     console.log(state)
     console.log(state.path[0])

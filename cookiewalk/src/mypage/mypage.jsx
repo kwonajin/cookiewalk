@@ -169,13 +169,13 @@ export const Tab = () => {
                   <div className="carousel">
                     <Slider {...settings}>
                       <div>
-                        <img className='carousel_image' src="./images/ellipse_7.png" alt="이미지1" />
+                        <img className='carousel_image' src="./images/carousel_demo1.png" alt="이미지1" />
                       </div>
                       <div>
-                        <img className='carousel_image' src="./images/ellipse_11.png" alt="이미지2" />
+                        <img className='carousel_image' src="./images/carousel_demo2.png" alt="이미지2" />
                       </div>
                       <div>
-                        <img className='carousel_image' src="./images/ellipse_11.png" alt="이미지3" />
+                        <img className='carousel_image' src="./images/carousel_demo3.png" alt="이미지3" />
                       </div>
                     </Slider>
                   </div>
