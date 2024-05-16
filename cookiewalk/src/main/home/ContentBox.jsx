@@ -15,7 +15,7 @@ export default function ContentBox({
 }) {
     const [showMenu, setShowMenu] = useState(false);
     const [isLike, setIsLike] = useState(false);
-    const [likeCount, setLikeCount] = useState(0); // 좋아요 수 상태 초기화
+    const [likeCount, setLikeCount] = useState(0);
 
     useEffect(() => {
         const fetchLikeStatus = async () => {
@@ -88,6 +88,18 @@ export default function ContentBox({
         }
     };
 
+    const handlePostDelete = async () => {
+        const { error } = await supabase
+            .from('post')
+            .delete()
+            .eq('post_id', postID);
+        if (error) {
+            console.error("Error deleting post:", error);
+        } else {
+            window.location.reload(); // 화면 새로고침
+        }
+    };
+
     return (
       <div className='main_content_box'>
         <Link to={`/home_personal_profile/${userId}`} style={{ textDecoration: 'none' }}>
@@ -103,7 +115,11 @@ export default function ContentBox({
             <div className='menu_title'><img className='dropdown_icon' src="./icon/follow_minus.svg" alt="언팔로우"/>팔로우 취소</div>
             <div className='menu_title'><img className='dropdown_icon' src="./icon/block.svg" alt="차단"/>차단</div>
             <div className='menu_title'><img className='dropdown_icon' src="./icon/hide.svg" alt="숨기기"/>숨기기</div>
-            <div className='menu_title2'><img className='dropdown_icon2' src="./icon/trash.svg" alt="삭제"/>삭제</div>
+            {userId === userID && (
+              <div className='menu_title2' onClick={handlePostDelete}>
+                <img className='dropdown_icon2' src="./icon/trash.svg" alt="삭제"/>삭제
+              </div>
+            )}
           </div>
         )}
         <div className="content_img_box"><img className='content_img' src={contentImage} alt="콘텐츠 이미지"/></div>
