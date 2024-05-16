@@ -7,7 +7,9 @@ function MyMap({path ,center}){
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
 
     const markerIcon = {
-        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>'
+        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
+        size: new navermaps.Size(24,24),
+        anchor: new navermaps.Point(12,12)
     }
     return(
     //기본값 또는 현재위치로 중심좌표 설정
