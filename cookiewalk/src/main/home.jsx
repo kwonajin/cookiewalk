@@ -44,7 +44,8 @@ export default function Home() {
       .order('created_at', { ascending: false }); // 생성된 날짜 기준으로 내림차순 정렬
     if (error) {
       console.error('Error fetching posts:', error.message);
-      return;
+      return;Google
+      
     }
 
     // 각 게시물에 대해 사용자의 닉네임과 프로필 이미지 정보를 추가하여 저장
@@ -76,15 +77,16 @@ export default function Home() {
         </div>
         {postList.map(post => ( // 게시물 데이터를 ContentBox 컴포넌트에 매핑
             <ContentBox
-              key={post.post_id}
+              key={`${post.post_id}-${post.content}`}
               userId={post.user_id}
               profileName={post.user_name}
               profileImage={post.user_image}
               location={post.locate}
-              likes={post.likes}
               contentImage={post.image}
               contentText={post.content}
               createdAt={new Date(post.created_at).toLocaleString()}
+              userID={userID}
+              postID={post.post_id}
             />
         ))}
       </div>
