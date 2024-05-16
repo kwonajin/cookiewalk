@@ -81,7 +81,7 @@ export default function App() {
             <Route path="/mygroup_detail" element={<ProtectedRoute><MyGroupDetail /></ProtectedRoute>} />
             <Route path="/profile_edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
             <Route path="/personal_profile" element={<ProtectedRoute><PersonalProfile /></ProtectedRoute>} />
-            <Route path="/home_personal_profile" element={<ProtectedRoute><HomePersonalProfile /></ProtectedRoute>} />
+            <Route path="/home_personal_profile/:userId" element={<ProtectedRoute><HomePersonalProfile /></ProtectedRoute>} />
             <Route path="/mypage_menu" element={<ProtectedRoute><MypageMenu /></ProtectedRoute>} />
             <Route path="/account_setting" element={<ProtectedRoute><AccountSetting /></ProtectedRoute>} />
             <Route path="/account_setting2" element={<ProtectedRoute><AccountSetting2 /></ProtectedRoute>} />
