@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './activity_save.css'
 import { Link } from "react-router-dom";
 import {useToken} from '../context/tokenContext'
@@ -28,6 +28,7 @@ export default function Activity_save() {
     const userInfo=useToken();
     const userID= userInfo.user
     const [address, setAddress]= useState('')
+    const navigate = useNavigate();
 
     console.log(state)
     console.log(state.path[0])
@@ -154,7 +155,7 @@ export default function Activity_save() {
         const isConfirmed = window.confirm("경로를 저장하지 않고 삭제하시겠습니까?");
        // 사용자가 '확인'을 클릭한 경우
         if (isConfirmed) {
-        navigate('/home');
+        git igate('/home');
     }
     };
     return(
