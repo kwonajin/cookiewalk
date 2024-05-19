@@ -8,8 +8,14 @@ const port =3000;
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+
+let corsOptions = {
+  origin:[ 'http://localhost:5173', 'https://cookiewalk.netlify.app'],
+  credentials: true
+}
+
 //CORS 사용
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

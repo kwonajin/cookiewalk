@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './activity_save.css'
 import { Link } from "react-router-dom";
 import {useToken} from '../context/tokenContext'
@@ -28,6 +28,7 @@ export default function Activity_save() {
     const userInfo=useToken();
     const userID= userInfo.user
     const [address, setAddress]= useState('')
+    const navigate = useNavigate();
 
     console.log(state)
     console.log(state.path[0])
@@ -132,10 +133,10 @@ export default function Activity_save() {
         const url =`http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
         try{
             const response = await axios.get(url, {latitude, longitude});
-            console.log(response.data.results[1].region)
-            const area1=response.data.results[1].region.area1.name
-            const area2=response.data.results[1].region.area2.name
-            const area3=response.data.results[1].region.area3.name
+            console.log(response.data.results[0].region)
+            const area1=response.data.results[0].region.area1.name
+            const area2=response.data.results[0].region.area2.name
+            const area3=response.data.results[0].region.area3.name
             const area= `${area1} ${area2} ${area3}`
             setAddress(area)
             return area;
@@ -144,7 +145,7 @@ export default function Activity_save() {
             throw error;
         }
     };
-    //useEffect(()=>{
+    // useEffect(()=>{
     //     if(!address){
     //         const data=getReverseGeocode(state.path[0].lat, state.path[0].lng)
     //     }

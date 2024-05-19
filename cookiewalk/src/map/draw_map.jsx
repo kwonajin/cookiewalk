@@ -5,6 +5,7 @@ import customIcon from '../../public/images/logo.png';  // 이미지 경로를 �
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 import axios from 'axios'
+import { Link, useNavigate } from "react-router-dom";
 
 function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
   const navermaps = useNavermaps();
@@ -94,6 +95,8 @@ export default function DrawMap() {
   const [endPoint, setEndPoint] = useState(null);
   const [redMarkerClicked, setRedMarkerClicked] = useState(false);
   const [selectedColor, setSelectedColor] = useState('#000000'); // 기본 색상 설정
+  
+  const  navigate = useNavigate();
 
   const userInfo=useToken();
   const userID = userInfo.user;
@@ -205,7 +208,9 @@ export default function DrawMap() {
           console.error(insertLocationError)
         }
       }
+      navigate('/home')
     }
+
   }
   return (
     <div className='draw_map_container'>
