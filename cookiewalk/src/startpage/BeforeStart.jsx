@@ -6,10 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 function MyMap({center}){
 
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
+    const markerIcon = {
+        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>'
+    }
     return(
     //기본값 또는 현재위치로 중심좌표 설정
     <NaverMap defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng): new  navermaps.LatLng((37.3595704, 127.105399))}  defaultZoom={15}>
-        {center &&(<Marker defaultPosition={new navermaps.LatLng(center.lat , center.lng)}/>)}
+        {center &&(<Marker icon={markerIcon} defaultPosition={new navermaps.LatLng(center.lat , center.lng)}/>)}
     </NaverMap>
     )
 }
