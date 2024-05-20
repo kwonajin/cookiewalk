@@ -10,6 +10,8 @@ export default function Liked() {
       <span className="saved_title">좋아요한 게시물</span>
       <div className="saved_line"></div>
 
+      
+
     </div>
   );
 }

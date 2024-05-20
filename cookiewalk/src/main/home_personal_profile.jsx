@@ -2,13 +2,21 @@ import React, { useEffect, useState } from 'react';
 import './home_personal_profile.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient'; // Supabase 클라이언트
+import { useToken } from '../context/tokenContext';
 
 export default function HomePersonalProfile() {
+
+  const userInfo=useToken()
+  const userID=userInfo.user
   const { userId } = useParams(); // URL에서 userId 추출
   const [isFollowing, setIsFollowing] = useState(false); // 팔로우 상태를 관리합니다.
   const navigate = useNavigate(); // useNavigate를 사용하여 navigate 함수를 가져옵니다. 
   const [userData, setUserData] = useState(null); // 초기 상태를 null로 설정
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
+
+
+  
+
 
   const handleFollowClick = () => {
     setIsFollowing(prevState => !prevState); // 팔로우 상태를 토글합니다.
@@ -57,7 +65,7 @@ export default function HomePersonalProfile() {
         <div className="hpp_back" onClick={handleGoBack}>
             <img className="hpp_back_icon" src="../../public/icon/arrow.svg" alt="" />
         </div>
-        <div className="hpp_user_id">good_runnig_day</div>
+        <div className="hpp_user_id">{nick_name}</div>
         <div className="hpp_line"></div>
       </div>
 
