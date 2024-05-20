@@ -6,6 +6,7 @@ import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 import axios from 'axios'
 import { Link, useNavigate } from "react-router-dom";
+import html2canvas from 'html2canvas'
 
 function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
   const navermaps = useNavermaps();
@@ -66,28 +67,33 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
   });
 
   return (
-    <NaverMap
-      center={center}
-      defaultZoom={15}
-      onClick={handleMapClick}
-    >
-      {position && <Marker position={position} icon={customIconFactory()} />}  // 사용자의 현재 위치를 로고 이미지로 표시
-      {path.length > 0 && <Polyline path={path} strokeColor={selectedColor} strokeWeight={5} />}
-      {path.length > 0 && (
-        <Marker
-          position={path[0]}
-          icon={iconFactory(redMarkerClicked ? 'blue' : 'red')}  // 첫 클릭을 빨간색으로 표시, 클릭하면 파란색으로 변경
-          onClick={handleRedMarkerClick}  // 빨간색 점 클릭 이벤트 핸들러
-        />
-      )}
-      {path.length > 1 && !redMarkerClicked && (
-        <Marker position={path[path.length - 1]} icon={iconFactory('green')} />  // 마지막 클릭을 초록색으로 표시
-      )}
-    </NaverMap>
+
+    <div className='map2'>
+      <NaverMap
+        center={center}
+        defaultZoom={15}
+        onClick={handleMapClick}
+      >
+        {position && <Marker position={position} icon={customIconFactory()} />}  
+        {/* // 사용자의 현재 위치를 로고 이미지로 표시 */}
+        {path.length > 0 && <Polyline className='polyline' path={path} strokeColor={selectedColor} strokeWeight={5} />}
+        {path.length > 0 && (
+          <Marker
+            position={path[0]}
+            icon={iconFactory(redMarkerClicked ? 'blue' : 'red')}  // 첫 클릭을 빨간색으로 표시, 클릭하면 파란색으로 변경
+            onClick={handleRedMarkerClick}  // 빨간색 점 클릭 이벤트 핸들러
+          />
+        )}
+        {path.length > 1 && !redMarkerClicked && (
+          <Marker position={path[path.length - 1]} icon={iconFactory('green')} />  // 마지막 클릭을 초록색으로 표시
+        )}
+      </NaverMap>
+    </div>
   );
 }
 
 export default function DrawMap() {
+  
   const [drawing, setDrawing] = useState(false);
   const [path, setPath] = useState([]);
   const [pathAfterRedMarker, setPathAfterRedMarker] = useState([]);
@@ -165,6 +171,18 @@ export default function DrawMap() {
         throw error;
     }
 };
+  // 지도 캡쳐 및 업로드
+  const dataURItoBlob = (dataURI) => {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length)
+    const ia = new Uint8Array(ab);
+    for(let i =0; i< byteString.length; i++){
+      ia[i]= byteString.charCodeAt(i);
+    }
+    return new Blob([ab], {type:mimeString})
+  }
+
   //경로 저장 함수 
   async function submitRoute(){
     if(path.length >2){
@@ -213,10 +231,34 @@ export default function DrawMap() {
           console.error(insertLocationError)
         }
       }
-      navigate('/home')
-    }
+      // 지도 캡처 부분
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      const mapElement = document.querySelector('.map2')
+      try{
+        const canvas = await html2canvas(mapElement, {
+          useCORS: true,
+          allowTaint: false
+        });
+        const imgDataUrl = await canvas.toDataURL('image/png');
 
+        const fileName= `draw_${count+1}.png`;
+
+        const {data: uploadImage, error: uploadImgError}= await supabase.storage
+          .from('image')
+          .upload(`Map/${fileName}`, dataURItoBlob(imgDataUrl),{
+            cacheControl: '3600',
+            upsert:false
+          });
+          if (uploadImgError){
+            console.error(uploadImgError)
+          }
+      }catch(error){
+      console.error(error)
+      }
+    navigate('/home')
+    }
   }
+
   return (
     <div className='draw_map_container'>
       <button onClick={toggleDrawing} style={{ position: 'absolute', zIndex: 1000 }}>
@@ -238,9 +280,11 @@ export default function DrawMap() {
         onChange={handleColorChange} 
         style={{ position: 'absolute', zIndex: 1000, left: '240px' }} 
       />
-      <MapDiv style={{ width: '100%', height: '500px' }}>
-        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} selectedColor={selectedColor} />
-      </MapDiv>
+        <div className='navermap'>
+          <MapDiv  style={{width: '100%', height: '500px' }}>
+            <MyMap className='navermap2' drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} selectedColor={selectedColor} />
+          </MapDiv>
+        </div>
       {/* 임의로 만든 저장버튼 */}
       <button onClick={submitRoute} >경로 저장</button>
 
