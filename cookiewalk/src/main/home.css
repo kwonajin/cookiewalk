@@ -252,7 +252,7 @@ body{
 	height:35px;
 	position:relative;
 	left:11px;
-	top:175px;
+	top:5px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -264,7 +264,7 @@ body{
 	height:19px;
 	position:relative;
 	left:53px;
-	top:136px;
+	top:-35px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -277,7 +277,7 @@ body{
 	height:16px;
 	position:relative;
 	left:53px;
-	top:135px;
+	top:-35px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -289,7 +289,7 @@ body{
 	height:25px;
 	position:relative;
 	left:357px;
-	top:104px;
+	top:-60px;
 }
 
 .dotmenu_icon { 
@@ -301,8 +301,14 @@ body{
 }
 
 .main_content_box {
+	top: 170px;
 	position: relative; /* 이 부분이 중요 */
-	margin-bottom: -70px;
+	margin-bottom: -60px;
+}
+
+.content_top_link{
+	top: 10px;
+	position: relative;
 }
 
 .dropdown_menu {
@@ -357,9 +363,13 @@ body{
 	height:390px;
 	position:relative;
 	left:0px;
-	top:120px;
 	background-repeat:no-repeat;
 	background-size:cover;
+}
+
+.content_img_box {
+	position: relative;
+	top: -40px;
 }
 
 .comment_name { 
@@ -368,8 +378,8 @@ body{
 	width:77px;
 	height:21px;
 	position:relative;
-	left:10px;
-	top:175px;
+	left:15px;
+	top:-68px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -380,8 +390,8 @@ body{
 	color:#131313;
 	position:relative;
 	width:370px;
-	left:10px;	
-	top:175px;
+	left:15px;	
+	top:-67px;
 	font-family:Noto Sans KR;
 	font-size:13px;
 	letter-spacing:0;
@@ -391,8 +401,8 @@ body{
 	color:#787878;
 	height:21px;
 	position:relative;
-	left:10px;
-	top:176px;
+	left:15px;
+	top:-65px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:13px;
@@ -402,8 +412,8 @@ body{
 .date { 
 	color:#787878;
 	position:relative;
-	left:10px;
-	top:177px;
+	left:15px;
+	top:-65px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -413,8 +423,8 @@ body{
 .like { 
 	color:#131313;
 	position:relative;
-	left:10px;
-	top:40px;
+	left:15px;
+	top:-70px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:14px;
@@ -449,15 +459,15 @@ body{
 	height:25px;
 	position:relative;
 	left:8px;
-	top:-12px;
+	top:-33px;
 }
 
 .heart_icon { 
-	/* filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%); */
 	height:26px;
 	position:relative;
 	left:2px;
 	top:2.777777671813965px;
+	cursor: pointer;
 }
 
 .comment { 
@@ -465,8 +475,8 @@ body{
 	width:24px;
 	height:24px;
 	position:relative;
-	left:73px;
-	top:-36px;
+	left:43px;
+	top:-58px;
 }
 
 .comment_icon { 
@@ -474,7 +484,7 @@ body{
 	width:20px;
 	height:20px;
 	position:relative;
-	left:30px;
+	left: 1px;
 	transform:rotate(180deg);
 }
 
@@ -499,7 +509,7 @@ body{
 	height:24px;
 	position:relative;
 	left:90px;
-	top:-61px;
+	top:-82px;
 }
 
 .share_icon { 
