@@ -206,12 +206,7 @@ export default function DrawMap() {
             created_at: created_time,
             user_id: userID,
             location: address,
-            color:selectedColor,
-            level: '상',
-            distance: 3.34,
-            time: 600
-
-
+            color:selectedColor
           }
         ])
       if(insertCollectionError){
