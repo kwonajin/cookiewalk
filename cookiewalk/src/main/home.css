@@ -285,11 +285,11 @@ body{
 }
 
 .dotmenu { 
-	width:25px;
-	height:25px;
+	width:30px;
+	height:30px;
 	position:relative;
 	left:357px;
-	top:-60px;
+	top:-50px;
 }
 
 .dotmenu_icon { 
@@ -313,7 +313,7 @@ body{
 
 .dropdown_menu {
   position: absolute; /* 부모 요소 기준으로 위치 지정 */
-  top: 219px; /* dotmenu 아이콘의 바로 아래에 위치하도록 설정 */
+  top: 57px; /* dotmenu 아이콘의 바로 아래에 위치하도록 설정 */
   right: 0; /* 오른쪽 정렬 */
   background-color: white; /* 배경색 설정 */
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* 드롭다운 메뉴에 그림자 효과 추가 */
@@ -363,6 +363,7 @@ body{
 	height:390px;
 	position:relative;
 	left:0px;
+	top: -7px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }

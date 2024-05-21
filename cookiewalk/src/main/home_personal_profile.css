@@ -65,10 +65,10 @@ body{
 .hpp_user_id { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	position:absolute;
-	left:110px;
 	top:10px;
+	left: 50%;
+	transform: translateX(-50%);
 	font-family:Noto Sans KR;
-	text-align:left;
 	font-size:20px;
 	letter-spacing:0;
 	font-weight: 600;
