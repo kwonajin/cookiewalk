@@ -7,6 +7,8 @@ import { useToken } from '../context/tokenContext';
 import axios from 'axios'
 import { Link, useNavigate } from "react-router-dom";
 import html2canvas from 'html2canvas'
+import FullScreenCapture from '../FullScreenCapture';
+
 
 function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
   const navermaps = useNavermaps();
@@ -76,7 +78,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
       >
         {position && <Marker position={position} icon={customIconFactory()} />}  
         {/* // 사용자의 현재 위치를 로고 이미지로 표시 */}
-        {path.length > 0 && <Polyline className='polyline' path={path} strokeColor={selectedColor} strokeWeight={5} />}
+        {path.length > 0 && <Polyline className='poly' path={path} strokeColor={selectedColor} strokeWeight={5} />}
         {path.length > 0 && (
           <Marker
             position={path[0]}
@@ -232,14 +234,17 @@ export default function DrawMap() {
         }
       }
       // 지도 캡처 부분
+      // await new Promise(resolve => setTimeout(resolve, 4000));
+      // const mapElement = document.querySelector('.navermap')
+      // try{
+      //   const canvas = await html2canvas(mapElement, {
+      //     useCORS: true,
+      //     allowTaint: false
+      //   });
+      //   const imgDataUrl = await canvas.toDataURL('image/png');
       await new Promise(resolve => setTimeout(resolve, 2000));
-      const mapElement = document.querySelector('.map2')
-      try{
-        const canvas = await html2canvas(mapElement, {
-          useCORS: true,
-          allowTaint: false
-        });
-        const imgDataUrl = await canvas.toDataURL('image/png');
+      try{  
+        const imgDataUrl= await FullScreenCapture()
 
         const fileName= `draw_${count+1}.png`;
 
@@ -253,7 +258,7 @@ export default function DrawMap() {
             console.error(uploadImgError)
           }
       }catch(error){
-      console.error(error)
+        console.error(error)
       }
     navigate('/home')
     }
