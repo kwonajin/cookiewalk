@@ -133,7 +133,7 @@ export default function ContentBox({
       )}
       <div className="content_img_box"><img className='content_img' src={contentImage} alt="콘텐츠 이미지" /></div>
       <div className="heart" onClick={handleIsLike}>
-        <img className="heart_icon" src={isLike ? "./icon/heart-fill.svg" : "./icon/heart.svg"} alt="하트" />
+        <img className="heart_icon" src={isLike ? "./icon/heart_fill_test.svg" : "./icon/heart_test.svg"} alt="하트" />
       </div>
       <div className="comment"><img className="comment_icon" src="./icon/comment.svg" alt="댓글" /></div>
       <div className="share"><img className="share_icon" src="./icon/share.svg" alt="공유" /></div>

@@ -216,7 +216,7 @@ export default function HomePersonalProfile() {
       <div className="navbar">
         <Link to="/home"><div className="home"><img className="my_home_icon" src="../../icon/home.svg" alt="" /></div></Link>
         <Link to="/map"><div className="map"><img className="my_map_icon" src="../../icon/map.svg" alt="" /></div></Link>
-        <Link to="/pause"><div className="run"><img className="my_run_icon" src="../../icon/record.svg" alt="" /></div></Link>
+        <Link to="/Beforestart"><div className="run"><img className="my_run_icon" src="../../icon/record.svg" alt="" /></div></Link>
         <Link to="/group"><div className="group"><img className="my_group_icon" src="../../icon/group.svg" alt="" /></div></Link>
         <Link to="/mypage"><div className="my"><img className="my_my_icon" src="../../icon/my.svg" alt="" /></div></Link>
       </div>
