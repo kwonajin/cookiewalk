@@ -7,7 +7,6 @@ import { useToken } from '../context/tokenContext';
 import axios from 'axios'
 import { Link, useNavigate } from "react-router-dom";
 import html2canvas from 'html2canvas'
-import FullScreenCapture from '../FullScreenCapture';
 
 
 function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
@@ -172,19 +171,7 @@ export default function DrawMap() {
         console.error(error)
         throw error;
     }
-};
-  // 지도 캡쳐 및 업로드
-  const dataURItoBlob = (dataURI) => {
-    const byteString = atob(dataURI.split(',')[1]);
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-    const ab = new ArrayBuffer(byteString.length)
-    const ia = new Uint8Array(ab);
-    for(let i =0; i< byteString.length; i++){
-      ia[i]= byteString.charCodeAt(i);
-    }
-    return new Blob([ab], {type:mimeString})
-  }
-
+  };
   //경로 저장 함수 
   async function submitRoute(){
     if(path.length >2){
@@ -232,33 +219,6 @@ export default function DrawMap() {
         if(insertLocationError){
           console.error(insertLocationError)
         }
-      }
-      // 지도 캡처 부분
-      // await new Promise(resolve => setTimeout(resolve, 4000));
-      // const mapElement = document.querySelector('.navermap')
-      // try{
-      //   const canvas = await html2canvas(mapElement, {
-      //     useCORS: true,
-      //     allowTaint: false
-      //   });
-      //   const imgDataUrl = await canvas.toDataURL('image/png');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      try{  
-        const imgDataUrl= await FullScreenCapture()
-
-        const fileName= `draw_${count+1}.png`;
-
-        const {data: uploadImage, error: uploadImgError}= await supabase.storage
-          .from('image')
-          .upload(`Map/${fileName}`, dataURItoBlob(imgDataUrl),{
-            cacheControl: '3600',
-            upsert:false
-          });
-          if (uploadImgError){
-            console.error(uploadImgError)
-          }
-      }catch(error){
-        console.error(error)
       }
     navigate('/home')
     }

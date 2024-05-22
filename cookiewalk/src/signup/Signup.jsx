@@ -82,7 +82,7 @@ export default function Signup() {
       if(data.length>0){
         console.log(data)
         console.log('이메일의 인증 링크를 클릭하시오')  
-        window.alert(`이메일로 인증 링크를 발송 하였습니다.`)
+        window.alert(`이메일로 인증 링크를 발송 하였습니다.`);
       }
       console.log(data)
       if (error) {

@@ -14,7 +14,10 @@ export default function MapSearch() {
     const [searchInput, setSearchInput]= useState('');
     const [minHeight, setMinHeight] = useState(800); // 여기로 상태를 옮겼습니다.
     const [mapLists, setMapLists] = useState([]); // MapList 컴포넌트를 나타내는 객체들의 배열
-    
+    const [path,setpath]= useState([])
+    const [center,setcenter]=useState([])
+    let pathArray = [];
+    let centerArray=[];
     
     //현재 위치 좌표 
     const [currentPosition, setCurrentPosition]=useState(null);
@@ -52,12 +55,11 @@ export default function MapSearch() {
                     // console.log(position.coords)
                     setCurrentPosition({lat:latitude, lng:longitude});
                     // console.log(currentPosition)
-                    setLoading(false)
                 },
                 (error)=>{
                     console.error('위치정보 가져오기 실패:',error)
                     setCurrentPosition({ lat: 37.5665, lng: 126.9780 });
-                    setLoading(false);
+                    setLoading(false)
                 },
                 {
                 enableHighAccuracy: true, //높은 정확도로 위치정보 가져오기
@@ -103,7 +105,21 @@ export default function MapSearch() {
             }
         }
     },[address, searchCon])
+    
+    const calculateCenter=(path) =>{
+        const total = path.length; //배열의 총 개수
+        //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
+        const sum =path.reduce((acc, coord) => ({
+            lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
+            lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
+        }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
+        return {
+            latitude: sum.lat / total,
+            longitude: sum.lng / total,
+        };
+    }
 
+    //검색전 list 조회함수
     async function mapInfo(){
         const {data, error}= await supabase
             .from('draw_map_collection')
@@ -112,9 +128,36 @@ export default function MapSearch() {
             .limit(10);
         // console.log(data)
         setMapLists(data)
+        for(let index in data){
+            // console.log(data[index].draw_m_c_id)
+            async function drawPath(){
+                const {data: drawPathData,error:drawPathError}=await supabase
+                    .from('draw_map_c_location')
+                    .select('latitude, longitude')
+                    .eq('draw_m_c_id',data[index].draw_m_c_id)
+                // console.log(drawPathData)
+                if(drawPathData.length >0){
+                    pathArray.push({
+                        draw_id:data[index].draw_m_c_id,
+                        coordinate : drawPathData,
+                    });
+                    centerArray.push({
+                        draw_id:data[index].draw_m_c_id,
+                        coordinate: await calculateCenter(drawPathData)
+                    })
+                }
+            }
+            await drawPath()
+        }
+        setpath(pathArray)
+        setcenter(centerArray)
+        setLoading(false)
     }
+
+    //검색후 list 조회함수
     async function mapSearchInfo(){
-        const {data, error}= await supabase
+        setLoading(true)
+        const {data: searchData, error: searchError}= await supabase
             .from('draw_map_collection')
             .select('*')
             .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
@@ -122,15 +165,38 @@ export default function MapSearch() {
             .like('level',`%${selectedDifficulty}%`)
             .gt('distance', `${selectedDistance}`)
             .limit(10)
-        if(error){
-            console.error(error)
+        if(searchError){
+            console.error(searchError)
         }
-        console.log(data)
-        setMapLists(data)
+        // console.log(searchData)
+        setMapLists(searchData)
+        for(let index in searchData){
+            // console.log(data[index].draw_m_c_id)
+            async function drawPath(){
+                const {data: drawPathData,error:drawPathError}=await supabase
+                    .from('draw_map_c_location')
+                    .select('latitude, longitude')
+                    .eq('draw_m_c_id',searchData[index].draw_m_c_id)
+                // console.log(drawPathData)
+                if(drawPathData.length >0){
+                    pathArray.push({
+                        draw_id:searchData[index].draw_m_c_id,
+                        coordinate : drawPathData,
+                    });
+                    centerArray.push({
+                        draw_id:searchData[index].draw_m_c_id,
+                        coordinate: await calculateCenter(drawPathData)
+                    })
+                }
+            }
+            await drawPath()
+        }
+        setpath(pathArray)
+        setcenter(centerArray)
+        setLoading(false)
     }
-    console.log(selectedLocation)
-    // .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
-// .like('location', `%${selectedLocation}%}`)
+
+    // console.log(selectedLocation)
     const HandleSearch = (e)=>{
         navigate('/map',{state:{selLocation:selectedLocation, selDistance:selectedDistance, selDifficulty:selectedDifficulty, search:searchInput}} )
     }
@@ -202,10 +268,13 @@ export default function MapSearch() {
                     <Link className='map_list_link' to={`/mapDetail`} state={{drawID:mapItem.draw_m_c_id, location:mapItem.location, distance:mapItem.distance, level:mapItem.level, time:mapItem.time}} key={mapItem.draw_m_c_id}>
                         <MapList
                             key={mapItem.draw_m_c_id}
+                            drawId={mapItem.draw_m_c_id}
                             location={mapItem.location}
                             distance={mapItem.distance}
                             level={mapItem.level}
                             time={mapItem.time}
+                            pathcoord={path[index]}
+                            centercoord={center[index]}
                         ></MapList>
                     </Link>
                 ))}
