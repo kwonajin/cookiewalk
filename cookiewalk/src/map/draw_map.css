@@ -14,3 +14,110 @@ body{
   min-height: 800px;
 	position:relative;
 }
+
+.draw_back { 
+	width:25px;
+	height:25px;
+	position:absolute;
+	left:6px;
+	top:10px;
+}
+.draw_back_icon { 
+	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
+	width:25px;
+	height:25px;
+	position:absolute;
+	left:2.098771095275879px;
+	top:5px;
+}
+
+.draw_title{
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	height:29px;
+	position:absolute;
+	left:145px;
+	top:10px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:20px;
+	letter-spacing:0;
+  font-weight: 600;
+}
+
+.draw_start{
+  top: 600px;
+  left: 110px;
+  width: 180px;
+  height: 45px;
+  background-color: #7CA0C1;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.draw_line_back{
+  top: 670px;
+  left: 110px;
+  width: 100px;
+  height: 45px;
+  background-color: #828282;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.draw_reset{
+  top: 670px;
+  margin-left: 50px;
+  width: 100px;
+  height: 45px;
+  background-color: #828282;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mapimg{
+  top: 50px;
+}
+
+.draw_save{
+  padding-top: 10px;
+	background-color: transparent;
+	border: none;
+	color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
+	position:absolute;
+	padding: 0;
+	left:310px;
+	top:12px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:16px;
+	letter-spacing:2px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.color_select_text{
+  font-size: 16px;
+  margin-top: 90px;
+  margin-left: 60px;
+  font-weight: 600;
+  color: #131313;
+}
+
+.color_select{
+  top: 533px;
+  margin-left: -40px;
+  width: 130px;
+  height: 35px;
+}
