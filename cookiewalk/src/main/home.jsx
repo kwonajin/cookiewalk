@@ -1,73 +1,84 @@
 import React, { useEffect, useState } from 'react';
-import './home.css'; // CSS 스타일시트 임포트
-import { Link, useNavigate } from "react-router-dom"; // 리액트 라우터의 링크 및 네비게이션 훅
-import { useToken } from '../context/tokenContext'; // 사용자 토큰 정보를 가져오는 커스텀 훅
-import HomeNav from './home/HomeNav'; // 홈 네비게이션 컴포넌트
-import Active from './home/Active'; // 활동 관련 컴포넌트
-import ContentBox from './home/ContentBox'; // 각 게시물을 표시하는 컴포넌트
-import NavBar from './home/NavBar'; // 페이지 하단의 네비게이션 바 컴포넌트
-import { supabase } from '../supabaseClient'; // Supabase 클라이언트
+import './home.css';
+import { Link, useNavigate } from "react-router-dom";
+import { useToken } from '../context/tokenContext';
+import HomeNav from './home/HomeNav';
+import Active from './home/Active';
+import ContentBox from './home/ContentBox';
+import NavBar from './home/NavBar';
+import { supabase } from '../supabaseClient';
 import mainContext from '../context/MainContext';
 
 export default function Home() {
-  const navigate = useNavigate(); // 페이지 네비게이션을 위한 훅
-  const userInfo = useToken(); // 사용자 토큰을 통해 사용자 정보를 가져옴
-  const userID = userInfo.user; // 사용자 ID
-  const [postList, setPostList] = useState([]); // 게시물 데이터를 저장할 상태
+  const navigate = useNavigate();
+  const userInfo = useToken();
+  const userID = userInfo.user;
+  const [postList, setPostList] = useState([]);
+  const [page, setPage] = useState(1); // 현재 페이지를 추적
+  const [loading, setLoading] = useState(false); // 로딩 상태를 추적
 
-  // 컴포넌트가 마운트 될 때 실행될 useEffect
   useEffect(() => {
-    window.scrollTo(0, 0); // 페이지 상단으로 스크롤
-    if (userID) { // 사용자 ID가 있으면 닉네임 체크와 게시물 가져오기 실행
+    window.scrollTo(0, 0);
+    if (userID) {
       checkNickname();
-      fetchPosts();
+      fetchPosts(page); // 초기 게시물 가져오기
     }
-  }, [userID]); // userID가 변경될 때마다 이 훅을 재실행
 
-  // 사용자의 닉네임 체크 함수
+    // 스크롤 이벤트 리스너 추가
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll); // 언마운트 시 클린업
+  }, [userID, page]);
+
   const checkNickname = async () => {
     const { data: firstLoginData, error: firstLoginError } = await supabase
       .from('user')
-      .select('nick_name') // nick_name 필드 선택
-      .eq('user_id', userID) // 현재 사용자 ID와 일치하는 레코드
-      .is('nick_name', null); // 닉네임이 null인 경우
-    if (firstLoginData.length > 0) { // 닉네임이 설정되지 않은 경우
-      navigate('/signup3'); // 닉네임 설정 페이지로 리다이렉트
+      .select('nick_name')
+      .eq('user_id', userID)
+      .is('nick_name', null);
+    if (firstLoginData.length > 0) {
+      navigate('/signup3');
     }
   };
 
-  // 게시물을 불러오는 함수
-  const fetchPosts = async () => {
+  const fetchPosts = async (page) => {
+    setLoading(true);
     const { data, error } = await supabase
       .from('post')
-      .select('*') // 모든 필드를 선택
-      .order('created_at', { ascending: false }); // 생성된 날짜 기준으로 내림차순 정렬
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range((page - 1) * 10, page * 10 - 1); // 페이지당 10개의 게시물 가져오기
+
     if (error) {
       console.error('Error fetching posts:', error.message);
-      return;Google
-      
+      setLoading(false);
+      return;
     }
 
-    // 각 게시물에 대해 사용자의 닉네임과 프로필 이미지 정보를 추가하여 저장
     const postsWithUserInfo = await Promise.all(data.map(async (post) => {
       const { data: userData } = await supabase
         .from('user')
         .select('nick_name, profile_image')
         .eq('user_id', post.user_id)
-        .single(); // 각 게시물의 사용자 정보를 단일 조회
+        .single();
       
       return {
         ...post,
-        user_name: userData ? userData.nick_name : 'Unknown', // 사용자 닉네임 설정
-        user_image: userData ? userData.profile_image : 'default_image.png' // 사용자 이미지 설정
+        user_name: userData ? userData.nick_name : 'Unknown',
+        user_image: userData ? userData.profile_image : 'default_image.png'
       };
     }));
 
-    setPostList(postsWithUserInfo); // 상태 업데이트
+    setPostList(prevPosts => [...prevPosts, ...postsWithUserInfo]); // 기존 리스트에 새 게시물 추가
+    setLoading(false);
   };
 
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) {
+      return;
+    }
+    setPage(prevPage => prevPage + 1); // 다음 페이지 로드
+  };
 
-  // 컴포넌트 렌더링 부분
   return (
     <>
       <div className="home_background">
@@ -75,20 +86,21 @@ export default function Home() {
           <HomeNav />
           <Active />
         </div>
-        {postList.map(post => ( // 게시물 데이터를 ContentBox 컴포넌트에 매핑
-            <ContentBox
-              key={`${post.post_id}-${post.content}`}
-              userId={post.user_id}
-              profileName={post.user_name}
-              profileImage={post.user_image}
-              location={post.locate}
-              contentImage={post.image}
-              contentText={post.content}
-              createdAt={new Date(post.created_at).toLocaleString()}
-              userID={userID}
-              postID={post.post_id}
-            />
+        {postList.map((post, index) => (
+          <ContentBox
+            key={`${post.post_id}-${index}`} // 고유한 키 생성
+            userId={post.user_id}
+            profileName={post.user_name}
+            profileImage={post.user_image}
+            location={post.locate}
+            contentImage={post.image}
+            contentText={post.content}
+            createdAt={new Date(post.created_at).toLocaleString()}
+            userID={userID}
+            postID={post.post_id}
+          />
         ))}
+        {loading && <div>Loading...</div>}
       </div>
       <NavBar />
     </>
