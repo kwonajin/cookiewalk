@@ -108,7 +108,7 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => prevDistance + distance);
 
-                            if (prevDistance + distance >= 0.02) {
+                            if (totalDistance + distance >= 0.02) { // 20m
                                 stopTracking();
                                 setIsARMode(true);
                             }
@@ -174,7 +174,7 @@ export default function Start() {
         const dLat = toRad(coord2.lat - coord1.lat);
         const dLng = toRad(coord2.lng - coord1.lng);
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lng)) *
+            Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lat)) *
             Math.sin(dLng / 2) * Math.sin(dLng / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
@@ -224,9 +224,9 @@ export default function Start() {
         return (
             <div className="ar-container">
                 <video ref={videoRef} autoPlay className="ar-camera-view" />
-                <canvas ref={canvasRef} className="ar-overlay">
+                <div className="ar-overlay">
                     <img src="/images/logo.png" alt="AR" className="ar-image" onClick={handleARCapture} />
-                </canvas>
+                </div>
                 <div className="ar-info">
                     <div>AR 모드 활성화</div>
                     <div>AR 이미지를 클릭하세요!</div>
@@ -271,7 +271,6 @@ export default function Start() {
                     </>
                 )}
             </div>
-
         </div>
     );
 }
