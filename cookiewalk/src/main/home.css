@@ -246,13 +246,14 @@ body{
 	font-weight: 600;
 }
 
+
 .home_profile_img { 
 	border-radius:500px;
 	width:35px;
 	height:35px;
 	position:relative;
 	left:11px;
-	top:5px;
+	top:15px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -264,7 +265,7 @@ body{
 	height:19px;
 	position:relative;
 	left:53px;
-	top:-35px;
+	top:-25px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -277,7 +278,7 @@ body{
 	height:16px;
 	position:relative;
 	left:53px;
-	top:-35px;
+	top:-25px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -289,7 +290,7 @@ body{
 	height:30px;
 	position:relative;
 	left:357px;
-	top:-50px;
+	top:-53px;
 }
 
 .dotmenu_icon { 
@@ -307,7 +308,6 @@ body{
 }
 
 .content_top_link{
-	top: 10px;
 	position: relative;
 }
 
@@ -336,13 +336,18 @@ body{
 }
 
 .dropdown_icon{
+	width: 20px;
+	height: 20px;
 	margin-left: -4px;
-	padding-right: 6px;
-	padding-top: 3px;
+	padding-right: 7px;
+	padding-top: 10px;
+	padding-bottom: 2px;
+	margin-bottom: -7px;
 }
 
 .menu_title{
-	padding-top: 2px;
+	margin-top: -6px;
+	margin-bottom: 2px;
 	font-family: Noto Sans KR;
 }
 
@@ -363,7 +368,7 @@ body{
 	height:390px;
 	position:relative;
 	left:0px;
-	top: -7px;
+	top: -2px;
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -457,14 +462,15 @@ body{
 
 .heart { 
 	width:27px;
-	height:25px;
+	height:26px;
 	position:relative;
 	left:8px;
-	top:-33px;
+	top:-35px;
 }
 
 .heart_icon { 
-	height:26px;
+	width: 27px;
+	height:28px;
 	position:relative;
 	left:2px;
 	top:2.777777671813965px;
@@ -473,50 +479,36 @@ body{
 
 .comment { 
 	transform: rotate(180deg);
+	transform: scaleY(-1);
 	width:24px;
 	height:24px;
 	position:relative;
-	left:43px;
-	top:-58px;
+	left:45px;
+	top:-56.55px;
 }
 
 .comment_icon { 
 	/* filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%); */
-	width:20px;
-	height:20px;
+	width:25px;
+	height:25px;
 	position:relative;
 	left: 1px;
 	transform:rotate(180deg);
 }
 
-/* .save { 
-	width:24px;
-	height:24px;
-	position:relative;
-	left:357px;
-	top:-100px;
-} */
-
-/* .save_icon { 
-	width:24px;
-	height:24px;
-	position:relative;
-	left:1.0800000429153442px;
-	top:2.0399999618530273px;
-} */
 
 .share { 
 	width:24px;
 	height:24px;
 	position:relative;
-	left:90px;
-	top:-82px;
+	left:92px;
+	top:-83.5px;
 }
 
 .share_icon { 
 	/* filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%); */
-	width:24px;
-	height:24px;
+	width:25px;
+	height:25px;
 	position:relative;
 	left:-10px;
 	top:2.6666667461395264px;

@@ -133,12 +133,13 @@ export default function ContentBox({
       )}
       <div className="content_img_box"><img className='content_img' src={contentImage} alt="콘텐츠 이미지" /></div>
       <div className="heart" onClick={handleIsLike}>
-        <img className="heart_icon" src={isLike ? "./icon/heart-fill.svg" : "./icon/heart.svg"} alt="하트" />
+        <img className="heart_icon" src={isLike ? "./icon/heart_fill_test.svg" : "./icon/heart_test.svg"} alt="하트" />
       </div>
       <div className="comment"><img className="comment_icon" src="./icon/comment.svg" alt="댓글" /></div>
       <div className="share"><img className="share_icon" src="./icon/share.svg" alt="공유" /></div>
+
       <div className="like">좋아요 {likeCount}개</div>
-      <div className="comment_name">{profileName}</div>
+      <Link className="comment_name"  to={`/home_personal_profile/${userId}`} style={{ textDecoration: 'none' }}>{profileName}</Link>
       <div className="contents">{contentText}</div>
       <div className="comment_num">댓글 3개 모두 보기</div>
       <div className="date">{createdAt}</div>

@@ -19,6 +19,7 @@ export default function Signup() {
     setPasswordConfirmVisible(!passwordConfirmVisible);
   };
 
+  const  navigate = useNavigate();
   const [email, setemail]=useState('');
   const [confirmEmail, setConfirmEmail] = useState(false);
   const [password, setPassword]=useState('');
@@ -82,7 +83,8 @@ export default function Signup() {
       if(data.length>0){
         console.log(data)
         console.log('이메일의 인증 링크를 클릭하시오')  
-        window.alert(`이메일로 인증 링크를 발송 하였습니다.`);
+        window.alert(`이메일로 인증 링크를 발송 하였습니다.`)
+        navigate('/login') 
       }
       console.log(data)
       if (error) {
@@ -96,7 +98,7 @@ export default function Signup() {
 
   return (
     <div className="signup_container">
-      <div><img className='e83_104' src="./icon/ic--round-arrow-back.svg" /></div>
+      <Link to='/'><div><img className='e83_104' src="./icon/ic--round-arrow-back.svg" /></div></Link>
       <span className="cookiewalk_logo">CookieWalk</span>
       <span className="e82_14">쿠키워크의 계정정보를 입력해주세요</span>
       <span className="e82_15">아래의 정보로 계정이 생성됩니다.</span>
@@ -122,7 +124,7 @@ export default function Signup() {
         <button type='button' className="e83_32" onClick={togglePasswordConfirmVisibility}>
           <img className="e83_33"  src={passwordConfirmVisible ? "./icon/mdi--eye.svg" : "./icon/mdi--eye-off.svg"} alt="Toggle Password Confirm Visibility"/>
         </button>
-        <button  type="button" className='next1'onClick={nextStep}>다음</button>
+        <Link to='/'><button type="button" className='next1'onClick={nextStep}>다음</button></Link>
       </form>
     </div>
   );

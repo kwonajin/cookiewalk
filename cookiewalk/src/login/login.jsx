@@ -108,7 +108,7 @@ export default function LogIn() {
   }
   return (
     <div className="login-background">
-        <Link to='/home'><img className="logo" src="./images/logo.png" alt="" /></Link>
+        <img className="logo" src="./images/logo.png" alt="" />
         <span className="title">CookieWalk</span>
         <form onSubmit={onSubmitHandler}>
           <input
@@ -146,8 +146,7 @@ export default function LogIn() {
             로그인
           </button>
         </form>
-        <a href='#' className="find_id">아이디 찾기</a>
-        <div className="id_pw"></div>
+
         <Link to='/find_ps'><div className="find_password">비밀번호 찾기</div></Link>
         <Link to="/signup"><div className="signup">회원가입</div></Link>
         <div className="line"></div>
