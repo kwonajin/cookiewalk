@@ -3,7 +3,7 @@ import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useLocation, useNavigate } from "react-router-dom";
 
-function MyMap({ path, drawPath, center, onShowARImage }) {
+function MyMap({ path, drawPath, center }) {
     const navermaps = useNavermaps();
 
     const markerIcon = {
@@ -12,38 +12,14 @@ function MyMap({ path, drawPath, center, onShowARImage }) {
         anchor: new navermaps.Point(12, 12)
     };
 
-    useEffect(() => {
-        if (path.length > 1) {
-            const lastPosition = path[path.length - 1];
-            if (calculateTotalDistance(path) >= 0.05) { // 50m 이상이면
-                onShowARImage(lastPosition);
-            }
-        }
-    }, [path]);
-
-    const calculateTotalDistance = (path) => {
-        let totalDistance = 0;
-        for (let i = 1; i < path.length; i++) {
-            totalDistance += calculateDistance(path[i - 1], path[i]);
-        }
-        return totalDistance;
-    };
-
-    const calculateDistance = (coord1, coord2) => {
-        const toRad = (x) => (x * Math.PI / 180);
-        const R = 6371;
-        const dLat = toRad(coord2.lat - coord1.lat);
-        const dLng = toRad(coord2.lng - coord1.lng);
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lat)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
-    };
-
     return (
         <NaverMap
-            defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng(37.3595704, 127.105399)} defaultZoom={15}>
+            defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng(37.3595704, 127.105399)}
+            defaultZoom={15}
+        >
             {center && (
-                <Marker icon={markerIcon} position={new navermaps.LatLng(center.lat, center.lng)} />)}
+                <Marker icon={markerIcon} position={new navermaps.LatLng(center.lat, center.lng)} />
+            )}
             {path.length > 1 && (
                 <Polyline
                     path={path.map(p => new navermaps.LatLng(p.lat, p.lng))}
@@ -76,20 +52,23 @@ export default function Start() {
 
     const [isExpanded, setIsExpanded] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
+
     const [currentPosition, setCurrentPosition] = useState(location.state.currentPosition);
     const [tracking, setTracking] = useState(false);
     const watchIdRef = useRef(null);
     const [path, setPath] = useState([currentPosition]);
+
     const [drawPath, setDrawPath] = useState([]);
+
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
-    const [showARCamera, setShowARCamera] = useState(false);
+
+    const [isARMode, setIsARMode] = useState(false);
+    const [points, setPoints] = useState(0);
+
     const videoRef = useRef(null);
-    const [arImageVisible, setArImageVisible] = useState(false);
-    const [arImageSrc, setArImageSrc] = useState('');
-    const [arCameraImageSrc, setArCameraImageSrc] = useState('');
-    const [arImagePosition, setArImagePosition] = useState(null);
+    const canvasRef = useRef(null);
 
     useEffect(() => {
         if (location.state.drawPath.length > 1) {
@@ -97,31 +76,9 @@ export default function Start() {
         }
     }, [location.state.drawPath]);
 
-    useEffect(() => {
-        if (!isPaused) {
-            startTracking();
-            startTimer();
-        } else {
-            stopTracking();
-            stopTimer();
-        }
-    }, [isPaused]);
-
-    useEffect(() => {
-        if (showARCamera && videoRef.current) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => {
-                    videoRef.current.srcObject = stream;
-                    videoRef.current.play();
-                })
-                .catch(err => {
-                    console.error("Error accessing the camera", err);
-                });
-        }
-    }, [showARCamera]);
-
     const togglePause = () => {
         setIsPaused(!isPaused);
+        stopTracking();
     };
 
     const restart = () => {
@@ -150,12 +107,17 @@ export default function Start() {
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => prevDistance + distance);
+
+                            if (totalDistance + distance >= 0.02) { // 20m
+                                stopTracking();
+                                setIsARMode(true);
+                            }
                         }
                         return newPath;
                     });
                 },
                 (error) => {
-                    console.error('위치추적 실패', error);
+                    console.error('위치 추적 실패', error);
                 },
                 {
                     enableHighAccuracy: true,
@@ -173,7 +135,18 @@ export default function Start() {
             watchIdRef.current = null;
         }
         setTracking(false);
+        stopTimer();
     };
+
+    useEffect(() => {
+        if (isPaused) {
+            stopTimer();
+            stopTracking();
+        } else {
+            startTimer();
+            startTracking();
+        }
+    }, [isPaused]);
 
     const startTimer = () => {
         if (timerRef.current === null) {
@@ -200,7 +173,9 @@ export default function Start() {
         const R = 6371;
         const dLat = toRad(coord2.lat - coord1.lat);
         const dLng = toRad(coord2.lng - coord1.lng);
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lat)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lat)) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     };
@@ -210,23 +185,6 @@ export default function Start() {
     };
 
     const icon3Path = isExpanded ? "./icon/mdi--arrow-down-drop.svg" : "./icon/mdi--arrow-drop-up.svg";
-
-    const handleShowARImage = (position) => {
-        setArImageVisible(true);
-        setArImagePosition(position);
-        setArImageSrc('../../public/images/logo.png'); // 여기에 나타날 이미지 경로를 설정
-        setArCameraImageSrc('../../public/images/logo.png'); // 여기에 카메라에 나타날 이미지 경로를 설정
-        alert('50m 달성! 이미지를 클릭하세요.');
-        setIsPaused(true);
-        setShowARCamera(true);
-    };
-
-    const handleARImageClick = () => {
-        setShowARCamera(false);
-        setIsPaused(false);
-        setArImageVisible(false);
-        alert('포인트를 획득했습니다!');
-    };
 
     function activitySave() {
         const endTime = new Date();
@@ -241,20 +199,58 @@ export default function Start() {
         });
     }
 
+    const handleARCapture = () => {
+        setPoints(points + 1);
+        setIsARMode(false);
+        startTracking();
+    };
+
+    useEffect(() => {
+        if (isARMode) {
+            const video = videoRef.current;
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then((stream) => {
+                        video.srcObject = stream;
+                    })
+                    .catch((error) => {
+                        console.error("Error accessing webcam: ", error);
+                    });
+            }
+        }
+    }, [isARMode]);
+
+    if (isARMode) {
+        return (
+            <div className="ar-container">
+                <video ref={videoRef} autoPlay className="ar-camera-view" />
+                <div className="ar-overlay">
+                    <img src="/images/logo.png" alt="AR" className="ar-image" onClick={handleARCapture} />
+                </div>
+                <div className="ar-info">
+                    <div>AR 모드 활성화</div>
+                    <div>AR 이미지를 클릭하세요!</div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="Start_container">
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
-            <MapDiv className='e118_443'>
-                <MyMap path={path} drawPath={drawPath} center={currentPosition} onShowARImage={handleShowARImage} />
-            </MapDiv>
+
+            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} /></MapDiv>
+
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
                 <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
+
                 {isExpanded && (
                     <>
                         <div className="start_label_distance">Km</div>
                         <div className="start_value_distance">{totalDistance.toFixed(2)}</div>
                         <div className="start_label_time">시간</div>
                         <div className="start_value_time">{formatTime(time)}</div>
+
                         {!isPaused ? (
                             <div className="pause_button" onClick={togglePause}>
                                 <div className="button_circle"></div>
@@ -266,6 +262,7 @@ export default function Start() {
                                 <div className="start_button1" onClick={activitySave}>
                                     <div className="button-label-end">종료</div>
                                 </div>
+
                                 <div className="start_button2" onClick={restart}>
                                     <div className="button-label-restart">재시작</div>
                                 </div>
@@ -274,17 +271,6 @@ export default function Start() {
                     </>
                 )}
             </div>
-            {arImageVisible && (
-                <div className="ar-image-overlay">
-                    <img src={arImageSrc} alt="AR Image" onClick={handleARImageClick} />
-                </div>
-            )}
-            {showARCamera && (
-                <div className="ar-camera-overlay">
-                    <video ref={videoRef} className="ar-camera" />
-                    <img src={arCameraImageSrc} alt="AR Image" className="ar-image" />
-                </div>
-            )}
         </div>
     );
 }

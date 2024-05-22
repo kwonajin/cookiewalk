@@ -117,14 +117,20 @@ export default function MapSearch() {
         const {data, error}= await supabase
             .from('draw_map_collection')
             .select('*')
-            .like('location',`%${searchInput}%`)
+            .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
+            .like('location', `%${selectedLocation}%`)
             .like('level',`%${selectedDifficulty}%`)
             .gt('distance', `${selectedDistance}`)
             .limit(10)
+        if(error){
+            console.error(error)
+        }
         console.log(data)
         setMapLists(data)
     }
-
+    console.log(selectedLocation)
+    // .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
+// .like('location', `%${selectedLocation}%}`)
     const HandleSearch = (e)=>{
         navigate('/map',{state:{selLocation:selectedLocation, selDistance:selectedDistance, selDifficulty:selectedDifficulty, search:searchInput}} )
     }
@@ -166,7 +172,7 @@ export default function MapSearch() {
 
             {/* 위치 드롭다운 메뉴 구현 */}
             <select className='map_location_dropdown' value={selectedLocation} onChange={handleLocationChange}>
-                <option value="">내 위치</option>
+                <option value="">위치</option>
                 <option value="경기">경기</option>
                 <option value="대구">대구</option>
                 <option value="부산">부산</option>
@@ -220,8 +226,6 @@ export default function MapSearch() {
         </Link>
         </div>
 
-
-    
     </div>  
 );
 }
