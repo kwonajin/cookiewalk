@@ -265,7 +265,7 @@ export default function MapSearch() {
         
             <div className="map-list-container" style={{ minHeight: `${minHeight}px` }}>
                 {mapLists.map((mapItem, index) => (
-                    <Link className='map_list_link' to={`/mapDetail`} state={{drawID:mapItem.draw_m_c_id, location:mapItem.location, distance:mapItem.distance, level:mapItem.level, time:mapItem.time}} key={mapItem.draw_m_c_id}>
+                    <Link className='map_list_link' to={`/mapDetail`} state={{drawID:mapItem.draw_m_c_id, location:mapItem.location, distance:mapItem.distance, level:mapItem.level, time:mapItem.time, pathcoord:path[index], centercoord:center[index]}} key={mapItem.draw_m_c_id}>
                         <MapList
                             key={mapItem.draw_m_c_id}
                             drawId={mapItem.draw_m_c_id}
