@@ -133,8 +133,8 @@ export default function Follower() {
         <div className="follower_line1"></div>
       </div>
 
-      <div className="follower_searchbar"></div>
-      <span className="follower_searchbar_text">검색</span>
+      <input type='text' className="follower_searchbar" placeholder='검색'></input>
+      {/* <span className="follower_searchbar_text" ></span> */}
       <div className="follower_search">
         <img className="follower_search_icon" src="./icon/search.svg" alt="Search" />
       </div>
@@ -146,8 +146,12 @@ export default function Follower() {
             <div className={`follower${index + 1}_id`}>{follower.nick_name}</div>
             <div className={`follower${index + 1}_name`}>{follower.name}</div>
           </div>
-          <button className={`follower${index + 1}_follow`} onClick={() => handleFollowClick(userEmail, follower.following_email, index)}></button>
-          <div className={`follower${index + 1}_follow_text`}>{follower.isFollowing ? "팔로잉" : "팔로우"}</div>
+          <button 
+            className={`follower${index + 1}_follow ${follower.isFollowing ? 'following' : 'not-following'}`} 
+            onClick={() => handleFollowClick(userEmail, follower.following_email, index)}
+          >
+            {follower.isFollowing ? "팔로잉" : "팔로우"}
+          </button>
           <div className={`follower${index + 1}_line`}></div>
         </div>
       ))}
