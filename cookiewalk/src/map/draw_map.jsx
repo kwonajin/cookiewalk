@@ -165,11 +165,7 @@ export default function DrawMap() {
         console.error(error)
         throw error;
     }
-<<<<<<< HEAD
-  };
-=======
 };
->>>>>>> 3cb5d56fb1101f40c987e69cf07912bff00ecf38
   //경로 저장 함수 
   async function submitRoute(){
     if(path.length >2){
@@ -213,11 +209,7 @@ export default function DrawMap() {
           console.error(insertLocationError)
         }
       }
-<<<<<<< HEAD
-    navigate('/home')
-=======
       navigate('/home')
->>>>>>> 3cb5d56fb1101f40c987e69cf07912bff00ecf38
     }
 
   }
