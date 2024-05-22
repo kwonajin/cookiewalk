@@ -65,6 +65,8 @@ export default function HomePersonalProfile() {
     setIsFollowing(isFollowing > 0);
   };
 
+  
+
   // 팔로우, 팔로워 정보 가져오기
   const followInfo = async() => {
     const { count: follower, error: followerError } = await supabase
