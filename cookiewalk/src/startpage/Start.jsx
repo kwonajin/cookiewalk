@@ -1,43 +1,45 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './Start.css'
-import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps'
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import './Start.css';
+import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
+import { useLocation, useNavigate } from "react-router-dom";
 
 function MyMap({ path, drawPath, center }) {
-    const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
+    const navermaps = useNavermaps();
 
     const markerIcon = {
         content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
         size: new navermaps.Size(24, 24),
         anchor: new navermaps.Point(12, 12)
-    }
+    };
+
     return (
-        //기본값 또는 현재위치로 중심좌표 설정
         <NaverMap
-            defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng((37.3595704, 127.105399))} defaultZoom={15}>
+            defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng(37.3595704, 127.105399)}
+            defaultZoom={15}
+        >
             {center && (
-                <Marker icon={markerIcon} position={new navermaps.LatLng(center.lat, center.lng)} />)}
+                <Marker icon={markerIcon} position={new navermaps.LatLng(center.lat, center.lng)} />
+            )}
             {path.length > 1 && (
                 <Polyline
                     path={path.map(p => new navermaps.LatLng(p.lat, p.lng))}
-                    strokeColor='blue' // 선색깔
-                    strokeWeight={4} //선두께
-                    strokeOpacity={0.8} //투명도
+                    strokeColor='blue'
+                    strokeWeight={4}
+                    strokeOpacity={0.8}
                     strokeStyle="solid"
                 />
             )}
             {drawPath.length > 1 && (
                 <Polyline
                     path={drawPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='red' // 선색깔
-                    strokeWeight={4} //선두께
-                    strokeOpacity={0.8} //투명도
+                    strokeColor='red'
+                    strokeWeight={4}
+                    strokeOpacity={0.8}
                     strokeStyle="solid"
                 />
             )}
-
         </NaverMap>
-    )
+    );
 }
 
 export default function Start() {
@@ -48,32 +50,31 @@ export default function Start() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    console.log(location.state)
-
     const [isExpanded, setIsExpanded] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
 
-    const [currentPosition, setCurrentPosition] = useState(location.state.currentPosition)
+    const [currentPosition, setCurrentPosition] = useState(location.state.currentPosition);
     const [tracking, setTracking] = useState(false);
     const watchIdRef = useRef(null);
-    const [path, setPath] = useState([currentPosition])
-    const [drawPath, setDrawPath] = useState([])
+    const [path, setPath] = useState([currentPosition]);
+
+    const [drawPath, setDrawPath] = useState([]);
 
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
 
+    const [isARMode, setIsARMode] = useState(false);
     const [points, setPoints] = useState(0);
-    const [showImage, setShowImage] = useState(false);
-    const [showCamera, setShowCamera] = useState(false);
-    const [targetImage, setTargetImage] = useState('/images/logo.png');
+
+    const videoRef = useRef(null);
+    const canvasRef = useRef(null);
 
     useEffect(() => {
         if (location.state.drawPath.length > 1) {
-            setDrawPath(location.state.drawPath)
+            setDrawPath(location.state.drawPath);
         }
-        console.log(drawPath)
-    }, [drawPath])
+    }, [location.state.drawPath]);
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -82,7 +83,7 @@ export default function Start() {
 
     const restart = () => {
         setIsPaused(false);
-        startTracking()
+        startTracking();
     };
 
     const handleCloseClick = () => {
@@ -97,7 +98,7 @@ export default function Start() {
             setTracking(true);
             watchIdRef.current = navigator.geolocation.watchPosition(
                 (position) => {
-                    const { latitude, longitude, speed } = position.coords;
+                    const { latitude, longitude } = position.coords;
                     const newPosition = { lat: latitude, lng: longitude };
                     setCurrentPosition({ lat: latitude, lng: longitude });
                     setPath((prevPath) => {
@@ -105,13 +106,18 @@ export default function Start() {
                         const lastPosition = prevPath[prevPath.length - 1];
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
-                            setTotalDistance((prevDistance) => prevDistance + distance)
+                            setTotalDistance((prevDistance) => prevDistance + distance);
+
+                            if (prevDistance + distance >= 0.02) {
+                                stopTracking();
+                                setIsARMode(true);
+                            }
                         }
                         return newPath;
-                    })
+                    });
                 },
                 (error) => {
-                    console.error('위치추적 실패', error);
+                    console.error('위치 추적 실패', error);
                 },
                 {
                     enableHighAccuracy: true,
@@ -119,9 +125,9 @@ export default function Start() {
                 }
             );
         } else {
-            console.error('브라우저에서 지리적 위치 API 지원하지 않음')
+            console.error('브라우저에서 지리적 위치 API 지원하지 않음');
         }
-    }
+    };
 
     const stopTracking = () => {
         if (watchIdRef.current !== null) {
@@ -129,65 +135,8 @@ export default function Start() {
             watchIdRef.current = null;
         }
         setTracking(false);
-    }
-
-    useEffect(() => {
-        console.log(currentPosition)
-    }, [currentPosition])
-
-    useEffect(() => {
-        if (totalDistance >= 0.02 && !showImage) { // 20m는 0.02km입니다.
-            setShowImage(true);
-        }
-    }, [totalDistance]);
-
-    const handleImageClick = () => {
-        setShowCamera(true);
-        stopTracking();
         stopTimer();
     };
-
-    const handleCameraCapture = () => {
-        const recognizedImage = '/path/to/recognizedImage.png'; // 예시
-        if (recognizedImage === targetImage) {
-            setPoints(points + 1);
-            setShowCamera(false);
-            setShowImage(false);
-            startTracking();
-            startTimer();
-        }
-    };
-
-    const sample = [
-        { lat: 35.132757, lng: 129.106966 },
-        { lat: 35.142465, lng: 129.107140 },
-        { lat: 35.131721, lng: 129.106824 },
-        { lat: 35.131706, lng: 129.106410 }
-    ];
-
-    const example = () => {
-        sample.forEach((newPosition, index) => {
-            setTimeout(() => {
-                setCurrentPosition({ newPosition });
-                setPath((prevPath) => {
-                    const lastPosition = prevPath[prevPath.length - 1];
-                    if (lastPosition && lastPosition.lat === newPosition.lat && lastPosition.lng === newPosition.lng) {
-                        return prevPath;
-                    }
-                    const newPath = [...prevPath, newPosition];
-                    if (lastPosition) {
-                        const distance = calculateDistance(lastPosition, newPosition);
-                        setTotalDistance((prevDistance) => prevDistance + distance)
-                    }
-                    return newPath;
-                })
-            }, index * 2000)
-        })
-    }
-
-    useEffect(() => {
-        console.log(path);
-    }, [path]);
 
     useEffect(() => {
         if (isPaused) {
@@ -197,28 +146,26 @@ export default function Start() {
             startTimer();
             startTracking();
         }
-        console.log(isPaused)
-    }, [isPaused])
+    }, [isPaused]);
 
     const startTimer = () => {
         if (timerRef.current === null) {
             timerRef.current = setInterval(() => {
-                setTime((prevTime) => (prevTime + 1))
-            }, 1000)
+                setTime((prevTime) => (prevTime + 1));
+            }, 1000);
         }
-    }
+    };
 
     const stopTimer = () => {
-        console.log('시간중지')
-        clearInterval(timerRef.current)
+        clearInterval(timerRef.current);
         timerRef.current = null;
-    }
+    };
 
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}: ${String(secs).padStart(2, '0')}`;
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     };
 
     const calculateDistance = (coord1, coord2) => {
@@ -226,7 +173,9 @@ export default function Start() {
         const R = 6371;
         const dLat = toRad(coord2.lat - coord1.lat);
         const dLng = toRad(coord2.lng - coord1.lng);
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lat)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lng)) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     };
@@ -239,31 +188,69 @@ export default function Start() {
 
     function activitySave() {
         const endTime = new Date();
-        navigate('/Activity_Save',
-            {
-                state: {
-                    path: path,
-                    time: time,
-                    distance: totalDistance,
-                    startTime: location.state.startTime,
-                    endTime: endTime
-                }
+        navigate('/Activity_Save', {
+            state: {
+                path: path,
+                time: time,
+                distance: totalDistance,
+                startTime: location.state.startTime,
+                endTime: endTime
             }
-        )
+        });
+    }
+
+    const handleARCapture = () => {
+        setPoints(points + 1);
+        setIsARMode(false);
+        startTracking();
+    };
+
+    useEffect(() => {
+        if (isARMode) {
+            const video = videoRef.current;
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then((stream) => {
+                        video.srcObject = stream;
+                    })
+                    .catch((error) => {
+                        console.error("Error accessing webcam: ", error);
+                    });
+            }
+        }
+    }, [isARMode]);
+
+    if (isARMode) {
+        return (
+            <div className="ar-container">
+                <video ref={videoRef} autoPlay className="ar-camera-view" />
+                <canvas ref={canvasRef} className="ar-overlay">
+                    <img src="/images/logo.png" alt="AR" className="ar-image" onClick={handleARCapture} />
+                </canvas>
+                <div className="ar-info">
+                    <div>AR 모드 활성화</div>
+                    <div>AR 이미지를 클릭하세요!</div>
+                </div>
+            </div>
+        );
     }
 
     return (
         <div className="Start_container">
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
+
             <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} /></MapDiv>
+
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
                 <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
+
                 {isExpanded && (
                     <>
                         <div className="start_label_distance">Km</div>
                         <div className="start_value_distance">{totalDistance.toFixed(2)}</div>
                         <div className="start_label_time">시간</div>
                         <div className="start_value_time">{formatTime(time)}</div>
+
                         {!isPaused ? (
                             <div className="pause_button" onClick={togglePause}>
                                 <div className="button_circle"></div>
@@ -275,6 +262,7 @@ export default function Start() {
                                 <div className="start_button1" onClick={activitySave}>
                                     <div className="button-label-end">종료</div>
                                 </div>
+
                                 <div className="start_button2" onClick={restart}>
                                     <div className="button-label-restart">재시작</div>
                                 </div>
@@ -284,17 +272,6 @@ export default function Start() {
                 )}
             </div>
 
-            {showImage && (
-                <div className="image-popup">
-                    <img src="/images/logo.png" alt="Target" onClick={handleImageClick} />
-                </div>
-            )}
-
-            {showCamera && (
-                <div className="camera-popup">
-                    <button onClick={handleCameraCapture}>캡처</button>
-                </div>
-            )}
         </div>
     );
 }
