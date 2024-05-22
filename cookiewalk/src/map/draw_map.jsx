@@ -219,30 +219,48 @@ export default function DrawMap() {
   }
   return (
     <div className='draw_map_container'>
-      <button onClick={toggleDrawing} style={{ position: 'absolute', zIndex: 1000 }}>
-        {drawing ? '그림 그리기 종료' : '그림 그리기 시작'}
+      
+      <button className='draw_start' onClick={toggleDrawing} style={{ position: 'absolute', zIndex: 1000 }}>
+        {drawing ? '그림 그리기 종료' : '그리기 시작'}
       </button>
       {drawing && (
         <>
-          <button onClick={undoLastDrawing} style={{ position: 'absolute', zIndex: 1000, left: '80px' }}>
+          <button className='draw_line_back' onClick={undoLastDrawing} style={{ position: 'absolute', zIndex: 1000, left: '80px' }}>
             되돌리기
           </button>
-          <button onClick={clearAllDrawings} style={{ position: 'absolute', zIndex: 1000, left: '160px' }}>
+          <button className='draw_reset' onClick={clearAllDrawings} style={{ position: 'absolute', zIndex: 1000, left: '160px' }}>
             초기화
           </button>
         </>
       )}
-      <input 
+
+
+
+      <input className='color_select'
         type="color" 
         value={selectedColor} 
         onChange={handleColorChange} 
         style={{ position: 'absolute', zIndex: 1000, left: '240px' }} 
       />
-      <MapDiv style={{ width: '100%', height: '500px' }}>
+      
+      <Link to="/map">
+        <div className="write_back">
+          <img className='write_back_icon' src="./icon/arrow.svg" alt="Back" />
+        </div>
+      </Link>
+      <div className='draw_title'>경로 그리기</div>
+      
+      {/* 임의로 만든 저장버튼 */}
+      <div className='draw_save' onClick={submitRoute} >경로 저장</div>
+      
+      <MapDiv className='mapimg' style={{ width: '100%', height: '450px' }}>
         <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} selectedColor={selectedColor} />
       </MapDiv>
-      {/* 임의로 만든 저장버튼 */}
-      <button onClick={submitRoute} >경로 저장</button>
+
+      <div className='color_select_text'>선 색상 선택하기</div>
+
+
+      
 
     </div>
   );

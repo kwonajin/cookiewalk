@@ -137,8 +137,9 @@ export default function ContentBox({
       </div>
       <div className="comment"><img className="comment_icon" src="./icon/comment.svg" alt="댓글" /></div>
       <div className="share"><img className="share_icon" src="./icon/share.svg" alt="공유" /></div>
+
       <div className="like">좋아요 {likeCount}개</div>
-      <div className="comment_name">{profileName}</div>
+      <Link className="comment_name"  to={`/home_personal_profile/${userId}`} style={{ textDecoration: 'none' }}>{profileName}</Link>
       <div className="contents">{contentText}</div>
       <div className="comment_num">댓글 3개 모두 보기</div>
       <div className="date">{createdAt}</div>
