@@ -45,7 +45,7 @@ body{
 }
 
 .draw_start{
-  top: 600px;
+  top: 750px;
   left: 110px;
   width: 180px;
   height: 45px;
@@ -59,11 +59,11 @@ body{
 }
 
 .draw_line_back{
-  top: 670px;
+  top: 820px;
   left: 110px;
   width: 100px;
   height: 45px;
-  background-color: #828282;
+  background-color: #c0c0c0;
   border: none;
   border-radius: 5px;
   font-size: 15px;
@@ -73,11 +73,11 @@ body{
 }
 
 .draw_reset{
-  top: 670px;
+  top: 820px;
   margin-left: 50px;
   width: 100px;
   height: 45px;
-  background-color: #828282;
+  background-color: #c0c0c0;
   border: none;
   border-radius: 5px;
   font-size: 15px;
@@ -107,16 +107,110 @@ body{
 	cursor: pointer;
 }
 
+.draw_name{
+  margin-top: 70px;
+  margin-left: 40px;
+  font-family:Noto Sans KR;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.draw_name_text{
+	background-color:rgba(247.00000047683716, 247.00000047683716, 247.00000047683716, 1);
+  width: 250px;
+  height: 30px;
+  position: absolute;
+  margin-top: -28px;
+  margin-left: 100px;
+  border: none;
+  border-radius: 5px;
+  font-family: Noto sans KR;
+  padding-left: 10px;
+  font-size: 17px;
+}
+
+  .draw_name_text:focus{
+    border: none;
+    outline: none;
+  }
+
+
+.draw_distance{
+  margin-top: 15px;
+  margin-left: 40px;
+  font-family:Noto Sans KR;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.draw_distance_content{
+  position: absolute;
+  left: 105px;
+  top: 561px;
+  font-size: 17px;
+}
+
+.draw_line1{
+  position: absolute;
+  left: 100px;
+  top: 590px;
+  width: 260px;
+  height: 1px;
+  background-color: #dddddd;
+}
+
+.draw_place_content{
+  position: absolute;
+  left: 105px;
+  top: 601px;
+  font-size: 17px;
+}
+
+.draw_line2{
+  position: absolute;
+  left: 100px;
+  top: 631px;
+  width: 260px;
+  height: 1px;
+  background-color: #dddddd;
+}
+
+.draw_rate_dropdown{
+  position: absolute;
+  left: 105px;
+  top: 641px;
+  font-size: 17px;
+}
+
+
+
+.draw_place{
+  margin-top: 15px;
+  margin-left: 40px;
+  font-family:Noto Sans KR;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.draw_rate{
+  margin-top: 15px;
+  margin-left: 40px;
+  font-family:Noto Sans KR;
+  font-size: 17px;
+  font-weight: 600;
+}
+
 .color_select_text{
   font-size: 16px;
-  margin-top: 90px;
-  margin-left: 60px;
+  margin-top: 28px;
+  margin-left: 64px;
   font-weight: 600;
+  font-family:Noto Sans KR;
   color: #131313;
 }
 
 .color_select{
-  top: 533px;
+  top: 690px;
   margin-left: -40px;
   width: 130px;
   height: 35px;
