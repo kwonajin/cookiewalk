@@ -1,6 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import './map_detail.css'
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
+
+function MyMap({path, center}) {
+  const navermaps = useNavermaps();
+  return (
+      <NaverMap
+          defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)} 
+          defaultZoom={15} 
+          scaleControl={false}
+          mapDataControl={false}
+          >
+          {path.length > 1 && (
+              <Polyline
+                  path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+                  strokeColor='blue'
+                  strokeWeight={4}
+                  strokeOpacity={0.8}
+                  strokeStyle="solid"
+              />
+          )}
+      </NaverMap>
+  );
+}
 
 export default function Map_detail(){
   const  navigate = useNavigate();
@@ -12,10 +35,14 @@ export default function Map_detail(){
   const level=mapList.state.level;
   const time=mapList.state.time;
   const location=mapList.state.location
-  const followRoute = ()=>{
-    navigate('/BeforeStart', {state:{drawID:drawId}})
-  }
+  const path=mapList.state.pathcoord.coordinate
+  const center= mapList.state.centercoord.coordinate
 
+  console.log(path)
+  console.log(center)
+  const followRoute = ()=>{
+    navigate('/BeforeStart', {state:{path:path}})
+  }
 
   return(
   <div className="MapDetail_container">
@@ -23,7 +50,8 @@ export default function Map_detail(){
     <span className="MapDetail_title">맵</span>
     <div className="MapDetail_title_line"></div>
 
-    <div><img className="e300_47" src="./images/group1.png"/></div>
+    <MapDiv className='e300_47'><MyMap path={path} center={center}/></MapDiv>
+    {/* <div><img className="e300_47" src="./images/group1.png"/></div> */}
     {/* 경로 이미지 들어가는 곳 */}
 
     <span className="MapDetail_location">{location}</span>
