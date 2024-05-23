@@ -10,6 +10,19 @@ export default function Follower() {
   const [userEmail, setUserEmail] = useState(null);
   const [followerList, setFollowerList] = useState([]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (userID) {
+      getUserEmail(userID);
+    }
+  }, [userID]);
+
+  useEffect(() => {
+    if (userEmail) {
+      getFollowerList(userEmail);
+    }
+  }, [userEmail]);
+
   // Fetch user email by userID
   const getUserEmail = async (userID) => {
     try {
@@ -108,19 +121,6 @@ export default function Follower() {
     }
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    if (userID) {
-      getUserEmail(userID);
-    }
-  }, [userID]);
-
-  useEffect(() => {
-    if (userEmail) {
-      getFollowerList(userEmail);
-    }
-  }, [userEmail]);
-
   return (
     <div className="follower_background">
       <div className='followernav'>
@@ -134,24 +134,26 @@ export default function Follower() {
       </div>
 
       <input type='text' className="follower_searchbar" placeholder='검색'></input>
-      {/* <span className="follower_searchbar_text" ></span> */}
       <div className="follower_search">
         <img className="follower_search_icon" src="./icon/search.svg" alt="Search" />
       </div>
 
       {followerList.map((follower, index) => (
-        <Link to={`/home_personal_profile/${follower.user_id}`}>
-          <div key={index} className={`follower${index + 1}`}>
+        <div key={index} className={`follower${index + 1}`}>
+          <Link to={`/home_personal_profile/${follower.user_id}`}>
             <img className={`follower${index + 1}_profile`} src={follower.profile_image} alt={`${follower.nick_name}'s profile`} />
             <div className={`follower${index + 1}_text`}>
               <div className={`follower${index + 1}_id`}>{follower.nick_name}</div>
               <div className={`follower${index + 1}_name`}>{follower.name}</div>
             </div>
-            <button className={`follower${index + 1}_follow`} onClick={() => handleFollowClick(userEmail, follower.following_email, index)}></button>
-            <div className={`follower${index + 1}_follow_text`}>{follower.isFollowing ? "팔로잉" : "팔로우"}</div>
-            <div className={`follower${index + 1}_line`}></div>
-          </div>
-        </Link>
+          </Link>
+          <button 
+            className={`follower${index + 1}_follow ${follower.isFollowing ? 'following' : ''}`}
+            onClick={() => handleFollowClick(userEmail, follower.following_email, index)}>
+            {follower.isFollowing ? "팔로잉" : "팔로우"}
+          </button>
+          <div className={`follower${index + 1}_line`}></div>
+        </div>
       ))}
     </div>
   );
