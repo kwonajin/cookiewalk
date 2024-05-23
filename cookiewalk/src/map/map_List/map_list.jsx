@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 // import naverStaticMap from "../../naverStaticMap";
 import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
-import axios from 'axios';
 
 function MyMap({path, center}) {
     const navermaps = useNavermaps();
