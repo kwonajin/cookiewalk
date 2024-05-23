@@ -82,7 +82,7 @@ export default function MapSearch() {
         }
     }, [currentPosition])
     async function getReverseGeocode(latitude, longitude){
-        const url =`http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
+        const url =`https://blonde-bobolink-smartbusan-a2d9f8e5.koyeb.app/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
         try{
             const response = await axios.get(url, {latitude, longitude});
             // console.log(response.data.results[0].region)
