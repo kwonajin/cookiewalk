@@ -193,10 +193,13 @@ export default function HomePersonalProfile() {
         <button className={`hpp_follow_box ${isFollowing ? 'hpp_following_box' : ''}`} onClick={handleFollowClick}>
           {isFollowing ? '팔로잉' : '팔로우'}
         </button>
-        <div className="e216_19"><img src={post[0].image} alt="" /></div>
-        <div className="e216_20"></div>
-        <div className="e216_21"></div>
-        <div className="e216_25"></div>
+          <div className="e216_19"><img src={post[0].image} alt="" /></div>
+          <div className="e216_20"><img src={post[0].image} alt="" /></div>
+          <div className="e216_21"><img src={post[0].image} alt="" /></div>
+          <div className="e216_19"><img src={post[0].image} alt="" /></div>
+          <div className="e216_20"><img src={post[0].image} alt="" /></div>
+          <div className="e216_21"><img src={post[0].image} alt="" /></div>
+        {/* <div className="e216_25"></div>
         <div className="e216_26"></div>
         <div className="e216_27"></div>
         <div className="e216_31"></div>
@@ -204,15 +207,15 @@ export default function HomePersonalProfile() {
         <div className="e216_33"></div>
         <div className="e216_37"></div>
         <div className="e216_38"></div>
-        <div className="e216_39"></div>
-        <div className="e216_43">
+        <div className="e216_39"></div> */}
+        {/* <div className="e216_43">
           <div className="e216_44">
             <div className="e216_45"></div>
             <div className="e216_46"></div>
           </div>
         </div>
         <div className="e216_48"></div>
-        <div className="e216_61"></div>
+        <div className="e216_61"></div> */}
       </div>
 
       <div className="navbar">

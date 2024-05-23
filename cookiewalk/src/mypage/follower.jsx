@@ -52,7 +52,7 @@ export default function Follower() {
     try {
       const { data, error } = await supabase
         .from('user')
-        .select('name, nick_name, profile_image')
+        .select('name, nick_name, profile_image, user_id')
         .eq('email', email)
         .single();
 
@@ -140,16 +140,18 @@ export default function Follower() {
       </div>
 
       {followerList.map((follower, index) => (
-        <div key={index} className={`follower${index + 1}`}>
-          <img className={`follower${index + 1}_profile`} src={follower.profile_image} alt={`${follower.nick_name}'s profile`} />
-          <div className={`follower${index + 1}_text`}>
-            <div className={`follower${index + 1}_id`}>{follower.nick_name}</div>
-            <div className={`follower${index + 1}_name`}>{follower.name}</div>
+        <Link to={`/home_personal_profile/${follower.user_id}`}>
+          <div key={index} className={`follower${index + 1}`}>
+            <img className={`follower${index + 1}_profile`} src={follower.profile_image} alt={`${follower.nick_name}'s profile`} />
+            <div className={`follower${index + 1}_text`}>
+              <div className={`follower${index + 1}_id`}>{follower.nick_name}</div>
+              <div className={`follower${index + 1}_name`}>{follower.name}</div>
+            </div>
+            <button className={`follower${index + 1}_follow`} onClick={() => handleFollowClick(userEmail, follower.following_email, index)}></button>
+            <div className={`follower${index + 1}_follow_text`}>{follower.isFollowing ? "팔로잉" : "팔로우"}</div>
+            <div className={`follower${index + 1}_line`}></div>
           </div>
-          <button className={`follower${index + 1}_follow`} onClick={() => handleFollowClick(userEmail, follower.following_email, index)}></button>
-          <div className={`follower${index + 1}_follow_text`}>{follower.isFollowing ? "팔로잉" : "팔로우"}</div>
-          <div className={`follower${index + 1}_line`}></div>
-        </div>
+        </Link>
       ))}
     </div>
   );
