@@ -140,9 +140,10 @@ export default function Follower() {
       </div>
 
       {followerList.map((follower, index) => (
-        <Link to={`/home_personal_profile/${follower.user_id}`}>
           <div key={index} className={`follower${index + 1}`}>
+            <Link to={`/home_personal_profile/${follower.user_id}`}>
             <img className={`follower${index + 1}_profile`} src={follower.profile_image} alt={`${follower.nick_name}'s profile`} />
+            </Link>
             <div className={`follower${index + 1}_text`}>
               <div className={`follower${index + 1}_id`}>{follower.nick_name}</div>
               <div className={`follower${index + 1}_name`}>{follower.name}</div>
@@ -151,7 +152,6 @@ export default function Follower() {
             <div className={`follower${index + 1}_follow_text`}>{follower.isFollowing ? "팔로잉" : "팔로우"}</div>
             <div className={`follower${index + 1}_line`}></div>
           </div>
-        </Link>
       ))}
     </div>
   );
