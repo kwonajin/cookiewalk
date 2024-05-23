@@ -97,6 +97,9 @@ export default function Group() {
     <Link to="/BeforeStart"><div className="run"><img className="group_run_icon" src="./icon/record.svg" alt="" /></div></Link>
     <Link to="/group"><div className="group"><img className="group_group_icon" src="./icon/group.svg" alt="" /></div></Link>
     <Link to="/mypage"><div className="my"><img className="group_my_icon" src="./icon/my.svg" alt="" /></div></Link>
+    <Link to="/draw_group_map" className="group_floating-add-button">
+            <img className='group_floating-add-button-icon' src="./icon/write.svg" alt="Add Map" />
+        </Link>
     </div></>
   );
 }

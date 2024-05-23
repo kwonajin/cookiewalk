@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps } from 'react-naver-maps';
-import './draw_map.css';
+import './draw_group.css';
 import customIcon from '../../public/images/logo.png';  // 이미지 경로를 불러옵니다.
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
@@ -88,7 +88,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
   );
 }
 
-export default function DrawMap() {
+export default function DrawGroupMap() {
   const [drawing, setDrawing] = useState(false);
   const [path, setPath] = useState([]);
   const [pathAfterRedMarker, setPathAfterRedMarker] = useState([]);
@@ -150,7 +150,7 @@ export default function DrawMap() {
 
   //경로 위치정보 가져오는 함수
   async function getReverseGeocode(latitude, longitude){
-    const url =`https://blonde-bobolink-smartbusan-a2d9f8e5.koyeb.app/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
+    const url =`http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
     try{
         const response = await axios.get(url, {latitude, longitude});
         console.log(response.data.results[1].region)

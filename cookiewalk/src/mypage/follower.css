@@ -89,7 +89,7 @@ body{
 	height:30px;
 	position:absolute;
 	left:336px;
-	top:68px;
+	top:71px;
 }
 
 .follower_search_icon { 
@@ -97,14 +97,14 @@ body{
 	height:25px;
 	position:absolute;
 	left:4.994609355926514px;
-	top:1.9102697372436523px;
+	top:2px;
 	cursor: pointer;
 }
 
 .follower1 { 
 	width:391px;
 	height:72px;
-	position:absolute;
+	position:relative;
 	top:106px;
 }
 
@@ -112,7 +112,7 @@ body{
 	border-radius:500px;
 	width:45px;
 	height:45px;
-	position:absolute;
+	position:relative;
 	left:16px;
 	top:15px;
 	background-repeat:no-repeat;
@@ -122,9 +122,9 @@ body{
 .follower1_text { 
 	width:198px;
 	height:42px;
-	position:absolute;
+	position:relative;
 	left:73px;
-	top:14px;
+	top:-32px;
 }
 
 .follower1_id { 
@@ -149,6 +149,19 @@ body{
 	text-align:left;
 	font-size:12px;
 	letter-spacing:0;
+}
+
+.follower1_follow_text { 
+	color:rgba(255, 255, 255, 1);
+	width:40px;
+	height:17px;
+	position:absolute;
+	left:312px;
+	top:26px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:12px;
+	letter-spacing:5;
 }
 
 .follower1_follow { 
@@ -273,182 +286,4 @@ body{
 	top:72px;
   border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
-
-.follower3 { 
-	width:391px;
-	height:72px;
-	position:absolute;
-	left:-1px;
-	top:250px;
-}
-
-.follower3_profile { 
-	border-radius:500px;
-	width:45px;
-	height:45px;
-	position:absolute;
-	left:16px;
-	top:15px;
-	background-repeat:no-repeat;
-	background-size:cover;
-}
-
-.follower3_text { 
-	width:198px;
-	height:42px;
-	position:absolute;
-	left:73px;
-	top:15px;
-}
-
-.follower3_id { 
-	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:200px;
-	height:21px;
-	position:absolute;
-	left:0px;
-	top:0px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:14px;
-	letter-spacing:0;
-  font-weight: 600;
-}
-
-.follower3_name { 
-	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:200px;
-	height:21px;
-	position:absolute;
-	left:0px;
-	top:21px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:12px;
-	letter-spacing:0;
-}
-
-.follower3_follow { 
-	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
-	width:93px;
-	height:30px;
-	position:absolute;
-	left:284px;
-	top:20px;
-  border-radius: 5px;
-}
-
-.follower3_follow_text { 
-	color:rgba(255, 255, 255, 1);
-	width:40px;
-	height:17px;
-	position:absolute;
-	left:312px;
-	top:26px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:12px;
-	letter-spacing:5;
-  font-weight: 600;
-}
-
-.follower3_line { 
-	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
-	height:0px;
-	position:absolute;
-	left:1px;
-	top:72px;
-  border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
-}
-
-.follower4 { 
-	width:390px;
-	height:72px;
-	position:absolute;
-	left:0px;
-	top:322px;
-}
-
-.follower4_profile { 
-	border-radius:500px;
-	width:45px;
-	height:45px;
-	position:absolute;
-	left:16px;
-	top:15px;
-	background-repeat:no-repeat;
-	background-size:cover;
-}
-
-.follower4_text { 
-	width:198px;
-	height:42px;
-	position:absolute;
-	left:72px;
-	top:15px;
-}
-
-.follower4_id { 
-	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:200px;
-	height:21px;
-	position:absolute;
-	left:0px;
-	top:0px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:14px;
-	letter-spacing:0;
-  font-weight: 600;
-}
-
-.follower4_name { 
-	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:200px;
-	height:21px;
-	position:absolute;
-	left:0px;
-	top:21px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:12px;
-	letter-spacing:0;
-}
-
-.follower4_follow { 
-	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
-	width:93px;
-	height:30px;
-	position:absolute;
-	left:284px;
-	top:20px;
-	border-radius: 5px;
-}
-
-.follower4_follow_text { 
-	color:rgba(255, 255, 255, 1);
-	width:40px;
-	height:17px;
-	position:absolute;
-	left:312px;
-	top:26px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:12px;
-	letter-spacing:5;
-  font-weight: 600;
-}
-
-.follower4_line { 
-	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
-	height:0px;
-	position:absolute;
-	top:72px;
-  border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
-}
-
-
-
 
