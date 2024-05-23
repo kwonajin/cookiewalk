@@ -54,7 +54,7 @@ body{
 }
 
 .hpp_back_icon { 
-	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
+  filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:25px;
 	height:25px;
 	position:absolute;
@@ -635,4 +635,14 @@ img{
 	position:absolute;
 	left:0.1666717529296875px;
 	top:2.166656494140625px;
+}
+
+.postBox{
+	top: 246px;
+	position: absolute;	
+	display: grid;
+	grid-template-columns: 130px 130px 130px;
+	grid-template-rows: 130px;
+	grid-gap: 0;
+
 }

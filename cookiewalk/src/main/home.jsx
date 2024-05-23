@@ -7,26 +7,27 @@ import Active from './home/Active';
 import ContentBox from './home/ContentBox';
 import NavBar from './home/NavBar';
 import { supabase } from '../supabaseClient';
-import mainContext from '../context/MainContext';
+import debounce from 'lodash/debounce';  // 디바운스 함수 추가
 
 export default function Home() {
   const navigate = useNavigate();
   const userInfo = useToken();
   const userID = userInfo.user;
   const [postList, setPostList] = useState([]);
-  const [page, setPage] = useState(1); // 현재 페이지를 추적
-  const [loading, setLoading] = useState(false); // 로딩 상태를 추적
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     if (userID) {
       checkNickname();
-      fetchPosts(page); // 초기 게시물 가져오기
+      fetchPosts(page);
     }
 
-    // 스크롤 이벤트 리스너 추가
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll); // 언마운트 시 클린업
+    const debouncedHandleScroll = debounce(handleScroll, 200); // 스크롤 이벤트 디바운싱
+    window.addEventListener('scroll', debouncedHandleScroll);
+
+    return () => window.removeEventListener('scroll', debouncedHandleScroll);
   }, [userID, page]);
 
   const checkNickname = async () => {
@@ -46,7 +47,7 @@ export default function Home() {
       .from('post')
       .select('*')
       .order('created_at', { ascending: false })
-      .range((page - 1) * 10, page * 10 - 1); // 페이지당 10개의 게시물 가져오기
+      .range((page - 1) * 10, page * 10 - 1);
 
     if (error) {
       console.error('Error fetching posts:', error.message);
@@ -68,7 +69,10 @@ export default function Home() {
       };
     }));
 
-    setPostList(prevPosts => [...prevPosts, ...postsWithUserInfo]); // 기존 리스트에 새 게시물 추가
+    setPostList(prevPosts => {
+      const newPosts = [...prevPosts, ...postsWithUserInfo];
+      return Array.from(new Set(newPosts.map(p => p.post_id))).map(id => newPosts.find(p => p.post_id === id)); // 중복 게시물 제거
+    });
     setLoading(false);
   };
 
@@ -76,7 +80,7 @@ export default function Home() {
     if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) {
       return;
     }
-    setPage(prevPage => prevPage + 1); // 다음 페이지 로드
+    setPage(prevPage => prevPage + 1);
   };
 
   return (
@@ -88,7 +92,7 @@ export default function Home() {
         </div>
         {postList.map((post, index) => (
           <ContentBox
-            key={`${post.post_id}-${index}`} // 고유한 키 생성
+            key={`${post.post_id}-${index}`}
             userId={post.user_id}
             profileName={post.user_name}
             profileImage={post.user_image}
