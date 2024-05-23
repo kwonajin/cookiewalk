@@ -19,7 +19,6 @@ export default function Comment(){
         <CommentContent />
         <CommentContent />
 
-
             <div className="comment-input-wrapper">
                 <img className="comment-input-avatar" src="./images/ellipse_7.png" alt="Avatar" />
                 <input

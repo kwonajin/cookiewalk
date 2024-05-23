@@ -54,10 +54,10 @@ body{
     position: relative;
     width: 390px;
     height: 58px;
-    display: flex;
-    align-items: center;
+    /* display: flex; */
+    /* align-items: center; */
     top: 57px;
-    margin-bottom: 3px;
+    margin-bottom: 20px;
 
 }
 
@@ -66,29 +66,29 @@ body{
 .comment-avatar {
     position: relative;
     left: 15px;
-    top: -5px;
-    border-radius: 50%;
+    top: 10px;
+    border-radius: 500px;
     width: 45px;
     height: 45px;
 }
 
 .comment-username {
     position: relative;
-    left: 30px;
-    top: -18px;
+    left: 70px;
+    top: -35px;
     width: 112px;
     height: 18px;
     font-size: 12px;
     font-family: Noto Sans KR;
-    font-weight: 500;
+    font-weight: 700;
     color: #131313;
 }
 
 .comment-time {
     position: relative;
-    left: 37px;
-    top: -16px;
-    width: 42px;
+    left: 190px;
+    top: -52px;
+    width: 130px;
     height: 19px;
     font-size: 12px;
     font-family: Noto Sans KR;
@@ -97,25 +97,28 @@ body{
 }
 .comment-delete-button{
     position: relative;
-    left: 38px;
-    top: -16px;
+    left: 360px;
+    top: -70px;
     cursor: pointer;
+    width: 17px;
+    height: 17px;
 }
 .comment-content {
     position: relative;
-    right: 140px;
-    top: 9px;
-    width: 116px;
-    height: 23px;
+    left: 70px;
+    top: -70px;
+    width:  300px;
+    height: 50px;
     font-size: 12px;
     font-family: Noto Sans KR;
     font-weight: 500;
     color: #131313;
+    z-index: 10;
 }
 .comment-divider {
-    position: absolute;
-    left: 0;
-    top: 55px;
+    position: relative;
+    right: 200px;
+    top: 20px;
     width: 390px;
     height: 0;
     border: 1px solid #bfbfbf;
