@@ -22,6 +22,7 @@ import Follower from './mypage/follower';
 import Following from './mypage/following';
 import GroupDetail from './group/group_detail';
 import MyGroup from './mypage/mygroup';
+import DrawGroupMap from './group/draw_group.jsx';
 import MyGroupDetail from './mypage/mygroup_detail'
 import ProfileEdit from './mypage/profile_edit.jsx'
 import PersonalProfile from './personal/personal_profile.jsx'
@@ -70,6 +71,7 @@ export default function App() {
             <Route path="/Unfinished_route" element={<ProtectedRoute><Unfinished_route /></ProtectedRoute>} />
             <Route path="/Activity_Save" element={<ProtectedRoute><Activity_save /></ProtectedRoute>} />
             <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
+            <Route path="/draw_group_map" element={<ProtectedRoute><DrawGroupMap /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
             <Route path="/comment" element={<ProtectedRoute><Comment /></ProtectedRoute>} />

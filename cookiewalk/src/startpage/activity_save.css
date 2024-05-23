@@ -55,7 +55,7 @@ body{
 	width:126px;
 	height:15px;
 	position:absolute;
-	left:9px;
+	left:15px;
 	top:459px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -68,7 +68,7 @@ body{
 	width:60px;
 	height:15px;
 	position:absolute;
-	left:9px;
+	left:15px;
 	top:489px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -78,10 +78,10 @@ body{
 }
 .activity_save_distance_value { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:75px;
+	width:85px;
 	height:23px;
 	position:absolute;
-	left:9px;
+	left:15px;
 	top:515px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -93,7 +93,7 @@ body{
 	width:56px;
 	height:0px;
 	position:absolute;
-	left:62px;
+	left:72px;
 	top:520px;
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
@@ -102,7 +102,7 @@ body{
 	width:60px;
 	height:15px;
 	position:absolute;
-	left:111px;
+	left:115px;
 	top:489px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -115,7 +115,7 @@ body{
 	width:110px;
 	height:23px;
 	position:absolute;
-	left:111px;
+	left:115px;
 	top:515px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -124,10 +124,10 @@ body{
 }
 .activity_save_line1 { 
 	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
+	width:370px;
 	height:0px;
 	position:absolute;
-	left:0px;
+	left:10px;
 	top:559px;
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
@@ -136,7 +136,7 @@ body{
 	width:126px;
 	height:15px;
 	position:absolute;
-	left:9px;
+	left:15px;
 	top:568px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -150,12 +150,17 @@ body{
 	height:17px;
 	position:absolute;
 	border: none;
-	left:9px;
+	left:15px;
 	top:599px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:16px;
 	letter-spacing:0;
+}
+
+.activity_save_route_title_contents:focus{
+	border: none;
+	outline: none;
 }
 .activity_save_route_title_contents::placeholder {
     color: rgba(137.2229638695717, 137.2229638695717, 137.2229638695717, 1);
@@ -165,7 +170,7 @@ body{
 	width:126px;
 	height:15px;
 	position:absolute;
-	left:9px;
+	left:15px;
 	top:641px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -174,18 +179,18 @@ body{
 	letter-spacing:0;
 }
 .acitivity_save_location_icon { 
-	width:25px;
-	height:25px;
+	width:23px;
+	height:23px;
 	position:absolute;
-	left:9px;
-	top:673px;
+	left:15px;
+	top:672px;
 }
 .activity_save_line2 { 
 	transform: rotate(-2.4848166388360215e-17deg);
-	width:390px;
+	width:370px;
 	height:0px;
 	position:absolute;
-	left:0px;
+	left:10px;
 	top:634px;
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
@@ -205,7 +210,7 @@ body{
 .Unfinished_SaveRoute_button { 
 	background-color:rgb(183, 202, 220);
 	color: white;
-	font-size: 22px;
+	font-size: 19px;
 	font-weight: 700;
 	font-family: Noto Sans KR;
 	letter-spacing: 3px;
@@ -221,10 +226,11 @@ body{
 	border: none;
 	cursor: pointer;
 }
+
 .Finished_SaveRoute_button { 
 	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
 	color: white;
-	font-size: 22px;
+	font-size: 19px;
 	font-weight: 700;
 	font-family: Noto Sans KR;
 	letter-spacing: 3px;

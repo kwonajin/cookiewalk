@@ -171,7 +171,7 @@ body{
 }
 .map_list1_location { 
 	color:rgba(0, 0, 0, 1);
-	width:170px;
+	width:220px;
 	height:17.363468170166016px;
 	position:relative;
 	left:137px;
@@ -183,7 +183,7 @@ body{
 }
 .map_list1_distance_value { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:57px;
+	width:200px;
 	height:18.19029998779297px;
 	position:relative;
 	left:163px;
@@ -195,7 +195,7 @@ body{
 }
 .map_list1_time_value { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:47px;
+	width:200px;
 	height:18.19029998779297px;
 	position:relative;
 	left:163px;
@@ -220,7 +220,7 @@ body{
 	width:13.327808380126953px;
 	height:16.453258514404297px;
 	position:relative;
-	left:137px;
+	left:139px;
 	top:-210px;
 	border-radius:5px;
 }
@@ -238,8 +238,8 @@ body{
 }
 
 .map_list1_rate_icon { 
-	width:15px;
-	height:14.396600723266602px;
+	width:17px;
+	height:17px;
 	position:relative;
 	left:137px;
 	top:-240px;
@@ -247,7 +247,7 @@ body{
 }
 .map_list1_rate_value { 
 	color:rgba(0, 0, 0, 1);
-	width:19px;
+	width:200px;
 	height:16.536636352539062px;
 	position:relative;
 	left:163px;
@@ -367,4 +367,23 @@ body{
 	width: 25px; /* 이미지의 너비를 80px로 조정 */
 	height: 25px; /* 이미지의 높이를 80px로 조정 */
 	cursor: pointer; /* 포인터 커서 설정 */
+}
+
+.loadmessage{
+	position: absolute;
+	left: 100px;
+	top: 410px;
+	font-size: 20px;
+	text-align: center;
+	font-weight: 600;
+	font-family: Noto sans KR;
+	color: #131313;
+}
+
+.loadimg{
+	width: 100px;
+	height: 130px;
+	position: absolute;
+	top: 233px;
+	left: 134px;
 }

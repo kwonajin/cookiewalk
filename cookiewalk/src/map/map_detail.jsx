@@ -62,8 +62,8 @@ export default function Map_detail(){
     <div><img className="MapDetail_distance_icon" src="./icon/run.svg"/></div>
     <span className="MapDetail_distance_value">{distance}km</span>
     
-    <div><img className="MapDetail_time_icon" src="./icon/clock.svg"/></div>
-    <span className="MapDetail_time_value">1h 0m</span>
+    <div><img className="MapDetail_time_icon" src="./icon/place.svg"/></div>
+    <span className="MapDetail_time_value">장소 넣기 (시/동)</span>
     
     <div><img className="MapDetail_difficulty_icon" src="./icon/round-star.svg"/></div>
     <span className="MapDetail_difficulty_value">{level}</span>

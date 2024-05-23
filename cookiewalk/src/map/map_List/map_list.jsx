@@ -54,10 +54,10 @@ return(
     <div><img className='map_list1_distance_icon' src="./icon/run.svg"/></div>
     <div className="map_list1_distance_value">{distance}km</div>
     
-    <div><img className='map_list1_time_icon' src="./icon/clock.svg"/></div>
-    <div className="map_list1_time_value">1h 0m</div>
+    <div><img className='map_list1_time_icon' src="./icon/place.svg"/></div>
+    <div className="map_list1_time_value">장소 넣기 (시/동)</div>
 
-    <div><img className='map_list1_rate_icon' src="./icon/sand-timer.svg"/></div>
+    <div><img className='map_list1_rate_icon' src="./icon/round-star.svg"/></div>
     <div className="map_list1_rate_value">{level}</div>
     </div>
     )
