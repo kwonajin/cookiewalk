@@ -193,12 +193,30 @@ export default function HomePersonalProfile() {
         <button className={`hpp_follow_box ${isFollowing ? 'hpp_following_box' : ''}`} onClick={handleFollowClick}>
           {isFollowing ? '팔로잉' : '팔로우'}
         </button>
-          <div className="e216_19"><img src={post[0].image} alt="" /></div>
-          <div className="e216_20"><img src={post[0].image} alt="" /></div>
-          <div className="e216_21"><img src={post[0].image} alt="" /></div>
-          <div className="e216_19"><img src={post[0].image} alt="" /></div>
-          <div className="e216_20"><img src={post[0].image} alt="" /></div>
-          <div className="e216_21"><img src={post[0].image} alt="" /></div>
+        <div className='postBox'>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            <div><img src={post[0].image} alt="" /></div>
+            {/* <div className="e216_19"><img src={post[0].image} alt="" /></div>
+            <div className="e216_20"><img src={post[0].image} alt="" /></div>
+            <div className="e216_21"><img src={post[0].image} alt="" /></div>
+            <div className="e216_19"><img src={post[0].image} alt="" /></div>
+            <div className="e216_20"><img src={post[0].image} alt="" /></div>
+            <div className="e216_21"><img src={post[0].image} alt="" /></div> */}
+        </div>
         {/* <div className="e216_25"></div>
         <div className="e216_26"></div>
         <div className="e216_27"></div>
