@@ -207,68 +207,25 @@ export default function Start() {
 
     useEffect(() => {
         if (isARMode) {
-            loadARModel();
+            const video = videoRef.current;
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then((stream) => {
+                        video.srcObject = stream;
+                    })
+                    .catch((error) => {
+                        console.error("Error accessing webcam: ", error);
+                    });
+            }
         }
     }, [isARMode]);
 
-    const loadARModel = () => {
-        const script1 = document.createElement('script');
-        script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-        script1.onload = () => {
-            const script2 = document.createElement('script');
-            script2.src = 'https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js';
-            script2.onload = () => {
-                initAR();
-            };
-            document.body.appendChild(script2);
-        };
-        document.body.appendChild(script1);
-    };
-
-    const initAR = () => {
-        const container = document.getElementById('arContainer');
-        const canvas = document.createElement('canvas');
-        canvas.style.position = 'absolute';
-        canvas.style.top = 0;
-        canvas.style.left = 0;
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        container.appendChild(canvas);
-
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 1.6, 3);
-
-        const light = new THREE.HemisphereLight(0xffffff, 0x444444);
-        light.position.set(0, 20, 0);
-        scene.add(light);
-
-        const loader = new THREE.GLTFLoader();
-        loader.load('/귀여운_강아지__0523000915_preview.glb', (gltf) => {
-            const model = gltf.scene;
-            model.position.set(0, -1.5, -5);
-            scene.add(model);
-
-            const animate = () => {
-                requestAnimationFrame(animate);
-                model.rotation.y += 0.01;
-                renderer.render(scene, camera);
-            };
-            animate();
-        });
-
-        container.addEventListener('click', handleARCapture);
-    };
-
     if (isARMode) {
         return (
-            <div id="arContainer" className="ar-container">
+            <div className="ar-container">
                 <video ref={videoRef} autoPlay className="ar-camera-view" />
                 <div className="ar-overlay">
-                    <img src="/images/logo.png" alt="AR" className="ar-image" />
+                    <img src="/images/logo.png" alt="AR" className="ar-image" onClick={handleARCapture} />
                 </div>
                 <div className="ar-info">
                     <div>AR 모드 활성화</div>
