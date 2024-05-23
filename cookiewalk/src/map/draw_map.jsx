@@ -253,6 +253,17 @@ export default function DrawMap() {
         <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} selectedColor={selectedColor} />
       </MapDiv>
 
+      <div className='draw_name'>제목</div>
+      <input className='draw_name_text' type="text" placeholder='그린 경로의 제목을 입력하세요' />
+      <div className='draw_distance'>거리</div>
+      <div className='draw_distance_content'>자동으로 거리 계산</div>
+      <div className='draw_line1'></div>
+      <div className='draw_place'>장소</div>
+      <div className='draw_place_content'>처음 점을 위치로 가져옴</div>
+      <div className='draw_line2'></div>
+
+      <div className='draw_rate'>난이도</div>
+      <div className='draw_rate_dropdown'>드롭다운 상중하</div>
       <div className='color_select_text'>선 색상 선택하기</div>
 
 

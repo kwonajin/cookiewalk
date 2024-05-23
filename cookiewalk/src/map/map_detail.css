@@ -14,6 +14,7 @@ body{
 	position:relative;
 }
 .MapDetail_backArrow { 
+	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:25px;
 	height:25px;
 	position:absolute;
@@ -25,8 +26,8 @@ body{
 	width:19px;
 	height:29px;
 	position:absolute;
-	left:177px;
-	top:11px;
+	left:185px;
+	top:10px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:20px;
@@ -124,7 +125,7 @@ body{
 }
 .MapDetail_time_value { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:57px;
+	width:300px;
 	height:25px;
 	position:absolute;
 	left:66px;
