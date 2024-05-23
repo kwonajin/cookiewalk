@@ -41,7 +41,7 @@ body{
 	top:5px;
 }
 
-.follower_tilte { 
+.follower_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:74px;
 	height:29px;
@@ -66,25 +66,22 @@ body{
 
 .follower_searchbar { 
 	background-color:rgba(239.04590249061584, 239.04590249061584, 239.04590249061584, 1);
-	width:370px;
+	width:360px;
 	height:45px;
 	position:absolute;
 	left:10px;
 	top:61px;
 	border-radius: 5px;
+	border: none;
+	color:rgba(154.04589235782623, 154.04589235782623, 154.04589235782623, 1);
+	font-family:Noto Sans KR;
+	font-size:15px;
+	padding-left: 10px;
 }
 
-.follower_searchbar_text { 
-	color:rgba(154.04589235782623, 154.04589235782623, 154.04589235782623, 1);
-	width:173px;
-	height:25px;
-	position:absolute;
-	left:20px;
-	top:71px;
-	font-family:Noto Sans KR;
-	text-align:left;
-	font-size:15px;
-	letter-spacing:0;
+.follower_searchbar:focus{
+	border: none;
+	outline: none;
 }
 
 .follower_search { 
@@ -101,6 +98,7 @@ body{
 	position:absolute;
 	left:4.994609355926514px;
 	top:1.9102697372436523px;
+	cursor: pointer;
 }
 
 .follower1 { 
@@ -161,21 +159,25 @@ body{
 	left:284px;
 	top:20px;
   border-radius: 5px;
+	border: none;
+	cursor: pointer;
+	font-family:Noto Sans KR;
+	font-size:12px;
+	color: #ffffff;
+	font-weight: 600;
+
 }
 
-.follower1_follow_text { 
-	color:rgba(255, 255, 255, 1);
-	width:40px;
-	height:17px;
-	position:absolute;
-	left:312px;
-	top:26px;
+.follower1_follow.following{
+	background-color: #efefef;
+	color: #131313;
 	font-family:Noto Sans KR;
-	text-align:left;
 	font-size:12px;
-	letter-spacing:5;
-  font-weight: 600;
+	padding-left: 30px;
+	font-weight: 600;
 }
+
+
 
 .follower1_line { 
 	transform: rotate(-2.4848166388360215e-17deg);

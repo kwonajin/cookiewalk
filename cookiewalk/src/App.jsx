@@ -4,6 +4,7 @@ import FindPassword from './login/FindPassword.jsx';
 import FindPassword2 from './login/FindPassword2.jsx';
 
 import Home from "./main/home";
+import Comment from './main/comment.jsx'
 import MapSearch from './map/map';
 import Map_detail from './map/map_detail.jsx';
 
@@ -71,6 +72,7 @@ export default function App() {
             <Route path="/group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
+            <Route path="/comment" element={<ProtectedRoute><Comment /></ProtectedRoute>} />
             <Route path="/write_map" element={<ProtectedRoute><Write_map /></ProtectedRoute>} />
             <Route path="/notice" element={<ProtectedRoute><Notice /></ProtectedRoute>} />
             <Route path="/friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />

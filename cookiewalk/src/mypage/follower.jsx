@@ -133,8 +133,8 @@ export default function Follower() {
         <div className="follower_line1"></div>
       </div>
 
-      <div className="follower_searchbar"></div>
-      <span className="follower_searchbar_text">검색</span>
+      <input type='text' className="follower_searchbar" placeholder='검색'></input>
+      {/* <span className="follower_searchbar_text" ></span> */}
       <div className="follower_search">
         <img className="follower_search_icon" src="./icon/search.svg" alt="Search" />
       </div>

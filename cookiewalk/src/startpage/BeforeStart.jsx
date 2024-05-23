@@ -33,29 +33,26 @@ export default function BeforeStart(){
     
     const [path,setPath]=useState([])
 
-    async function bringMapPath(drawID){
-        const {data, error} = await supabase
-            .from('draw_map_c_location')
-            .select('latitude, longitude')
-            .eq('draw_m_c_id', drawID)
-            // console.log(data)
-            setPath(data)
-        if(error){
-            console.error(error)
-        }
-    }
-    useEffect(()=>{
-        // console.log(path)
-    },[path])
-    
-    
+    // async function bringMapPath(drawID){
+    //     const {data, error} = await supabase
+    //         .from('draw_map_c_location')
+    //         .select('latitude, longitude')
+    //         .eq('draw_m_c_id', drawID)
+    //         // console.log(data)
+    //         setPath(data)
+    //     if(error){
+    //         console.error(error)
+    //     }
+    // }
     const mapCollection = useLocation();
-    // console.log(mapCollection)
-    if(mapCollection.state !== null){
-        // console.log(mapCollection.state.drawID)
-        const drawID=mapCollection.state.drawID
-        bringMapPath(drawID)
-    }
+    console.log(mapCollection)
+    useEffect(()=>{
+        if(mapCollection.state !== null){
+            // console.log(mapCollection.state.drawID)
+            const maproute=mapCollection.state.path
+            setPath(maproute)
+        }
+    },[path])
     const  navigate = useNavigate();
 
     //현재 위치 저장 state
