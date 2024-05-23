@@ -7,6 +7,7 @@ import { useToken } from '../context/tokenContext';
 import axios from 'axios'
 import { Link, useNavigate } from "react-router-dom";
 
+
 function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
   const navermaps = useNavermaps();
   const [position, setPosition] = useState(null);
