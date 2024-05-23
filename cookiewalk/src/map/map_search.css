@@ -368,3 +368,22 @@ body{
 	height: 25px; /* 이미지의 높이를 80px로 조정 */
 	cursor: pointer; /* 포인터 커서 설정 */
 }
+
+.loadmessage{
+	position: absolute;
+	left: 100px;
+	top: 410px;
+	font-size: 20px;
+	text-align: center;
+	font-weight: 600;
+	font-family: Noto sans KR;
+	color: #131313;
+}
+
+.loadimg{
+	width: 100px;
+	height: 130px;
+	position: absolute;
+	top: 233px;
+	left: 134px;
+}
