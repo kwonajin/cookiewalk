@@ -16,8 +16,15 @@ export default function HomeNav() {
           <div className="write" onClick={handleMenuToggle}><img className="write_icon" src="./icon/write.svg" alt="" /></div>
           {showMenu && ( // 메뉴가 보이는 경우에만 렌더링
           <div className="write_dropdown_menu">
-            <Link className='homenav_dropdown_link' to='/write'><div className='write_menu_title1'><img className='write_dropdown_icon' src="./icon/camera.svg" alt="" />사진 등록<br></br><hr></hr></div></Link>
-            <Link className='homenav_dropdown_link' to='/finished_art'><div className='write_menu_title2'><img className='write_dropdown_icon' src="./icon/map.svg" alt="" />경로 등록</div></Link>
+            <Link className='homenav_dropdown_link' to='/write'>
+              <img className='write_dropdown_icon' src="./icon/camera.svg" alt="" />
+              <div className='write_menu_title1'>사진 등록</div>
+            </Link>
+            <hr className='dropdown_divider_line'></hr>
+            <Link className='homenav_dropdown_link' to='/finished_art'>
+              <div className='write_menu_title2'>경로 등록</div>
+              <img className='write_dropdown_icon' src="./icon/map.svg" alt="" />
+              </Link>
           </div>
         )}
           <div className="home_title">홈</div>
