@@ -3,15 +3,13 @@ import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useLocation, useNavigate } from "react-router-dom";
 
-function MyMap({ path, drawPath, center }) {
+function MyMap({ path=[], drawPath=[], center }) {
     const navermaps = useNavermaps();
-
     const markerIcon = {
         content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
         size: new navermaps.Size(24, 24),
         anchor: new navermaps.Point(12, 12)
     };
-
     return (
         <NaverMap
             defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng(37.3595704, 127.105399)}
@@ -20,7 +18,7 @@ function MyMap({ path, drawPath, center }) {
             {center && (
                 <Marker icon={markerIcon} position={new navermaps.LatLng(center.lat, center.lng)} />
             )}
-            {path.length > 1 && (
+            {path.length >= 1 && (
                 <Polyline
                     path={path.map(p => new navermaps.LatLng(p.lat, p.lng))}
                     strokeColor='blue'
@@ -56,7 +54,7 @@ export default function Start() {
     const [currentPosition, setCurrentPosition] = useState(location.state.currentPosition);
     const [tracking, setTracking] = useState(false);
     const watchIdRef = useRef(null);
-    const [path, setPath] = useState([currentPosition]);
+    const [path, setPath] = useState([]);
 
     const [drawPath, setDrawPath] = useState([]);
 
@@ -105,8 +103,12 @@ export default function Start() {
                 (position) => {
                     const { latitude, longitude } = position.coords;
                     const newPosition = { lat: latitude, lng: longitude };
+                    // console.log(newPosition)
                     setCurrentPosition(newPosition);
                     setPath((prevPath) => {
+                        if (!Array.isArray(prevPath)) {
+                            prevPath = []; 
+                        }
                         let newPath = [...prevPath, newPosition];
                         const lastPosition = prevPath[prevPath.length - 1];
                         //받아온 경로 없을 시
