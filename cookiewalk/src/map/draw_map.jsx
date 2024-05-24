@@ -13,6 +13,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
   const [position, setPosition] = useState(null);
   const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));
 
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function(position) {
@@ -103,6 +104,7 @@ export default function DrawMap() {
   const userID = userInfo.user;
   const [address, setAddress]=useState('')
 
+  const [selectedDifficulty, setSelectedDifficulty] = useState('');  // 난이도 상태 추가
 
   const toggleDrawing = () => {
     setDrawing(prevDrawing => !prevDrawing);
@@ -263,7 +265,12 @@ export default function DrawMap() {
       <div className='draw_line2'></div>
 
       <div className='draw_rate'>난이도</div>
-      <div className='draw_rate_dropdown'>드롭다운 상중하</div>
+      <select className='draw_rate_dropdown' value={selectedDifficulty} onChange={(e) => setSelectedDifficulty(e.target.value)}>
+          <option value="">난이도</option>
+          <option value="상">상</option>
+          <option value="중">중</option>
+          <option value="하">하</option>
+      </select>
       <div className='color_select_text'>선 색상 선택하기</div>
 
 
