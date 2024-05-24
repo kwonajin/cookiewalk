@@ -3,7 +3,7 @@ import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useLocation, useNavigate } from "react-router-dom";
 
-function MyMap({ path, drawPath, center }) {
+function MyMap({ path=[], drawPath=[], center }) {
     const navermaps = useNavermaps();
     const markerIcon = {
         content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
@@ -55,7 +55,7 @@ export default function Start() {
     const [currentPosition, setCurrentPosition] = useState(location.state.currentPosition);
     const [tracking, setTracking] = useState(false);
     const watchIdRef = useRef(null);
-    const [path, setPath] = useState([currentPosition]);
+    const [path, setPath] = useState([]);
 
     const [drawPath, setDrawPath] = useState([]);
 
@@ -104,11 +104,11 @@ export default function Start() {
                 (position) => {
                     const { latitude, longitude } = position.coords;
                     const newPosition = { lat: latitude, lng: longitude };
-                    console.log(newPosition)
+                    // console.log(newPosition)
                     setCurrentPosition(newPosition);
                     setPath((prevPath) => {
                         if (!Array.isArray(prevPath)) {
-                            prevPath = []; //
+                            prevPath = []; 
                         }
                         let newPath = [...prevPath, newPosition];
                         const lastPosition = prevPath[prevPath.length - 1];

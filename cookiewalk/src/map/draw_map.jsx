@@ -31,6 +31,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
   const handleMapClick = (e) => {
     if (drawing && !redMarkerClicked) {
       const newPoint = e.coord;
+      console.log(newPoint)
       setPath(currentPath => {
         if (currentPath.length === 0) {
           start(newPoint);  // 첫 클릭에서 출발지로 설정하고 빨간색으로 표시
@@ -103,6 +104,7 @@ export default function DrawMap() {
   const userInfo=useToken();
   const userID = userInfo.user;
   const [address, setAddress]=useState('')
+  const [title, setTitle]=useState('')
 
   const [selectedDifficulty, setSelectedDifficulty] = useState('');  // 난이도 상태 추가
 
@@ -180,7 +182,6 @@ export default function DrawMap() {
         console.error(countError)
       }
       console.log(count)
-      //getReverseGeocode(path[0]._lat, path[0]._lng)
       const {data: insertCollection, error: insertCollectionError}= await supabase 
         .from('draw_map_collection')
         .insert([
@@ -256,12 +257,12 @@ export default function DrawMap() {
       </MapDiv>
 
       <div className='draw_name'>제목</div>
-      <input className='draw_name_text' type="text" placeholder='그린 경로의 제목을 입력하세요' />
+      <input className='draw_name_text' type="text" placeholder='그린 경로의 제목을 입력하세요' value={title} onChange={(e)=> setTitle(e.target.value)}/>
       <div className='draw_distance'>거리</div>
       <div className='draw_distance_content'>자동으로 거리 계산</div>
       <div className='draw_line1'></div>
       <div className='draw_place'>장소</div>
-      <div className='draw_place_content'>처음 점을 위치로 가져옴</div>
+      <div className='draw_place_content'>{address}</div>
       <div className='draw_line2'></div>
 
       <div className='draw_rate'>난이도</div>
