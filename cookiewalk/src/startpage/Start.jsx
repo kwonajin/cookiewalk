@@ -10,7 +10,6 @@ function MyMap({ path=[], drawPath=[], center }) {
         size: new navermaps.Size(24, 24),
         anchor: new navermaps.Point(12, 12)
     };
-
     return (
         <NaverMap
             defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng(37.3595704, 127.105399)}

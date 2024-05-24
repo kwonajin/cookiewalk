@@ -6,7 +6,7 @@ import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 import axios from 'axios'
 import { Link, useNavigate } from "react-router-dom";
-
+import  {calculateDistance} from '../utils/CalculateDistance'
 
 function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
   const navermaps = useNavermaps();
@@ -30,7 +30,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
 
   const handleMapClick = (e) => {
     if (drawing && !redMarkerClicked) {
-      const newPoint = e.coord;
+      const newPoint = {lat: e.coord._lat, lng: e.coord._lng};
       console.log(newPoint)
       setPath(currentPath => {
         if (currentPath.length === 0) {
@@ -43,10 +43,9 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
       setEndPoint(newPoint);  // 마지막 클릭을 항상 업데이트
     }
   };
-
   const handleRedMarkerClick = () => {
     if (drawing && !redMarkerClicked) {
-      setRedMarkerClicked(true);
+      setRedMarkerClicked(false);
       setPath(currentPath => {
         const newPath = [...currentPath, currentPath[0]];
         setPathAfterRedMarker(newPath);
@@ -98,7 +97,8 @@ export default function DrawMap() {
   const [endPoint, setEndPoint] = useState(null);
   const [redMarkerClicked, setRedMarkerClicked] = useState(false);
   const [selectedColor, setSelectedColor] = useState('#000000'); // 기본 색상 설정
-  
+  const [totalDistance, setTotalDistance]=useState(0)
+
   const  navigate = useNavigate();
 
   const userInfo=useToken();
@@ -106,7 +106,7 @@ export default function DrawMap() {
   const [address, setAddress]=useState('')
   const [title, setTitle]=useState('')
 
-  const [selectedDifficulty, setSelectedDifficulty] = useState('');  // 난이도 상태 추가
+  const [selectedDifficulty, setSelectedDifficulty] = useState('하');  // 난이도 상태 추가
 
   const toggleDrawing = () => {
     setDrawing(prevDrawing => !prevDrawing);
@@ -143,6 +143,8 @@ export default function DrawMap() {
     setStartPoint(null);
     setEndPoint(null);
     setRedMarkerClicked(false);
+    setAddress('')
+    setTotalDistance(0)
     if (!drawing) {
       setDrawing(true);  // 초기화 후에도 그림 그리기 모드 유지
     }
@@ -154,6 +156,7 @@ export default function DrawMap() {
 
   //경로 위치정보 가져오는 함수
   async function getReverseGeocode(latitude, longitude){
+    console.log(latitude)
     const url =`https://blonde-bobolink-smartbusan-a2d9f8e5.koyeb.app/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
     try{
         const response = await axios.get(url, {latitude, longitude});
@@ -170,11 +173,18 @@ export default function DrawMap() {
         throw error;
     }
 };
+  useEffect(()=>{
+    if(path.length===1){
+      getReverseGeocode(path[0].lat, path[0].lng)
+    }else if(path.length>=2){
+      const distance = calculateDistance(path[path.length-2],path[path.length-1])
+      setTotalDistance((prevDistance)=> prevDistance + distance)
+    }
+  },[path])
   //경로 저장 함수 
   async function submitRoute(){
-    if(path.length >2){
+    if(path.length >2 && title !== ''){
       const created_time=new Date();
-
       const {data: countData, error: countError, count}= await supabase
         .from('draw_map_collection')
         .select('*', {count: 'exact'});
@@ -190,7 +200,10 @@ export default function DrawMap() {
             created_at: created_time,
             user_id: userID,
             location: address,
-            color:selectedColor
+            color:selectedColor,
+            level:selectedDifficulty,
+            distance:totalDistance.toFixed(2),
+            title: title
           }
         ])
       if(insertCollectionError){
@@ -204,8 +217,8 @@ export default function DrawMap() {
             {
               draw_m_c_id: `draw_${count+1}`,
               mark_order:index+1,
-              latitude: location._lat,
-              longitude: location._lng
+              latitude: location.lat,
+              longitude: location.lng
             }
           ])
         if(insertLocationError){
@@ -213,9 +226,11 @@ export default function DrawMap() {
         }
       }
       navigate('/home')
+    }else{
+      window.alert('필수값이 입력되지 않았습니다.')
     }
-
   }
+
   return (
     <div className='draw_map_container'>
       
@@ -232,9 +247,6 @@ export default function DrawMap() {
           </button>
         </>
       )}
-
-
-
       <input className='color_select'
         type="color" 
         value={selectedColor} 
@@ -259,7 +271,7 @@ export default function DrawMap() {
       <div className='draw_name'>제목</div>
       <input className='draw_name_text' type="text" placeholder='그린 경로의 제목을 입력하세요' value={title} onChange={(e)=> setTitle(e.target.value)}/>
       <div className='draw_distance'>거리</div>
-      <div className='draw_distance_content'>자동으로 거리 계산</div>
+      <div className='draw_distance_content'>{totalDistance.toFixed(2)} Km</div>
       <div className='draw_line1'></div>
       <div className='draw_place'>장소</div>
       <div className='draw_place_content'>{address}</div>
@@ -267,10 +279,9 @@ export default function DrawMap() {
 
       <div className='draw_rate'>난이도</div>
       <select className='draw_rate_dropdown' value={selectedDifficulty} onChange={(e) => setSelectedDifficulty(e.target.value)}>
-          <option value="">난이도</option>
-          <option value="상">상</option>
-          <option value="중">중</option>
           <option value="하">하</option>
+          <option value="중">중</option>
+          <option value="상">상</option>
       </select>
       <div className='color_select_text'>선 색상 선택하기</div>
 
