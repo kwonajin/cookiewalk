@@ -70,6 +70,8 @@ export default function Start() {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
 
+    const tolerance = 0.01;
+
     useEffect(() => {
         if (location.state.drawPath.length > 1) {
             setDrawPath(location.state.drawPath);
@@ -86,6 +88,9 @@ export default function Start() {
         startTracking();
     };
 
+    useEffect(()=>{
+        console.log(drawPath.length)
+    },[drawPath])
     const handleCloseClick = () => {
         const confirmLeave = window.confirm("경로를 저장하지 않고 종료하시겠습니까?");
         if (confirmLeave) {
@@ -100,20 +105,37 @@ export default function Start() {
                 (position) => {
                     const { latitude, longitude } = position.coords;
                     const newPosition = { lat: latitude, lng: longitude };
-                    setCurrentPosition({ lat: latitude, lng: longitude });
+                    setCurrentPosition(newPosition);
                     setPath((prevPath) => {
-                        const newPath = [...prevPath, newPosition];
+                        let newPath = [...prevPath, newPosition];
                         const lastPosition = prevPath[prevPath.length - 1];
-                        if (lastPosition) {
-                            const distance = calculateDistance(lastPosition, newPosition);
-                            setTotalDistance((prevDistance) => prevDistance + distance);
-
-                            if (totalDistance + distance >= 0.02) { // 20m
-                                stopTracking();
-                                setIsARMode(true);
+                        //받아온 경로 없을 시
+                        if(drawPath.length ===0){
+                            if (lastPosition) {
+                                const distance = calculateDistance(lastPosition, newPosition);
+                                setTotalDistance((prevDistance) => prevDistance + distance);
+                                // if (totalDistance + distance >= 0.02) { // 20m
+                                //     setIsARMode(true);
+                                // }
                             }
+                        }else{   //받아온 경로 있을시
+                            const closePoint = findCloseCoord(newPosition)
+                            const distanceClosePoint = calculateDistance(newPosition, closePoint)
+                            if( distanceClosePoint <= tolerance){
+                                window.alert(`경로가 같음.`)
+                                newPath = [...prevPath, closePoint];
+                            }else{
+                                window.alert('경로 다름')
+                            }
+                                if (lastPosition) {
+                                    const distance = calculateDistance(lastPosition, newPosition);
+                                    setTotalDistance((prevDistance) => prevDistance + distance);
+                                    // if (totalDistance + distance >= 0.02) { // 20m
+                                    //     setIsARMode(true);
+                                    // }
+                                }
+                                return newPath
                         }
-                        return newPath;
                     });
                 },
                 (error) => {
@@ -179,6 +201,21 @@ export default function Start() {
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     };
+    const findCloseCoord = (currentPosition) =>{
+        let closeCoord = null;
+        let minDistance = Infinity; //초기값 무한대로 설정
+        
+        drawPath.forEach((point)=>{
+            const distance = calculateDistance(currentPosition, point);
+
+            if (distance < minDistance){
+                minDistance = distance;
+                closeCoord = point;
+            }
+        })
+        return closeCoord
+    }
+
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
