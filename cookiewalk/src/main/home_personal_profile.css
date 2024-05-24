@@ -642,7 +642,11 @@ img{
 	position: absolute;	
 	display: grid;
 	grid-template-columns: 130px 130px 130px;
-	grid-template-rows: 130px;
+	/* grid-template-rows: 130px; */
 	grid-gap: 0;
+}
 
+.postBox > div{
+	width: 130px;
+	height: 130px;
 }

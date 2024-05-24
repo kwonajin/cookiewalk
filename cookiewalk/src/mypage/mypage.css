@@ -54,12 +54,12 @@ body{
 
 .tot_point{
 	position: absolute;
-	top: 13px;
+	top: 12px;
 	left: 43px;
-	font-size: 15px;
+	font-size: 16px;
 	font-family: Noto sans KR;
 	font-weight: 600;
-	color: #d7b293;
+	color: #d49968;
 }
 
 .user_id { 
