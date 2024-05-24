@@ -92,13 +92,6 @@ export default function Unfinished_route() {
         console.log(path)
     }, [path])
 
-    //미완성 경로 좌표들 찾는 함수
-    async function RecordPath(){
-        const {data: recordPathData, error: recordPathError}= await supabase
-            .from('walking_record_location')
-            .select('latitude, longitude')
-    }
-
     useEffect(()=>{
         if(userID){
             nonCompleteRecord()
