@@ -518,7 +518,7 @@ body{
 	top:2.166656494140625px;
 }
 
-.group-floating-add-button {
+.group_floating-add-button {
 	position: absolute; /* 네비게이션 바 내에서 절대 위치 설정 */
 	right: 10px; /* 오른쪽에서 10px 떨어진 곳에 위치 */
 	width: 40px;
@@ -532,9 +532,10 @@ body{
 	align-items: center; /* 세로축 중앙 정렬 */
 }
 
-.group-floating-add-button-icon{
+
+.group_floating-add-button-icon{
 	filter: brightness(0) invert(1);
-	width: 25px; 
-	height: 25px; 
-	cursor: pointer; 
+	width: 25px; /* 이미지의 너비를 80px로 조정 */
+	height: 25px; /* 이미지의 높이를 80px로 조정 */
+	cursor: pointer; /* 포인터 커서 설정 */
 }

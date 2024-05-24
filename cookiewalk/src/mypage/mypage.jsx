@@ -125,7 +125,8 @@ export const Tab = () => {
   
     <div className='mypage_background'>
       <div className='mynav'>
-          <div className="user_id" onClick={logouthandle}>{nickname}</div>
+        <Link to="/reward"><img className='reward_icon' src="./images/logo.png" alt="" /><div className='tot_point'>1350</div></Link>
+          <div className="user_id">{nickname}</div>
           <Link to="/mypage_menu"><div className="menu"><img className="menu_icon" src="./icon/menu.svg" alt="" /></div></Link>
           <div className="title_line"></div>
         </div>
