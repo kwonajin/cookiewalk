@@ -2,27 +2,27 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useLocation, useNavigate } from "react-router-dom";
+import testPath2 from '../utils/testPath2';
 
 function MyMap({ path=[], drawPath=[], center }) {
-    console.log(center)
+    // console.log(path[path.length-1].latitude)
     const navermaps = useNavermaps();
     const markerIcon = {
         content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
         size: new navermaps.Size(24, 24),
         anchor: new navermaps.Point(12, 12)
     };
-
-    const path2=[{lat:35.1336678, lng:129.1052801},{lat:35.1336332,lng:129.1047595},
-                {lat:35.1334031,lng:129.1045344}]
-
     return (
         <NaverMap
             defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)}
             defaultZoom={15}
         >
-            {center && (
-                <Marker icon={markerIcon} position={new navermaps.LatLng(center.latitude, center.longitude)} />
+            {path.length >=1 && (
+                <Marker icon={markerIcon} position={new navermaps.LatLng(path[path.length-1].latitude, path[path.length-1].longitude)} />
             )}
+            {/* {center && (
+                <Marker icon={markerIcon} position={new navermaps.LatLng(center.latitude, center.longitude)} />
+            )} */}
             {path.length >= 1 && (
                 <Polyline
                     path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
@@ -62,6 +62,7 @@ export default function Start() {
     const [path, setPath] = useState([]);
 
     const [drawPath, setDrawPath] = useState([]);
+    const [pathLoading, setPathLoading]=useState(true)
 
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
@@ -74,12 +75,6 @@ export default function Start() {
     const canvasRef = useRef(null);
 
     const tolerance = 0.01;
-
-    useEffect(() => {
-        if (location.state.drawPath.length > 1) {
-            setDrawPath(location.state.drawPath);
-        }
-    }, [location.state.drawPath]);
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -100,7 +95,6 @@ export default function Start() {
             navigate('/home');
         }
     };
-
     const startTracking = () => {
         if (navigator.geolocation) {
             setTracking(true);
@@ -129,10 +123,10 @@ export default function Start() {
                             const closePoint = findCloseCoord(newPosition)
                             const distanceClosePoint = calculateDistance(newPosition, closePoint)
                             if( distanceClosePoint <= tolerance){
-                                window.alert(`경로가 같음.`)
+                                // window.alert(`경로가 같음.`
                                 newPath = [...prevPath, closePoint];
                             }else{
-                                window.alert('경로 다름')
+                                // window.alert('경로 다름')
                                 newPath = [...prevPath, newPosition];
                             }
                                 if (lastPosition) {
@@ -158,6 +152,51 @@ export default function Start() {
             console.error('브라우저에서 지리적 위치 API 지원하지 않음');
         }
     };
+    const startTracking2 = () => {
+        setTracking(true)
+        let countIndex = 0
+        const test = setInterval(()=>{
+            // console.log(drawPath.length)
+            if(countIndex < testPath2.length){
+                const newPosition = testPath2[countIndex];
+                setCurrentPosition(newPosition)
+                setPath((prevPath)=>{
+                    if(!Array.isArray(prevPath))(
+                        prevPath=[]
+                    )
+                    let newPath = [...prevPath,newPosition];
+                    const lastPosition = prevPath[prevPath.length-1]
+                    //받아온 경로 없을 시
+                    if(drawPath.length ===0){
+                        console.log('그림없음')
+                        if(lastPosition){
+                            const distance = calculateDistance(lastPosition, newPosition)
+                            setTotalDistance((prevDistance)=> prevDistance + distance);
+                        }
+                        return newPath
+                    }else{
+                        const closePoint = findCloseCoord(newPosition)
+                        const distanceClosePoint = calculateDistance(newPosition, closePoint)
+                        if(distanceClosePoint <= tolerance){
+                            newPath=[...prevPath, closePoint]
+                            console.log('경로같음')
+                        }else{
+                            newPath=[...prevPath, newPosition]
+                            console.log('경로벗어남')
+                        }
+                            if(lastPosition){
+                                const distance = calculateDistance(lastPosition, newPosition)
+                                setTotalDistance((prevDistance)=> prevDistance + distance);
+                            }
+                        return newPath
+                    };
+                });
+                countIndex++;
+            }else{
+                clearInterval(test)
+            }
+        },2000);
+    }
 
     const stopTracking = () => {
         if (watchIdRef.current !== null) {
@@ -169,14 +208,31 @@ export default function Start() {
     };
 
     useEffect(() => {
+        if (location.state.drawPath.length > 1) {
+            setDrawPath(location.state.drawPath);
+        }
+    }, [location.state.drawPath]);
+
+    useEffect(() => {
         if (isPaused) {
             stopTimer();
             stopTracking();
         } else {
             startTimer();
-            startTracking();
+            if (drawPath.length > 1) {
+                // drawPath가 설정된 후에 startTracking2 호출
+                startTracking();
+            } else {
+                // drawPath가 없을 때 바로 startTracking2 호출
+                startTracking();
+            }
         }
-    }, [isPaused]);
+    }, [isPaused, drawPath]);
+    useEffect(()=>{
+        if(path.length >=1){
+            setPathLoading(false)
+        }
+    },[path])
 
     const startTimer = () => {
         if (timerRef.current === null) {
@@ -215,7 +271,6 @@ export default function Start() {
         
         drawPath.forEach((point)=>{
             const distance = calculateDistance(currentPosition, point);
-
             if (distance < minDistance){
                 minDistance = distance;
                 closeCoord = point;
@@ -279,7 +334,14 @@ export default function Start() {
             </div>
         );
     }
-
+    if(pathLoading){
+        return (
+            <div className="BeforeStart_container">
+                <img className='loadimg' src="./images/logo.png" alt="" />
+                <div className='loadmessage'>당신의 산책을 <br/> 시작하는 중...</div>
+            </div>
+        )
+    }
     return (
         <div className="Start_container">
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
