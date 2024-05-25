@@ -4,6 +4,7 @@ import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'r
 import { useLocation, useNavigate } from "react-router-dom";
 
 function MyMap({ path=[], drawPath=[], center }) {
+    console.log(center)
     const navermaps = useNavermaps();
     const markerIcon = {
         content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
@@ -13,6 +14,7 @@ function MyMap({ path=[], drawPath=[], center }) {
 
     const path2=[{lat:35.1336678, lng:129.1052801},{lat:35.1336332,lng:129.1047595},
                 {lat:35.1334031,lng:129.1045344}]
+
     return (
         <NaverMap
             defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)}
@@ -90,7 +92,7 @@ export default function Start() {
     };
 
     useEffect(()=>{
-        console.log(drawPath.length)
+        // console.log(drawPath.length)
     },[drawPath])
     const handleCloseClick = () => {
         const confirmLeave = window.confirm("경로를 저장하지 않고 종료하시겠습니까?");
@@ -122,7 +124,7 @@ export default function Start() {
                                 //     setIsARMode(true);
                                 // }
                             }
-                            return newPath
+                            return newPath;
                         }else{   //받아온 경로 있을시
                             const closePoint = findCloseCoord(newPosition)
                             const distanceClosePoint = calculateDistance(newPosition, closePoint)
