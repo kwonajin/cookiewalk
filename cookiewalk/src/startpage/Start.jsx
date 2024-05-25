@@ -10,17 +10,20 @@ function MyMap({ path=[], drawPath=[], center }) {
         size: new navermaps.Size(24, 24),
         anchor: new navermaps.Point(12, 12)
     };
+
+    const path2=[{lat:35.1336678, lng:129.1052801},{lat:35.1336332,lng:129.1047595},
+                {lat:35.1334031,lng:129.1045344}]
     return (
         <NaverMap
-            defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng) : new navermaps.LatLng(37.3595704, 127.105399)}
+            defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)}
             defaultZoom={15}
         >
             {center && (
-                <Marker icon={markerIcon} position={new navermaps.LatLng(center.lat, center.lng)} />
+                <Marker icon={markerIcon} position={new navermaps.LatLng(center.latitude, center.longitude)} />
             )}
             {path.length >= 1 && (
                 <Polyline
-                    path={path.map(p => new navermaps.LatLng(p.lat, p.lng))}
+                    path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
                     strokeColor='blue'
                     strokeWeight={4}
                     strokeOpacity={0.8}
@@ -102,8 +105,7 @@ export default function Start() {
             watchIdRef.current = navigator.geolocation.watchPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
-                    const newPosition = { lat: latitude, lng: longitude };
-                    // console.log(newPosition)
+                    const newPosition = { latitude: latitude, longitude: longitude };
                     setCurrentPosition(newPosition);
                     setPath((prevPath) => {
                         if (!Array.isArray(prevPath)) {
@@ -120,6 +122,7 @@ export default function Start() {
                                 //     setIsARMode(true);
                                 // }
                             }
+                            return newPath
                         }else{   //받아온 경로 있을시
                             const closePoint = findCloseCoord(newPosition)
                             const distanceClosePoint = calculateDistance(newPosition, closePoint)
@@ -128,6 +131,7 @@ export default function Start() {
                                 newPath = [...prevPath, closePoint];
                             }else{
                                 window.alert('경로 다름')
+                                newPath = [...prevPath, newPosition];
                             }
                                 if (lastPosition) {
                                     const distance = calculateDistance(lastPosition, newPosition);
@@ -136,7 +140,7 @@ export default function Start() {
                                     //     setIsARMode(true);
                                     // }
                                 }
-                                return newPath
+                            return newPath
                         }
                     });
                 },
@@ -195,10 +199,10 @@ export default function Start() {
     const calculateDistance = (coord1, coord2) => {
         const toRad = (x) => (x * Math.PI / 180);
         const R = 6371;
-        const dLat = toRad(coord2.lat - coord1.lat);
-        const dLng = toRad(coord2.lng - coord1.lng);
+        const dLat = toRad(coord2.latitude - coord1.latitude);
+        const dLng = toRad(coord2.longitude - coord1.longitude);
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lat)) *
+            Math.cos(toRad(coord1.latitude)) * Math.cos(toRad(coord2.latitude)) *
             Math.sin(dLng / 2) * Math.sin(dLng / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;

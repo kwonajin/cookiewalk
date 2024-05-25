@@ -103,7 +103,8 @@ export default function FinishedArt() {
     if(loading){
         return (
             <div className="BeforeStart_container">
-                <div>현재 위치 정보를 가져오는 중입니다....</div>
+                <img className='loadimg' src="./images/logo.png" alt="" />
+                <div className='loadmessage'>로딩 중입니다...</div>
             </div>
         )
     }
