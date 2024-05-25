@@ -156,14 +156,13 @@ export default function DrawMap() {
 
   //경로 위치정보 가져오는 함수
   async function getReverseGeocode(latitude, longitude){
-    console.log(latitude)
     const url =`https://blonde-bobolink-smartbusan-a2d9f8e5.koyeb.app/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
     try{
         const response = await axios.get(url, {latitude, longitude});
-        console.log(response.data.results[1].region)
-        const area1=response.data.results[1].region.area1.name
-        const area2=response.data.results[1].region.area2.name
-        const area3=response.data.results[1].region.area3.name
+        console.log(response.data)
+        const area1=response.data.results[0].region.area1.name
+        const area2=response.data.results[0].region.area2.name
+        const area3=response.data.results[0].region.area3.name
         const area= `${area1} ${area2} ${area3}`
         setAddress(area)
         console.log(area)
@@ -181,6 +180,7 @@ export default function DrawMap() {
       setTotalDistance((prevDistance)=> prevDistance + distance)
     }
   },[path])
+
   //경로 저장 함수 
   async function submitRoute(){
     if(path.length >2 && title !== ''){
@@ -230,7 +230,6 @@ export default function DrawMap() {
       window.alert('필수값이 입력되지 않았습니다.')
     }
   }
-
   return (
     <div className='draw_map_container'>
       
