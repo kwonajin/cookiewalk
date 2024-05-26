@@ -75,7 +75,7 @@ export default function Start() {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
 
-    const tolerance = 0.01;
+    const tolerance = 0.02;
 
     const togglePause = () => {
         setIsPaused(!isPaused);
