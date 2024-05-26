@@ -30,7 +30,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
 
   const handleMapClick = (e) => {
     if (drawing && !redMarkerClicked) {
-      const newPoint = {lat: e.coord._lat, lng: e.coord._lng};
+      const newPoint = {lat: e.coord._lat, lng: e.coord._lng}; 
       console.log(newPoint)
       setPath(currentPath => {
         if (currentPath.length === 0) {
@@ -46,11 +46,11 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
   const handleRedMarkerClick = () => {
     if (drawing && !redMarkerClicked) {
       setRedMarkerClicked(false);
-      setPath(currentPath => {
-        const newPath = [...currentPath, currentPath[0]];
-        setPathAfterRedMarker(newPath);
-        return newPath;
-      });
+      // setPath(currentPath => {
+      //   const newPath = [...currentPath, currentPath[0]];
+      //   setPathAfterRedMarker(newPath);
+      //   return newPath;
+      // });
     }
   };
 
@@ -173,6 +173,7 @@ export default function DrawMap() {
     }
 };
   useEffect(()=>{
+    console.log(path)
     if(path.length===1){
       getReverseGeocode(path[0].lat, path[0].lng)
     }else if(path.length>=2){
@@ -283,9 +284,6 @@ export default function DrawMap() {
           <option value="상">상</option>
       </select>
       <div className='color_select_text'>선 색상 선택하기</div>
-
-
-      
 
     </div>
   );
