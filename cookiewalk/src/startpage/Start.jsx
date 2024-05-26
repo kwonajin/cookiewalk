@@ -27,7 +27,7 @@ function MyMap({ path=[], drawPath=[], center }) {
                 <Polyline
                     path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
                     strokeColor='blue'
-                    strokeWeight={4}
+                    strokeWeight={8}
                     strokeOpacity={0.8}
                     strokeStyle="solid"
                 />
@@ -36,7 +36,7 @@ function MyMap({ path=[], drawPath=[], center }) {
                 <Polyline
                     path={drawPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
                     strokeColor='red'
-                    strokeWeight={4}
+                    strokeWeight={8}
                     strokeOpacity={0.8}
                     strokeStyle="solid"
                 />
@@ -52,6 +52,7 @@ export default function Start() {
 
     const location = useLocation();
     const navigate = useNavigate();
+    // console.log(location)
 
     const [isExpanded, setIsExpanded] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
@@ -218,16 +219,13 @@ export default function Start() {
             stopTimer();
             stopTracking();
         } else {
-            startTimer();
-            if (drawPath.length > 1) {
-                // drawPath가 설정된 후에 startTracking2 호출
-                startTracking();
-            } else {
-                // drawPath가 없을 때 바로 startTracking2 호출
+            if (drawPath.length > 1 || location.state.drawPath < 1) {
+                startTimer()
                 startTracking();
             }
         }
     }, [isPaused, drawPath]);
+
     useEffect(()=>{
         if(path.length >=1){
             setPathLoading(false)
