@@ -12,7 +12,7 @@ export default function Comment(){
 	return (
     <div className="comment-section-container">
         <div className="comment-title">댓글</div>
-        <Link to='/home'><div><img className="comment-back-button" src="./icon/arrow.svg" alt="Back" /></div></Link>
+        <Link to='/home'><div><img className="comment-back-button" src="../../public/icon/arrow.svg" alt="Back" /></div></Link>
         <div className="comment-section-divider"></div>
 
         <CommentContent />
@@ -20,7 +20,7 @@ export default function Comment(){
         <CommentContent />
 
             <div className="comment-input-wrapper">
-                <img className="comment-input-avatar" src="./images/ellipse_7.png" alt="Avatar" />
+                <img className="comment-input-avatar" src="../../public/images/ellipse_7.png" alt="Avatar" />
                 <input
                     className="comment-input-box"
                     type="text"

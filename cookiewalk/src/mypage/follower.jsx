@@ -23,7 +23,7 @@ export default function Follower() {
     }
   }, [userEmail]);
 
-  // Fetch user email by userID
+  // userID로 사용자 이메일 가져오기
   const getUserEmail = async (userID) => {
     try {
       const { data, error } = await supabase
@@ -35,11 +35,11 @@ export default function Follower() {
       if (error) throw error;
       setUserEmail(data.email);
     } catch (error) {
-      console.error('Error fetching user email:', error);
+      console.error('사용자 이메일을 가져오는 중 오류 발생:', error);
     }
   };
 
-  // Fetch follower list by userEmail
+  // userEmail로 팔로워 목록 가져오기
   const getFollowerList = async (userEmail) => {
     try {
       const { data, error } = await supabase
@@ -56,11 +56,11 @@ export default function Follower() {
       }));
       setFollowerList(followers);
     } catch (error) {
-      console.error('Error fetching follower list:', error);
+      console.error('팔로워 목록을 가져오는 중 오류 발생:', error);
     }
   };
 
-  // Fetch additional user info by email
+  // 이메일로 추가 사용자 정보 가져오기
   const getUserInfo = async (email) => {
     try {
       const { data, error } = await supabase
@@ -72,12 +72,12 @@ export default function Follower() {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Error fetching user info:', error);
+      console.error('사용자 정보를 가져오는 중 오류 발생:', error);
       return {};
     }
   };
 
-  // Check if user is following the target email
+  // 사용자가 대상 이메일을 팔로우 중인지 확인
   const checkIsFollowing = async (userEmail, targetEmail) => {
     try {
       const { count, error } = await supabase
@@ -89,12 +89,12 @@ export default function Follower() {
       if (error) throw error;
       return count > 0;
     } catch (error) {
-      console.error("Error checking follow status", error);
+      console.error("팔로우 상태를 확인하는 중 오류 발생", error);
       return false;
     }
   };
 
-  // Handle follow/unfollow button click
+  // 팔로우/언팔로우 버튼 클릭 처리
   const handleFollowClick = async (userEmail, targetEmail, index) => {
     try {
       if (followerList[index].isFollowing) {
@@ -117,7 +117,7 @@ export default function Follower() {
       updatedFollowerList[index].isFollowing = !updatedFollowerList[index].isFollowing;
       setFollowerList(updatedFollowerList);
     } catch (error) {
-      console.error("Error toggling follow status", error);
+      console.error("팔로우 상태를 전환하는 중 오류 발생", error);
     }
   };
 
@@ -142,12 +142,11 @@ export default function Follower() {
         <div key={index} className={`follower${index + 1}`}>
           <Link to={`/home_personal_profile/${follower.user_id}`}>
             <img className={`follower${index + 1}_profile`} src={follower.profile_image} alt={`${follower.nick_name}'s profile`} />
-            </Link>
-            <div className={`follower${index + 1}_text`}>
-              <div className={`follower${index + 1}_id`}>{follower.nick_name}</div>
-              <div className={`follower${index + 1}_name`}>{follower.name}</div>
-            </div>
           </Link>
+          <div className={`follower${index + 1}_text`}>
+            <div className={`follower${index + 1}_id`}>{follower.nick_name}</div>
+            <div className={`follower${index + 1}_name`}>{follower.name}</div>
+          </div>
           <button 
             className={`follower${index + 1}_follow ${follower.isFollowing ? 'following' : ''}`}
             onClick={() => handleFollowClick(userEmail, follower.following_email, index)}>
