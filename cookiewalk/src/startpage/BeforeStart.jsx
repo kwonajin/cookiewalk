@@ -20,7 +20,7 @@ function MyMap({path,center}){
             <Polyline
                 path={path.map(p => new navermaps.LatLng(p.latitude,p.longitude))}
                 strokeColor='blue' // 선색깔
-                strokeWeight={4} //선두께
+                strokeWeight={8} //선두께
                 strokeOpacity={0.8} //투명도
                 strokeStyle="solid"
             />
