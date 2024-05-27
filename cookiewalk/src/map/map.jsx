@@ -85,7 +85,7 @@ export default function MapSearch() {
         const url =`https://blonde-bobolink-smartbusan-a2d9f8e5.koyeb.app/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
         try{
             const response = await axios.get(url, {latitude, longitude});
-            // console.log(response.data.results[0].region)
+            console.log(response.data)
             const area1=response.data.results[0].region.area1.alias
             setAddress(area1)
             return area1;
@@ -266,7 +266,7 @@ export default function MapSearch() {
         
             <div className="map-list-container" style={{ minHeight: `${minHeight}px` }}>
                 {mapLists.map((mapItem, index) => (
-                    <Link className='map_list_link' to={`/mapDetail`} state={{drawID:mapItem.draw_m_c_id, location:mapItem.location, distance:mapItem.distance, level:mapItem.level, time:mapItem.time, pathcoord:path[index], centercoord:center[index]}} key={mapItem.draw_m_c_id}>
+                    <Link className='map_list_link' to={`/mapDetail`} state={{drawID:mapItem.draw_m_c_id, location:mapItem.location, distance:mapItem.distance, level:mapItem.level, time:mapItem.time, pathcoord:path[index], centercoord:center[index], title:mapItem.title}} key={mapItem.draw_m_c_id}>
                         <MapList
                             key={mapItem.draw_m_c_id}
                             drawId={mapItem.draw_m_c_id}
@@ -276,6 +276,7 @@ export default function MapSearch() {
                             time={mapItem.time}
                             pathcoord={path[index]}
                             centercoord={center[index]}
+                            title={mapItem.title}
                         ></MapList>
                     </Link>
                 ))}

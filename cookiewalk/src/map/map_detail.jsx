@@ -35,8 +35,10 @@ export default function Map_detail(){
   const level=mapList.state.level;
   const time=mapList.state.time;
   const location=mapList.state.location
+  const title=mapList.state.title
   const path=mapList.state.pathcoord.coordinate
   const center= mapList.state.centercoord.coordinate
+
 
   console.log(path)
   console.log(center)
@@ -54,7 +56,7 @@ export default function Map_detail(){
     {/* <div><img className="e300_47" src="./images/group1.png"/></div> */}
     {/* 경로 이미지 들어가는 곳 */}
 
-    <span className="MapDetail_location">{location}</span>
+    <span className="MapDetail_location">{title}</span>
     
     <div className="MapDetail_Detail_line_s"></div>
 
@@ -63,7 +65,7 @@ export default function Map_detail(){
     <span className="MapDetail_distance_value">{distance}km</span>
     
     <div><img className="MapDetail_time_icon" src="./icon/place.svg"/></div>
-    <span className="MapDetail_time_value">장소 넣기 (시/동)</span>
+    <span className="MapDetail_time_value">{location}</span>
     
     <div><img className="MapDetail_difficulty_icon" src="./icon/round-star.svg"/></div>
     <span className="MapDetail_difficulty_value">{level}</span>

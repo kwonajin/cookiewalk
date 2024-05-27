@@ -3,6 +3,7 @@ import './follower.css';
 import { Link } from "react-router-dom";
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
+import Follower_list from './follow_list/follower_list';
 
 export default function Follower() {
   const userInfo = useToken();
@@ -139,21 +140,13 @@ export default function Follower() {
       </div>
 
       {followerList.map((follower, index) => (
-        <div key={index} className={`follower${index + 1}`}>
-          <Link to={`/home_personal_profile/${follower.user_id}`}>
-            <img className={`follower${index + 1}_profile`} src={follower.profile_image} alt={`${follower.nick_name}'s profile`} />
-          </Link>
-          <div className={`follower${index + 1}_text`}>
-            <div className={`follower${index + 1}_id`}>{follower.nick_name}</div>
-            <div className={`follower${index + 1}_name`}>{follower.name}</div>
-          </div>
-          <button 
-            className={`follower${index + 1}_follow ${follower.isFollowing ? 'following' : ''}`}
-            onClick={() => handleFollowClick(userEmail, follower.following_email, index)}>
-            {follower.isFollowing ? "팔로잉" : "팔로우"}
-          </button>
-          <div className={`follower${index + 1}_line`}></div>
-        </div>
+        <Follower_list
+          key={follower.user_id}
+          follower={follower}
+          userEmail={userEmail}
+          index={index}
+          handleFollowClick={handleFollowClick}
+        />
       ))}
     </div>
   );

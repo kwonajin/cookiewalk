@@ -14,13 +14,13 @@ function MyMap({path,center}){
     }
     return(
     //기본값 또는 현재위치로 중심좌표 설정
-    <NaverMap defaultCenter={center ? new navermaps.LatLng(center.lat, center.lng): new  navermaps.LatLng((37.3595704, 127.105399))}  defaultZoom={15}>
-        {center &&(<Marker icon={markerIcon} defaultPosition={new navermaps.LatLng(center.lat , center.lng)}/>)}
+    <NaverMap defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude): new  navermaps.LatLng((37.3595704, 127.105399))}  defaultZoom={15}>
+        {center &&(<Marker icon={markerIcon} defaultPosition={new navermaps.LatLng(center.latitude , center.longitude)}/>)}
         {path.length >1 &&(
             <Polyline
                 path={path.map(p => new navermaps.LatLng(p.latitude,p.longitude))}
                 strokeColor='blue' // 선색깔
-                strokeWeight={4} //선두께
+                strokeWeight={8} //선두께
                 strokeOpacity={0.8} //투명도
                 strokeStyle="solid"
             />
@@ -72,13 +72,13 @@ export default function BeforeStart(){
                 (position)=>{
                     const {latitude, longitude} = position.coords;
                     console.log(position.coords)
-                    setCurrentPosition({lat:latitude, lng:longitude});
+                    setCurrentPosition({latitude:latitude, longitude:longitude});
                     console.log(currentPosition)
                     setLoading(false)
                 },
                 (error)=>{
                     console.error('위치정보 가져오기 실패:',error)
-                    setCurrentPosition({ lat: 37.5665, lng: 126.9780 });
+                    setCurrentPosition({ latitude: 37.5665, longitude: 126.9780 });
                     setLoading(false);
                 },
                 {
@@ -89,7 +89,7 @@ export default function BeforeStart(){
             );
         }else{
             console.error('브라우저에서 지리적 위치 API를 지원하지 않을 경우',error)
-            setCurrentPosition({lat: 37.5665, lng: 126.9780})
+            setCurrentPosition({latitude: 37.5665, longitude: 126.9780})
             setLoading(false);
         }
     }
