@@ -45,7 +45,7 @@ export default function BeforeStart(){
     //     }
     // }
     const mapCollection = useLocation();
-    console.log(mapCollection)
+    // console.log(mapCollection)
     useEffect(()=>{
         if(mapCollection.state !== null){
             // console.log(mapCollection.state.drawID)
@@ -71,9 +71,9 @@ export default function BeforeStart(){
             navigator.geolocation.getCurrentPosition(
                 (position)=>{
                     const {latitude, longitude} = position.coords;
-                    console.log(position.coords)
+                    // console.log(position.coords)
                     setCurrentPosition({latitude:latitude, longitude:longitude});
-                    console.log(currentPosition)
+                    // console.log(currentPosition)
                     setLoading(false)
                 },
                 (error)=>{
