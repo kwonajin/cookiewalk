@@ -369,9 +369,9 @@ body{
 	cursor: pointer; /* 포인터 커서 설정 */
 }
 
-.loadmessage{
+.map_loadmessage{
 	position: absolute;
-	left: 100px;
+	left: 115px;
 	top: 410px;
 	font-size: 20px;
 	text-align: center;
@@ -380,10 +380,27 @@ body{
 	color: #131313;
 }
 
-.loadimg{
-	width: 100px;
-	height: 130px;
+.map_loadimg{
+	width: 80px;
+	height: 105px;
 	position: absolute;
-	top: 233px;
-	left: 134px;
+	top: 255px;
+	left: 155px;
+}
+
+.ml_save{
+	width: 23px;
+	height: 23px;
+	position: absolute;
+	top: 8px;
+	left: 337px;
+}
+
+.ml_delete{
+	filter: invert(36%) sepia(33%) saturate(766%) hue-rotate(314deg) brightness(117%) contrast(109%);
+	width: 21px;
+	height: 21px;
+	position: absolute;
+	top: 90px;
+	left: 337px;
 }

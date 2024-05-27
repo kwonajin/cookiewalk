@@ -49,6 +49,9 @@ return(
     <div className="map_list1_location">{title}</div>
     <MapDiv className='map_list1_picture'><MyMap path={path} center={center}/></MapDiv>
     {/* <div><img className="map_list1_picture" src={imageUrl} alt="" /></div> */}
+    <div><img className='ml_save' src="./icon/save.svg" alt="" /></div>
+    <div><img className='ml_delete' src="./icon/trash.svg" alt="" /></div>
+
 
     {/* 여기에 위치 정보 넣는란도 추가 희망 */}
     <div><img className='map_list1_distance_icon' src="./icon/run.svg"/></div>
@@ -59,6 +62,8 @@ return(
 
     <div><img className='map_list1_rate_icon' src="./icon/round-star.svg"/></div>
     <div className="map_list1_rate_value">{level}</div>
+
+
     </div>
     )
 }
