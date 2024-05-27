@@ -369,9 +369,9 @@ body{
 	cursor: pointer; /* 포인터 커서 설정 */
 }
 
-.loadmessage{
+.map_loadmessage{
 	position: absolute;
-	left: 120px;
+	left: 115px;
 	top: 410px;
 	font-size: 20px;
 	text-align: center;
@@ -380,7 +380,7 @@ body{
 	color: #131313;
 }
 
-.loadimg{
+.map_loadimg{
 	width: 80px;
 	height: 105px;
 	position: absolute;

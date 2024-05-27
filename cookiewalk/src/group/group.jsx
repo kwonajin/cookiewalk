@@ -44,7 +44,7 @@ export default function Group() {
         <div className="person_box"></div>
         <div className="person"><div><img className="person_icon" src="./icon/person.svg" alt="" /></div></div>
         <div className="current_people">4</div>
-        <div className="division">/</div>
+        <div className="g_division">/</div>
         <div className="total_people">5</div>
         <div className="dday_box"></div>
         <div className="dday">D - 14</div>
