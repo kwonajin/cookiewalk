@@ -74,7 +74,7 @@ export default function App() {
             <Route path="/draw_group_map" element={<ProtectedRoute><DrawGroupMap /></ProtectedRoute>} />
             <Route path="/mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
-            <Route path="/comment" element={<ProtectedRoute><Comment /></ProtectedRoute>} />
+            <Route path="/comment/:postID" element={<ProtectedRoute><Comment /></ProtectedRoute>} />
             <Route path="/write_map" element={<ProtectedRoute><Write_map /></ProtectedRoute>} />
             <Route path="/notice" element={<ProtectedRoute><Notice /></ProtectedRoute>} />
             <Route path="/friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />
