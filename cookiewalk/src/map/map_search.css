@@ -387,3 +387,20 @@ body{
 	top: 255px;
 	left: 155px;
 }
+
+.ml_save{
+	width: 23px;
+	height: 23px;
+	position: absolute;
+	top: 8px;
+	left: 337px;
+}
+
+.ml_delete{
+	filter: invert(36%) sepia(33%) saturate(766%) hue-rotate(314deg) brightness(117%) contrast(109%);
+	width: 21px;
+	height: 21px;
+	position: absolute;
+	top: 90px;
+	left: 337px;
+}
