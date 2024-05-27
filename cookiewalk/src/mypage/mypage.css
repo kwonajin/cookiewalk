@@ -687,3 +687,12 @@ body{
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
 }
+
+.mypage_postBox{
+	top: 297px;
+	position: absolute;	
+	display: grid;
+	grid-template-columns: 130px 130px 130px;
+	/* grid-template-rows: 130px; */
+	grid-gap: 0;
+}
