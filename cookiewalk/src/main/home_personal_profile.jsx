@@ -65,8 +65,6 @@ export default function HomePersonalProfile() {
     setIsFollowing(isFollowing > 0);
   };
 
-  
-
   // 팔로우, 팔로워 정보 가져오기
   const followInfo = async() => {
     const { count: follower, error: followerError } = await supabase
@@ -134,7 +132,8 @@ export default function HomePersonalProfile() {
       const { data, error } = await supabase
         .from('user')
         .select("nick_name, profile_image, intro, post (post_id, image, created_at)")
-        .eq('user_id', userId);
+        .eq('user_id', userId)
+        .order('created_at', { foreignTable: 'post', ascending: false }); // Add this line to sort by created_at
 
       if (error) throw error;
       setUserData(data); // 직접 새 데이터를 상태로 설정
@@ -168,6 +167,7 @@ export default function HomePersonalProfile() {
   }
 
   const { nick_name, profile_image, intro, post } = userData[0];
+  console.log("포스트", post);
 
   return (
     <>
@@ -194,46 +194,10 @@ export default function HomePersonalProfile() {
           {isFollowing ? '팔로잉' : '팔로우'}
         </button>
         <div className='postBox'>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            <div><img src={post[0].image} alt="" /></div>
-            {/* <div className="e216_19"><img src={post[0].image} alt="" /></div>
-            <div className="e216_20"><img src={post[0].image} alt="" /></div>
-            <div className="e216_21"><img src={post[0].image} alt="" /></div>
-            <div className="e216_19"><img src={post[0].image} alt="" /></div>
-            <div className="e216_20"><img src={post[0].image} alt="" /></div>
-            <div className="e216_21"><img src={post[0].image} alt="" /></div> */}
+          {post.map((postItem) => (
+            <div key={postItem.post_id}><img src={postItem.image} alt="" /></div>
+          ))}
         </div>
-        {/* <div className="e216_25"></div>
-        <div className="e216_26"></div>
-        <div className="e216_27"></div>
-        <div className="e216_31"></div>
-        <div className="e216_32"></div>
-        <div className="e216_33"></div>
-        <div className="e216_37"></div>
-        <div className="e216_38"></div>
-        <div className="e216_39"></div> */}
-        {/* <div className="e216_43">
-          <div className="e216_44">
-            <div className="e216_45"></div>
-            <div className="e216_46"></div>
-          </div>
-        </div>
-        <div className="e216_48"></div>
-        <div className="e216_61"></div> */}
       </div>
 
       <div className="navbar">
