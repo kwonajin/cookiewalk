@@ -35,6 +35,7 @@ import FinishedArt from './mypage/finished_art.jsx';
 import Saved from './mypage/saved.jsx';
 import Liked from './mypage/liked.jsx';
 import Blocked from './mypage/blocked.jsx';
+import Reward from './mypage/reward/reward.jsx';
 
 import Unfinished_route from './startpage/Unfinished_route';
 import Start from './startpage/Start'
@@ -93,6 +94,8 @@ export default function App() {
             <Route path="/saved" element={<ProtectedRoute><Saved /></ProtectedRoute>} />
             <Route path="/liked" element={<ProtectedRoute><Liked /></ProtectedRoute>} />
             <Route path="/blocked" element={<ProtectedRoute><Blocked /></ProtectedRoute>} />
+            <Route path="/reward" element={<ProtectedRoute><Reward /></ProtectedRoute>} />
+
 
 
 
