@@ -59,3 +59,85 @@ body{
 	top:50px;
 	border:0.1px solid #bfbfbf;
 }
+
+.blocked_user_box { 
+	width:391px;
+	height:72px;
+	position:relative;
+	top:50px;
+}
+
+.blocked_user_profile { 
+	border-radius:500px;
+	width:45px;
+	height:45px;
+	position:relative;
+	left:16px;
+	top:15px;
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+
+.blocked_user_text { 
+	width:198px;
+	height:42px;
+	position:relative;
+	left:73px;
+	top:-32px;
+}
+
+.blocked_user_id { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:200px;
+	position:absolute;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:14px;
+	letter-spacing:0;
+	font-weight: 600;
+}
+
+.blocked_user_name { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:200px;
+	height:21px;
+	position:absolute;
+	left:0px;
+	top:21px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:12px;
+	letter-spacing:0;
+}
+
+.blocked_user_line { 
+	transform: rotate(-2.4848166388360215e-17deg);
+	width:390px;
+	height:0px;
+	position:absolute;
+	left:1px;
+	top:72px;
+    border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
+}
+
+.blocked_button {
+	color: white;
+	width: 80px;
+	height: 30px;
+	position: relative;
+	left: 280px;
+	top: -65px;
+	border: none;
+	border-radius: 5px;
+	font-family: Noto Sans KR;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.blocked_button.blocked {
+	background-color: gray;
+}
+
+.blocked_button.unblocked {
+	background-color: rgb(213, 77, 77);
+}

@@ -289,3 +289,22 @@ body{
 .finishToBefore_link{
 	text-decoration: none;
 }
+
+.fa_loadmessage{
+	position: absolute;
+	left: 115px;
+	top: 410px;
+	font-size: 20px;
+	text-align: center;
+	font-weight: 600;
+	font-family: Noto sans KR;
+	color: #131313;
+}
+
+.fa_loadimg{
+	width: 80px;
+	height: 105px;
+	position: absolute;
+	top: 255px;
+	left: 155px;
+}
