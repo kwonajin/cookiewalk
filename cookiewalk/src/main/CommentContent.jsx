@@ -1,16 +1,14 @@
 import React from 'react';
+import './comment.css';
 
-
-export default function CommentContent({userId,nickName,profileImage,comment,createdAt})
-{
-    return(
-    <div className="comment-wrapper">
-        <img className="comment-avatar" src="../../public/images/ellipse_7.png" alt="Avatar" />
-        <div className="comment-username">good_running_day</div>
-        <div className="comment-time">12시간</div>
-        <div><img className='comment-delete-button' src="../../public/icon/comment-delete.svg" alt="" /></div>
-        <div className="comment-content">너무 멋있어서 미치겠네</div>
-        {/* <div className="comment-divider"></div> */}
-    </div>
+export default function CommentContent({ commentID, userId, nickName, profileImage, comment, createdAt, deleteComment }) {
+    return (
+        <div className="comment-wrapper">
+            <img className="comment-avatar" src={profileImage} alt="Avatar" />
+            <div className="comment-username">{nickName}</div>
+            <div className="comment-time">{new Date(createdAt).toLocaleString()}</div>
+            <div><img className='comment-delete-button' src="../../public/icon/comment-delete.svg" alt="Delete" onClick={() => deleteComment(commentID)} /></div>
+            <div className="comment-content">{comment}</div>
+        </div>
     );
 }
