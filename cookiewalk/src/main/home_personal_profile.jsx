@@ -131,7 +131,7 @@ export default function HomePersonalProfile() {
     try {
       const { data, error } = await supabase
         .from('user')
-        .select("nick_name, profile_image, intro, post (post_id, image, created_at)")
+        .select("nick_name, profile_image, intro,post  (post_id, image, created_at)")
         .eq('user_id', userId)
         .order('created_at', { foreignTable: 'post', ascending: false }); // Add this line to sort by created_at
 

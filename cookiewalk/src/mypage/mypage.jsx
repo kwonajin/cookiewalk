@@ -218,6 +218,12 @@ export const Tab = () => {
               )}
               {currentTab === 1 && (
                 <>
+                <div className='mypage_postBox'>
+                  <img src="../../public/images/ellipse_7.png" alt="" />
+                  <img src="../../public/images/ellipse_7.png" alt="" />
+                  <img src="../../public/images/ellipse_7.png" alt="" />
+                  <img src="../../public/images/ellipse_7.png" alt="" />
+                </div>
                 </>
               )}
             </div>
