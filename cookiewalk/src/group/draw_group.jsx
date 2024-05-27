@@ -7,7 +7,7 @@ import { useToken } from '../context/tokenContext';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
-function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, colors, sectionIndex }) {
+function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, setRedMarkerClicked, colors, sectionIndex }) {
   const navermaps = useNavermaps();
   const [position, setPosition] = useState(null);
   const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));
@@ -28,8 +28,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
 
   const handleMapClick = (e) => {
     if (drawing && !redMarkerClicked) {
-      const newPoint = {lat: e.coord._lat, lng: e.coord._lng};
-      console.log(newPoint)
+      const newPoint = { lat: e.coord._lat, lng: e.coord._lng };
       setPath(currentPath => {
         const newPath = [...currentPath];
         newPath[sectionIndex] = [...(newPath[sectionIndex] || []), newPoint];
@@ -42,16 +41,9 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
     }
   };
 
-  // 위에 handleMapClick이랑 중복되서 첫 좌표가 두번 들어갑니다.
   const handleRedMarkerClick = () => {
     if (drawing && !redMarkerClicked) {
-      setRedMarkerClicked(false); //true 할시 안그려짐 
-      // setPath(currentPath => {
-      //   const newPath = [...currentPath];
-      //   newPath[sectionIndex] = [...(newPath[sectionIndex] || []), currentPath[0][0]];
-      //   setPathAfterRedMarker(newPath);
-      //   return newPath;
-      // });
+      setRedMarkerClicked(false); // true 할시 안그려짐 
     }
   };
 
@@ -77,99 +69,107 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
       {position && <Marker position={position} icon={customIconFactory()} />}  // 사용자의 현재 위치를 로고 이미지로 표시
 
       {path.map((sectionPath, index) => (
-        sectionPath.length > 0 && (
-        <React.Fragment key={index}>
-        <Polyline path={sectionPath} strokeColor={colors[index]} strokeWeight={5} />
-        <Marker 
-          position={sectionPath[0]} 
-          icon={iconFactory(redMarkerClicked ? 'blue' : `${colors[index]}`)}  // 첫 클릭을 빨간색으로 표시, 클릭하면 파란색으로 변경
-          onClick={handleRedMarkerClick}  // 빨간색 점 클릭 이벤트 핸들러
-        />
-        {sectionPath.length > 1 && (
-          <Marker 
-            position={sectionPath[sectionPath.length - 1]} 
-            icon={iconFactory('green')}  // 마지막 클릭을 초록색으로 표시
-          />
-        )}
-      </React.Fragment>
-    )
-  ))}
-
-      {/* {path.map((sectionPath, index) => (
-        sectionPath.length > 0 && <Polyline key={index} path={sectionPath} strokeColor={colors[index]} strokeWeight={5} />
+        sectionPath && sectionPath.length > 0 && (
+          <React.Fragment key={index}>
+            <Polyline path={sectionPath} strokeColor={colors[index]} strokeWeight={5} />
+            <Marker
+              position={sectionPath[0]}
+              icon={iconFactory(redMarkerClicked ? 'blue' : `${colors[index]}`)}  // 첫 클릭을 빨간색으로 표시, 클릭하면 파란색으로 변경
+              onClick={handleRedMarkerClick}  // 빨간색 점 클릭 이벤트 핸들러
+            />
+            {sectionPath.length > 1 && (
+              <Marker
+                position={sectionPath[sectionPath.length - 1]}
+                icon={iconFactory('black')}  // 마지막 클릭을 초록색으로 표시
+              />
+            )}
+          </React.Fragment>
+        )
       ))}
-      {path[0] && path[0].length > 0 && (
-        <Marker
-          position={path[0][0]}
-          icon={iconFactory(redMarkerClicked ? 'blue' : 'red')}  // 첫 클릭을 빨간색으로 표시, 클릭하면 파란색으로 변경
-          onClick={handleRedMarkerClick}  // 빨간색 점 클릭 이벤트 핸들러
-        />
-      )}
-      {path[sectionIndex] && path[sectionIndex].length > 1 && !redMarkerClicked && (
-        <Marker position={path[sectionIndex][path[sectionIndex].length - 1]} icon={iconFactory('green')} />  // 마지막 클릭을 초록색으로 표시
-      )} */}
     </NaverMap>
   );
 }
 
 export default function DrawGroupMap() {
+  const navermaps = useNavermaps();  // 여기서 useNavermaps 훅을 사용
   const [drawing, setDrawing] = useState(false);
   const [path, setPath] = useState([]);
-  const [pathAfterRedMarker, setPathAfterRedMarker] = useState([]);
+  const [pathHistory, setPathHistory] = useState([]); // 이전 경로들을 저장할 상태
   const [startPoint, setStartPoint] = useState(null);
   const [endPoint, setEndPoint] = useState(null);
   const [redMarkerClicked, setRedMarkerClicked] = useState(false);
   const [selectedGroupSize, setSelectedGroupSize] = useState(2); // 기본 인원 설정
   const [sectionIndex, setSectionIndex] = useState(0);
+  const [sectionChangeCount, setSectionChangeCount] = useState(0);
+  const [position, setPosition] = useState(null);  // 위치 상태 추가
+  const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));  // 중심 상태 추가
   const navigate = useNavigate();
   const userInfo = useToken();
   const userID = userInfo.user;
   const [address, setAddress] = useState('');
 
-  const [title, setTitle]= useState('') //제목
-  const [totalDistance, stTotalDistance]=useState('') //총거리
-  const [selectedDifficulty, setSelectedDifficulty]=useState('하') //난이도
+  const [title, setTitle] = useState('') // 제목
+  const [totalDistance, setTotalDistance] = useState('') // 총거리
+  const [selectedDifficulty, setSelectedDifficulty] = useState('하') // 난이도
 
   const colors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF']; // 빨간색, 주황색, 노란색, 초록색, 파란색
 
   const toggleDrawing = () => {
-    setDrawing(prevDrawing => !prevDrawing);
     if (drawing) { // 그리기 종료 시
-      setPath(currentPath => [...currentPath]);  // 경로 유지
-    } else { // 그리기 시작 시 모든 상태를 초기화
-      setPath([]);
-      setPathAfterRedMarker([]);
-      setStartPoint(null);
-      setEndPoint(null);
-      setRedMarkerClicked(false);
-      setSectionIndex(0); // 섹션 인덱스 초기화
+      const allSectionsCompleted = path.every(section => section && section.length > 1);
+      const requiredSections = selectedGroupSize;
+      const drawnSections = path.filter(section => section && section.length > 1).length;
+
+      if (!allSectionsCompleted || drawnSections < requiredSections) {
+        alert('경로를 모두 그려주세요');
+        return;
+      }
+    }
+    setDrawing(prevDrawing => !prevDrawing);
+    if (!drawing) { // 그리기 시작 시 모든 상태를 초기화
+      clearAllDrawings();  // 모든 초기화 작업을 clearAllDrawings 함수에서 처리
     }
   };
 
   const undoLastDrawing = () => {
     setPath(currentPath => {
       const newPath = currentPath.slice();
-      if (newPath[sectionIndex]) {
+      if (newPath[sectionIndex] && newPath[sectionIndex].length > 0) {
         newPath[sectionIndex] = newPath[sectionIndex].slice(0, -1);
+      } else if (sectionIndex > 0) {
+        let lastSectionIndex = sectionIndex;
+        while (lastSectionIndex > 0 && (!newPath[lastSectionIndex] || newPath[lastSectionIndex].length === 0)) {
+          lastSectionIndex--;
+        }
+        if (lastSectionIndex >= 0 && newPath[lastSectionIndex] && newPath[lastSectionIndex].length > 0) {
+          newPath[lastSectionIndex] = newPath[lastSectionIndex].slice(0, -1);
+          setSectionIndex(lastSectionIndex);
+          setSectionChangeCount(sectionChangeCount - 1); // 경로 전환 횟수도 되돌리기
+        }
       }
-      if (newPath[sectionIndex].length === 0) {
-        setStartPoint(null);
-        setRedMarkerClicked(false);
-      }
-      setEndPoint(newPath[sectionIndex].length > 0 ? newPath[sectionIndex][newPath[sectionIndex].length - 1] : null);
       return newPath;
     });
   };
 
   const clearAllDrawings = () => {
     setPath([]);
-    setPathAfterRedMarker([]);
     setStartPoint(null);
     setEndPoint(null);
     setRedMarkerClicked(false);
-    if (!drawing) {
-      setDrawing(true);  // 초기화 후에도 그림 그리기 모드 유지
-    }
+    setSectionIndex(0); // 섹션 인덱스 초기화
+    setSectionChangeCount(0); // 섹션 전환 횟수 초기화
+    setPathHistory([]); // 이전 경로 초기화
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const { latitude, longitude } = position.coords;
+        const newPos = new navermaps.LatLng(latitude, longitude);
+        setPosition(newPos);
+        setCenter(newPos);
+      },
+      function(error) {
+        console.error("Geolocation 정보를 가져오는 데 실패했습니다:", error);
+      }
+    );
   };
 
   const handleGroupSizeChange = (e) => {
@@ -177,22 +177,39 @@ export default function DrawGroupMap() {
   };
 
   const handleSectionChange = () => {
-    setSectionIndex(prevIndex => {
-      const newIndex = (prevIndex + 1) % selectedGroupSize;
-      if (path[prevIndex] && path[prevIndex].length > 0) {
-        setPath(currentPath => {
-          const newPath = [...currentPath];
-          // newPath[newIndex] = [currentPath[prevIndex][currentPath[prevIndex].length - 1]];
-          newPath[newIndex] = [];
-          return newPath;
-        });
-      }
-      return newIndex;
-    });
+    if (path[sectionIndex] && path[sectionIndex].length < 2) {
+      alert('경로를 설정해주세요');
+      return;
+    }
+    setPathHistory(prevHistory => [
+      ...prevHistory,
+      {
+        path: [...path],
+        sectionIndex,
+        sectionChangeCount,
+        startPoint,
+        endPoint,
+        redMarkerClicked,
+      },
+    ]);
+    if (sectionChangeCount < selectedGroupSize - 1) {
+      setSectionChangeCount(prevCount => prevCount + 1);
+      setSectionIndex(prevIndex => {
+        const newIndex = (prevIndex + 1) % selectedGroupSize;
+        if (path[prevIndex] && path[prevIndex].length > 0) {
+          setPath(currentPath => {
+            const newPath = [...currentPath];
+            newPath[newIndex] = [];
+            return newPath;
+          });
+        }
+        return newIndex;
+      });
+    } else {
+      alert('선택 인원을 초과하였습니다');
+    }
   };
-  useEffect(()=>{
-    console.log(sectionIndex)
-  },[sectionIndex])
+
   async function getReverseGeocode(latitude, longitude) {
     const url = `http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
     try {
@@ -245,8 +262,8 @@ export default function DrawGroupMap() {
               {
                 draw_m_c_id: `draw_${count + 1}`,
                 mark_order: `${sectionIndex + 1}-${index + 1}`,
-                latitude: location._lat,
-                longitude: location._lng
+                latitude: location.lat,
+                longitude: location.lng
               }
             ]);
           if (insertLocationError) {
@@ -258,9 +275,10 @@ export default function DrawGroupMap() {
     }
   }
 
-  useEffect(()=>{
-    console.log(path)
-  },[path])
+  useEffect(() => {
+    console.log(path);
+  }, [path]);
+
   return (
     <div className='group_draw_map_container'>
       <button className='group_draw_start' onClick={toggleDrawing} style={{ position: 'absolute', zIndex: 1000 }}>
@@ -279,22 +297,22 @@ export default function DrawGroupMap() {
           </button>
         </>
       )}
-      
+
       <Link to="/map">
         <div className="write_back">
           <img className='write_back_icon' src="./icon/arrow.svg" alt="Back" />
         </div>
       </Link>
       <div className='draw_title'>경로 그리기</div>
-      
-      <div className='draw_save' onClick={submitRoute} >경로 저장</div>
-      
+
+      <div className='draw_save' onClick={submitRoute}>경로 저장</div>
+
       <MapDiv className='mapimg' style={{ width: '100%', height: '450px' }}>
-        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} colors={colors} sectionIndex={sectionIndex} />
+        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} colors={colors} sectionIndex={sectionIndex} />
       </MapDiv>
 
       <div className='draw_name'>제목</div>
-      <input className='draw_name_text' type="text" placeholder='그린 경로의 제목을 입력하세요' value={title} onChange={(e)=>setTitle(e.target.value)}/>
+      <input className='draw_name_text' type="text" placeholder='그린 경로의 제목을 입력하세요' value={title} onChange={(e) => setTitle(e.target.value)} />
       <div className='draw_distance'>거리</div>
       <div className='draw_distance_content'>자동으로 거리 계산</div>
       <div className='draw_line1'></div>
@@ -304,14 +322,14 @@ export default function DrawGroupMap() {
 
       <div className='draw_rate'>난이도</div>
       <select className='draw_rate_dropdown' value={selectedDifficulty} onChange={(e) => setSelectedDifficulty(e.target.value)}>
-          <option value="하">하</option>
-          <option value="중">중</option>
-          <option value="상">상</option>
+        <option value="하">하</option>
+        <option value="중">중</option>
+        <option value="상">상</option>
       </select>
       <div className='color_select_text'>선 색상 선택하기</div>
 
       <div className='group_select_text'>인원 선택하기</div>
-      <select className='group_select' value={selectedGroupSize} onChange={handleGroupSizeChange} style={{ position: 'absolute', zIndex: 1000, left: '370px' }}>
+      <select className='group_select' value={selectedGroupSize} onChange={handleGroupSizeChange} style={{ position: 'absolute', zIndex: 1000, left: '370px' }} disabled={drawing}>
         <option value={2}>2명</option>
         <option value={3}>3명</option>
         <option value={4}>4명</option>
