@@ -371,7 +371,7 @@ body{
 
 .loadmessage{
 	position: absolute;
-	left: 100px;
+	left: 120px;
 	top: 410px;
 	font-size: 20px;
 	text-align: center;
@@ -381,9 +381,9 @@ body{
 }
 
 .loadimg{
-	width: 100px;
-	height: 130px;
+	width: 80px;
+	height: 105px;
 	position: absolute;
-	top: 233px;
-	left: 134px;
+	top: 255px;
+	left: 155px;
 }
