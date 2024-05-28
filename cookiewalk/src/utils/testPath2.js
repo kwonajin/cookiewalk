@@ -1,5 +1,5 @@
 //테스트 중인 경로 title 부경대 산책
-const testPath2=[{latitude:35.1344985,longitude:129.1041788},{latitude:35.1341648,longitude:129.1042632},{latitude:35.1339979,longitude:129.1042492},{latitude:35.1338276,longitude:129.1043171},{latitude:35.1337873,longitude:129.1042468},{latitude:35.1336676,longitude:129.1041552},{latitude:35.1334547,longitude:129.1040708},{latitude:35.1332437,longitude:129.1042001},{latitude:35.1333128,longitude:129.1043127},{latitude:35.1334278,longitude:129.104566},]
+const testPath2=[{latitude:35.1344985,longitude:129.1041788},{latitude:35.1341648,longitude:129.1042632},{latitude:35.1339979,longitude:129.1042492},{latitude:35.1338276,longitude:129.1043171},{latitude:35.1337873,longitude:129.1042468},{latitude:35.1336676,longitude:129.1041552},{latitude:35.1334547,longitude:129.1040708},{latitude:35.1332437,longitude:129.1042001},{latitude:35.1333128,longitude:129.1043127},{latitude:35.1334278,longitude:129.104566},{latitude: 35.1345276, longitude: 129.1043171}]
 
 //실제로 주변을 걷는 경로 test좌표
 const testPath1 = [
