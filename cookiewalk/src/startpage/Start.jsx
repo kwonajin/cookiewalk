@@ -78,7 +78,10 @@ export default function Start() {
 
     const [drawPath, setDrawPath] = useState([]);
     const [pathLoading, setPathLoading]=useState(true)
+    
+
     const [passPath, setPassPath]=useState([])
+    const passPathRef = useRef(passPath);
 
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
@@ -102,9 +105,8 @@ export default function Start() {
         startTracking();
     };
 
-    useEffect(()=>{
-        // console.log(drawPath.length)
-    },[drawPath])
+    
+
     const handleCloseClick = () => {
         const confirmLeave = window.confirm("경로를 저장하지 않고 종료하시겠습니까?");
         if (confirmLeave) {
@@ -137,7 +139,8 @@ export default function Start() {
                             return newPath;
                         }else{   //받아온 경로 있을시
                             newPath=[...prevPath, newPosition]
-                            const closePoint = findCloseCoord(newPosition)
+                            // const closePoint = findCloseCoord(newPosition)
+                            const closePoint = drawPath[passPathRef.current.length];
                             const distanceClosePoint = calculateDistance(newPosition, closePoint)
                             if(distanceClosePoint <= tolerance){
                                 setPassPath((prevPassPath)=>{
@@ -195,7 +198,9 @@ export default function Start() {
                         return newPath
                     }else{
                         newPath=[...prevPath, newPosition]
-                        const closePoint = findCloseCoord(newPosition)
+                        // const closePoint = findCloseCoord(newPosition)
+                        const closePoint = drawPath[passPathRef.current.length];
+                        console.log(passPath.length)
                         const distanceClosePoint = calculateDistance(newPosition, closePoint)
                         if(distanceClosePoint <= tolerance){
                             setPassPath((prevPassPath)=>{
@@ -217,11 +222,14 @@ export default function Start() {
             }else{
                 clearInterval(test)
             }
-        },2000);
+        },3000);
     }
     useEffect(()=>{
+        passPathRef.current = passPath;
         console.log(passPath)
+        console.log(passPath.length)
     },[passPath])
+
     const stopTracking = () => {
         if (watchIdRef.current !== null) {
             navigator.geolocation.clearWatch(watchIdRef.current);
@@ -244,7 +252,7 @@ export default function Start() {
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
                 startTimer()
-                startTracking2();
+                startTracking();
             }
         }
     }, [isPaused, drawPath]);
