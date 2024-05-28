@@ -61,8 +61,8 @@ return(
     <div className="map_list1_time_value">{location}</div>
 
     <div><img className='map_list1_rate_icon' src="./icon/round-star.svg"/></div>
-    <div className="map_list1_rate_value">{level} /제작자:{nickName}</div>
-    
+    <div className="map_list1_rate_value">{level}</div>
+    {/* 제작자:{nickName} */}
 
 
     </div>

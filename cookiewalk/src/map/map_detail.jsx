@@ -75,8 +75,8 @@ export default function Map_detail() {
       <span className="MapDetail_time_value">{location}</span>
 
       <div><img className="MapDetail_difficulty_icon" src="./icon/round-star.svg" alt="Difficulty Icon" /></div>
-      <span className="MapDetail_difficulty_value">{level} /제작:{nickName}</span>
-
+      <span className="MapDetail_difficulty_value">{level} </span>
+      {/* 제작자:{nickName} */}
       <div className="MapDetail_Detail_line_e"></div>
 
       <span className="mapDetail_button" onClick={followRoute}>경로 따라가기</span>
