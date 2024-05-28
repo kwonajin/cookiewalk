@@ -4,7 +4,7 @@ import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'r
 import { useLocation, useNavigate } from "react-router-dom";
 import testPath2 from '../utils/testPath2';
 
-function MyMap({ path=[], drawPath=[], center }) {
+function MyMap({ path=[], drawPath=[], center , passPath=[]}) {
     // console.log(path[path.length-1].latitude)
     const navermaps = useNavermaps();
     const markerIcon = {
@@ -23,16 +23,16 @@ function MyMap({ path=[], drawPath=[], center }) {
             {/* {center && (
                 <Marker icon={markerIcon} position={new navermaps.LatLng(center.latitude, center.longitude)} />
             )} */}
-            {path.length >= 1 && (
+            {passPath.length >= 1 && (
                 <Polyline
-                    path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='blue'
+                    path={passPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+                    strokeColor='red'
                     strokeWeight={8}
                     strokeOpacity={0.8}
                     strokeStyle="solid"
                 />
             )}
-            {drawPath.length > 1 && (
+            {/* {drawPath.length > 1 && (
                 <Polyline
                     path={drawPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
                     strokeColor='red'
@@ -40,7 +40,21 @@ function MyMap({ path=[], drawPath=[], center }) {
                     strokeOpacity={0.8}
                     strokeStyle="solid"
                 />
-            )}
+            )} */}
+            {drawPath.length > 1 && drawPath.map((p, index)=> (
+                <Marker
+                    key={index}
+                    position={new navermaps.LatLng(p.latitude, p.longitude)}
+                    title={`Marker${index+1}`}
+                    clickable={true}
+                    icon={{
+                        content: `<div style="background: #B45F04; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        size: new navermaps.Size(10, 10),
+                        anchor: new navermaps.Point(5, 5)
+                    }}
+                />
+            ))}
+
         </NaverMap>
     );
 }
@@ -64,6 +78,10 @@ export default function Start() {
 
     const [drawPath, setDrawPath] = useState([]);
     const [pathLoading, setPathLoading]=useState(true)
+    
+
+    const [passPath, setPassPath]=useState([])
+    const passPathRef = useRef(passPath);
 
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
@@ -87,9 +105,8 @@ export default function Start() {
         startTracking();
     };
 
-    useEffect(()=>{
-        // console.log(drawPath.length)
-    },[drawPath])
+    
+
     const handleCloseClick = () => {
         const confirmLeave = window.confirm("경로를 저장하지 않고 종료하시겠습니까?");
         if (confirmLeave) {
@@ -121,14 +138,18 @@ export default function Start() {
                             }
                             return newPath;
                         }else{   //받아온 경로 있을시
-                            const closePoint = findCloseCoord(newPosition)
+                            newPath=[...prevPath, newPosition]
+                            // const closePoint = findCloseCoord(newPosition)
+                            const closePoint = drawPath[passPathRef.current.length];
                             const distanceClosePoint = calculateDistance(newPosition, closePoint)
-                            if( distanceClosePoint <= tolerance){
-                                // window.alert(`경로가 같음.`
-                                newPath = [...prevPath, closePoint];
+                            if(distanceClosePoint <= tolerance){
+                                setPassPath((prevPassPath)=>{
+                                    let newPassPath = [...prevPassPath, closePoint]
+                                    return newPassPath
+                                })
+                                console.log('경로같음')
                             }else{
-                                // window.alert('경로 다름')
-                                newPath = [...prevPath, newPosition];
+                                console.log('경로벗어남')
                             }
                                 if (lastPosition) {
                                     const distance = calculateDistance(lastPosition, newPosition);
@@ -176,13 +197,18 @@ export default function Start() {
                         }
                         return newPath
                     }else{
-                        const closePoint = findCloseCoord(newPosition)
+                        newPath=[...prevPath, newPosition]
+                        // const closePoint = findCloseCoord(newPosition)
+                        const closePoint = drawPath[passPathRef.current.length];
+                        console.log(passPath.length)
                         const distanceClosePoint = calculateDistance(newPosition, closePoint)
                         if(distanceClosePoint <= tolerance){
-                            newPath=[...prevPath, closePoint]
+                            setPassPath((prevPassPath)=>{
+                                let newPassPath = [...prevPassPath, closePoint]
+                                return newPassPath
+                            })
                             console.log('경로같음')
                         }else{
-                            newPath=[...prevPath, newPosition]
                             console.log('경로벗어남')
                         }
                             if(lastPosition){
@@ -196,8 +222,13 @@ export default function Start() {
             }else{
                 clearInterval(test)
             }
-        },2000);
+        },3000);
     }
+    useEffect(()=>{
+        passPathRef.current = passPath;
+        console.log(passPath)
+        console.log(passPath.length)
+    },[passPath])
 
     const stopTracking = () => {
         if (watchIdRef.current !== null) {
@@ -344,7 +375,7 @@ export default function Start() {
         <div className="Start_container">
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
 
-            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} /></MapDiv>
+            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath}/></MapDiv>
 
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
                 <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
