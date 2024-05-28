@@ -22,8 +22,10 @@ export default function Unfinished_route() {
     const [recordList, setRecordList]=useState([])
     let pathArray=[];
     let centerArray=[];
+    let drawPathArray=[]
     const [path, setPath]=useState([])
     const [center, setCenter]=useState([])
+    const [drawPath, setDrawPath]=useState([])
 
     //로딩상태
     const [loading, setLoading]=useState(true)
@@ -46,8 +48,8 @@ export default function Unfinished_route() {
      //미완성 산책기록 찾는 함수
     async function nonCompleteRecord() {
         const {data: recordInfoData , error: recordInfoError}= await supabase
-            .from('walking_record')
-            .select('walking_record_id ,distance, title, location, walking_time')
+            .from('walking_record_N')
+            .select('walking_record_id ,distance, title, location, walking_time, draw_id')
             .eq('user_id', userID)
             .eq('state','N')
         console.log(recordInfoData)
@@ -63,10 +65,10 @@ export default function Unfinished_route() {
                 setTotalTime(newTotalTime);
                 async function findPath(){
                     const {data: findPathData, error: findPathError} = await supabase
-                        .from('walking_record_location')
+                        .from('walking_record_N_location')
                         .select('latitude, longitude')
                         .eq('walking_record_id', recordInfoData[index].walking_record_id)
-                    console.log(findPathData)
+                    // console.log(findPathData)
                     if(findPathData.length >0){
                         pathArray.push({
                             walking_record_id: recordInfoData[index].walking_record_id,
@@ -77,20 +79,37 @@ export default function Unfinished_route() {
                             coordinate: await calculateCenter(findPathData)
                         })
                     }
+                    if(recordInfoData[index].draw_id  && recordInfoData[index].draw_id.includes('draw')){
+                        const {data: findDrawPathData, error: findDrawPathError} = await supabase
+                            .from('draw_map_c_location')
+                            .select('latitude, longitude')
+                            .eq('draw_m_c_id', recordInfoData[index].draw_id)
+                        // console.log(findDrawPathData)
+                        if(findDrawPathData.length >0){
+                            drawPathArray.push({
+                                walking_record_id: recordInfoData[index].walking_record_id,
+                                coordinate: findDrawPathData,
+                            })
+                        }
+                    }
                 }
                 await findPath()
             }
             setPath(pathArray)
             setCenter(centerArray)
+            setDrawPath(drawPathArray)
             setLoading(false)
         }
     }
     useEffect(()=>{
-        console.log(totalDistance, totalTime)
+        // console.log(totalDistance, totalTime)
     }, [totalDistance, totalTime])
     useEffect(()=>{
         console.log(path)
     }, [path])
+    useEffect(()=>{
+        console.log(drawPath)
+    }, [drawPath])
 
     useEffect(()=>{
         if(userID){
@@ -121,9 +140,10 @@ return (
         
         {recordList.map((recordItem, index)=>{
             const sendOnlyPath = path.find(p => p.walking_record_id === recordItem.walking_record_id);
+            const sendOnlydrawPath =drawPath.find(p=> p.walking_record_id ===recordItem.walking_record_id)
             return (
             <Link to='/BeforeStart' className='unfinishToBefore_link' 
-                state={{ path: sendOnlyPath ? sendOnlyPath.coordinate : null }} key={recordItem.walking_record_id}>
+                state={{ path: sendOnlyPath ? sendOnlyPath.coordinate : null ,drawPath: sendOnlydrawPath ? sendOnlydrawPath.coordinate : []}} key={recordItem.walking_record_id}>
                 <Unfinished_List
                     key={recordItem.walking_record_id}
                     drawId={recordItem.walking_record_id}

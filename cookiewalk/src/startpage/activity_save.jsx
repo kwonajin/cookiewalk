@@ -5,24 +5,72 @@ import { Link } from "react-router-dom";
 import {useToken} from '../context/tokenContext'
 import { supabase } from '../supabaseClient';
 import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
-// import { getReverseGeocode } from '../getReverseGeocode';
 import axios from 'axios';
 
-function MyMap({path}){
+function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
+    // console.log(path[path.length-1].latitude)
     const navermaps = useNavermaps();
-    return(
-        <NaverMap defaultCenter={new navermaps.LatLng(path[0].lat ,path[0].lng)}>
-            <Polyline
-            path={path.map(p => new navermaps.LatLng(p.lat,p.lng))}
-            strokeColor='blue' // 선색깔
-            strokeWeight={4} //선두께
-            strokeOpacity={0.8} //투명도
-            strokeStyle="solid"
-            />
-        </NaverMap>
-    )
-}
+    const markerIcon = {
+        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
+        size: new navermaps.Size(24, 24),
+        anchor: new navermaps.Point(12, 12)
+    };
+    return (
+        <NaverMap
+            defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)}
+            defaultZoom={15}
+        >
+            {path.length >=1 && (
+                <Marker icon={markerIcon} position={new navermaps.LatLng(path[path.length-1].latitude, path[path.length-1].longitude)} />
+            )}
+            {(walkMode && path.length > 1) && (
+                <Polyline
+                    path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+                    strokeColor='#2E9AFE'
+                    strokeWeight={8}
+                    strokeOpacity={0.8}
+                    strokeStyle="solid"
+                />
+            )}
 
+            {passPath.length >= 1 && (
+                <Polyline
+                    path={passPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+                    strokeColor='#2E9AFE'
+                    strokeWeight={8}
+                    strokeOpacity={0.8}
+                    strokeStyle="solid"
+                />
+                
+            )}
+            {/* {(walkMode && path.length > 1) && (
+                <Polyline
+                    path={drawPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+                    strokeColor='red'
+                    strokeWeight={8}
+                    strokeOpacity={0.8}
+                    strokeStyle="solid"
+                />
+            )} */}
+            {drawPath.length > 1 && drawPath.map((p, index)=> {
+                const isPassed = passPath.some(pp => pp.latitude === p.latitude && pp.longitude === p.longitude);
+            return (
+                <Marker
+                    key={index}
+                    position={new navermaps.LatLng(p.latitude, p.longitude)}
+                    title={`Marker${index+1}`}
+                    clickable={true}
+                    icon={{
+                        content: `<div style="background: ${isPassed ? '#2E9AFE' : '#B45F04'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        size: new navermaps.Size(10, 10),
+                        anchor: new navermaps.Point(5, 5)
+                    }}
+                />
+            )})}
+
+        </NaverMap>
+    );
+}
 export default function Activity_save() {
     const {state} = useLocation()
     const userInfo=useToken();
@@ -31,10 +79,33 @@ export default function Activity_save() {
     const navigate = useNavigate();
 
     console.log(state)
-    console.log(state.path[0])
-    console.log(`path: ${state.path[0]}, time: ${state.time}, distance: ${state.distance}`);
+    const [path, setPath] = useState([]);
+    const [passPath, setPassPath]=useState([])
+    const [drawId, setDrawId]=useState('');
+    const [drawPath, setDrawPath] = useState([]);
+    const [currentPosition, setCurrentPosition]=useState([])
+    const [walkMode, setWalkMode]=useState(true);//true 백지걷기 //false 경로따라걷기
+
+    const [pathLoading, setPathLoading]=useState(true)
+
+    useEffect(()=>{
+        if(path.length >=1){
+            setPathLoading(false)
+        }
+    },[path])
 
     const [title ,setTitle]=useState('')
+    useEffect(()=>{
+        setPath(state.path)
+        setPassPath(state.passPath)
+        setDrawId(state.drawId)
+        setDrawPath(state.drawPath)
+        setCurrentPosition(state.currentPosition)
+        setWalkMode(state.walkMode)//true 백지걷기 //false 경로따라걷기
+    },[state])
+
+
+
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds /3600);
         const minutes = Math.floor((seconds % 3600) /60);
@@ -46,45 +117,88 @@ export default function Activity_save() {
     //미완성 경로 저장함수 
     async function nonCompleteWalk(){
         const {data: walkingData , error: walkingError, count} =await supabase
-            .from('walking_record')
+            .from('walking_record_N')
             .select('*',{count: 'exact'});
         if(walkingError){
             console.error(walkingError)
         }
         console.log(count)
-        const {data: insertWalkData, error:insertWalkError}= await supabase
-            .from('walking_record')
+        if(walkMode){   //경로 그림 없이 백지 상태일때 미완성 경로 저장
+            const {data: insertWalkData, error:insertWalkError}= await supabase
+            .from('walking_record_N')
             .insert([
                 {
-                    walking_record_id: `record_${count+1}`,
+                    walking_record_id: `record_N_${count+1}`,
                     start_time: state.startTime,
                     end_time: state.endTime,
+                    color:'#2E9AFE',
                     distance: state.distance,
                     state: 'N',
                     user_id: userID,
+                    walking_time:state.time,
                     title: title,
-                    location: address
+                    location: address,
+                    draw_id: `record_N_${count+1}`
                 }
             ])
-        if(insertWalkError){
-            console.error(insertWalkError)
-        }
-        for (const [index, location] of state.path.entries() ){
-            const {data: insertLocationData, error: insertLocationError}= await supabase
-            .from('walking_record_location')
+            if(insertWalkError){
+                console.error(insertWalkError)
+            }
+            console.log('Inserted into walking_record_N:', insertWalkData);
+            for (const [index, location] of state.path.entries() ){
+                const {data: insertLocationData, error: insertLocationError}= await supabase
+                .from('walking_record_N_location')
+                .insert([
+                    {
+                    walking_record_id:`record_N_${count+1}`,
+                    mark_order: index+1,
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                    }
+                ])
+                if(insertLocationError){
+                    console.log(insertLocationError)
+                }
+            }
+        }else{ //경로 그림 있을시 미완성 그림 경로 저장
+            const {data: insertWalkData, error:insertWalkError}= await supabase
+            .from('walking_record_N')
             .insert([
                 {
-                    walking_record_id:`record_${count+1}`,
-                    mark_order: index+1,
-                    latitude: location.lat,
-                    longitude: location.lng
+                    walking_record_id: `record_N_${count+1}`,
+                    start_time: state.startTime,
+                    end_time: state.endTime,
+                    color:'#2E9AFE',
+                    distance: state.distance,
+                    state: 'N',
+                    user_id: userID,
+                    walking_time:state.time,
+                    title: title,
+                    location: address,
+                    draw_id: drawId
                 }
             ])
-            if(insertLocationError){
-                console.log(insertLocationError)
+            if(insertWalkError){
+                console.error(insertWalkError)
+            }
+            console.log('Inserted into walking_record:', insertWalkData);
+            for (const [index, location] of state.passPath.entries() ){
+                const {data: insertLocationData, error: insertLocationError}= await supabase
+                .from('walking_record_N_location')
+                .insert([
+                    {
+                    walking_record_id:`record_N_${count+1}`,
+                    mark_order: index+1,
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                    }
+                ])
+                if(insertLocationError){
+                    console.log(insertLocationError)
+                }
             }
         }
-    
+        navigate('/home')
     }
 
     //완성 경로 저장함수
@@ -96,38 +210,80 @@ export default function Activity_save() {
             console.error(walkingError)
         }
         console.log(count)
-        const {data: insertWalkData, error:insertWalkError}= await supabase
+        if(walkMode){   //경로 그림 없이 백지 상태일때 완성 경로 저장
+            const {data: insertWalkData, error:insertWalkError}= await supabase
             .from('walking_record')
             .insert([
                 {
                     walking_record_id: `record_${count+1}`,
                     start_time: state.startTime,
                     end_time: state.endTime,
+                    color:'#2E9AFE',
                     distance: state.distance,
                     state: 'Y',
                     user_id: userID,
+                    walking_time:state.time,
                     title: title,
-                    location: address
+                    location: address,
+                    draw_id: `record_${count+1}`
                 }
             ])
-        if(insertWalkError){
-            console.error(insertWalkError)
-        }
-        for (const [index, location] of state.path.entries() ){
-            const {data: insertLocationData, error: insertLocationError}= await supabase
-            .from('walking_record_location')
-            .insert([
-                {
+            if(insertWalkError){
+                console.error(insertWalkError)
+            }
+            for (const [index, location] of state.path.entries() ){
+                const {data: insertLocationData, error: insertLocationError}= await supabase
+                .from('walking_record_location')
+                .insert([
+                    {
                     walking_record_id:`record_${count+1}`,
                     mark_order: index+1,
-                    latitude: location.lat,
-                    longitude: location.lng
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                    }
+                ])
+                if(insertLocationError){
+                    console.log(insertLocationError)
+                }
+            }
+        }else{  //경로 그림 있을시 완성 그림 경로 저장
+            const {data: insertWalkData, error:insertWalkError}= await supabase
+            .from('walking_record')
+            .insert([
+                {
+                    walking_record_id: `record_${count+1}`,
+                    start_time: state.startTime,
+                    end_time: state.endTime,
+                    color:'#2E9AFE',
+                    distance: state.distance,
+                    state: 'Y',
+                    user_id: userID,
+                    walking_time:state.time,
+                    title: title,
+                    location: address,
+                    draw_id: drawId
                 }
             ])
-            if(insertLocationError){
-                console.log(insertLocationError)
+            if(insertWalkError){
+                console.error(insertWalkError)
+            }
+            for (const [index, location] of state.passPath.entries() ){
+                const {data: insertLocationData, error: insertLocationError}= await supabase
+                .from('walking_record_location')
+                .insert([
+                    {
+                        walking_record_id:`record_${count+1}`,
+                        mark_order: index+1,
+                        latitude: location.latitude,
+                        longitude: location.longitude
+                    }
+                ])
+                if(insertLocationError){
+                    console.log(insertLocationError)
+                }
             }
         }
+        navigate('/home')
     }
     async function getReverseGeocode(latitude, longitude){
         const url =`https://blonde-bobolink-smartbusan-a2d9f8e5.koyeb.app/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
@@ -147,7 +303,7 @@ export default function Activity_save() {
     };
     useEffect(()=>{
         if(!address){
-            const data=getReverseGeocode(state.path[0].lat, state.path[0].lng)
+            const data=getReverseGeocode(state.path[0].latitude, state.path[0].longitude)
         }
     },[address])
     // 경로 삭제 함수
@@ -158,12 +314,21 @@ export default function Activity_save() {
         navigate('/home');
     }
     };
+
+    if(pathLoading){
+        return (
+            <div className="Start_container">
+                <img className='loadimg' src="./images/logo.png" alt="" />
+                <div className='loadmessage'>당신의 산책을 <br/> 시작하는 중...</div>
+            </div>
+        )
+    }
     return(
         <div className="activity_save_container">
             <span className="activity_save_title">활동저장</span>
             <button className="activity_save_remove_button" onClick={removeActivity}>삭제</button>
 
-            <MapDiv className="e298_23"><MyMap path={state.path}/></MapDiv>
+            <MapDiv className="e298_23"><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode}/></MapDiv>
             {/* 저장경로 이미지 뜨는 곳 */}
 
             <span className="activity_save_record_title">기록</span>

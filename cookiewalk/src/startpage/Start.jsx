@@ -4,7 +4,7 @@ import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'r
 import { useLocation, useNavigate } from "react-router-dom";
 import testPath2 from '../utils/testPath2';
 
-function MyMap({ path=[], drawPath=[], center , passPath=[]}) {
+function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
     // console.log(path[path.length-1].latitude)
     const navermaps = useNavermaps();
     const markerIcon = {
@@ -20,20 +20,27 @@ function MyMap({ path=[], drawPath=[], center , passPath=[]}) {
             {path.length >=1 && (
                 <Marker icon={markerIcon} position={new navermaps.LatLng(path[path.length-1].latitude, path[path.length-1].longitude)} />
             )}
-            {/* {center && (
-                <Marker icon={markerIcon} position={new navermaps.LatLng(center.latitude, center.longitude)} />
-            )} */}
+            {(walkMode && path.length > 1) && (
+                <Polyline
+                    path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+                    strokeColor='#2E9AFE'
+                    strokeWeight={8}
+                    strokeOpacity={0.8}
+                    strokeStyle="solid"
+                />
+            )}
+
             {passPath.length >= 1 && (
                 <Polyline
                     path={passPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='red'
+                    strokeColor='#2E9AFE'
                     strokeWeight={8}
                     strokeOpacity={0.8}
                     strokeStyle="solid"
                 />
                 
             )}
-            {/* {drawPath.length > 1 && (
+            {/* {(walkMode && path.length > 1) && (
                 <Polyline
                     path={drawPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
                     strokeColor='red'
@@ -51,7 +58,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[]}) {
                     title={`Marker${index+1}`}
                     clickable={true}
                     icon={{
-                        content: `<div style="background: ${isPassed ? 'blue' : '#B45F04'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        content: `<div style="background: ${isPassed ? '#2E9AFE' : '#B45F04'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
                         size: new navermaps.Size(10, 10),
                         anchor: new navermaps.Point(5, 5)
                     }}
@@ -69,7 +76,7 @@ export default function Start() {
 
     const location = useLocation();
     const navigate = useNavigate();
-    // console.log(location)
+    console.log(location)
 
     const [isExpanded, setIsExpanded] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
@@ -79,11 +86,13 @@ export default function Start() {
     const watchIdRef = useRef(null);
     const [path, setPath] = useState([]);
 
+    const [drawId, setDrawId]=useState('');
     const [drawPath, setDrawPath] = useState([]);
     const [pathLoading, setPathLoading]=useState(true)
     
 
     const [passPath, setPassPath]=useState([])
+    const [walkMode, setWalkMode]=useState(true) //true 백지걷기 //false 경로따라걷기
     const passPathRef = useRef(passPath);
 
     const [totalDistance, setTotalDistance] = useState(0);
@@ -245,9 +254,18 @@ export default function Start() {
     useEffect(() => {
         if (location.state.drawPath.length > 1) {
             setDrawPath(location.state.drawPath);
+            setWalkMode(false)
+            setPassPath(location.state.path)
+            setDrawId(location.state.drawId)
         }
     }, [location.state.drawPath]);
 
+    useEffect(() => {
+        if (location.state.path.length > 1) {
+            setPath(location.state.path);
+            console.log(path)
+        }
+    }, [location.state.path]);
     useEffect(() => {
         if (isPaused) {
             stopTimer();
@@ -326,7 +344,12 @@ export default function Start() {
                 time: time,
                 distance: totalDistance,
                 startTime: location.state.startTime,
-                endTime: endTime
+                endTime: endTime,
+                drawId: drawId,
+                drawPath: drawPath,
+                passPath:passPath,
+                currentPosition:currentPosition,
+                walkMode:walkMode
             }
         });
     }
@@ -368,7 +391,7 @@ export default function Start() {
     }
     if(pathLoading){
         return (
-            <div className="BeforeStart_container">
+            <div className="Start_container">
                 <img className='loadimg' src="./images/logo.png" alt="" />
                 <div className='loadmessage'>당신의 산책을 <br/> 시작하는 중...</div>
             </div>
@@ -378,7 +401,7 @@ export default function Start() {
         <div className="Start_container">
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
 
-            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath}/></MapDiv>
+            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode}/></MapDiv>
 
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
                 <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
