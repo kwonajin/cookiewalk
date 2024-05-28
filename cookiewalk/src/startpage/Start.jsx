@@ -391,9 +391,9 @@ export default function Start() {
     }
     if(pathLoading){
         return (
-            <div className="Start_container">
-                <img className='loadimg' src="./images/logo.png" alt="" />
-                <div className='loadmessage'>당신의 산책을 <br/> 시작하는 중...</div>
+            <div className="BeforeStart_container">
+                <img className='start_loadimg' src="./images/logo.png" alt="" />
+                <div className='start_loadmessage'>당신의 산책을 <br/> 시작하는 중...</div>
             </div>
         )
     }
