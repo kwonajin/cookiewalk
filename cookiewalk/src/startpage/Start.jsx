@@ -31,6 +31,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[]}) {
                     strokeOpacity={0.8}
                     strokeStyle="solid"
                 />
+                
             )}
             {/* {drawPath.length > 1 && (
                 <Polyline
@@ -41,19 +42,21 @@ function MyMap({ path=[], drawPath=[], center , passPath=[]}) {
                     strokeStyle="solid"
                 />
             )} */}
-            {drawPath.length > 1 && drawPath.map((p, index)=> (
+            {drawPath.length > 1 && drawPath.map((p, index)=> {
+                const isPassed = passPath.some(pp => pp.latitude === p.latitude && pp.longitude === p.longitude);
+            return (
                 <Marker
                     key={index}
                     position={new navermaps.LatLng(p.latitude, p.longitude)}
                     title={`Marker${index+1}`}
                     clickable={true}
                     icon={{
-                        content: `<div style="background: #B45F04; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        content: `<div style="background: ${isPassed ? 'blue' : '#B45F04'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
                         size: new navermaps.Size(10, 10),
                         anchor: new navermaps.Point(5, 5)
                     }}
                 />
-            ))}
+            )})}
 
         </NaverMap>
     );
@@ -93,7 +96,7 @@ export default function Start() {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
 
-    const tolerance = 0.01;
+    const tolerance = 0.009;
 
     const togglePause = () => {
         setIsPaused(!isPaused);
