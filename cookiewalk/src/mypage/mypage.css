@@ -59,7 +59,7 @@ body{
 	font-size: 16px;
 	font-family: Noto sans KR;
 	font-weight: 600;
-	color: #d49968;
+	color: #B8997C;
 }
 
 .user_id { 
@@ -686,4 +686,13 @@ body{
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
+}
+
+.mypage_postBox{
+	top: 297px;
+	position: absolute;	
+	display: grid;
+	grid-template-columns: 130px 130px 130px;
+	/* grid-template-rows: 130px; */
+	grid-gap: 0;
 }

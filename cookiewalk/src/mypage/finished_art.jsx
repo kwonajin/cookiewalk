@@ -103,8 +103,8 @@ export default function FinishedArt() {
     if(loading){
         return (
             <div className="BeforeStart_container">
-                <img className='loadimg' src="./images/logo.png" alt="" />
-                <div className='loadmessage'>로딩 중입니다...</div>
+                <img className='fa_loadimg' src="./images/logo.png" alt="" />
+                <div className='fa_loadmessage'>로딩 중입니다...</div>
             </div>
         )
     }

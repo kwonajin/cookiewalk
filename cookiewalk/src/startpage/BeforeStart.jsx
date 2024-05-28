@@ -108,7 +108,8 @@ export default function BeforeStart(){
     if(loading){
         return (
             <div className="BeforeStart_container">
-                <div>현재 위치 정보를 가져오는 중입니다....</div>
+                <img className='bs_loadimg' src="./images/logo.png" alt="" />
+                <div className='bs_loadmessage'>현재 위치 정보를 가져오는 중입니다....</div>
             </div>
         )
     }

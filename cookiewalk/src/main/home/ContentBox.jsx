@@ -16,6 +16,7 @@ export default function ContentBox({
   const [showMenu, setShowMenu] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
 
   useEffect(() => {
     const fetchLikeStatus = async () => {
@@ -49,8 +50,22 @@ export default function ContentBox({
       }
     };
 
+    const fetchCommentCount = async () => {
+      const { count, error } = await supabase
+        .from('comment')
+        .select('comment_id', { count: 'exact' })
+        .eq('post_id', postID);
+
+      if (error) {
+        console.error("Error fetching comment count:", error);
+      } else {
+        setCommentCount(count);
+      }
+    };
+
     fetchLikeStatus();
     fetchLikeCount();
+    fetchCommentCount();
   }, [postID, userID]);
 
   const handleMenuToggle = () => {
@@ -68,7 +83,7 @@ export default function ContentBox({
         console.error("Error liking post:", error);
       } else {
         setIsLike(true);
-        setLikeCount((prevCount) => prevCount + 1); // 좋아요 수 증가
+        setLikeCount((prevCount) => prevCount + 1);
       }
     } else {
       const { error } = await supabase
@@ -80,7 +95,7 @@ export default function ContentBox({
         console.error("Error unliking post:", error);
       } else {
         setIsLike(false);
-        setLikeCount((prevCount) => prevCount - 1); // 좋아요 수 감소
+        setLikeCount((prevCount) => prevCount - 1);
       }
     }
   };
@@ -93,36 +108,32 @@ export default function ContentBox({
     if (error) {
       console.error("Error deleting post:", error);
     } else {
-      window.location.reload(); // 화면 새로고침
+      window.location.reload();
     }
   };
 
   return (
     <div className='main_content_box'>
-      {userId === userID ? (
-        <Link className='content_top_link' to="/mypage" style={{ textDecoration: 'none' }}>
-          <div><img className='home_profile_img' src={profileImage} alt="프로필 이미지" /></div>
-          <div className="name">{profileName}</div>
-          <div className="home_place">{location}</div>
-        </Link>
-      ) : (
-        <Link className='content_top_link' to={`/home_personal_profile/${userId}`} style={{ textDecoration: 'none' }}>
-          <div><img className='home_profile_img' src={profileImage} alt="프로필 이미지" /></div>
-          <div className="name">{profileName}</div>
-          <div className="home_place">{location}</div>
-        </Link>
-      )}
+      <Link 
+        className='content_top_link' 
+        to={userId === userID ? "/mypage" : `/home_personal_profile/${userId}`} 
+        style={{ textDecoration: 'none' }}
+      >
+        <div><img className='home_profile_img' src={profileImage} alt="프로필 이미지" /></div>
+        <div className="name">{profileName}</div>
+        <div className="home_place">{location}</div>
+      </Link>
       <div className="dotmenu" onClick={handleMenuToggle}>
         <img className="dotmenu_icon" src="./icon/dotmenu.svg" alt="메뉴" />
       </div>
       {showMenu && (
         <div className="dropdown_menu">
-            {userId !== userID &&(
-                <div className='menu_title'><img className='dropdown_icon' src="./icon/follow_minus.svg" alt="언팔로우" />팔로우 취소</div>
-            )}
-            {userId !== userID && (
-                 <div className='menu_title'><img className='dropdown_icon' src="./icon/block.svg" alt="차단" />차단</div>
-            )}
+          {userId !== userID && (
+            <div className='menu_title'><img className='dropdown_icon' src="./icon/follow_minus.svg" alt="언팔로우" />팔로우 취소</div>
+          )}
+          {userId !== userID && (
+            <div className='menu_title'><img className='dropdown_icon' src="./icon/block.svg" alt="차단" />차단</div>
+          )}
           <div className='menu_title'><img className='dropdown_icon' src="./icon/hide.svg" alt="숨기기" />숨기기</div>
           {userId === userID && (
             <div className='menu_title2' onClick={handlePostDelete}>
@@ -135,13 +146,19 @@ export default function ContentBox({
       <div className="heart" onClick={handleIsLike}>
         <img className="heart_icon" src={isLike ? "./icon/heart_fill_test.svg" : "./icon/heart_test.svg"} alt="하트" />
       </div>
-      <Link to='/comment'><div className="comment"><img className="comment_icon" src="./icon/comment.svg" alt="댓글" /></div></Link>
+      <Link to={`/comment/${postID}`}><div className="comment"><img className="comment_icon" src="./icon/comment.svg" alt="댓글" /></div></Link>
       <div className="share"><img className="share_icon" src="./icon/share.svg" alt="공유" /></div>
 
       <div className="like">좋아요 {likeCount}개</div>
-      <Link className="comment_name"  to={`/mypage`} style={{ textDecoration: 'none' }}>{profileName}</Link>
+      <Link 
+        className="comment_name" 
+        to={userId === userID ? "/mypage" : `/home_personal_profile/${userId}`} 
+        style={{ textDecoration: 'none' }}
+      >
+        {profileName}
+      </Link>
       <div className="contents">{contentText}</div>
-      <div className="comment_num">댓글 3개 모두 보기</div>
+      <Link to={`/comment/${postID}`}><div className="comment_num">{`댓글 ${commentCount}개 모두 보기`}</div></Link>
       <div className="date">{createdAt}</div>
     </div>
   );
