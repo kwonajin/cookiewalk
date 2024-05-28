@@ -10,7 +10,8 @@ export default function Saved() {
       <span className="saved_title">저장한 경로</span>
       <div className="saved_line"></div>
 
+
+
     </div>
   );
 }
-
