@@ -126,6 +126,7 @@ export default function Comment() {
                     comment={comment.content}
                     createdAt={comment.created_at}
                     deleteComment={deleteComment}
+                    userID={userID}
                 />
             ))}
 
