@@ -96,7 +96,7 @@ export default function Start() {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
 
-    const tolerance = 0.009;
+    const tolerance = 0.007;
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -142,8 +142,8 @@ export default function Start() {
                             return newPath;
                         }else{   //받아온 경로 있을시
                             newPath=[...prevPath, newPosition]
-                            // const closePoint = findCloseCoord(newPosition)
-                            const closePoint = drawPath[passPathRef.current.length];
+                            const closePoint = findCloseCoord(newPosition)
+                            // const closePoint = drawPath[passPathRef.current.length];
                             const distanceClosePoint = calculateDistance(newPosition, closePoint)
                             if(distanceClosePoint <= tolerance){
                                 setPassPath((prevPassPath)=>{
@@ -201,8 +201,8 @@ export default function Start() {
                         return newPath
                     }else{
                         newPath=[...prevPath, newPosition]
-                        // const closePoint = findCloseCoord(newPosition)
-                        const closePoint = drawPath[passPathRef.current.length];
+                        const closePoint = findCloseCoord(newPosition)
+                        // const closePoint = drawPath[passPathRef.current.length];
                         console.log(passPath.length)
                         const distanceClosePoint = calculateDistance(newPosition, closePoint)
                         if(distanceClosePoint <= tolerance){
