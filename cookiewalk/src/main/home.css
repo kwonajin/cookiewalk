@@ -304,7 +304,7 @@ body{
 .main_content_box {
 	top: 170px;
 	position: relative; /* 이 부분이 중요 */
-	margin-bottom: -60px;
+	margin-bottom: -90px;
 }
 
 .content_top_link{
@@ -391,7 +391,7 @@ body{
 	height:21px;
 	position:relative;
 	left:15px;
-	top:-68px;
+	top:-98px;
 	font-family:Noto Sans;
 	text-align:left;
 	font-size:14px;
@@ -403,7 +403,7 @@ body{
 	position:relative;
 	width:370px;
 	left:15px;	
-	top:-67px;
+	top:-97px;
 	font-family:Noto Sans KR;
 	font-size:13px;
 	letter-spacing:0;
@@ -414,7 +414,7 @@ body{
 	height:21px;
 	position:relative;
 	left:15px;
-	top:-65px;
+	top:-95px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:13px;
@@ -425,7 +425,7 @@ body{
 	color:#787878;
 	position:relative;
 	left:15px;
-	top:-65px;
+	top:-95px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:11px;
@@ -436,7 +436,7 @@ body{
 	color:#131313;
 	position:relative;
 	left:15px;
-	top:-70px;
+	top:-100px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:14px;
@@ -513,6 +513,22 @@ body{
 
 .share_icon { 
 	/* filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%); */
+	width:25px;
+	height:25px;
+	position:relative;
+	left:-10px;
+	top:2.6666667461395264px;
+}
+
+.h_save { 
+	width:25px;
+	height:25px;
+	position:relative;
+	left:365px;
+	top:-114px;
+}
+
+.h_save_icon{
 	width:25px;
 	height:25px;
 	position:relative;

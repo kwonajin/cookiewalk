@@ -45,21 +45,23 @@ export default function Finished_List({drawId, location, title, distance, time, 
 
     return(
     
-        <div className="finished_list1">
-        
-        {/* 경로 사진 */}
-        <MapDiv className='finished_list1_picture'><MyMap path={path} center={center}/></MapDiv>
-
-
-        <span className="finished_list1_location">{title}</span>
-        
-        <div><img className='finished_list1_distance_icon' src="./icon/run.svg"/></div>
-        <div className="finished_list1_distance_value">{distance}km</div>
-
-        <div><img className='finished_list1_time_icon' src="./icon/clock.svg"/></div>
-        <div className="finished_list1_time_value">{formatTime(time)}</div>
-        <div><img className='finished_list1_rate_icon' src="./icon/sand-timer.svg"/></div>
-        <div className="finished_list1_rate_value">{location}</div>
-        </div>
+        <Link to='/finished_art_detail'>
+            <div className="finished_list1">
+            
+            {/* 경로 사진 */}
+            <MapDiv className='finished_list1_picture'><MyMap path={path} center={center}/></MapDiv>
+    
+    
+            <span className="finished_list1_location">제목{title}</span>
+            
+            <div><img className='finished_list1_distance_icon' src="./icon/run.svg"/></div>
+            <div className="finished_list1_distance_value">{distance}km</div>
+    
+            <div><img className='finished_list1_time_icon' src="./icon/place.svg"/></div>
+            <div className="finished_list1_time_value">{formatTime(time)}</div>
+            <div><img className='finished_list1_rate_icon' src="./icon/round-star.svg"/></div>
+            <div className="finished_list1_rate_value">{location}</div>
+            </div>
+        </Link>
     )
 }
