@@ -7,7 +7,9 @@ import { useToken } from '../context/tokenContext';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
-function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, setRedMarkerClicked, colors, sectionIndex }) {
+const initialColors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF']; // 빨간색, 주황색, 노란색, 초록색, 파란색
+
+function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, setRedMarkerClicked, colors, sectionIndex, onPolylineClick }) {
   const navermaps = useNavermaps();
   const [position, setPosition] = useState(null);
   const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));
@@ -54,9 +56,8 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
   });
 
   const customIconFactory = () => ({
-    url: customIcon,
-    size: new navermaps.Size(30, 40),  // 이미지 크기를 설정합니다.
-    scaledSize: new navermaps.Size(30, 40),
+    content: `<div class='animated-cookie' style='width: 30px; height: 40px;'><img src="${customIcon}" style="width: 100%; height: 100%;" /></div>`,
+    size: new navermaps.Size(30, 40),
     anchor: new navermaps.Point(15, 25)
   });
 
@@ -71,7 +72,13 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
       {path.map((sectionPath, index) => (
         sectionPath && sectionPath.length > 0 && (
           <React.Fragment key={index}>
-            <Polyline path={sectionPath} strokeColor={colors[index]} strokeWeight={5} />
+            <Polyline
+              path={sectionPath}
+              strokeColor={colors[index]}
+              strokeWeight={5}
+              onClick={() => onPolylineClick(index)}
+              clickable={true} // 이 부분을 추가해 클릭이 가능하도록 설정
+            />
             <Marker
               position={sectionPath[0]}
               icon={iconFactory(redMarkerClicked ? 'blue' : `${colors[index]}`)}  // 첫 클릭을 빨간색으로 표시, 클릭하면 파란색으로 변경
@@ -111,8 +118,9 @@ export default function DrawGroupMap() {
   const [title, setTitle] = useState('') // 제목
   const [totalDistance, setTotalDistance] = useState('') // 총거리
   const [selectedDifficulty, setSelectedDifficulty] = useState('하') // 난이도
-
-  const colors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF']; // 빨간색, 주황색, 노란색, 초록색, 파란색
+  const [colorPickerVisible, setColorPickerVisible] = useState(false);  // 색상 선택기 상태
+  const [selectedColors, setSelectedColors] = useState(initialColors);  // 사용자 선택 색상 상태
+  const [currentPolylineIndex, setCurrentPolylineIndex] = useState(null);  // 현재 선택된 Polyline 인덱스
 
   const toggleDrawing = () => {
     if (drawing) { // 그리기 종료 시
@@ -126,6 +134,8 @@ export default function DrawGroupMap() {
       }
     }
     setDrawing(prevDrawing => !prevDrawing);
+    setColorPickerVisible(false); // 그리기 시작 시 색상 선택기 숨기기
+    setCurrentPolylineIndex(null);
     if (!drawing) { // 그리기 시작 시 모든 상태를 초기화
       clearAllDrawings();  // 모든 초기화 작업을 clearAllDrawings 함수에서 처리
     }
@@ -159,6 +169,8 @@ export default function DrawGroupMap() {
     setSectionIndex(0); // 섹션 인덱스 초기화
     setSectionChangeCount(0); // 섹션 전환 횟수 초기화
     setPathHistory([]); // 이전 경로 초기화
+    setColorPickerVisible(false); // 색상 선택기 숨기기
+    setCurrentPolylineIndex(null);
     navigator.geolocation.getCurrentPosition(
       function(position) {
         const { latitude, longitude } = position.coords;
@@ -181,18 +193,22 @@ export default function DrawGroupMap() {
       alert('경로를 설정해주세요');
       return;
     }
-    setPathHistory(prevHistory => [
-      ...prevHistory,
-      {
-        path: [...path],
-        sectionIndex,
-        sectionChangeCount,
-        startPoint,
-        endPoint,
-        redMarkerClicked,
-      },
-    ]);
-    if (sectionChangeCount < selectedGroupSize - 1) {
+    if (sectionChangeCount >= selectedGroupSize - 1) {
+      alert('선택 인원을 초과하였습니다');
+      return;
+    }
+    if (window.confirm(`구역을 전환하시겠습니까? (${sectionChangeCount + 1}/${selectedGroupSize})`)) {
+      setPathHistory(prevHistory => [
+        ...prevHistory,
+        {
+          path: [...path],
+          sectionIndex,
+          sectionChangeCount,
+          startPoint,
+          endPoint,
+          redMarkerClicked,
+        },
+      ]);
       setSectionChangeCount(prevCount => prevCount + 1);
       setSectionIndex(prevIndex => {
         const newIndex = (prevIndex + 1) % selectedGroupSize;
@@ -205,9 +221,23 @@ export default function DrawGroupMap() {
         }
         return newIndex;
       });
-    } else {
-      alert('선택 인원을 초과하였습니다');
     }
+  };
+
+  const handlePolylineClick = (index) => {
+    if (!drawing) {
+      setCurrentPolylineIndex(index);
+      setColorPickerVisible(true);
+    }
+  };
+
+  const handleColorChange = (e) => {
+    const color = e.target.value;
+    setSelectedColors(prevColors => {
+      const newColors = [...prevColors];
+      newColors[currentPolylineIndex] = color;
+      return newColors;
+    });
   };
 
   async function getReverseGeocode(latitude, longitude) {
@@ -248,7 +278,7 @@ export default function DrawGroupMap() {
             created_at: created_time,
             user_id: userID,
             location: address,
-            color: colors.slice(0, selectedGroupSize).join(',')
+            color: selectedColors.slice(0, selectedGroupSize).join(',')
           }
         ]);
       if (insertCollectionError) {
@@ -298,6 +328,16 @@ export default function DrawGroupMap() {
         </>
       )}
 
+      {colorPickerVisible && currentPolylineIndex !== null && (
+        <input
+          type="color"
+          className='color_picker'
+          value={selectedColors[currentPolylineIndex]}
+          onChange={handleColorChange}
+          style={{ position: 'absolute', zIndex: 1000, left: '200px', top: '690px'}}
+        />
+      )}
+
       <Link to="/map">
         <div className="write_back">
           <img className='write_back_icon' src="./icon/arrow.svg" alt="Back" />
@@ -308,7 +348,7 @@ export default function DrawGroupMap() {
       <div className='draw_save' onClick={submitRoute}>경로 저장</div>
 
       <MapDiv className='mapimg' style={{ width: '100%', height: '450px' }}>
-        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} colors={colors} sectionIndex={sectionIndex} />
+        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} colors={selectedColors} sectionIndex={sectionIndex} onPolylineClick={handlePolylineClick} />
       </MapDiv>
 
       <div className='draw_name'>제목</div>
