@@ -135,6 +135,8 @@ export default function ContentBox({
             <div className='menu_title'><img className='dropdown_icon' src="./icon/block.svg" alt="차단" />차단</div>
           )}
           <div className='menu_title'><img className='dropdown_icon' src="./icon/hide.svg" alt="숨기기" />숨기기</div>
+          <div className='menu_title'><img className='dropdown_icon' src="./icon/information.svg" alt="정보" />경로 정보</div>
+
           {userId === userID && (
             <div className='menu_title2' onClick={handlePostDelete}>
               <img className='dropdown_icon2' src="./icon/trash.svg" alt="삭제" />삭제
@@ -149,6 +151,7 @@ export default function ContentBox({
       <Link to={`/comment/${postID}`}><div className="comment"><img className="comment_icon" src="./icon/comment.svg" alt="댓글" /></div></Link>
       <div className="share"><img className="share_icon" src="./icon/share.svg" alt="공유" /></div>
 
+      <div className='h_save'><img className='h_save_icon' src="./icon/save.svg" alt="" /></div>
       <div className="like">좋아요 {likeCount}개</div>
       <Link 
         className="comment_name" 

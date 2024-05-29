@@ -17,30 +17,7 @@
   bottom: 0;
   left: 0;
   background-color: white;
-  animation-name: slide-up;
-  animation-name: slide-up-write;
-  animation-duration: 0.2s; /* 애니메이션 지속 시간 */
-  animation-timing-function: ease-out; /* 애니메이션 가속도 */
 }
-
-
-@keyframes slide-up-write {
-  from {
-    transform: translateX(-100%); /* 시작 지점: 왼쪽 위로 이동 */
-  }
-  to {
-    transform: translateX(0); /* 종료 지점: 원래 위치로 이동 */
-  }
-}
-
-/* .writenav{
-  position: fixed;
-  top: 0px;
-	background-color:white;
-	width: 100%;
-	height: 52px;
-  z-index: 1;
-} */
 
 .write_map_back { 
 	width:25px;
@@ -109,14 +86,14 @@
 	top:15.5px;
 	display: none;
 }
-.writeMap_picture_add_icon {
+
+.write_map_img{
+	width: 340px;
+	height: 340px;
+	background-color: beige;
 	position: absolute;
-	cursor: pointer;
-	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
-	width: 100px;
-	height: 100px;
-	left: 72.5px;
-	top: 60px;
+	left: -50px;
+	top: -40px;
 }
 .writeMap_image_preview {
 	position: absolute;
@@ -127,16 +104,19 @@
 
 .writeMap_text { 
 	color:rgb(0, 0, 0);
-	width:355px;
+	background-color: #f8f8f8;
+	width:320px;
 	height:200px;
 	position:absolute;
-	left:15px;
-	top:380px;
+	left:22px;
+	top:420px;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:17px;
 	letter-spacing:0;
-	border: none;
   	resize: none; /* 입력란 크기 조절 비활성화 */
  	overflow-y: auto; /* 세로 스크롤바 표시 */
   	max-height: 450px; /* 최대 높이 설정 */
