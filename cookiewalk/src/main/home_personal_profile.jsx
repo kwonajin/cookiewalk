@@ -174,7 +174,7 @@ export default function HomePersonalProfile() {
       <div className="hpp_background">
         <div className='hppnav'>
           <div className="hpp_back" onClick={handleGoBack}>
-            <img className="hpp_back_icon" src="../../public/icon/arrow.svg" alt="" />
+            <img className="hpp_back_icon" src="/icon/arrow.svg" alt="" />
           </div>
           <div className="hpp_user_id">{nick_name}</div>
           <div className="hpp_line"></div>
