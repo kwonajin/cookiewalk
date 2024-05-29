@@ -225,6 +225,23 @@ body {
 .group_select {
   top: 740px;
   margin-left: -170px;
-  width: 130px;
-  height: 35px;
+  width: 50px;
+  height: 27px;
+}
+
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+}
+
+.animated-cookie {
+  animation: wiggle 1s infinite;
 }
