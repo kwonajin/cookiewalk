@@ -205,10 +205,10 @@ export const Tab = () => {
                     />
                   </div>
                   <div className="badge_list">
-                    <div className="badge1"></div>
-                    <div className="badge2"></div>
-                    <div className="badge3"></div>
-                    <div className="badge4"></div>
+                    <div><img className="badge1" src="./images/badge1.png" alt="" /></div>
+                    <div><img className="badge2" src="./images/badge2.png" alt="" /></div>
+                    <div><img className="badge3" src="./images/badge3.png" alt="" /></div>
+                    <div><img className="badge4" src="./images/badge4.png" alt="" /></div>
                   </div>
   
                   <Link to="/mygroup">
