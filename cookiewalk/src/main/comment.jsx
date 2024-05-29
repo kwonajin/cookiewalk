@@ -139,7 +139,7 @@ export default function Comment() {
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                 />
-                <button onClick={postComment}>Post</button>
+                <button className='comment-input-button' onClick={postComment}><img className='comment-input-icon' src="../../public/icon/round-arrow-up-bold.svg" alt="" /></button>
             </div>
         </div>
     );
