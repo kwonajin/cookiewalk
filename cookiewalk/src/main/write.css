@@ -7,6 +7,7 @@
 	height:100vh;
 	position:relative;
   padding: 0px;
+	overflow-x: hidden;
 }
 
 .write-page {
@@ -142,11 +143,12 @@
 	background-color: #f8f8f8;
 	border-radius: 5px;
 	color:rgb(0, 0, 0);
-	width:355px;
+	width:335px;
 	height:200px;
 	position:absolute;
 	left:15px;
 	top:380px;
+	padding: 10px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:17px;
