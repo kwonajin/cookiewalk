@@ -36,14 +36,16 @@ export default function Map_detail() {
   const time = mapList.state.time;
   const location = mapList.state.location;
   const title = mapList.state.title;
-  const path = mapList.state.pathcoord.coordinate;
+  const drawPath = mapList.state.pathcoord.coordinate;
   const center = mapList.state.centercoord.coordinate;
+  const nickName = mapList.state.nickName
+  // const drawUserId=mapList.state.drawUserId
 
-  console.log(path);
+  console.log(drawPath);
   console.log(center);
 
   const followRoute = () => {
-    navigate('/BeforeStart', { state: { path: path } });
+    navigate('/BeforeStart', { state: { drawPath: drawPath , drawId:drawId , path:[]} });
   };
 
   // Scroll to top on component mount
@@ -57,7 +59,7 @@ export default function Map_detail() {
       <span className="MapDetail_title">맵</span>
       <div className="MapDetail_title_line"></div>
 
-      <MapDiv className='e300_47'><MyMap path={path} center={center} /></MapDiv>
+      <MapDiv className='e300_47'><MyMap path={drawPath} center={center} /></MapDiv>
       {/* <div><img className="e300_47" src="./images/group1.png"/></div> */}
       {/* 경로 이미지 들어가는 곳 */}
 
@@ -73,8 +75,8 @@ export default function Map_detail() {
       <span className="MapDetail_time_value">{location}</span>
 
       <div><img className="MapDetail_difficulty_icon" src="./icon/round-star.svg" alt="Difficulty Icon" /></div>
-      <span className="MapDetail_difficulty_value">{level}</span>
-
+      <span className="MapDetail_difficulty_value">{level} </span>
+      {/* 제작자:{nickName} */}
       <div className="MapDetail_Detail_line_e"></div>
 
       <span className="mapDetail_button" onClick={followRoute}>경로 따라가기</span>

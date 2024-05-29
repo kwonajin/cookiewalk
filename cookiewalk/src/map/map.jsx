@@ -123,10 +123,13 @@ export default function MapSearch() {
     async function mapInfo(){
         const {data, error}= await supabase
             .from('draw_map_collection')
-            .select('*')
+            .select('*, user (nick_name)')
             .like('location', `%${address}%`)
             .limit(10);
-        // console.log(data)
+        console.log(data)
+        if(error){
+            console.error(error)
+        }
         setMapLists(data)
         for(let index in data){
             // console.log(data[index].draw_m_c_id)
@@ -159,7 +162,7 @@ export default function MapSearch() {
         setLoading(true)
         const {data: searchData, error: searchError}= await supabase
             .from('draw_map_collection')
-            .select('*')
+            .select('* , user (nick_name)')
             .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
             .like('location', `%${selectedLocation}%`)
             .like('level',`%${selectedDifficulty}%`)
@@ -266,7 +269,7 @@ export default function MapSearch() {
         
             <div className="map-list-container" style={{ minHeight: `${minHeight}px` }}>
                 {mapLists.map((mapItem, index) => (
-                    <Link className='map_list_link' to={`/mapDetail`} state={{drawID:mapItem.draw_m_c_id, location:mapItem.location, distance:mapItem.distance, level:mapItem.level, time:mapItem.time, pathcoord:path[index], centercoord:center[index], title:mapItem.title}} key={mapItem.draw_m_c_id}>
+                    <Link className='map_list_link' to={`/mapDetail`} state={{drawID:mapItem.draw_m_c_id, location:mapItem.location, distance:mapItem.distance, level:mapItem.level, time:mapItem.time, pathcoord:path[index], centercoord:center[index], title:mapItem.title, drawUserId:mapItem.user_id, nickName: mapItem.user.nick_name}} key={mapItem.draw_m_c_id}>
                         <MapList
                             key={mapItem.draw_m_c_id}
                             drawId={mapItem.draw_m_c_id}
@@ -277,6 +280,7 @@ export default function MapSearch() {
                             pathcoord={path[index]}
                             centercoord={center[index]}
                             title={mapItem.title}
+                            nickName={mapItem.user.nick_name}
                         ></MapList>
                     </Link>
                 ))}
