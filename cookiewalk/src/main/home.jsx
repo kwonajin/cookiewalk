@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './home.css';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, unstable_useViewTransitionState, useNavigate } from "react-router-dom";
 import { useToken } from '../context/tokenContext';
 import HomeNav from './home/HomeNav';
 import Active from './home/Active';
@@ -8,6 +8,7 @@ import ContentBox from './home/ContentBox';
 import NavBar from './home/NavBar';
 import { supabase } from '../supabaseClient';
 import debounce from 'lodash/debounce';  // 디바운스 함수 추가
+import { formatTime} from '../utils/formatTime';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -17,11 +18,19 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  //active 에 들어갈 것
+  let time=0
+  let distance=0
+  const [recordcount, setRecordCount]=useState(0)
+  const [totalDistance ,setTotalDistance]=useState(0)
+  const [totoalTime, setTotoalTime]=useState('')
+
   useEffect(() => {
     window.scrollTo(0, 0);
     if (userID) {
       checkNickname();
       fetchPosts(page);
+      userWalkingRecords()
     }
 
     const debouncedHandleScroll = debounce(handleScroll, 200); // 스크롤 이벤트 디바운싱
@@ -29,6 +38,32 @@ export default function Home() {
 
     return () => window.removeEventListener('scroll', debouncedHandleScroll);
   }, [userID, page]);
+
+
+  async function userWalkingRecords(){
+    const {data , error, count}= await supabase
+      .from('walking_record')
+      .select('distance, walking_time',{count : 'exact'})
+      .eq('user_id', userID);
+    if(error){
+      console.error('Error', error);
+      return
+    }
+    console.log(data)
+    setRecordCount(count)
+    if(data.length >= 1){
+      data.forEach(record =>{
+        distance +=record.distance
+        time +=record.walking_time
+      })
+      const format = formatTime(time)
+      setTotalDistance(distance.toFixed(2))
+      setTotoalTime(format)
+    }
+  }
+  useEffect(()=>{
+    console.log(totalDistance, totoalTime ,recordcount)
+  },[totalDistance, totoalTime, recordcount])
 
   const checkNickname = async () => {
     const { data: firstLoginData, error: firstLoginError } = await supabase
@@ -88,7 +123,7 @@ export default function Home() {
       <div className="home_background">
         <div className="topnav">
           <HomeNav />
-          <Active />
+          <Active distance={totalDistance} time={totoalTime} count={recordcount}/>
         </div>
         {postList.map((post, index) => (
           <ContentBox
