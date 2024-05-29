@@ -39,15 +39,15 @@ export default function GroupDetail() {
 
       <div className="gd_hashtag1">
         <div className="gd_hashtag1_box"></div>
-        <div className="gd_hashtag1_text">#부산</div>
+        <div className="gdd_hashtag1_text">#부산</div>
       </div>
       <div className="gd_hashtag2">
         <div className="gd_hashtag2_box"></div>
-        <span className="gd_hashtag2_text">#대연동</span>
+        <span className="gdd_hashtag2_text">#대연동</span>
       </div>
       <div className="gd_hashtag3">
         <div className="gd_hashtag3_box"></div>
-        <span className="gd_hashtag3_text">#자전거</span>
+        <span className="gdd_hashtag3_text">#자전거</span>
       </div>
 
 
