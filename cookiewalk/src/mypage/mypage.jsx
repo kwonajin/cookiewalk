@@ -65,14 +65,8 @@ export const Tab = () => {
         setIntro(data[0].intro)
         setProfileImage(data[0].profile_image)
         setEmail(data[0].email)
-        setDistance(data[0].distance)
-        // const name=data[0].name
-        // const nickname=data[0].nick_name
-        // const Intro=data[0].intro
-        // const profileImage=data[0].profile.image
-        // const email=data[0].email
       }
-  }
+    }
   //팔로우 팔로워 정보 가벼오기
   const followInfo = async()=>{
     const {count :follower, error: followerError}= await supabase
@@ -102,7 +96,26 @@ export const Tab = () => {
         console.log(following)
       }
   }
+  async function getTotalDistance() {
+    // 첫 번째 테이블에서 distance 값 가져오기
+    const { data: walkingRecords, error: walkingError } = await supabase
+        .from('walking_record')
+        .select('distance')
+        .eq('user_id', userID);
 
+    if (walkingError) {
+        console.error('Error fetching walking_record:', walkingError);
+        return;
+    }
+    console.log(walkingRecords)
+    // 두 테이블의 distance 값 합산
+    const totalDistance = [...walkingRecords]
+        .reduce((sum, record) => sum + (record.distance || 0), 0);
+
+    console.log('Total distance for user', userID, 'is', totalDistance);
+    setDistance(totalDistance.toFixed(2))
+    return totalDistance;
+  }
   const settings = {
     dots: true,
     infinite: true,
@@ -115,6 +128,7 @@ export const Tab = () => {
     window.scrollTo(0, 0);
     if(userID !=null){
       User();
+      getTotalDistance()
     }
     if(email){
       followInfo();
