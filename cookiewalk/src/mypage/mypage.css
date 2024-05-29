@@ -397,7 +397,6 @@ body{
 	position:absolute;
 	left:32px;
 	top:20px;
-	background-image:url(./images/badge1.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -408,7 +407,6 @@ body{
 	position:absolute;
 	left:115.66667175292969px;
 	top:20px;
-	background-image:url(./images/badge2.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -419,7 +417,6 @@ body{
 	position:absolute;
 	left:199.33334350585938px;
 	top:20px;
-	background-image:url(./images/badge3.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -430,7 +427,6 @@ body{
 	position:absolute;
 	left:283px;
 	top:20px;
-	background-image:url(./images/badge4.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 }
