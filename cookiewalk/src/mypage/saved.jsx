@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './saved.css'
 
 export default function Saved_() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="saved_background">
       <Link to="/mypage_menu"><div className="saved_back"><img className="saved_back_icon" src="./icon/arrow.svg" alt="" /></div></Link>
