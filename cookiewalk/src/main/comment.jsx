@@ -113,7 +113,7 @@ export default function Comment() {
     return (
         <div className="comment-section-container">
             <div className="comment-title">댓글</div>
-            <Link to='/home'><div><img className="comment-back-button" src="../../public/icon/arrow.svg" alt="Back" /></div></Link>
+            <Link to='/home'><div><img className="comment-back-button" src="/icon/arrow.svg" alt="Back" /></div></Link>
             <div className="comment-section-divider"></div>
 
             {commentList.map(comment => (
@@ -139,7 +139,7 @@ export default function Comment() {
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                 />
-                <button onClick={postComment}>Post</button>
+                <button className='comment-input-button' onClick={postComment}><img className='comment-input-icon' src="/icon/round-arrow-up-bold.svg" alt="" /></button>
             </div>
         </div>
     );

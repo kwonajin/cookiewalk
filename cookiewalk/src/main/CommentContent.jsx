@@ -9,7 +9,7 @@ export default function CommentContent({ commentID, userId, nickName, profileIma
             <div className="comment-time">{new Date(createdAt).toLocaleDateString()}</div>
             <div>
                 {userId === userID && (
-                    <img className='comment-delete-button' src="../../public/icon/comment-delete.svg" alt="Delete" onClick={() => deleteComment(commentID)} />
+                    <img className='comment-delete-button' src="/icon/comment-delete.svg" alt="Delete" onClick={() => deleteComment(commentID)} />
                 )}
             </div> 
             <div className="comment-content">{comment}</div>

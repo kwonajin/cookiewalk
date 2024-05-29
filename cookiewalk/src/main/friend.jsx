@@ -19,7 +19,7 @@ export default function Friend() {
     <div className="friend-page">
       <div className='friendnav'>
         <Link to="/home"><div className="friend_back"><img className="friend_back_icon" src="./icon/arrow.svg" alt="" /></div></Link>
-        <div className="friend_tilte">친구찾기</div>
+        <div className="friend_title">친구찾기</div>
         <div className="friend_line1"></div>
       </div>
 

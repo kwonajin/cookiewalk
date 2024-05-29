@@ -161,7 +161,7 @@ export default function ContentBox({
         {profileName}
       </Link>
       <div className="contents">{contentText}</div>
-      <Link to={`/comment/${postID}`}><div className="comment_num">{`댓글 ${commentCount}개 모두 보기`}</div></Link>
+      <Link className='comment_num_link' to={`/comment/${postID}`}><div className="comment_num">{`댓글 ${commentCount}개 모두 보기`}</div></Link>
       <div className="date">{createdAt}</div>
     </div>
   );

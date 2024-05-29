@@ -234,7 +234,7 @@ body{
 
 .active_time_num { 
 	color:#131313;
-	width:75px;
+	width:150px;
 	height:23px;
 	position:absolute;
 	left:219px;
@@ -421,6 +421,7 @@ body{
 	letter-spacing:0;
 }
 
+
 .date { 
 	color:#787878;
 	position:relative;
@@ -430,6 +431,10 @@ body{
 	text-align:left;
 	font-size:11px;
 	letter-spacing:0;
+}
+
+.comment_num_link{
+	text-decoration: none;
 }
 
 .like { 
