@@ -95,7 +95,7 @@ export default function Write_map() {
 
   return (
     <div className="write-map-page">
-      <Link to="/home">
+      <Link to="/finished_art_detail">
         <div className="write_map_back">
           <img className='write_map_back_icon' src="./icon/arrow.svg" alt="Back" />
         </div>
@@ -111,9 +111,8 @@ export default function Write_map() {
       <div className='writeMap_Picture_add_box'>
         {/* 숨겨진 파일 인풋 */}
         <input id="fileInput" className='writeMap_picture_add' type="file" accept='image/*' onChange={handleFileChange} />
-        {/* 사용자 정의 아이콘으로 파일 인풋 트리거 - 이미지가 없을 때만 보여줍니다 */}
-        {!previewUrl && <img src='./icon/map.svg' className="writeMap_picture_add_icon" onClick={() => document.getElementById('fileInput').click()} alt="Upload" />}
         {/* 이미지 미리보기 - 이미지가 있을 때만 보여줍니다 */}
+        <div className='write_map_img'>지도</div>
         {previewUrl && <img src={previewUrl} alt="Preview" className="writeMap_image_preview" />}
       </div>  
 

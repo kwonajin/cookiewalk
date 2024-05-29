@@ -74,7 +74,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
       onClick={handleMapClick}
     >
       {position && <Marker position={position} icon={customIconFactory()} />}  // 사용자의 현재 위치를 로고 이미지로 표시
-      {path.length > 0 && <Polyline path={path} strokeColor={selectedColor} strokeWeight={5} />}
+      {path.length > 0 && <Polyline path={path} strokeColor={selectedColor} strokeWeight={7} />}
       {path.length > 0 && (
         <Marker
           position={path[0]}

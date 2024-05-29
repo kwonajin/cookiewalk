@@ -27,7 +27,7 @@ function MyMap({path, center}) {
     );
 }
 
-export default function MapList({drawId,location, title, distance, level, time, pathcoord, centercoord}) {
+export default function MapList({drawId,location, title, distance, level, time, pathcoord, centercoord, nickName}) {
     const [path, setPath]= useState([]);
     const [center, setCenter]=useState([])
     // console.log(pathcoord)
@@ -62,6 +62,7 @@ return(
 
     <div><img className='map_list1_rate_icon' src="./icon/round-star.svg"/></div>
     <div className="map_list1_rate_value">{level}</div>
+    {/* 제작자:{nickName} */}
 
 
     </div>

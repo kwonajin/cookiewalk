@@ -59,3 +59,140 @@ body{
 	top:50px;
 	border:0.1px solid #bfbfbf;
 }
+
+.saved-map_list_container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px; /* 원하는 간격으로 조정 */
+}
+
+.saved_ml_delete{
+	filter: invert(36%) sepia(33%) saturate(766%) hue-rotate(314deg) brightness(117%) contrast(109%);
+	width: 21px;
+	height: 21px;
+	position: absolute;
+	top: -70px;
+	left: 337px;
+}
+
+.saved_map_list1 { 
+	width:368px;
+	height:122.37110137939453px;
+	position:relative;
+	left:11.5px;
+	top:140px;
+	margin-bottom: 10px;
+}
+.saved_map_list1_box { 
+	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
+	background-color:rgba(247.35000729560852, 247.35000729560852, 247.35000729560852, 1);
+	width:368px;
+	height:122.37110137939453px;
+	position:relative;
+	left:0px;
+	top:-80px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+}
+.saved_map_list1_title { 
+	color:rgba(0, 0, 0, 1);
+	width:220px;
+	height:17.363468170166016px;
+	position:relative;
+	left:137px;
+	top:-198px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:16px;
+	letter-spacing:0;
+}
+.saved_map_list1_distance_icon { 
+	width:13.327808380126953px;
+	height:16.453258514404297px;
+	position:relative;
+	left:139px;
+	top:-190px;
+	border-radius:5px;
+}
+.saved_map_list1_distance_value { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:200px;
+	height:18.19029998779297px;
+	position:relative;
+	left:163px;
+	top:-212px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:13px;
+	letter-spacing:0;
+}
+.saved_map_list1_time_icon { 
+	width:17px;
+	height:16.134475708007812px;
+	position:relative;
+	left:137px;
+	top:-205px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+}
+.saved_map_list1_time_value { 
+	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
+	width:200px;
+	height:18.19029998779297px;
+	position:relative;
+	left:163px;
+	top:-227px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:13px;
+	letter-spacing:0;
+}
+.saved_map_list1_picture { 
+	width:100px;
+	height:102.8328628540039px;
+	position:relative;
+	left:16px;
+	top:-130px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+}
+
+.saved_map_list1_time_icon { 
+	width:17px;
+	height:16.134475708007812px;
+	position:relative;
+	left:137px;
+	top:-205px;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+}
+
+.saved_map_list1_rate_icon { 
+	width:17px;
+	height:17px;
+	position:relative;
+	left:137px;
+	top:-220px;
+	border-radius:5px;
+}
+.saved_map_list1_rate_value { 
+	color:rgba(0, 0, 0, 1);
+	width:200px;
+	height:16.536636352539062px;
+	position:relative;
+	left:163px;
+	top:-242px;
+	font-family:Noto Sans KR;
+	text-align:left;
+	font-size:13px;
+	letter-spacing:0;
+}
+

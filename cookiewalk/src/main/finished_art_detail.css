@@ -5,7 +5,7 @@ body{
     /* justify-content: center; */
     align-items: center;
 }
-.MapDetail_container { 
+.fad_container { 
 	background-color:rgba(255, 255, 255, 1);
 	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
 	width:390px;
@@ -13,7 +13,7 @@ body{
   min-height: 850px;
 	position:relative;
 }
-.MapDetail_backArrow { 
+.fad_backArrow { 
 	filter: invert(59%) sepia(1%) saturate(0%) hue-rotate(152deg) brightness(92%) contrast(88%);
 	width:25px;
 	height:25px;
@@ -21,12 +21,11 @@ body{
 	left:10px;
 	top:12px;
 }
-.MapDetail_title { 
+.fad_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:19px;
 	height:29px;
 	position:absolute;
-	left:185px;
+	left:39%;
 	top:10px;
 	font-family:Noto Sans KR;
 	text-align:left;
@@ -34,7 +33,7 @@ body{
 	font-weight: 700;
 	letter-spacing:0;
 }
-.MapDetail_title_line { 
+.fad_title_line { 
 	transform: rotate(-2.4848166388360215e-17deg);
 	width:390px;
 	height:0px;
@@ -44,18 +43,7 @@ body{
     border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
 
-.e300_47 { 
-	width:342px;
-	height:193px;
-	position:absolute;
-	left:24px;
-	top:73px;
-	border-top-left-radius:5px;
-	border-top-right-radius:5px;
-	border-bottom-left-radius:5px;
-	border-bottom-right-radius:5px;
-}
-.MapDetail_location { 
+.fad_location { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:340px;
 	height:30px;
@@ -68,17 +56,26 @@ body{
 	font-size:25px;
 	letter-spacing:0;
 }
-.MapDetail_Detail_line_s { 
+.fad_Detail_line_s { 
 	transform: rotate(-2.609403802125866e-17deg);
 	width:342px;
 	height:0px;
 	position:absolute;
 	left:24px;
 	top:329px;
-    border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
+  border:0.5px solid rgba(191.23340249061584, 191.23340249061584, 191.23340249061584, 1);
 }
 
-.MapDetail_Detail_line_e { 
+.fad_map_img{
+	width:342px;
+  height: 193px;
+  background-color: beige;
+  position: absolute;
+	left:24px;
+  top: 73px;
+}
+
+.fad_Detail_line_e { 
 	transform: rotate(-2.609403802125866e-17deg);
 	width:342px;
 	height:0px;
@@ -89,7 +86,7 @@ body{
 }
 
 
-.MapDetail_distance_icon { 
+.fad_distance_icon { 
 	width:25.000001907348633px;
 	height:25.000001907348633px;
 	position:absolute;
@@ -97,7 +94,7 @@ body{
 	top:348px;
 }
 
-.MapDetail_distance_value { 
+.fad_distance_value { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:309px;
 	height:21.13680648803711px;
@@ -109,21 +106,21 @@ body{
 	font-size:17px;
 	letter-spacing:0;
 }
-.e300_88 { 
+/* .fad_distance { 
 	width:100px;
 	height:67px;
 	position:absolute;
 	left:23px;
 	top:389px;
-}
-.MapDetail_time_icon { 
+} */
+.fad_time_icon { 
 	width:25px;
 	height:25px;
 	position:absolute;
 	left:23px;
 	top:382px;
 }
-.MapDetail_time_value { 
+.fad_time_value { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:300px;
 	height:25px;
@@ -135,16 +132,16 @@ body{
 	font-size:17px;
 	letter-spacing:0;
 }
-.MapDetail_difficulty_icon { 
+.fad_difficulty_icon { 
 	width:25px;
 	height:25px;
 	position:absolute;
 	left:23px;
 	top:415px;
 }
-.MapDetail_difficulty_value { 
+.fad_difficulty_value { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:150px;
+	width:57px;
 	height:25px;
 	position:absolute;
 	left:66px;
@@ -154,7 +151,7 @@ body{
 	font-size:17px;
 	letter-spacing:0;
 }
-.mapDetail_button { 
+.fad_button { 
 	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
 	color: white;
 	font-size: 24px;

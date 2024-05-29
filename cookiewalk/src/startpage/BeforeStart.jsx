@@ -4,8 +4,8 @@ import './BeforeStart.css'
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from '../supabaseClient';
 
-function MyMap({path,center}){
-
+function MyMap({path=[],center, drawPath=[] }){
+    console.log(drawPath)
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
     const markerIcon = {
         content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
@@ -19,12 +19,25 @@ function MyMap({path,center}){
         {path.length >1 &&(
             <Polyline
                 path={path.map(p => new navermaps.LatLng(p.latitude,p.longitude))}
-                strokeColor='blue' // 선색깔
+                strokeColor='#2E9AFE' // 선색깔
                 strokeWeight={8} //선두께
                 strokeOpacity={0.8} //투명도
                 strokeStyle="solid"
             />
         )}
+        {drawPath.length > 1 && drawPath.map((p, index) => (
+                <Marker
+                    key={index}
+                    position={new navermaps.LatLng(p.latitude, p.longitude)}
+                    title={`Marker ${index + 1}`}
+                    clickable={true}
+                    icon={{
+                        content: `<div style="background: #B45F04; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        size: new navermaps.Size(10, 10),
+                        anchor: new navermaps.Point(5, 5)
+                    }}
+                />
+            ))}
     </NaverMap>
     )
 }
@@ -32,25 +45,20 @@ function MyMap({path,center}){
 export default function BeforeStart(){
     
     const [path,setPath]=useState([])
+    const [drawId,setDrawId]=useState('')
+    const [drawPath, setDrawPath]=useState([])
 
-    // async function bringMapPath(drawID){
-    //     const {data, error} = await supabase
-    //         .from('draw_map_c_location')
-    //         .select('latitude, longitude')
-    //         .eq('draw_m_c_id', drawID)
-    //         // console.log(data)
-    //         setPath(data)
-    //     if(error){
-    //         console.error(error)
-    //     }
-    // }
     const mapCollection = useLocation();
     console.log(mapCollection)
     useEffect(()=>{
         if(mapCollection.state !== null){
             // console.log(mapCollection.state.drawID)
             const maproute=mapCollection.state.path
+            const drawID=mapCollection.state.drawId
+            const drawPath=mapCollection.state.drawPath
             setPath(maproute)
+            setDrawId(drawID)
+            setDrawPath(drawPath)
         }
     },[path])
     const  navigate = useNavigate();
@@ -60,20 +68,14 @@ export default function BeforeStart(){
     const [loading, setLoading]=useState(true); // 로딩 상태 추가
 
     // const mapRef = useRef(null);
-
-    //패시브 이벤트 리스너 추가 함수
-    // const addPassiveEventListener = (type, element) =>{
-    //     element.addEventListener(type, function() {}, {passive:true});
-    // }
-
     const fetchCurrentPosition=()=>{
         if (navigator.geolocation){
             navigator.geolocation.getCurrentPosition(
                 (position)=>{
                     const {latitude, longitude} = position.coords;
-                    console.log(position.coords)
+                    // console.log(position.coords)
                     setCurrentPosition({latitude:latitude, longitude:longitude});
-                    console.log(currentPosition)
+                    // console.log(currentPosition)
                     setLoading(false)
                 },
                 (error)=>{
@@ -96,12 +98,6 @@ export default function BeforeStart(){
     
     useEffect(() => {
         window.scrollTo(0, 0);
-
-        // if(mapRef.current){
-        //     addPassiveEventListener('mousewheel',mapRef.current);
-        //     addPassiveEventListener('touchstart',mapRef.current);
-        //     addPassiveEventListener('touchmove',mapRef.current);
-        // }
         fetchCurrentPosition(); // 현재 위치 가져오기
     }, []);
 
@@ -117,14 +113,14 @@ export default function BeforeStart(){
     function startPage(e){
         e.preventDefault();
         const startTime = new Date()
-        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:path}})
+        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId}})
     }
 
     return(
         <div className="BeforeStart_container">
             <Link to='/home'><div><img className='Before_start_backarrow' src="./icon/arrow.svg"/></div></Link>
             
-            <MapDiv className='MapStyle'><MyMap path={path} center={currentPosition} /></MapDiv>
+            <MapDiv className='MapStyle'><MyMap path={path} center={currentPosition} drawPath={drawPath}/></MapDiv>
             {/* 지도 넣는 곳 */}
             {/* <div><img className="e118_427" src="./images/image 229_4174.png" alt="map" /></div> */}
 
