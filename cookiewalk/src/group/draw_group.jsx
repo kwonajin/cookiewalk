@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps } from 'react-naver-maps';
+import React, { useEffect, useState, Suspense } from 'react';
+import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps, NavermapsProvider } from 'react-naver-maps';
 import './draw_group.css';
-import customIcon from '../../public/images/logo.png';  // 이미지 경로를 불러옵니다.
+import customIcon from '../../public/images/logo.png';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
-const initialColors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF']; // 빨간색, 주황색, 노란색, 초록색, 파란색
+const initialColors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF'];
 
 function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, setRedMarkerClicked, colors, sectionIndex, onPolylineClick }) {
   const navermaps = useNavermaps();
@@ -15,17 +15,20 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
   const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      function(position) {
-        const { latitude, longitude } = position.coords;
-        const newPos = new navermaps.LatLng(latitude, longitude);
-        setPosition(newPos);
-        setCenter(newPos);
-      },
-      function(error) {
-        console.error("Geolocation 정보를 가져오는 데 실패했습니다:", error);
-      }
-    );
+    const fetchPosition = async () => {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const { latitude, longitude } = position.coords;
+          const newPos = new navermaps.LatLng(latitude, longitude);
+          setPosition(newPos);
+          setCenter(newPos);
+        },
+        function(error) {
+          console.error("Geolocation 정보를 가져오는 데 실패했습니다:", error);
+        }
+      );
+    };
+    fetchPosition();
   }, [navermaps]);
 
   const handleMapClick = (e) => {
@@ -35,17 +38,17 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
         const newPath = [...currentPath];
         newPath[sectionIndex] = [...(newPath[sectionIndex] || []), newPoint];
         if (newPath[sectionIndex].length === 1 && sectionIndex === 0) {
-          start(newPoint);  // 첫 클릭에서 출발지로 설정하고 빨간색으로 표시
+          start(newPoint);
         }
         return newPath;
       });
-      setEndPoint(newPoint);  // 마지막 클릭을 항상 업데이트
+      setEndPoint(newPoint);
     }
   };
 
   const handleRedMarkerClick = () => {
     if (drawing && !redMarkerClicked) {
-      setRedMarkerClicked(false); // true 할시 안그려짐 
+      setRedMarkerClicked(false);
     }
   };
 
@@ -67,8 +70,7 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
       defaultZoom={15}
       onClick={handleMapClick}
     >
-      {position && <Marker position={position} icon={customIconFactory()} />}  // 사용자의 현재 위치를 로고 이미지로 표시
-
+      {position && <Marker position={position} icon={customIconFactory()} />}
       {path.map((sectionPath, index) => (
         sectionPath && sectionPath.length > 0 && (
           <React.Fragment key={index}>
@@ -77,17 +79,17 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
               strokeColor={colors[index]}
               strokeWeight={5}
               onClick={() => onPolylineClick(index)}
-              clickable={true} // 이 부분을 추가해 클릭이 가능하도록 설정
+              clickable={true}
             />
             <Marker
               position={sectionPath[0]}
-              icon={iconFactory(redMarkerClicked ? 'blue' : `${colors[index]}`)}  // 첫 클릭을 빨간색으로 표시, 클릭하면 파란색으로 변경
-              onClick={handleRedMarkerClick}  // 빨간색 점 클릭 이벤트 핸들러
+              icon={iconFactory(redMarkerClicked ? 'blue' : `${colors[index]}`)}
+              onClick={handleRedMarkerClick}
             />
             {sectionPath.length > 1 && (
               <Marker
                 position={sectionPath[sectionPath.length - 1]}
-                icon={iconFactory('black')}  // 마지막 클릭을 초록색으로 표시
+                icon={iconFactory('black')}
               />
             )}
           </React.Fragment>
@@ -97,33 +99,33 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
   );
 }
 
-export default function DrawGroupMap() {
-  const navermaps = useNavermaps();  // 여기서 useNavermaps 훅을 사용
+function DrawGroupMapComponent() {
+  const navermaps = useNavermaps();
   const [drawing, setDrawing] = useState(false);
   const [path, setPath] = useState([]);
-  const [pathHistory, setPathHistory] = useState([]); // 이전 경로들을 저장할 상태
+  const [pathHistory, setPathHistory] = useState([]);
   const [startPoint, setStartPoint] = useState(null);
   const [endPoint, setEndPoint] = useState(null);
   const [redMarkerClicked, setRedMarkerClicked] = useState(false);
-  const [selectedGroupSize, setSelectedGroupSize] = useState(2); // 기본 인원 설정
+  const [selectedGroupSize, setSelectedGroupSize] = useState(2);
   const [sectionIndex, setSectionIndex] = useState(0);
   const [sectionChangeCount, setSectionChangeCount] = useState(0);
-  const [position, setPosition] = useState(null);  // 위치 상태 추가
-  const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));  // 중심 상태 추가
+  const [position, setPosition] = useState(null);
+  const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));
   const navigate = useNavigate();
   const userInfo = useToken();
   const userID = userInfo.user;
   const [address, setAddress] = useState('');
 
-  const [title, setTitle] = useState('') // 제목
-  const [totalDistance, setTotalDistance] = useState('') // 총거리
-  const [selectedDifficulty, setSelectedDifficulty] = useState('하') // 난이도
-  const [colorPickerVisible, setColorPickerVisible] = useState(false);  // 색상 선택기 상태
-  const [selectedColors, setSelectedColors] = useState(initialColors);  // 사용자 선택 색상 상태
-  const [currentPolylineIndex, setCurrentPolylineIndex] = useState(null);  // 현재 선택된 Polyline 인덱스
+  const [title, setTitle] = useState('');
+  const [totalDistance, setTotalDistance] = useState('');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('하');
+  const [colorPickerVisible, setColorPickerVisible] = useState(false);
+  const [selectedColors, setSelectedColors] = useState(initialColors);
+  const [currentPolylineIndex, setCurrentPolylineIndex] = useState(null);
 
   const toggleDrawing = () => {
-    if (drawing) { // 그리기 종료 시
+    if (drawing) {
       const allSectionsCompleted = path.every(section => section && section.length > 1);
       const requiredSections = selectedGroupSize;
       const drawnSections = path.filter(section => section && section.length > 1).length;
@@ -132,12 +134,14 @@ export default function DrawGroupMap() {
         alert('경로를 모두 그려주세요');
         return;
       }
+      setColorPickerVisible(true);
+    } else {
+      setSelectedColors(initialColors);
     }
     setDrawing(prevDrawing => !prevDrawing);
-    setColorPickerVisible(false); // 그리기 시작 시 색상 선택기 숨기기
     setCurrentPolylineIndex(null);
-    if (!drawing) { // 그리기 시작 시 모든 상태를 초기화
-      clearAllDrawings();  // 모든 초기화 작업을 clearAllDrawings 함수에서 처리
+    if (!drawing) {
+      clearAllDrawings();
     }
   };
 
@@ -154,7 +158,7 @@ export default function DrawGroupMap() {
         if (lastSectionIndex >= 0 && newPath[lastSectionIndex] && newPath[lastSectionIndex].length > 0) {
           newPath[lastSectionIndex] = newPath[lastSectionIndex].slice(0, -1);
           setSectionIndex(lastSectionIndex);
-          setSectionChangeCount(sectionChangeCount - 1); // 경로 전환 횟수도 되돌리기
+          setSectionChangeCount(sectionChangeCount - 1);
         }
       }
       return newPath;
@@ -166,10 +170,10 @@ export default function DrawGroupMap() {
     setStartPoint(null);
     setEndPoint(null);
     setRedMarkerClicked(false);
-    setSectionIndex(0); // 섹션 인덱스 초기화
-    setSectionChangeCount(0); // 섹션 전환 횟수 초기화
-    setPathHistory([]); // 이전 경로 초기화
-    setColorPickerVisible(false); // 색상 선택기 숨기기
+    setSectionIndex(0);
+    setSectionChangeCount(0);
+    setPathHistory([]);
+    setColorPickerVisible(false);
     setCurrentPolylineIndex(null);
     navigator.geolocation.getCurrentPosition(
       function(position) {
@@ -244,7 +248,7 @@ export default function DrawGroupMap() {
     const url = `http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
     try {
       const response = await axios.get(url, { latitude, longitude });
-      console.log(response.data.results[1].region)
+      console.log(response.data.results[1].region);
       const area1 = response.data.results[1].region.area1.name;
       const area2 = response.data.results[1].region.area2.name;
       const area3 = response.data.results[1].region.area3.name;
@@ -328,7 +332,7 @@ export default function DrawGroupMap() {
         </>
       )}
 
-      {colorPickerVisible && currentPolylineIndex !== null && (
+      {colorPickerVisible && currentPolylineIndex !== null && !drawing && (
         <input
           type="color"
           className='color_picker'
@@ -376,5 +380,15 @@ export default function DrawGroupMap() {
         <option value={5}>5명</option>
       </select>
     </div>
+  );
+}
+
+export default function DrawGroupMap() {
+  return (
+    <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_CLIENT_ID}>
+      <Suspense fallback={<div>Loading...</div>}>
+        <DrawGroupMapComponent />
+      </Suspense>
+    </NavermapsProvider>
   );
 }
