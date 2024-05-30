@@ -7,6 +7,7 @@
 	height:100vh;
 	position:relative;
   padding: 0px;
+	overflow-x: hidden;
 }
 
 .write-page {
@@ -60,7 +61,6 @@
 
 .write_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:79px;
 	height:29px;
 	position:absolute;
 	left:155px;
@@ -69,7 +69,7 @@
 	text-align:left;
 	font-size:20px;
 	letter-spacing:0;
-  font-weight: 600;
+	font-weight: 600;
 }
 
 .write_add { 
@@ -140,12 +140,15 @@
 }
 
 .write_text { 
+	background-color: #f8f8f8;
+	border-radius: 5px;
 	color:rgb(0, 0, 0);
-	width:355px;
+	width:335px;
 	height:200px;
 	position:absolute;
 	left:15px;
 	top:380px;
+	padding: 10px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:17px;
