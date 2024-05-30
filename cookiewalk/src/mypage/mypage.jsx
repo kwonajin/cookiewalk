@@ -22,6 +22,10 @@ export const Tab = () => {
 
   const [followerCount, setFollowerCount]=useState(0);
   const [followingCount, setFollowingCount]=useState(0);
+
+
+
+  const [postList,setPostList]=useState([])
   
   const userInfo=useToken(); //TokenContext에서 user 상태를 가져옴
   // console.log(userInfo.user)
@@ -116,6 +120,18 @@ export const Tab = () => {
     setDistance(totalDistance.toFixed(2))
     return totalDistance;
   }
+
+
+  async function getPostList(userID){
+    const [data,error]=await supabase
+    .from("post")
+    .select("*")
+  }
+
+
+
+
+
   const settings = {
     dots: true,
     infinite: true,
