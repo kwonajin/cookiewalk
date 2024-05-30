@@ -52,7 +52,7 @@ export default function Finished_List({drawId, location, title, distance, time, 
             <MapDiv className='finished_list1_picture'><MyMap path={path} center={center}/></MapDiv>
     
     
-            <span className="finished_list1_location">제목{title}</span>
+            <span className="finished_list1_location">제목: {title}</span>
             
             <div><img className='finished_list1_distance_icon' src="./icon/run.svg"/></div>
             <div className="finished_list1_distance_value">{distance}km</div>
