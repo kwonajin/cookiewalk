@@ -6,6 +6,7 @@ import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
+import { calculateDistance } from '../utils/CalculateDistance';
 
 const initialColors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF'];
 
@@ -118,11 +119,24 @@ function DrawGroupMapComponent() {
   const [address, setAddress] = useState('');
 
   const [title, setTitle] = useState('');
-  const [totalDistance, setTotalDistance] = useState('');
+  const [sectionDistances, setSectionDistances] = useState([]);
+  const [totalDistance, setTotalDistance] = useState(0);
   const [selectedDifficulty, setSelectedDifficulty] = useState('하');
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
   const [selectedColors, setSelectedColors] = useState(initialColors);
   const [currentPolylineIndex, setCurrentPolylineIndex] = useState(null);
+  const [currentDistance, setCurrentDistance] = useState(0); // 추가
+
+  const calculatePathDistances = (path) => {
+    return path.map(section => {
+      if (section.length < 2) return 0;
+      let sectionDistance = 0;
+      for (let i = 1; i < section.length; i++) {
+        sectionDistance += calculateDistance(section[i - 1], section[i]);
+      }
+      return sectionDistance.toFixed(2);
+    });
+  };
 
   const toggleDrawing = () => {
     if (drawing) {
@@ -137,6 +151,10 @@ function DrawGroupMapComponent() {
       setColorPickerVisible(true);
     } else {
       setSelectedColors(initialColors);
+      setPath([]);  // 경로 초기화
+      setSectionDistances([]);
+      setTotalDistance(0);
+      setCurrentDistance(0);  // 거리 초기화
     }
     setDrawing(prevDrawing => !prevDrawing);
     setCurrentPolylineIndex(null);
@@ -175,6 +193,7 @@ function DrawGroupMapComponent() {
     setPathHistory([]);
     setColorPickerVisible(false);
     setCurrentPolylineIndex(null);
+    setCurrentDistance(0);  // 거리 초기화
     navigator.geolocation.getCurrentPosition(
       function(position) {
         const { latitude, longitude } = position.coords;
@@ -223,6 +242,7 @@ function DrawGroupMapComponent() {
             return newPath;
           });
         }
+        setCurrentDistance(0);  // 새로운 섹션 시작 시 거리 초기화
         return newIndex;
       });
     }
@@ -262,52 +282,116 @@ function DrawGroupMapComponent() {
     }
   }
 
-  async function submitRoute() {
-    if (path.flat().length > 2) {
-      const created_time = new Date();
+  const insertGroup = async () => {
+    const total_distance = sectionDistances.reduce((acc, dist) => acc + parseFloat(dist), 0).toFixed(2);
 
-      const { data: countData, error: countError, count } = await supabase
-        .from('draw_map_collection')
-        .select('*', { count: 'exact' });
-      if (countError) {
-        console.error(countError);
-      }
-      console.log(count);
+    const { data: countData, error: countError, count } = await supabase
+      .from('group')
+      .select('*', { count: 'exact' });
+    if (countError) {
+      console.error(countError);
+      return;
+    }
 
-      const { data: insertCollection, error: insertCollectionError } = await supabase
-        .from('draw_map_collection')
-        .insert([
-          {
-            draw_m_c_id: `draw_${count + 1}`,
-            created_at: created_time,
-            user_id: userID,
-            location: address,
-            color: selectedColors.slice(0, selectedGroupSize).join(',')
-          }
-        ]);
-      if (insertCollectionError) {
-        console.error(insertCollectionError);
-      }
-      for (const [sectionIndex, sectionPath] of path.entries()) {
-        for (const [index, location] of sectionPath.entries()) {
-          const { data: insertLocation, insertLocationError } = await supabase
-            .from('draw_map_c_location')
-            .insert([
-              {
-                draw_m_c_id: `draw_${count + 1}`,
-                mark_order: `${sectionIndex + 1}-${index + 1}`,
-                latitude: location.lat,
-                longitude: location.lng
-              }
-            ]);
-          if (insertLocationError) {
-            console.error(insertLocationError);
-          }
+    const { data: insertCollection, error: insertCollectionError } = await supabase
+      .from('group')
+      .insert([
+        {
+          group_id: `group_${count + 1}`,
+          user_id: userID,
+          location: address,
+          level: selectedDifficulty,
+          title: title,
+          limit_member: selectedGroupSize,
+          distance: `{${sectionDistances.join(",")}}`,  // PostgreSQL 배열 형식으로 변환
+          total_distance: total_distance,
+        }
+      ]);
+    if (insertCollectionError) {
+      console.error(insertCollectionError);
+      return;
+    }
+    return count + 1;
+  };
+
+  const insertGroupMember = async (groupId) => {
+    const { data: insertMember, error: insertMemberError } = await supabase
+      .from('group_member')
+      .insert([
+        {
+          group_id: `group_${groupId}`,
+          user_id: userID,
+          region_number: 1
+        }
+      ]);
+    if (insertMemberError) {
+      console.error(insertMemberError);
+    }
+  };
+
+  const insertGroupDrawMapLocation = async (groupId) => {
+    for (const [sectionIndex, sectionPath] of path.entries()) {
+      for (const [index, location] of sectionPath.entries()) {
+        const { data: insertLocation, insertLocationError } = await supabase
+          .from('group_draw_map_location')
+          .insert([
+            {
+              group_id: `group_${groupId}`,
+              region_number: sectionIndex + 1,
+              mark_order: index + 1,
+              latitude: location.lat,
+              longitude: location.lng,
+              color: selectedColors[sectionIndex]
+            }
+          ]);
+        if (insertLocationError) {
+          console.error(insertLocationError);
         }
       }
-      navigate('/home');
+    }
+  };
+
+  async function submitRoute() {
+    if (path.flat().length > 2) {
+      try {
+        const groupId = await insertGroup();
+        if (groupId) {
+          await insertGroupMember(groupId);
+          await insertGroupDrawMapLocation(groupId);
+          navigate('/home');
+        }
+      } catch (error) {
+        console.error("Error saving the route:", error);
+      }
     }
   }
+
+  useEffect(() => {
+    const calculateCurrentDistance = () => {
+      const currentSection = path[sectionIndex];
+      if (!currentSection || currentSection.length < 2) return 0;
+      let distance = 0;
+      for (let i = 1; i < currentSection.length; i++) {
+        distance += calculateDistance(currentSection[i - 1], currentSection[i]);
+      }
+      return distance;
+    };
+
+    const distance = calculateCurrentDistance();
+    setCurrentDistance(distance);
+
+    const totalDistances = calculatePathDistances(path);
+    setSectionDistances(totalDistances);
+    const total = totalDistances.reduce((acc, dist) => acc + parseFloat(dist), 0).toFixed(2);
+    setTotalDistance(total);
+    
+    // 콘솔에 출력
+    if (totalDistances.length > 0 || total > 0) {
+      console.log('각 경로의 거리:', totalDistances);
+      console.log('총 거리:', total);
+    }
+
+  }, [path, sectionIndex]);
 
   useEffect(() => {
     console.log(path);
@@ -358,7 +442,7 @@ function DrawGroupMapComponent() {
       <div className='draw_name'>제목</div>
       <input className='draw_name_text' type="text" placeholder='그린 경로의 제목을 입력하세요' value={title} onChange={(e) => setTitle(e.target.value)} />
       <div className='draw_distance'>거리</div>
-      <div className='draw_distance_content'>자동으로 거리 계산</div>
+      <div className='draw_distance_content'>{currentDistance.toFixed(2)} km</div>
       <div className='draw_line1'></div>
       <div className='draw_place'>장소</div>
       <div className='draw_place_content'>처음 점을 위치로 가져옴</div>
