@@ -47,7 +47,6 @@ export default function FinishedArt() {
             .from('walking_record')
             .select('walking_record_id ,distance, title, location, walking_time')
             .eq('user_id', userID)
-            .eq('state','Y')
         console.log(recordInfoData)
         setRecordList(recordInfoData)
         setCountRecord(recordInfoData.length)
@@ -132,6 +131,7 @@ return (
                     time={recordItem.walking_time}
                     pathcoord={sendOnlyPath ? sendOnlyPath.coordinate : null}
                     centercoord={center[index]}
+                    title={recordItem.title}
                 ></Finished_List>
             // </Link>
             )    
