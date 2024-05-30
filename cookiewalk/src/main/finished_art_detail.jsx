@@ -20,11 +20,14 @@ export default function FinishedArtDetail() {
       <div><img className="fad_distance_icon" src="./icon/run.svg" alt="Distance Icon" /></div>
       <span className="fad_distance_value">distance</span>
 
-      <div><img className="fad_time_icon" src="./icon/place.svg" alt="Location Icon" /></div>
-      <span className="fad_time_value">location</span>
+      <div><img className="fad_location_icon" src="./icon/place.svg" alt="Location Icon" /></div>
+      <span className="fad_location_value">location</span>
 
       <div><img className="fad_difficulty_icon" src="./icon/round-star.svg" alt="Difficulty Icon" /></div>
       <span className="fad_difficulty_value">level</span>
+
+      <div><img className="fad_time_icon" src="./icon/clock.svg" alt="Difficulty Icon" /></div>
+      <span className="fad_time_value">time</span>
 
       <div className="fad_Detail_line_e"></div>
 
