@@ -45,7 +45,7 @@ export default function Finished_List({drawId, location, title, distance, time, 
 
     return(
     
-        <Link to='/finished_art_detail'>
+        <Link className="finished_art_to_detail_link" to='/finished_art_detail'>
             <div className="finished_list1">
             
             {/* 경로 사진 */}
@@ -53,13 +53,14 @@ export default function Finished_List({drawId, location, title, distance, time, 
     
     
             <span className="finished_list1_location">제목: {title}</span>
+            <div><img className='finished_list_delete_icon' src="./icon/trash.svg"/></div>
             
             <div><img className='finished_list1_distance_icon' src="./icon/run.svg"/></div>
             <div className="finished_list1_distance_value">{distance}km</div>
     
-            <div><img className='finished_list1_time_icon' src="./icon/place.svg"/></div>
+            <div><img className='finished_list1_time_icon' src="./icon/clock.svg"/></div>
             <div className="finished_list1_time_value">{formatTime(time)}</div>
-            <div><img className='finished_list1_rate_icon' src="./icon/round-star.svg"/></div>
+            <div><img className='finished_list1_rate_icon' src="./icon/place.svg"/></div>
             <div className="finished_list1_rate_value">{location}</div>
             </div>
         </Link>
