@@ -1,5 +1,9 @@
-import { useContext } from 'react';
-import './mypage.css';
+import react, { useContext, useState, useEffect } from 'react';
+import { Link, redirect , useNavigate} from 'react-router-dom';
+import './mypage.css'
+import {supabase} from '../supabaseClient'
+import { useToken } from '../context/tokenContext.jsx'
+import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -28,9 +32,6 @@ export const Tab = () => {
     { id: 2, name: '게시물', content: '' },
   ];
 
-
-
-  
   const selectMenuHandler = (index) => {
     clickTab(index);
   };
@@ -53,22 +54,22 @@ export const Tab = () => {
     const {data, error}=await supabase
       .from('user')
       .select('*')
-      .eq('user_id', userID);
-
-    if (error) {
-      console.error('오류발생', error);
-    } else if (data) {
-      setNickname(data[0].nick_name);
-      setName(data[0].name);
-      setIntro(data[0].intro);
-      setProfileImage(data[0].profile_image);
-      setEmail(data[0].email);
-      setDistance(data[0].distance);
+      .eq('user_id', userID)
+      if(error){
+        console.error('오류발생', error)
+      }
+      if (data){
+        console.log(data)
+        setNickname(data[0].nick_name)
+        setName(data[0].name)
+        setIntro(data[0].intro)
+        setProfileImage(data[0].profile_image)
+        setEmail(data[0].email)
+      }
     }
-  };
-
-  const fetchFollowInfo = async () => {
-    const { count: follower, error: followerError } = await supabase
+  //팔로우 팔로워 정보 가벼오기
+  const followInfo = async()=>{
+    const {count :follower, error: followerError}= await supabase
       .from('follows')
       .select('*',{count:'exact'})
       .eq('target_email',email)
@@ -84,29 +85,17 @@ export const Tab = () => {
 
     const {count :following, error: followingError}= await supabase
       .from('follows')
-      .select('*', { count: 'exact' })
-      .eq('following_email', email);
+      .select('*',{count:'exact'})
+      .eq('following_email',email)
 
-    if (followingError) {
-      console.error('오류발생', followingError);
-    } else {
-      setFollowingCount(following);
-    }
-  };
-
-  const fetchUserPostList = async () => {
-    const { data, error } = await supabase
-      .from("post")
-      .select("*")
-      .eq("user_id", userID)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("getUserPostList 에러", error);
-    } else {
-      setUserPostList(data);
-    }
-  };
+      if(followingError){
+        console.error('오류발생', followingError)
+      }
+      if(following){
+        setFollowingCount(following)
+        console.log(following)
+      }
+  }
   async function getTotalDistance() {
     // 첫 번째 테이블에서 distance 값 가져오기
     const { data: walkingRecords, error: walkingError } = await supabase
@@ -137,8 +126,8 @@ export const Tab = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (userID != null) {
-      fetchUser();
+    if(userID !=null){
+      User();
       getTotalDistance()
     }
     if(email){
@@ -216,10 +205,10 @@ export const Tab = () => {
                     />
                   </div>
                   <div className="badge_list">
-                    <div className="badge1"></div>
-                    <div className="badge2"></div>
-                    <div className="badge3"></div>
-                    <div className="badge4"></div>
+                    <div><img className="badge1" src="./images/badge1.png" alt="" /></div>
+                    <div><img className="badge2" src="./images/badge2.png" alt="" /></div>
+                    <div><img className="badge3" src="./images/badge3.png" alt="" /></div>
+                    <div><img className="badge4" src="./images/badge4.png" alt="" /></div>
                   </div>
   
                   <Link to="/mygroup">
@@ -244,9 +233,10 @@ export const Tab = () => {
               {currentTab === 1 && (
                 <>
                 <div className='mypage_postBox'>
-                  {userPostList.map((post) => (
-                   <img key={post.post_id} src={[post.image]}/>
-                  ))}
+                  <img src="/images/ellipse_7.png" alt="" />
+                  <img src="/images/ellipse_7.png" alt="" />
+                  <img src="/images/ellipse_7.png" alt="" />
+                  <img src="/images/ellipse_7.png" alt="" />
                 </div>
                 </>
               )}
