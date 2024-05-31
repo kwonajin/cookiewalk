@@ -560,8 +560,10 @@ body{
 	font-size:15px;
 	letter-spacing:0;
 }
-.e359_141 { 
-	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
+.select_btn { 
+	color: #ffffff;
+	font-weight: 600;
+	background-color:rgba(105, 105, 105, 0.9);
 	width:75px;
 	height:30px;
 	position:absolute;
@@ -571,14 +573,18 @@ body{
 	border-top-right-radius:4px;
 	border-bottom-left-radius:4px;
 	border-bottom-right-radius:4px;
+	border: none;
+	cursor: pointer;
 }
-.e359_142 { 
+
+.select_btn.selected{
+	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
+	color: #ffffff;
+}
+.select_text { 
 	color:rgba(255, 255, 255, 1);
 	width:58px;
 	height:22px;
-	position:absolute;
-	left:288px;
-	top:571px;
 	font-family:Noto Sans KR;
 	text-align:center;
 	font-size:15px;
