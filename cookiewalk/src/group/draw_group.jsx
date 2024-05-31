@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, Suspense, useRef } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps, NavermapsProvider } from 'react-naver-maps';
 import './draw_group.css';
 import customIcon from '../../public/images/logo.png';
@@ -396,6 +396,38 @@ function DrawGroupMapComponent() {
   useEffect(() => {
     console.log(path);
   }, [path]);
+
+  const speechRef = useRef(null);  // Ref를 추가합니다.
+
+  // 페이지 로딩 시 음성을 재생하는 useEffect 추가
+  useEffect(() => {
+    const welcomeMessage = () => {
+      const speech = new SpeechSynthesisUtterance('반갑습니다. 쿠키워크 그룹 모드입니다. 그릴 인원을 선택하시고 그리기 시작 버튼을 눌러주세요. 세상을 당신의 canvas로, cookiewalk');
+      window.speechSynthesis.speak(speech);
+      speechRef.current = speech;  // Ref에 저장합니다.
+    };
+
+    // 음성 메시지를 재생하고 sessionStorage를 설정합니다.
+    welcomeMessage();
+    sessionStorage.setItem('hasPlayedWelcomeMessage', 'true');
+  }, []);
+
+  // 페이지를 벗어날 때 음성 메시지를 중단합니다.
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (speechRef.current) {
+        window.speechSynthesis.cancel();
+      }
+      sessionStorage.removeItem('hasPlayedWelcomeMessage');
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      handleBeforeUnload();  // Cleanup 시에도 호출하여 음성을 중단합니다.
+    };
+  }, []);
 
   return (
     <div className='group_draw_map_container'>
