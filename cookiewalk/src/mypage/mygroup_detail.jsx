@@ -37,24 +37,50 @@ export default function MyGroupDetail() {
 
 
 
-      <div className="gd_hashtag1">
-        <div className="gd_hashtag1_box"></div>
-        <div className="gd_hashtag1_text">#부산</div>
-      </div>
-      <div className="gd_hashtag2">
-        <div className="gd_hashtag2_box"></div>
-        <span className="gd_hashtag2_text">#대연동</span>
-      </div>
-      <div className="gd_hashtag3">
-        <div className="gd_hashtag3_box"></div>
-        <span className="gd_hashtag3_text">#자전거</span>
-      </div>
+      {/* 리스트1 */}
+        <div className="group_choice_box1"></div>
+        <div className="group_num_box1">
+          <div className="group_choice_num_box1"></div>
+          <span className="group_choice_num1">1</span>
+        </div>
+        <div className="e359_129">  
+        {/* 359_129를 버튼 태그로 만들면 될듯 */}
+          <div className="e359_130"></div>
+          <span className="e359_131">선택완료</span>
+        </div>
+        <span className="e359_135">1.0km</span>
 
+        {/* 리스트2 */}
+        <div className="group_choice_box2"></div>
+        <div className="group_num_box2">
+          <div className="group_choice_num_box2"></div>
+          <span className="group_choice_num2">2</span>
+        </div>
+        <span className="e359_143">1.0km</span>
+        <div className="e359_141"></div>
+        <span className="e359_142">선택가능</span>
+        
 
+        {/* 리스트3 */}
+        <div className="group_choice_box3"></div>
+        <div className="e359_158">
+          <div className="e359_159"></div>
+          <span className="e359_160">3</span>
+        </div>
+        <div className="e359_161">
+          <div className="e359_162"></div>
+          <span className="e359_163">선택</span>
+        </div>
+
+        <span className="e359_157">0.5km</span>
+          
+
+        
       <div className="gd_join">
         <div className="gd_join_box"></div>
         <div className="gd_join_text">걷기 시작하기</div>
       </div>
+
 
 
     </div>

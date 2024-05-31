@@ -458,7 +458,7 @@ function DrawGroupMapComponent() {
         />
       )}
 
-      <Link to="/map">
+      <Link to="/group">
         <div className="write_back">
           <img className='write_back_icon' src="./icon/arrow.svg" alt="Back" />
         </div>
