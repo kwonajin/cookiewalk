@@ -266,38 +266,59 @@ function DrawGroupMapComponent() {
     if (path.flat().length > 2) {
       const created_time = new Date();
 
+      //group 테이블 삽입
       const { data: countData, error: countError, count } = await supabase
-        .from('draw_map_collection')
+        .from('group')
         .select('*', { count: 'exact' });
       if (countError) {
         console.error(countError);
       }
       console.log(count);
-
+      //group 테이블 삽입
       const { data: insertCollection, error: insertCollectionError } = await supabase
-        .from('draw_map_collection')
+        .from('group')
         .insert([
           {
-            draw_m_c_id: `draw_${count + 1}`,
-            created_at: created_time,
-            user_id: userID,
-            location: address,
-            color: selectedColors.slice(0, selectedGroupSize).join(',')
+            group_id: `group_${count + 1}`,   //그룹 아이디
+            created_at: created_time,         //만든시간
+            user_id: userID,                  //만든사람 아이디
+            location: address,                //위치
+            level: '',                        //난이도
+            title: '',                        //제목
+            limit_member: '',                 //제한 인원
+            distance: '',                     //각각 구역 길이 배열로
+            total_distance: '',               //전체 길이
           }
         ]);
       if (insertCollectionError) {
         console.error(insertCollectionError);
       }
+      //group_member 테이블 삽입 처음 만들때는 그룹장만 삽입됨(region_number은 일단 자동으로 1)
+      const {data : insertMember, error: insertMemberError }= await supabase
+        .from('group_member')
+        .insert([
+          {
+            group_id:`group_${count + 1}`,        //그룹 아이디
+            user_id: userID,                      //그룹장 아이디 
+            region_number:1                       //그룹장 구역은 일단 1로 지정 
+          }
+        ])
+      if( insertMemberError){
+        console.error(insertMemberError)
+      }
+      //group_draw_map_location 테이블 삽입
       for (const [sectionIndex, sectionPath] of path.entries()) {
         for (const [index, location] of sectionPath.entries()) {
           const { data: insertLocation, insertLocationError } = await supabase
-            .from('draw_map_c_location')
+            .from('group_draw_map_location')
             .insert([
               {
-                draw_m_c_id: `draw_${count + 1}`,
-                mark_order: `${sectionIndex + 1}-${index + 1}`,
-                latitude: location.lat,
-                longitude: location.lng
+                draw_m_c_id: `group_${count + 1}`,
+                reegion_number: '',                             //각 구역 넘버
+                mark_order: `${sectionIndex + 1}-${index + 1}`, 
+                latitude: location.latitude,
+                longitude: location.longitude,
+                color: selectedColors.slice(0, selectedGroupSize).join(',')
               }
             ]);
           if (insertLocationError) {
