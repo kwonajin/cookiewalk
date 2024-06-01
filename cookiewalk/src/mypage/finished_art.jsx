@@ -108,36 +108,36 @@ export default function FinishedArt() {
         )
     }
 
-return (
-    <div className="finished_route_container">
-        <div className='finished_nav'>
-            <Link to='/mypage'><div><img className="finished_back_arrow" src="./icon/arrow.svg"/></div></Link>
-            <div className="finished_route_title">완성한 그림</div>
-            <div className="finished_title_active_line"></div>
+    return (
+        <div className="finished_route_container">
+            <div className='finished_nav'>
+                <Link to='/mypage'>
+                    <div>
+                        <img className="finished_back_arrow" src="./icon/arrow.svg" />
+                    </div>
+                </Link>
+                <div className="finished_route_title">완성한 그림</div>
+                <div className="finished_title_active_line"></div>
+            </div>
+    
+            <Finished_active distance={totalDistance} time={totalTime} count={countRecord} />
+    
+            <div className="finished_content">
+                {recordList.map((recordItem, index) => {
+                    const sendOnlyPath = path.find(p => p.walking_record_id === recordItem.walking_record_id);
+                    return (
+                        <Finished_List
+                            key={recordItem.walking_record_id}
+                            drawId={recordItem.walking_record_id}
+                            location={recordItem.location}
+                            distance={recordItem.distance}
+                            time={recordItem.walking_time}
+                            pathcoord={sendOnlyPath ? sendOnlyPath.coordinate : null}
+                            centercoord={center[index]}
+                        />
+                    );
+                })}
+            </div>
         </div>
-
-        <Finished_active distance={totalDistance} time={totalTime} count={countRecord}></Finished_active>
-        
-        {recordList.map((recordItem, index)=>{
-            const sendOnlyPath = path.find(p => p.walking_record_id === recordItem.walking_record_id);
-            return (
-            // <Link to='/finished' className='unfinishToBefore_link' 
-            // state={{ path: sendOnlyPath ? sendOnlyPath.coordinate : null }} key={recordItem.walking_record_id}>
-                <Finished_List
-                    key={recordItem.walking_record_id}
-                    drawId={recordItem.walking_record_id}
-                    location={recordItem.location}
-                    distance={recordItem.distance}
-                    time={recordItem.walking_time}
-                    pathcoord={sendOnlyPath ? sendOnlyPath.coordinate : null}
-                    centercoord={center[index]}
-                    title={recordItem.title}
-                ></Finished_List>
-            // </Link>
-            )    
-        })}
-        {/* 위의 방법으로 하는 대신 갯수제한 */}
-
-    </div>
-);
+    );
 }
