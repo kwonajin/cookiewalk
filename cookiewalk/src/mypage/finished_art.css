@@ -235,11 +235,11 @@ body{
 	letter-spacing:0;
 }
 .finished_list_delete_icon{
-	width: 15px;
-	height: 15px;
+	width: 20px;
+	height: 20px;
 	position: absolute;
 	left: 335px;
-	top: 15px;
+	top: 12px;
 	filter: invert(36%) sepia(33%) saturate(766%) hue-rotate(314deg) brightness(117%) contrast(109%);
 }
 
