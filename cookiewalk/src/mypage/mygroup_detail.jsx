@@ -5,7 +5,6 @@ import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'r
 
 function MyMap({ groupDrawPath, color ,center}) {
   const navermaps = useNavermaps();
-  console.log(groupDrawPath)
   return (
     <NaverMap
       defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)} 
@@ -33,7 +32,6 @@ function MyMap({ groupDrawPath, color ,center}) {
 export default function MyGroupDetail() {
   const groupList = useLocation();
   console.log(groupList.state);
-  const [selected, setSelected] = useState(true);
 
   const [color, setColor]=useState(groupList.state.pathColor);
   const level=groupList.state.level;
@@ -47,25 +45,36 @@ export default function MyGroupDetail() {
   const [center, setCenter]=useState(groupList.state.center)
   const [groupDrawPath, setGroupDrawPath]=useState([]);
 
+  const [selected, setSelected] = useState([]);
+
   useEffect(()=>{
     console.log(drawPath)
     if(drawPath){
       const groupedPaths = groupPathsByRegion(drawPath)
-      // console.log(groupedPaths)
       setGroupDrawPath(groupedPaths)
     }
   },[drawPath])
   useEffect(()=>{
     console.log(groupDrawPath)
   },[groupDrawPath])
+  useEffect(()=>{
+    setSelected(new Array(distance.length).fill(false))
+    console.log(selected)
+  },[distance])
 
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleSelectClick = () => {
-    setSelected(!selected);
+  // const handleSelectClick = () => {
+  //   setSelected(!selected);
+  // };
+  const handleSelectClick = (index) => {
+    const updatedSelected = [...selected];
+    updatedSelected[index] = !updatedSelected[index];
+    setSelected(updatedSelected);
+    console.log(selected)
   };
 
   function groupPathsByRegion(drawPath) {
@@ -117,8 +126,31 @@ export default function MyGroupDetail() {
       <span className="gd_distance_num">{totalDistance} Km</span>
       <div className="gd_line2"></div>
 
+
+      {/* 구역만큼 생겨야하는데 왜 하나만 생길까요.. */}
       {/* 리스트1 */}
-      <div className="group_choice_box1"></div>
+      <div>
+        {distance && distance.map((region, index) =>(
+          <div key={index}>
+            <div className="group_choice_box2"></div>
+            <div className="group_num_box2">  
+              <div className="group_choice_num_box2"></div>
+              <span className="group_choice_num2">{index+1}</span>
+            </div>
+            <span className="e359_143">{region}km</span>
+            <button
+              className={`select_btn ${selected[index] ? 'selected' : 'unselected'}`}
+              onClick={()=>handleSelectClick(index)}
+            >
+            {selected[index] ? '선택하기' : '선택함'}
+            </button>
+          </div>
+        ))}
+      </div>
+
+
+
+      {/* <div className="group_choice_box1"></div>
       <div className="group_num_box1">
         <div className="group_choice_num_box1"></div>
         <span className="group_choice_num1">1</span>
@@ -127,10 +159,10 @@ export default function MyGroupDetail() {
         <div className="e359_130"></div>
         <span className="e359_131">선택완료</span>
       </div>
-      <span className="e359_135">1.0km</span>
+      <span className="e359_135">1.0km</span> */}
 
       {/* 리스트2 */}
-      <div className="group_choice_box2"></div>
+      {/* <div className="group_choice_box2"></div>
       <div className="group_num_box2">
         <div className="group_choice_num_box2"></div>
         <span className="group_choice_num2">2</span>
@@ -141,10 +173,10 @@ export default function MyGroupDetail() {
         onClick={handleSelectClick}
       >
         {selected ? '선택하기' : '선택함'}
-      </button>
+      </button> */}
 
       {/* 리스트3 */}
-      <div className="group_choice_box3"></div>
+      {/* <div className="group_choice_box3"></div>
       <div className="e359_158">
         <div className="e359_159"></div>
         <span className="e359_160">3</span>
@@ -153,7 +185,7 @@ export default function MyGroupDetail() {
         <div className="e359_162"></div>
         <span className="e359_163">선택하기</span>
       </div>
-      <span className="e359_157">0.5km</span>
+      <span className="e359_157">0.5km</span> */}
 
       <div className="gd_join">
         <div className="gd_join_box"></div>

@@ -46,6 +46,7 @@ export default function MyGroup() {
     })
   }
 
+
   async function findGroup(){
     const {data:findGroupData , error:findGroupError}= await supabase
       .from('group_member')
