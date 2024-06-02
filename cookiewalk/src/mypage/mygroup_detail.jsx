@@ -1,9 +1,64 @@
 import React, { useEffect, useState } from 'react';
 import './mygroup_detail.css'; 
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
+
+function MyMap({ groupDrawPath, color ,center}) {
+  const navermaps = useNavermaps();
+  console.log(groupDrawPath)
+  return (
+    <NaverMap
+      defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)} 
+      defaultZoom={15} 
+      scaleControl={false}
+      mapDataControl={false}
+    >
+      { groupDrawPath && Object.keys(groupDrawPath).map((region, index) => (
+        <Polyline
+          key={region}
+          path={groupDrawPath[region].map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+          strokeColor={color[index]} // 색상은 props로 받아 사용
+          strokeWeight={8}
+          strokeOpacity={0.8}
+          strokeStyle="solid"
+        />
+      ))}
+    </NaverMap>
+  );
+}
+
+
+
 
 export default function MyGroupDetail() {
+  const groupList = useLocation();
+  console.log(groupList.state);
   const [selected, setSelected] = useState(true);
+
+  const [color, setColor]=useState(groupList.state.pathColor);
+  const level=groupList.state.level;
+  const limitMember= groupList.state.limit_member;
+  const location= groupList.state.location;
+  const title=groupList.state.title;
+  const totalDistance= groupList.state.total_distance;
+  const [distance, setDistance]=useState(groupList.state.distance);
+  const [drawPath,setDrawPath]=useState(groupList.state.drawPath);
+  const [groupMember, setGroupMember]=useState(groupList.state.groupMember)
+  const [center, setCenter]=useState(groupList.state.center)
+  const [groupDrawPath, setGroupDrawPath]=useState([]);
+
+  useEffect(()=>{
+    console.log(drawPath)
+    if(drawPath){
+      const groupedPaths = groupPathsByRegion(drawPath)
+      // console.log(groupedPaths)
+      setGroupDrawPath(groupedPaths)
+    }
+  },[drawPath])
+  useEffect(()=>{
+    console.log(groupDrawPath)
+  },[groupDrawPath])
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -13,6 +68,15 @@ export default function MyGroupDetail() {
     setSelected(!selected);
   };
 
+  function groupPathsByRegion(drawPath) {
+    return drawPath.reduce((acc, path) => {
+      if (!acc[path.region_number]) {
+        acc[path.region_number] = [];
+      }
+      acc[path.region_number].push(path);
+      return acc;
+    }, {});
+  }
   return (
     <div className="gd_background">
       <Link to="/mygroup">
@@ -23,8 +87,10 @@ export default function MyGroupDetail() {
       <div className="mgd_title">내가 가입한 그룹</div>
       <div className="gd_line"></div>
 
-      <img className="gd_img" src="./images/group1.png" alt="그룹 이미지" />
-      <div className="gd_name">전국 한반도 그리기</div>
+      {/* <img className="gd_img" src="./images/group1.png" alt="그룹 이미지" /> */}
+      <MapDiv className='gd_img'><MyMap groupDrawPath={groupDrawPath} color={color} center={center}/></MapDiv>
+
+      <div className="gd_name">{title}</div>
       <div className="gd_dday">
         <div className="gd_dday_box"></div>
         <div className="gd_dday_text">D - 14</div>
@@ -35,20 +101,20 @@ export default function MyGroupDetail() {
         <img className='gd_people_icon' src="./icon/person.svg" alt="사람 아이콘" />
       </div>
       <div className="gd_person">
-        <div className="gd_person_current">4</div>
+        <div className="gd_person_current">{groupMember.length}</div>
         <div className="gd_slash">/</div>
-        <div className="gd_person_total">5</div>
+        <div className="gd_person_total">{limitMember}</div>
       </div>
 
       <div className="gd_place">
         <img className='gd_place_icon' src="./icon/place.svg" alt="장소 아이콘" />
       </div>
-      <div className="gd_place_name">부산 남구 대연동</div>
+      <div className="gd_place_name">{location}</div>
 
       <div className="gd_distance">
         <img className='gd_distance_icon' src="./icon/running.svg" alt="거리 아이콘" />
       </div>
-      <span className="gd_distance_num">2.5km</span>
+      <span className="gd_distance_num">{totalDistance} Km</span>
       <div className="gd_line2"></div>
 
       {/* 리스트1 */}
