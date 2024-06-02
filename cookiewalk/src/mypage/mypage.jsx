@@ -36,6 +36,12 @@ export const Tab = () => {
     { id: 2, name: '게시물', content: '' },
   ];
 
+
+
+
+
+
+  
   const selectMenuHandler = (index) => {
     clickTab(index);
   };
