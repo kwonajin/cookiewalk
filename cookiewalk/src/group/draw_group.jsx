@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, Suspense, useRef } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps, NavermapsProvider } from 'react-naver-maps';
 import './draw_group.css';
 import customIcon from '../../public/images/logo.png';
@@ -263,27 +263,11 @@ function DrawGroupMapComponent() {
       return newColors;
     });
   };
-
-  async function getReverseGeocode(latitude, longitude) {
-    const url = `http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
-    try {
-      const response = await axios.get(url, { latitude, longitude });
-      console.log(response.data.results[1].region);
-      const area1 = response.data.results[1].region.area1.name;
-      const area2 = response.data.results[1].region.area2.name;
-      const area3 = response.data.results[1].region.area3.name;
-      const area = `${area1} ${area2} ${area3}`;
-      setAddress(area);
-      console.log(area);
-      return area;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-
+  useEffect(()=>{
+    console.log(selectedColors)
+  },[selectedColors])
   const insertGroup = async () => {
-    const total_distance = sectionDistances.reduce((acc, dist) => acc + parseFloat(dist), 0).toFixed(2);
+    // const total_distance = sectionDistances.reduce((acc, dist) => acc + parseFloat(dist), 0).toFixed(2);
 
     const { data: countData, error: countError, count } = await supabase
       .from('group')
@@ -304,7 +288,8 @@ function DrawGroupMapComponent() {
           title: title,
           limit_member: selectedGroupSize,
           distance: `{${sectionDistances.join(",")}}`,  // PostgreSQL 배열 형식으로 변환
-          total_distance: total_distance,
+          total_distance: totalDistance,
+          color: `{${selectedColors.join(",")}}`
         }
       ]);
     if (insertCollectionError) {
@@ -341,7 +326,6 @@ function DrawGroupMapComponent() {
               mark_order: index + 1,
               latitude: location.lat,
               longitude: location.lng,
-              color: selectedColors[sectionIndex]
             }
           ]);
         if (insertLocationError) {
@@ -387,8 +371,8 @@ function DrawGroupMapComponent() {
     
     // 콘솔에 출력
     if (totalDistances.length > 0 || total > 0) {
-      console.log('각 경로의 거리:', totalDistances);
-      console.log('총 거리:', total);
+      console.log('각 경로의 거리:', sectionDistances);
+      console.log('총 거리:', totalDistance);
     }
 
   }, [path, sectionIndex]);
@@ -396,6 +380,38 @@ function DrawGroupMapComponent() {
   useEffect(() => {
     console.log(path);
   }, [path]);
+
+  const speechRef = useRef(null);  // Ref를 추가합니다.
+
+  // 페이지 로딩 시 음성을 재생하는 useEffect 추가
+  useEffect(() => {
+    const welcomeMessage = () => {
+      const speech = new SpeechSynthesisUtterance('반갑습니다. 쿠키워크 그룹 모드입니다. 그릴 인원을 선택하시고 그리기 시작 버튼을 눌러주세요. 세상을 당신의 canvas로, cookiewalk');
+      window.speechSynthesis.speak(speech);
+      speechRef.current = speech;  // Ref에 저장합니다.
+    };
+
+    // 음성 메시지를 재생하고 sessionStorage를 설정합니다.
+    welcomeMessage();
+    sessionStorage.setItem('hasPlayedWelcomeMessage', 'true');
+  }, []);
+
+  // 페이지를 벗어날 때 음성 메시지를 중단합니다.
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (speechRef.current) {
+        window.speechSynthesis.cancel();
+      }
+      sessionStorage.removeItem('hasPlayedWelcomeMessage');
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      handleBeforeUnload();  // Cleanup 시에도 호출하여 음성을 중단합니다.
+    };
+  }, []);
 
   return (
     <div className='group_draw_map_container'>
@@ -426,7 +442,7 @@ function DrawGroupMapComponent() {
         />
       )}
 
-      <Link to="/map">
+      <Link to="/group">
         <div className="write_back">
           <img className='write_back_icon' src="./icon/arrow.svg" alt="Back" />
         </div>
@@ -445,7 +461,7 @@ function DrawGroupMapComponent() {
       <div className='draw_distance_content'>{currentDistance.toFixed(2)} km</div>
       <div className='draw_line1'></div>
       <div className='draw_place'>장소</div>
-      <div className='draw_place_content'>처음 점을 위치로 가져옴</div>
+      <input className='draw_place_content' type="text" value={address} onChange={(e)=> setAddress(e.target.value)}></input>
       <div className='draw_line2'></div>
 
       <div className='draw_rate'>난이도</div>

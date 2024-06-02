@@ -8,7 +8,7 @@ import ContentBox from './home/ContentBox';
 import NavBar from './home/NavBar';
 import { supabase } from '../supabaseClient';
 import debounce from 'lodash/debounce';  // 디바운스 함수 추가
-import { formatTime} from '../utils/formatTime';
+import {formatTime} from '../utils/formatTime';
 
 export default function Home() {
   const navigate = useNavigate();
