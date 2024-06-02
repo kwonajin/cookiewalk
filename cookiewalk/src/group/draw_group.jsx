@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense, useRef } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps, NavermapsProvider } from 'react-naver-maps';
 import './draw_group.css';
 import customIcon from '../../public/images/logo.png';
@@ -65,6 +65,12 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
     anchor: new navermaps.Point(15, 25)
   });
 
+  const textMarkerFactory = (text) => ({
+    content: `<div style='background-color: white; padding: 2px 5px; border-radius: 5px;'>${text}</div>`,
+    size: new navermaps.Size(30, 20),
+    anchor: new navermaps.Point(15, 10)
+  });
+
   return (
     <NaverMap
       center={center}
@@ -91,6 +97,12 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
               <Marker
                 position={sectionPath[sectionPath.length - 1]}
                 icon={iconFactory('black')}
+              />
+            )}
+            {!drawing && (
+              <Marker
+                position={sectionPath[0]}
+                icon={textMarkerFactory(index + 1)}
               />
             )}
           </React.Fragment>
@@ -282,87 +294,50 @@ function DrawGroupMapComponent() {
     }
   }
 
-  const insertGroup = async () => {
-    const total_distance = sectionDistances.reduce((acc, dist) => acc + parseFloat(dist), 0).toFixed(2);
-
-    const { data: countData, error: countError, count } = await supabase
-      .from('group')
-      .select('*', { count: 'exact' });
-    if (countError) {
-      console.error(countError);
-      return;
-    }
-
-    const { data: insertCollection, error: insertCollectionError } = await supabase
-      .from('group')
-      .insert([
-        {
-          group_id: `group_${count + 1}`,
-          user_id: userID,
-          location: address,
-          level: selectedDifficulty,
-          title: title,
-          limit_member: selectedGroupSize,
-          distance: `{${sectionDistances.join(",")}}`,  // PostgreSQL 배열 형식으로 변환
-          total_distance: total_distance,
-        }
-      ]);
-    if (insertCollectionError) {
-      console.error(insertCollectionError);
-      return;
-    }
-    return count + 1;
-  };
-
-  const insertGroupMember = async (groupId) => {
-    const { data: insertMember, error: insertMemberError } = await supabase
-      .from('group_member')
-      .insert([
-        {
-          group_id: `group_${groupId}`,
-          user_id: userID,
-          region_number: 1
-        }
-      ]);
-    if (insertMemberError) {
-      console.error(insertMemberError);
-    }
-  };
-
-  const insertGroupDrawMapLocation = async (groupId) => {
-    for (const [sectionIndex, sectionPath] of path.entries()) {
-      for (const [index, location] of sectionPath.entries()) {
-        const { data: insertLocation, insertLocationError } = await supabase
-          .from('group_draw_map_location')
-          .insert([
-            {
-              group_id: `group_${groupId}`,
-              region_number: sectionIndex + 1,
-              mark_order: index + 1,
-              latitude: location.lat,
-              longitude: location.lng,
-              color: selectedColors[sectionIndex]
-            }
-          ]);
-        if (insertLocationError) {
-          console.error(insertLocationError);
-        }
-      }
-    }
-  };
-
   async function submitRoute() {
     if (path.flat().length > 2) {
-      try {
-        const groupId = await insertGroup();
-        if (groupId) {
-          await insertGroupMember(groupId);
-          await insertGroupDrawMapLocation(groupId);
-          navigate('/home');
-        }
-      } catch (error) {
-        console.error("Error saving the route:", error);
+      const created_time = new Date();
+
+      const { data: countData, error: countError, count } = await supabase
+        .from('draw_map_collection')
+        .select('*', { count: 'exact' });
+      if (countError) {
+        console.error(countError);
       }
+      console.log(count);
+
+      const { data: insertCollection, error: insertCollectionError } = await supabase
+        .from('draw_map_collection')
+        .insert([
+          {
+            draw_m_c_id: `draw_${count + 1}`,
+            created_at: created_time,
+            user_id: userID,
+            location: address,
+            color: selectedColors.slice(0, selectedGroupSize).join(',')
+          }
+        ]);
+      if (insertCollectionError) {
+        console.error(insertCollectionError);
+      }
+      for (const [sectionIndex, sectionPath] of path.entries()) {
+        for (const [index, location] of sectionPath.entries()) {
+          const { data: insertLocation, insertLocationError } = await supabase
+            .from('draw_map_c_location')
+            .insert([
+              {
+                draw_m_c_id: `draw_${count + 1}`,
+                mark_order: `${sectionIndex + 1}-${index + 1}`,
+                latitude: location.lat,
+                longitude: location.lng
+              }
+            ]);
+          if (insertLocationError) {
+            console.error(insertLocationError);
+          }
+        }
+      }
+      navigate('/home');
     }
   }
 
@@ -396,38 +371,6 @@ function DrawGroupMapComponent() {
   useEffect(() => {
     console.log(path);
   }, [path]);
-
-  const speechRef = useRef(null);  // Ref를 추가합니다.
-
-  // 페이지 로딩 시 음성을 재생하는 useEffect 추가
-  useEffect(() => {
-    const welcomeMessage = () => {
-      const speech = new SpeechSynthesisUtterance('반갑습니다. 쿠키워크 그룹 모드입니다. 그릴 인원을 선택하시고 그리기 시작 버튼을 눌러주세요. 세상을 당신의 canvas로, cookiewalk');
-      window.speechSynthesis.speak(speech);
-      speechRef.current = speech;  // Ref에 저장합니다.
-    };
-
-    // 음성 메시지를 재생하고 sessionStorage를 설정합니다.
-    welcomeMessage();
-    sessionStorage.setItem('hasPlayedWelcomeMessage', 'true');
-  }, []);
-
-  // 페이지를 벗어날 때 음성 메시지를 중단합니다.
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      if (speechRef.current) {
-        window.speechSynthesis.cancel();
-      }
-      sessionStorage.removeItem('hasPlayedWelcomeMessage');
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      handleBeforeUnload();  // Cleanup 시에도 호출하여 음성을 중단합니다.
-    };
-  }, []);
 
   return (
     <div className='group_draw_map_container'>
