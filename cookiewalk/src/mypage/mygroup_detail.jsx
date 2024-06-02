@@ -86,6 +86,11 @@ export default function MyGroupDetail() {
       return acc;
     }, {});
   }
+
+  async function goBefore(){
+    
+  }
+
   return (
     <div className="gd_background">
       <Link to="/mygroup">
@@ -189,7 +194,7 @@ export default function MyGroupDetail() {
 
       <div className="gd_join">
         <div className="gd_join_box"></div>
-        <div className="gd_join_text">걷기 시작하기</div>
+        <div className="gd_join_text" onChange={goBefore}>걷기 시작하기</div>
       </div>
     </div>
   );
