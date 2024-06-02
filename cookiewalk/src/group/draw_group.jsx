@@ -263,27 +263,11 @@ function DrawGroupMapComponent() {
       return newColors;
     });
   };
-
-  async function getReverseGeocode(latitude, longitude) {
-    const url = `http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
-    try {
-      const response = await axios.get(url, { latitude, longitude });
-      console.log(response.data.results[1].region);
-      const area1 = response.data.results[1].region.area1.name;
-      const area2 = response.data.results[1].region.area2.name;
-      const area3 = response.data.results[1].region.area3.name;
-      const area = `${area1} ${area2} ${area3}`;
-      setAddress(area);
-      console.log(area);
-      return area;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-
+  useEffect(()=>{
+    console.log(selectedColors)
+  },[selectedColors])
   const insertGroup = async () => {
-    const total_distance = sectionDistances.reduce((acc, dist) => acc + parseFloat(dist), 0).toFixed(2);
+    // const total_distance = sectionDistances.reduce((acc, dist) => acc + parseFloat(dist), 0).toFixed(2);
 
     const { data: countData, error: countError, count } = await supabase
       .from('group')
@@ -304,7 +288,8 @@ function DrawGroupMapComponent() {
           title: title,
           limit_member: selectedGroupSize,
           distance: `{${sectionDistances.join(",")}}`,  // PostgreSQL 배열 형식으로 변환
-          total_distance: total_distance,
+          total_distance: totalDistance,
+          color: `{${selectedColors.join(",")}}`
         }
       ]);
     if (insertCollectionError) {
@@ -341,7 +326,6 @@ function DrawGroupMapComponent() {
               mark_order: index + 1,
               latitude: location.lat,
               longitude: location.lng,
-              color: selectedColors[sectionIndex]
             }
           ]);
         if (insertLocationError) {
@@ -387,8 +371,8 @@ function DrawGroupMapComponent() {
     
     // 콘솔에 출력
     if (totalDistances.length > 0 || total > 0) {
-      console.log('각 경로의 거리:', totalDistances);
-      console.log('총 거리:', total);
+      console.log('각 경로의 거리:', sectionDistances);
+      console.log('총 거리:', totalDistance);
     }
 
   }, [path, sectionIndex]);
@@ -477,7 +461,7 @@ function DrawGroupMapComponent() {
       <div className='draw_distance_content'>{currentDistance.toFixed(2)} km</div>
       <div className='draw_line1'></div>
       <div className='draw_place'>장소</div>
-      <div className='draw_place_content'>처음 점을 위치로 가져옴</div>
+      <input className='draw_place_content' type="text" value={address} onChange={(e)=> setAddress(e.target.value)}></input>
       <div className='draw_line2'></div>
 
       <div className='draw_rate'>난이도</div>
