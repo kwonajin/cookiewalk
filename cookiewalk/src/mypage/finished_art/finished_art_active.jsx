@@ -20,7 +20,7 @@ export default function Finished_active({distance, time, count}){
             <div className="fa_line1"></div>
     
             <span className="f_summary_box_label2">활동 거리</span>
-            <span className="f_summary_box_value2">{distance}km</span>
+            <span className="f_summary_box_value2">{distance.toFixed(2)}km</span>
     
             <div className="fa_line2"></div>
     
