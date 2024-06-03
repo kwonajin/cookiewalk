@@ -115,7 +115,9 @@ export default function MyGroup() {
       </div>
       {group.map((groupList, index) => (
       <Link to="/mygroup_detail" key={groupList[0].group_id} 
-        state={{pathColor:groupList[0].color, 
+        state={{
+                group_id:groupList[0].group_id,
+                pathColor:groupList[0].color, 
                 level:groupList[0].level, 
                 limit_member:groupList[0].limit_member,
                 location: groupList[0].location,
