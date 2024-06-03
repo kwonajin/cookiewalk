@@ -440,20 +440,23 @@ body{
 	background-color:rgba(247.35000729560852, 247.35000729560852, 247.35000729560852, 1);
 	width:361px;
 	height:54px;
-	position:absolute;
+	margin: 20px 0;
+	position: relative;
 	left:14px;
-	top:555px;
+	top:250px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
 }
 .group_num_box2 { 
+	display: flex;
 	width:30px;
 	height:30px;
-	position:absolute;
+	/* position:relative; */
 	left:31px;
 	top:567px;
+	text-align: center;
 }
 .group_choice_num_box2 { 
 	border-radius:500px;
@@ -461,8 +464,9 @@ body{
 	width:30px;
 	height:30px;
 	position:absolute;
-	left:0px;
-	top:0px;
+	left:10px;
+	top:12px;
+	align-items: center;
 }
 .group_choice_num2 { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
@@ -566,7 +570,7 @@ body{
 	background-color:rgba(105, 105, 105, 0.9);
 	width:75px;
 	height:30px;
-	position:absolute;
+	position:flex;
 	left:281px;
 	top:568px;
 	border-top-left-radius:4px;
@@ -594,11 +598,11 @@ body{
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:58px;
 	height:14px;
-	position:absolute;
-	left:77px;
+	position:flex;
+	left:70px;
 	top:570px;
 	font-family:Noto Sans KR;
-	text-align:left;
+	/* text-align:right; */
 	font-size:15px;
 	letter-spacing:0;
 }

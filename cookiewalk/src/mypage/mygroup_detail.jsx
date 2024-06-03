@@ -91,6 +91,10 @@ export default function MyGroupDetail() {
     
   }
 
+
+
+  
+
   return (
     <div className="gd_background">
       <Link to="/mygroup">
@@ -137,22 +141,35 @@ export default function MyGroupDetail() {
       <div>
         {distance && distance.map((region, index) =>(
           <div key={index}>
-            <div className="group_choice_box2"></div>
+            <div className="group_choice_box2">
+              <div className="group_num_box2">
+                <div className="group_choice_num_box2">
+                  <span className="group_choice_num2">{index+1}</span>
+                </div>
+              </div>
+              <span className="e359_143">{region} km</span>
+              <button
+                className={`select_btn ${selected[index] ? 'selected' : 'unselected'}`}
+                onClick={()=>handleSelectClick(index)}>
+                {selected[index] ? '선택하기' : '선택함'}
+              </button>
+            </div> 
+          </div>
+        ))}
+      </div>
+            {/* 수정전꺼  */}
+            {/* <div className="group_choice_box2"></div>
             <div className="group_num_box2">  
               <div className="group_choice_num_box2"></div>
               <span className="group_choice_num2">{index+1}</span>
             </div>
-            <span className="e359_143">{region}km</span>
+            <span className="e359_143">km</span>
             <button
               className={`select_btn ${selected[index] ? 'selected' : 'unselected'}`}
               onClick={()=>handleSelectClick(index)}
             >
             {selected[index] ? '선택하기' : '선택함'}
-            </button>
-          </div>
-        ))}
-      </div>
-
+            </button> */}
 
 
       {/* <div className="group_choice_box1"></div>
