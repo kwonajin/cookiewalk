@@ -3,6 +3,7 @@ import './mygroup.css';
 import { Link } from "react-router-dom";
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
+import MyGroup_List from './my_group_list';
 
 
 export default function MyGroup() {
@@ -152,31 +153,17 @@ export default function MyGroup() {
       </Link>
       ))}
 
-
-      <Link to="/mygroup_detail">
-        <div className="mg_group2">
-          <img className="mg_group2_img" src="./images/group2.png" alt="" />
-          <div className="mg_person_box2"></div>
-          <div className="mg_person2"><img className="mg_person_icon2" src="./icon/person.svg" alt="" /></div>
-          <span className="mg_person_current2">2</span>
-          <span className="mg_slash2">/</span>
-          <span className="mg_person_total2">7</span>
-          <div className="mg_dday_box2"></div>
-          <span className="mg_dday2">D - 20</span>
-          <span className="mg_group2_name">부산 토끼 그려요</span>
-          <div className="mg_place2"><img className="mg_place_icon2" src="./icon/place.svg" alt="" />
-          </div>
-          <span className="mg_place_text2">부산 해운대구 우동</span>
-          <div className="mg_distance2"><img className="mg_distance_icon2" src="./icon/running.svg" alt="" /></div>
-          <span className="mg_distance_text2">2.5km</span>
-          <div className="mg_hashtag1_box2"></div>
-          <span className="mg_hashtag1_2">#부산</span>
-          <div className="mg_hashtag2_box2"></div>
-          <span className="mg_hashtag2_2">#해운대구</span>
-          <div className="mg_hashtag3_box2"></div>
-          <span className="mg_hashtag3_2">#공룡</span>
-        </div>
-      </Link>
+      <div className='mygroup_list_container'>
+  <Link className='mygroup_to_detail_link' to="/mygroup_detail">
+    <MyGroup_List />
+  </Link>
+  <Link className='mygroup_to_detail_link' to="/mygroup_detail">
+    <MyGroup_List />
+  </Link>
+  <Link className='mygroup_to_detail_link' to="/mygroup_detail">
+    <MyGroup_List />
+  </Link>
+</div>
     </div>
   );
 }
