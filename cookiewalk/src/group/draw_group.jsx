@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, Suspense, useRef } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps, NavermapsProvider } from 'react-naver-maps';
 import './draw_group.css';
 import customIcon from '../../public/images/logo.png';
@@ -65,12 +65,6 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
     anchor: new navermaps.Point(15, 25)
   });
 
-  const textMarkerFactory = (text) => ({
-    content: `<div style='background-color: white; padding: 2px 5px; border-radius: 5px;'>${text}</div>`,
-    size: new navermaps.Size(30, 20),
-    anchor: new navermaps.Point(15, 10)
-  });
-
   return (
     <NaverMap
       center={center}
@@ -97,12 +91,6 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
               <Marker
                 position={sectionPath[sectionPath.length - 1]}
                 icon={iconFactory('black')}
-              />
-            )}
-            {!drawing && (
-              <Marker
-                position={sectionPath[0]}
-                icon={textMarkerFactory(index + 1)}
               />
             )}
           </React.Fragment>
@@ -275,69 +263,90 @@ function DrawGroupMapComponent() {
       return newColors;
     });
   };
+  useEffect(()=>{
+    console.log(selectedColors)
+  },[selectedColors])
+  const insertGroup = async () => {
+    // const total_distance = sectionDistances.reduce((acc, dist) => acc + parseFloat(dist), 0).toFixed(2);
 
-  async function getReverseGeocode(latitude, longitude) {
-    const url = `http://localhost:3000/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
-    try {
-      const response = await axios.get(url, { latitude, longitude });
-      console.log(response.data.results[1].region);
-      const area1 = response.data.results[1].region.area1.name;
-      const area2 = response.data.results[1].region.area2.name;
-      const area3 = response.data.results[1].region.area3.name;
-      const area = `${area1} ${area2} ${area3}`;
-      setAddress(area);
-      console.log(area);
-      return area;
-    } catch (error) {
-      console.error(error);
-      throw error;
+    const { data: countData, error: countError, count } = await supabase
+      .from('group')
+      .select('*', { count: 'exact' });
+    if (countError) {
+      console.error(countError);
+      return;
     }
-  }
+
+    const { data: insertCollection, error: insertCollectionError } = await supabase
+      .from('group')
+      .insert([
+        {
+          group_id: `group_${count + 1}`,
+          user_id: userID,
+          location: address,
+          level: selectedDifficulty,
+          title: title,
+          limit_member: selectedGroupSize,
+          distance: `{${sectionDistances.join(",")}}`,  // PostgreSQL 배열 형식으로 변환
+          total_distance: totalDistance,
+          color: `{${selectedColors.join(",")}}`
+        }
+      ]);
+    if (insertCollectionError) {
+      console.error(insertCollectionError);
+      return;
+    }
+    return count + 1;
+  };
+
+  const insertGroupMember = async (groupId) => {
+    const { data: insertMember, error: insertMemberError } = await supabase
+      .from('group_member')
+      .insert([
+        {
+          group_id: `group_${groupId}`,
+          user_id: userID,
+          region_number: 1
+        }
+      ]);
+    if (insertMemberError) {
+      console.error(insertMemberError);
+    }
+  };
+
+  const insertGroupDrawMapLocation = async (groupId) => {
+    for (const [sectionIndex, sectionPath] of path.entries()) {
+      for (const [index, location] of sectionPath.entries()) {
+        const { data: insertLocation, insertLocationError } = await supabase
+          .from('group_draw_map_location')
+          .insert([
+            {
+              group_id: `group_${groupId}`,
+              region_number: sectionIndex + 1,
+              mark_order: index + 1,
+              latitude: location.lat,
+              longitude: location.lng,
+            }
+          ]);
+        if (insertLocationError) {
+          console.error(insertLocationError);
+        }
+      }
+    }
+  };
 
   async function submitRoute() {
     if (path.flat().length > 2) {
-      const created_time = new Date();
-
-      const { data: countData, error: countError, count } = await supabase
-        .from('draw_map_collection')
-        .select('*', { count: 'exact' });
-      if (countError) {
-        console.error(countError);
-      }
-      console.log(count);
-
-      const { data: insertCollection, error: insertCollectionError } = await supabase
-        .from('draw_map_collection')
-        .insert([
-          {
-            draw_m_c_id: `draw_${count + 1}`,
-            created_at: created_time,
-            user_id: userID,
-            location: address,
-            color: selectedColors.slice(0, selectedGroupSize).join(',')
-          }
-        ]);
-      if (insertCollectionError) {
-        console.error(insertCollectionError);
-      }
-      for (const [sectionIndex, sectionPath] of path.entries()) {
-        for (const [index, location] of sectionPath.entries()) {
-          const { data: insertLocation, insertLocationError } = await supabase
-            .from('draw_map_c_location')
-            .insert([
-              {
-                draw_m_c_id: `draw_${count + 1}`,
-                mark_order: `${sectionIndex + 1}-${index + 1}`,
-                latitude: location.lat,
-                longitude: location.lng
-              }
-            ]);
-          if (insertLocationError) {
-            console.error(insertLocationError);
-          }
+      try {
+        const groupId = await insertGroup();
+        if (groupId) {
+          await insertGroupMember(groupId);
+          await insertGroupDrawMapLocation(groupId);
+          navigate('/home');
         }
+      } catch (error) {
+        console.error("Error saving the route:", error);
       }
-      navigate('/home');
     }
   }
 
@@ -362,8 +371,8 @@ function DrawGroupMapComponent() {
     
     // 콘솔에 출력
     if (totalDistances.length > 0 || total > 0) {
-      console.log('각 경로의 거리:', totalDistances);
-      console.log('총 거리:', total);
+      console.log('각 경로의 거리:', sectionDistances);
+      console.log('총 거리:', totalDistance);
     }
 
   }, [path, sectionIndex]);
@@ -372,6 +381,7 @@ function DrawGroupMapComponent() {
     console.log(path);
   }, [path]);
 
+  
   return (
     <div className='group_draw_map_container'>
       <button className='group_draw_start' onClick={toggleDrawing} style={{ position: 'absolute', zIndex: 1000 }}>
@@ -401,7 +411,7 @@ function DrawGroupMapComponent() {
         />
       )}
 
-      <Link to="/map">
+      <Link to="/group">
         <div className="write_back">
           <img className='write_back_icon' src="./icon/arrow.svg" alt="Back" />
         </div>
@@ -420,7 +430,7 @@ function DrawGroupMapComponent() {
       <div className='draw_distance_content'>{currentDistance.toFixed(2)} km</div>
       <div className='draw_line1'></div>
       <div className='draw_place'>장소</div>
-      <div className='draw_place_content'>처음 점을 위치로 가져옴</div>
+      <input className='draw_place_content' type="text" value={address} onChange={(e)=> setAddress(e.target.value)}></input>
       <div className='draw_line2'></div>
 
       <div className='draw_rate'>난이도</div>
