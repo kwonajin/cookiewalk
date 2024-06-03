@@ -47,7 +47,7 @@ export default function BeforeStart(){
     const [path,setPath]=useState([])
     const [drawId,setDrawId]=useState('')
     const [drawPath, setDrawPath]=useState([])
-
+    const [groupDraw, setGroupDraw]=useState(false)
     const mapCollection = useLocation();
     console.log(mapCollection)
     useEffect(()=>{
@@ -56,6 +56,10 @@ export default function BeforeStart(){
             const maproute=mapCollection.state.path
             const drawID=mapCollection.state.drawId
             const drawPath=mapCollection.state.drawPath
+            if(mapCollection.state.groupDraw){
+                setGroupDraw(mapCollection.state.groupDraw)
+            }
+            console.log(groupDraw)
             setPath(maproute)
             setDrawId(drawID)
             setDrawPath(drawPath)
@@ -113,7 +117,7 @@ export default function BeforeStart(){
     function startPage(e){
         e.preventDefault();
         const startTime = new Date()
-        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId}})
+        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw}})
     }
 
     return(
