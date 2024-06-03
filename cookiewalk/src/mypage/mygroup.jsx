@@ -129,27 +129,7 @@ export default function MyGroup() {
                 groupMember: groupMember[index],
                 center: center[index]
               }} >
-        <div className="mg_group1">
-          <img className="mg_group1_img" src="./images/group1.png" alt="" />
-          <div className="mg_person_box"></div>
-          <div className="mg_person"><img className="mg_person_icon" src="./icon/person.svg" alt="" /></div>
-          <span className="mg_person_current">4</span>
-          <span className="mg_slash">/</span>
-          <span className="mg_person_total">5</span>
-          <div className="mg_dday_box"></div>
-          <span className="mg_dday">D - 14</span>
-          <span className="mg_group1_name">{groupList[0].title}</span>
-          <div className="mg_place"><img className='mg_place_icon' src="./icon/place.svg" alt="" /></div>
-          <span className="mg_place_text">부산 남구 대연동</span>
-          <div className="mg_distance"><img className="mg_distance_icon" src="./icon/running.svg" alt="" /></div>
-          <span className="mg_distance_text">2.5km</span>
-          <div className="mg_hashtag1_box"></div>
-          <span className="mg_hashtag1">#부산</span>
-          <div className="mg_hashtag2_box"></div>
-          <span className="mg_hashtag2">#대연동</span>
-          <div className="mg_hashtag3_box"></div>
-          <span className="mg_hashtag3">#자전거</span>
-      </div>
+                {/* 요기 리스트 넣기 */}
       </Link>
       ))}
 
