@@ -51,7 +51,6 @@ export default function Unfinished_route() {
             .from('walking_record_N')
             .select('walking_record_id ,distance, title, location, walking_time, draw_id')
             .eq('user_id', userID)
-            .eq('state','N')
         console.log(recordInfoData)
         setRecordList(recordInfoData)
         setCountRecord(recordInfoData.length)

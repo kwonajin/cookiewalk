@@ -114,6 +114,24 @@ export default function MyGroup() {
         <span className="mg_title">내가 가입한 그룹</span>
         <div className="mg_line"></div>
       </div>
+      {group.map((groupList, index) => (
+      <Link to="/mygroup_detail" key={groupList[0].group_id} 
+        state={{
+                group_id:groupList[0].group_id,
+                pathColor:groupList[0].color, 
+                level:groupList[0].level, 
+                limit_member:groupList[0].limit_member,
+                location: groupList[0].location,
+                title:groupList[0].title,
+                total_distance:groupList[0].total_distance,
+                distance: groupList[0].distance,
+                drawPath:drawPath[index],
+                groupMember: groupMember[index],
+                center: center[index]
+              }} >
+                {/* 요기 리스트 넣기 */}
+      </Link>
+      ))}
 
       <div className='mygroup_list_container'>
   <Link className='mygroup_to_detail_link' to="/mygroup_detail">

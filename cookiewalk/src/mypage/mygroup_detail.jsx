@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './mygroup_detail.css'; 
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
+import { supabase } from '../supabaseClient';
+import { useToken } from '../context/tokenContext';
 
 function MyMap({ groupDrawPath, color ,center}) {
   const navermaps = useNavermaps();
@@ -30,9 +32,14 @@ function MyMap({ groupDrawPath, color ,center}) {
 
 
 export default function MyGroupDetail() {
+  const navigate = useNavigate();
+  const userInfo = useToken();
+  const userID = userInfo.user;
+
   const groupList = useLocation();
   console.log(groupList.state);
 
+  const groupID=groupList.state.group_id
   const [color, setColor]=useState(groupList.state.pathColor);
   const level=groupList.state.level;
   const limitMember= groupList.state.limit_member;
@@ -88,7 +95,21 @@ export default function MyGroupDetail() {
   }
 
   async function goBefore(){
-    
+    const {data, error}=await supabase
+      .from('group_member')
+      .select('region_number')
+      .eq('user_id', userID)
+      .eq('group_id', groupID)
+    if(error){
+      console.error(error)
+    }else if(!data){
+      window.alert('구역을 선택해주세요')
+    }
+    console.log(data[0].region_number)
+    const regionNum= data[0].region_number
+    if(regionNum <= distance.length && regionNum >= 0 ){
+      navigate('/BeforeStart', {state:{drawPath : groupDrawPath[regionNum] ,path:[], groupDraw: true}})
+    }
   }
 
 
@@ -211,7 +232,7 @@ export default function MyGroupDetail() {
 
       <div className="gd_join">
         <div className="gd_join_box"></div>
-        <div className="gd_join_text" onChange={goBefore}>걷기 시작하기</div>
+        <div className="gd_join_text" onClick={goBefore}>걷기 시작하기</div>
       </div>
     </div>
   );
