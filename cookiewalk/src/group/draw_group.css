@@ -45,7 +45,7 @@ body {
 }
 
 .group_draw_start {
-  top: 800px;
+  top: 850px;
   left: 110px;
   width: 180px;
   height: 45px;
@@ -59,7 +59,7 @@ body {
 }
 
 .group_draw_line_back {
-  top: 880px;
+  top: 910px;
   left: 110px;
   width: 100px;
   height: 45px;
@@ -73,7 +73,7 @@ body {
 }
 
 .group_draw_reset {
-  top: 880px;
+  top: 910px;
   margin-left: 50px;
   width: 100px;
   height: 45px;
@@ -197,6 +197,22 @@ body {
   font-weight: 600;
 }
 
+.draw_date {
+  margin-top: 15px;
+  margin-left: 40px;
+  font-family: Noto Sans KR;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.draw_date_content{
+  position: absolute;
+  left: 105px;
+  top: 678px;
+  font-size: 17px;
+  font-family: Noto Sans KR;
+}
+
 .color_select_text {
   font-size: 16px;
   margin-top: 28px;
@@ -206,12 +222,12 @@ body {
   color: #131313;
 }
 
-.color_select {
-  top: 690px;
-  margin-left: -40px;
-  width: 130px;
+/* .color_picker {
+  top: 850px;
+  margin-left: 0px;
+  width: 50px;
   height: 35px;
-}
+} */
 
 .group_select_text {
   font-size: 16px;
@@ -223,12 +239,25 @@ body {
 }
 
 .group_select {
-  top: 740px;
+  top: 785px;
   margin-left: -170px;
   width: 50px;
   height: 27px;
 }
 
+.group_section_change{
+  background-color: #7CA0C1;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  font-size: 15;
+  font-family: Noto Sans KR;
+  letter-spacing: 10;
+  cursor: pointer;
+}
 
 @keyframes wiggle {
   0%, 100% {

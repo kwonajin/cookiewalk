@@ -127,6 +127,8 @@ function DrawGroupMapComponent() {
   const [currentPolylineIndex, setCurrentPolylineIndex] = useState(null);
   const [currentDistance, setCurrentDistance] = useState(0); // 추가
 
+  const [selectedDate, setSelectedDate] = useState('');
+
   const calculatePathDistances = (path) => {
     return path.map(section => {
       if (section.length < 2) return 0;
@@ -426,7 +428,7 @@ function DrawGroupMapComponent() {
           <button className='group_draw_reset' onClick={clearAllDrawings} style={{ position: 'absolute', zIndex: 1000, left: '160px' }}>
             초기화
           </button>
-          <button className='group_section_change' onClick={handleSectionChange} style={{ position: 'absolute', zIndex: 1000, left: '240px' }}>
+          <button className='group_section_change' onClick={handleSectionChange} style={{ position: 'absolute', zIndex: 1000, top: '420px', left: '320px'}}>
             구역 전환
           </button>
         </>
@@ -438,7 +440,7 @@ function DrawGroupMapComponent() {
           className='color_picker'
           value={selectedColors[currentPolylineIndex]}
           onChange={handleColorChange}
-          style={{ position: 'absolute', zIndex: 1000, left: '200px', top: '690px'}}
+          style={{ position: 'absolute', zIndex: 1000, left: '200px', top: '730px'}}
         />
       )}
 
@@ -470,6 +472,14 @@ function DrawGroupMapComponent() {
         <option value="중">중</option>
         <option value="상">상</option>
       </select>
+      <div className='draw_date'>날짜</div>
+      <input
+        className='draw_date_content'
+        type="date"
+        value={selectedDate}
+        onChange={(e) => setSelectedDate(e.target.value)}
+      />
+
       <div className='color_select_text'>선 색상 선택하기</div>
 
       <div className='group_select_text'>인원 선택하기</div>
