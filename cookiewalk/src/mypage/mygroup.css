@@ -608,9 +608,10 @@ body{
 	position: relative;
 	top: 73px;
 	width: 100%;
-  }
-  
-  .mygroup_to_detail_link {
+	left: -4px;
+}
+
+.mygroup_to_detail_link {
 	width: 100%;
 	text-decoration: none;
-  }
+}
