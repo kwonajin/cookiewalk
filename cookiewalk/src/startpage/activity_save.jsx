@@ -85,6 +85,8 @@ export default function Activity_save() {
     const [drawPath, setDrawPath] = useState([]);
     const [currentPosition, setCurrentPosition]=useState([])
     const [walkMode, setWalkMode]=useState(true);//true 백지걷기 //false 경로따라걷기
+    const [groupDraw, setGroupDraw]= useState(false) //true 그룹 걷기 //false 그룹 걷기 x
+    const [regionNumber, setRegionNumber]=useState(0)
 
     const [pathLoading, setPathLoading]=useState(true)
 
@@ -102,6 +104,8 @@ export default function Activity_save() {
         setDrawPath(state.drawPath)
         setCurrentPosition(state.currentPosition)
         setWalkMode(state.walkMode)//true 백지걷기 //false 경로따라걷기
+        setGroupDraw(state.groupDraw)
+        setRegionNumber(state.regionNumber)
     },[state])
 
 
@@ -160,39 +164,74 @@ export default function Activity_save() {
                 }
             }
         }else{ //경로 그림 있을시 미완성 그림 경로 저장
-            const {data: insertWalkData, error:insertWalkError}= await supabase
-            .from('walking_record_N')
-            .insert([
-                {
-                    walking_record_id: `record_N_${count+1}`,
-                    start_time: state.startTime,
-                    end_time: state.endTime,
-                    color:'#2E9AFE',
-                    distance: state.distance,
-                    user_id: userID,
-                    walking_time:state.time,
-                    title: title,
-                    location: address,
-                    draw_id: drawId
-                }
-            ])
-            if(insertWalkError){
-                console.error(insertWalkError)
-            }
-            console.log('Inserted into walking_record:', insertWalkData);
-            for (const [index, location] of state.passPath.entries() ){
-                const {data: insertLocationData, error: insertLocationError}= await supabase
-                .from('walking_record_N_location')
-                .insert([
+            if(groupDraw){ //그룹걷기
+                const {data: insertWalkData, error:insertWalkError}= await supabase
+                    .from('group_walking_record_N')
+                    .insert([
                     {
-                    walking_record_id:`record_N_${count+1}`,
-                    mark_order: index+1,
-                    latitude: location.latitude,
-                    longitude: location.longitude
+                        group_id: `group_record_N_${count+1}`,
+                        region_number: regionNumber,
+                        walking_time:state.time,
+                        distance: state.distance,
+                        start_time: state.startTime,
+                        end_time: state.endTime,
+                        user_id: userID,
                     }
                 ])
-                if(insertLocationError){
-                    console.log(insertLocationError)
+                if(insertWalkError){
+                    console.error(insertWalkError)
+                }
+                    console.log('Inserted into walking_record:', insertWalkData);
+                for (const [index, location] of state.passPath.entries() ){
+                    const {data: insertLocationData, error: insertLocationError}= await supabase
+                    .from('walking_record_N_location')
+                    .insert([
+                        {
+                        walking_record_id:`record_N_${count+1}`,
+                        mark_order: index+1,
+                        latitude: location.latitude,
+                        longitude: location.longitude
+                        }
+                    ])
+                    if(insertLocationError){
+                        console.log(insertLocationError)
+                    }
+                }
+            }else{ //그룹걷기 x
+                const {data: insertWalkData, error:insertWalkError}= await supabase
+                    .from('walking_record_N')
+                    .insert([
+                        {
+                        walking_record_id: `record_N_${count+1}`,
+                        start_time: state.startTime,
+                        end_time: state.endTime,
+                        color:'#2E9AFE',
+                        distance: state.distance,
+                        user_id: userID,
+                        walking_time:state.time,
+                        title: title,
+                        location: address,
+                        draw_id: drawId
+                        }
+                    ])
+                if(insertWalkError){
+                    console.error(insertWalkError)
+                }
+                console.log('Inserted into walking_record:', insertWalkData);
+                for (const [index, location] of state.passPath.entries() ){
+                    const {data: insertLocationData, error: insertLocationError}= await supabase
+                        .from('walking_record_N_location')
+                        .insert([
+                            {
+                            walking_record_id:`record_N_${count+1}`,
+                            mark_order: index+1,
+                            latitude: location.latitude,
+                            longitude: location.longitude
+                            }
+                        ])
+                        if(insertLocationError){
+                            console.log(insertLocationError)
+                        }
                 }
             }
         }

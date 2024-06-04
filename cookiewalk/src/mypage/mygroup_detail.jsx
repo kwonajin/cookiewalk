@@ -51,7 +51,6 @@ export default function MyGroupDetail() {
   const [groupMember, setGroupMember]=useState(groupList.state.groupMember)
   const [center, setCenter]=useState(groupList.state.center)
   const [groupDrawPath, setGroupDrawPath]=useState([]);
-
   const [selected, setSelected] = useState([]);
 
   useEffect(()=>{
@@ -108,7 +107,7 @@ export default function MyGroupDetail() {
     console.log(data[0].region_number)
     const regionNum= data[0].region_number
     if(regionNum <= distance.length && regionNum >= 0 ){
-      navigate('/BeforeStart', {state:{drawPath : groupDrawPath[regionNum] ,path:[], groupDraw: true}})
+      navigate('/BeforeStart', {state:{drawPath : groupDrawPath[regionNum] ,path:[], groupDraw: true , regionNumber: regionNum}})
     }
   }
 
