@@ -15,6 +15,7 @@ export default function MyGroup() {
   const [group ,setGroup]=useState([])
   const [drawPath, setDrawPath]=useState([])
   const [center, setCenter]=useState([])
+  const [loading, setLoading]=useState(true); // 로딩 상태 추가
 
   useEffect(()=>{
     console.log(groupMember)
@@ -96,6 +97,7 @@ export default function MyGroup() {
       // console.log('좌표테이블:',locationData)
       setDrawPath(prevDrawPath =>[...prevDrawPath , locationData])
     }
+    setLoading(false)
   }
 
   useEffect(()=>{
@@ -107,6 +109,14 @@ export default function MyGroup() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  if(loading){
+    return (
+        <div className="BeforeStart_container">
+            <img className='map_loadimg' src="./images/logo.png" alt="" />
+            <div className='map_loadmessage'>나의 그룹 정보를 <br/> 가져오는 중입니다...</div>
+        </div>
+    )
+}
   return (
     <div className="mg_background">
       <div className='mgnav'>
@@ -117,7 +127,6 @@ export default function MyGroup() {
 
   <div className='mygroup_list_container'>
   {group.map((groupList, index) => (
-
   <Link className='mygroup_to_detail_link' to="/mygroup_detail"
     state={{
       group_id:groupList[0].group_id,
@@ -132,11 +141,19 @@ export default function MyGroup() {
       groupMember: groupMember[index],
       center: center[index]
     }} >
-    <MyGroup_List />
+    <MyGroup_List
+      key={groupList[0].group_id}
+      groupList={groupList[0]}
+      drawPath={drawPath[index]}
+      groupMember= {groupMember[index].length}
+      center= {center[index]}
+      />
   </Link>
   ))}
+
 </div>
     </div>
+
   );
 }
 
