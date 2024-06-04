@@ -41,7 +41,7 @@ body{
 	top:5px;
 }
 
-.following_tilte { 
+.following_title { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:74px;
 	height:29px;
@@ -52,7 +52,7 @@ body{
 	text-align:left;
 	font-size:20px;
 	letter-spacing:0;
-  font-weight: 600;
+  	font-weight: 600;
 }
 
 .following_line1 { 
