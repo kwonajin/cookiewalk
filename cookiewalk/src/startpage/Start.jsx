@@ -77,7 +77,8 @@ export default function Start() {
     const location = useLocation();
     const navigate = useNavigate();
     console.log(location)
-
+    const groupDraw=location.state.groupDraw
+    console.log(groupDraw)
     const [isExpanded, setIsExpanded] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
 
