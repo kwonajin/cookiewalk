@@ -124,6 +124,7 @@ export default function MyGroup() {
         <span className="mg_title">내가 가입한 그룹</span>
         <div className="mg_line"></div>
       </div>
+
   <div className='mygroup_list_container'>
   {group.map((groupList, index) => (
   <Link className='mygroup_to_detail_link' to="/mygroup_detail"
@@ -149,8 +150,10 @@ export default function MyGroup() {
       />
   </Link>
   ))}
-  </div>
-  </div>
+
+</div>
+    </div>
+
   );
 }
 
