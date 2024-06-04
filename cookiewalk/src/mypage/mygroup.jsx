@@ -115,16 +115,32 @@ export default function MyGroup() {
         <div className="mg_line"></div>
       </div>
 
-      <div className='mygroup_list_container'>
-  <Link className='mygroup_to_detail_link' to="/mygroup_detail">
+  <div className='mygroup_list_container'>
+  {group.map((groupList, index) => (
+
+  <Link className='mygroup_to_detail_link' to="/mygroup_detail"
+    state={{
+      group_id:groupList[0].group_id,
+      pathColor:groupList[0].color, 
+      level:groupList[0].level, 
+      limit_member:groupList[0].limit_member,
+      location: groupList[0].location,
+      title:groupList[0].title,
+      total_distance:groupList[0].total_distance,
+      distance: groupList[0].distance,
+      drawPath:drawPath[index],
+      groupMember: groupMember[index],
+      center: center[index]
+    }} >
+    <MyGroup_List />
+  </Link>
+  ))}
+  {/* <Link className='mygroup_to_detail_link' to="/mygroup_detail">
     <MyGroup_List />
   </Link>
   <Link className='mygroup_to_detail_link' to="/mygroup_detail">
     <MyGroup_List />
-  </Link>
-  <Link className='mygroup_to_detail_link' to="/mygroup_detail">
-    <MyGroup_List />
-  </Link>
+  </Link> */}
 </div>
     </div>
   );

@@ -111,7 +111,7 @@ export default function MyGroupDetail() {
       <div className="gd_name">{title}</div>
       <div className="gd_dday">
         <div className="gd_dday_box"></div>
-        <div className="gd_dday_text">D - 14</div>
+        <div className="gd_dday_text">D - 14</div>x``
       </div>
       <div className="gd_line1"></div>
 
@@ -147,9 +147,9 @@ export default function MyGroupDetail() {
                   <span className="group_choice_num2">{index+1}</span>
                 </div>
               </div>
-              <span className="e359_143">{region} km</span>
+              <span className="group_choice_distance">{region} km</span>
               <button
-                className={`select_btn ${selected[index] ? 'selected' : 'unselected'}`}
+                className={`gd_select_btn ${selected[index] ? 'selected' : 'unselected'}`}
                 onClick={()=>handleSelectClick(index)}>
                 {selected[index] ? '선택하기' : '선택함'}
               </button>

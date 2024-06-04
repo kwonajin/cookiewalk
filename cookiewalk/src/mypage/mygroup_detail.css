@@ -564,15 +564,16 @@ body{
 	font-size:15px;
 	letter-spacing:0;
 }
-.select_btn { 
+.gd_select_btn { 
 	color: #ffffff;
+	position: absolute;
 	font-weight: 600;
 	background-color:rgba(105, 105, 105, 0.9);
 	width:75px;
 	height:30px;
 	position:flex;
-	left:281px;
-	top:568px;
+	left:270px;
+	top: 13px;
 	border-top-left-radius:4px;
 	border-top-right-radius:4px;
 	border-bottom-left-radius:4px;
@@ -581,7 +582,7 @@ body{
 	cursor: pointer;
 }
 
-.select_btn.selected{
+.gd_select_btn.selected{
 	background-color:rgba(123.85281890630722, 159.70904767513275, 193.0042138695717, 1);
 	color: #ffffff;
 }
@@ -594,16 +595,18 @@ body{
 	font-size:15px;
 	letter-spacing:0;
 }
-.e359_143 { 
+.group_choice_distance { 
+	position: relative;
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:58px;
 	height:14px;
 	position:flex;
-	left:70px;
-	top:570px;
+	left:60px;
+	top:-17px;
 	font-family:Noto Sans KR;
 	/* text-align:right; */
 	font-size:15px;
+	font-weight: 700;
 	letter-spacing:0;
 }
 .e359_129 { 
