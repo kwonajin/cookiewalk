@@ -107,7 +107,7 @@ export default function MyGroupDetail() {
     console.log(data[0].region_number)
     const regionNum= data[0].region_number
     if(regionNum <= distance.length && regionNum >= 0 ){
-      navigate('/BeforeStart', {state:{drawPath : groupDrawPath[regionNum] ,path:[], groupDraw: true , regionNumber: regionNum}})
+      navigate('/BeforeStart', {state:{drawPath : groupDrawPath[regionNum] ,path:[], groupDraw: true , regionNumber: regionNum , groupId: groupID}})
     }
   }
 
@@ -177,57 +177,6 @@ export default function MyGroupDetail() {
           </div>
         ))}
       </div>
-            {/* 수정전꺼  */}
-            {/* <div className="group_choice_box2"></div>
-            <div className="group_num_box2">  
-              <div className="group_choice_num_box2"></div>
-              <span className="group_choice_num2">{index+1}</span>
-            </div>
-            <span className="e359_143">km</span>
-            <button
-              className={`select_btn ${selected[index] ? 'selected' : 'unselected'}`}
-              onClick={()=>handleSelectClick(index)}
-            >
-            {selected[index] ? '선택하기' : '선택함'}
-            </button> */}
-
-
-      {/* <div className="group_choice_box1"></div>
-      <div className="group_num_box1">
-        <div className="group_choice_num_box1"></div>
-        <span className="group_choice_num1">1</span>
-      </div>
-      <div className="e359_129">
-        <div className="e359_130"></div>
-        <span className="e359_131">선택완료</span>
-      </div>
-      <span className="e359_135">1.0km</span> */}
-
-      {/* 리스트2 */}
-      {/* <div className="group_choice_box2"></div>
-      <div className="group_num_box2">
-        <div className="group_choice_num_box2"></div>
-        <span className="group_choice_num2">2</span>
-      </div>
-      <span className="e359_143">1.0km</span>
-      <button
-        className={`select_btn ${selected ? 'selected' : 'unselected'}`}
-        onClick={handleSelectClick}
-      >
-        {selected ? '선택하기' : '선택함'}
-      </button> */}
-
-      {/* 리스트3 */}
-      {/* <div className="group_choice_box3"></div>
-      <div className="e359_158">
-        <div className="e359_159"></div>
-        <span className="e359_160">3</span>
-      </div>
-      <div className="e359_161">
-        <div className="e359_162"></div>
-        <span className="e359_163">선택하기</span>
-      </div>
-      <span className="e359_157">0.5km</span> */}
 
       <div className="gd_join">
         <div className="gd_join_box"></div>

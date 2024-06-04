@@ -79,6 +79,7 @@ export default function Start() {
     console.log(location)
     const groupDraw=location.state.groupDraw
     const regionNumber= location.state.regionNumber
+    const groupId = location.state.groupId
     console.log(groupDraw)
     const [isExpanded, setIsExpanded] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
@@ -352,8 +353,6 @@ export default function Start() {
                 passPath:passPath,
                 currentPosition:currentPosition,
                 walkMode:walkMode,
-                groupDraw: groupDraw,
-                regionNumber: regionNumber
             }
         });
     }
