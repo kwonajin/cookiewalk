@@ -77,10 +77,10 @@ export default function Start() {
     const location = useLocation();
     const navigate = useNavigate();
     console.log(location)
-    const groupDraw=location.state.groupDraw
-    const regionNumber= location.state.regionNumber
-    const groupId = location.state.groupId
-    console.log(groupDraw)
+    const [groupDraw ,setGroupDraw]=useState(false)
+    const [regionNumber, setRegionNumber]=useState(0)
+    const [groupId, setGroupId]=useState('')
+    // console.log(groupDraw)
     const [isExpanded, setIsExpanded] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
 
@@ -260,6 +260,9 @@ export default function Start() {
             setWalkMode(false)
             setPassPath(location.state.path)
             setDrawId(location.state.drawId)
+            setGroupId(location.state.groupDraw)
+            setRegionNumber(location.state.regionNumber)
+            setGroupDraw(location.state.groupDraw)
         }
     }, [location.state.drawPath]);
 

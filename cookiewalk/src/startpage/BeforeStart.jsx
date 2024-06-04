@@ -60,7 +60,7 @@ export default function BeforeStart(){
             const drawPath=mapCollection.state.drawPath
             if(mapCollection.state.groupDraw){
                 setGroupDraw(mapCollection.state.groupDraw)
-                setRegionNumber(mapCollection.state.groupDraw)
+                setRegionNumber(mapCollection.state.regionNumber)
                 setGroupId(mapCollection.state.groupId)
             }
             console.log(groupDraw)
