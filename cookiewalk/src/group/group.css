@@ -19,6 +19,7 @@ body{
 .groupnav{
 	position: fixed;
 	background-color: #ffffff;
+	top: 0px;
 	width: 390px;
 	height: 51px;
 	z-index: 1;
@@ -167,17 +168,37 @@ body{
 	top:2.925311803817749px;
 }
 
+.GroupList { 
+	width:180px;
+	height:181px;
+	position:relative;
+	top:0px;
+}
+
+.GroupList_container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr); /* 2열로 설정 */
+	position: relative;
+	top: 175px;
+	width: 100%;
+	height: calc(100vh - 153px - 100px); /* 조정 필요: 헤더, 푸터를 고려한 높이 설정 */
+	overflow-y: auto; /* 내부 스크롤 활성화 */
+}
+
+.GroupList_container::-webkit-scrollbar {
+	display: none; /* 기본 스크롤 막대 숨기기 */
+}
+
 .group_img { 
 	width:180px;
 	height:115px;
-	position:absolute;
+	position:relative;
 	left:10px;
-	top:161px;
+	top:0px;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
-	background-image:url(./images/group1.png);
 	background-repeat:no-repeat;
 	background-size:cover;
 }
@@ -186,9 +207,9 @@ body{
 	background-color:rgba(221.3375759124756, 221.3375759124756, 221.3375759124756, 0.8999999761581421);
 	width:51px;
 	height:18px;
-	position:absolute;
+	position:relative;
 	left:15px;
-	top:165px;
+	top:-115px;
 	border-top-left-radius:4px;
 	border-top-right-radius:4px;
 	border-bottom-left-radius:4px;
@@ -198,9 +219,9 @@ body{
 .person { 
 	width:12px;
 	height:12px;
-	position:absolute;
+	position:relative;
 	left:20px;
-	top:168px;
+	top:-130px;
 }
 
 .person_icon { 
@@ -217,7 +238,7 @@ body{
 	height:14px;
 	position:absolute;
 	left:38px;
-	top:167px;
+	top:5px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:10px;
@@ -231,7 +252,7 @@ body{
 	height:11px;
 	position:absolute;
 	left:46.7px;
-	top:167.9px;
+	top:6px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:8px;
@@ -245,7 +266,7 @@ body{
 	height:14px;
 	position:absolute;
 	left:53px;
-	top:167px;
+	top:5px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:10px;
@@ -259,7 +280,7 @@ body{
 	height:18px;
 	position:absolute;
 	left:145px;
-	top:165px;
+	top:3.5px;
 	border-top-left-radius:4px;
 	border-top-right-radius:4px;
 	border-bottom-left-radius:4px;
@@ -271,7 +292,7 @@ body{
 	width:36px;
 	position:absolute;
 	left:147px;
-	top:165px;
+	top:3px;
 	font-family:Noto Sans KR;
 	text-align:center;
 	font-size:11px;
@@ -283,9 +304,9 @@ body{
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:116px;
 	height:25px;
-	position:absolute;
+	position:relative;
 	left:11px;
-	top:278px;
+	top:-30px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:14px;
@@ -296,9 +317,9 @@ body{
 .place { 
 	width:18px;
 	height:17px;
-	position:absolute;
+	position:relative;
 	left:10px;
-	top:303px;
+	top:-28px;
 }
 
 .place_icon { 
@@ -312,9 +333,9 @@ body{
 .place_name { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:100px;
-	position:absolute;
+	position:relative;
 	left:25px;
-	top:302px;
+	top:-45px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:12px;
@@ -325,9 +346,9 @@ body{
 .distance { 
 	width:20.000001907348633px;
 	height:20.000001907348633px;
-	position:absolute;
+	position:relative;
 	left:130px;
-	top:300px;
+	top:-66px;
 }
 
 .distance_icon { 
@@ -335,16 +356,16 @@ body{
 	height:14px;
 	position:absolute;
 	left:1.6666667461395264px;
-	top:5.191667079925537px;
+	top:6px;
 }
 
 .distance_num { 
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:41px;
 	height:14px;
-	position:absolute;
+	position:relative;
 	left:151px;
-	top:302px;
+	top:-82px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:12px;
@@ -365,71 +386,8 @@ body{
 	border-bottom-right-radius:3px;
 }
 
-.hashtag1 { 
-	color:rgba(101.80632591247559, 101.80632591247559, 101.80632591247559, 1);
-	width: 35px;
-	position:absolute;
-	left:13px;
-	top:326px;
-	font-family:Noto Sans KR;
-	text-align:center;
-	font-size:10px;
-	letter-spacing:0;
-	font-weight: 600;
-}
-
-.hashtag_box2 { 
-	background-color:rgba(223.74900251626968, 235.35367101430893, 246.12920880317688, 1);
-	width:47px;
-	height:17px;
-	position:absolute;
-	left:57px;
-	top:325px;
-	border-top-left-radius:3px;
-	border-top-right-radius:3px;
-	border-bottom-left-radius:3px;
-	border-bottom-right-radius:3px;
-}
-
-.hashtag2 { 
-	color:rgba(101.80632591247559, 101.80632591247559, 101.80632591247559, 1);
-	width:40px;
-	height:16px;
-	position:absolute;
-	left:61px;
-	top:326px;
-	font-family:Noto Sans KR;
-	text-align:center;
-	font-size:10px;
-	letter-spacing:0;
-	font-weight: 600;
-}
-
-.hashtag_box3 { 
-	background-color:rgba(223.74900251626968, 235.35367101430893, 246.12920880317688, 1);
-	width:47px;
-	height:17px;
-	position:absolute;
-	left:110px;
-	top:325px;
-	border-top-left-radius:3px;
-	border-top-right-radius:3px;
-	border-bottom-left-radius:3px;
-	border-bottom-right-radius:3px;
-}
-
-.hashtag3 { 
-	color:rgba(101.80632591247559, 101.80632591247559, 101.80632591247559, 1);
-	width:40px;
-	height:16px;
-	position:absolute;
-	left:114px;
-	top:326px;
-	font-family:Noto Sans KR;
-	text-align:center;
-	font-size:10px;
-	letter-spacing:0;
-	font-weight: 600;
+.group_to_part_link{
+	text-decoration: none;
 }
 
 .navbar {
@@ -539,3 +497,4 @@ body{
 	height: 25px; /* 이미지의 높이를 80px로 조정 */
 	cursor: pointer; /* 포인터 커서 설정 */
 }
+
