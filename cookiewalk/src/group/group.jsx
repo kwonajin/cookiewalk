@@ -1,9 +1,15 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import './group.css';
 import { Link } from "react-router-dom";
 import Group_List from './group_list';
+import {useToken} from '../context/tokenContext'
+import { supabase } from '../supabaseClient';
 
 export default function Group() {
+  const userInfo=useToken();
+  const userID= userInfo.user
+  const [group, setGroup]=useState([])
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -16,7 +22,15 @@ export default function Group() {
     event.target.placeholder = placeholderText;
   
   };
-  
+  async function findGroup(){
+    
+  }
+  useEffect(()=>{
+    if(userID){
+      findGroup()
+    }
+  },[userID])
+
 
   return (
     <><div className="group_background">
@@ -42,18 +56,8 @@ export default function Group() {
 
       <div className='GroupList_container'>
       <Link className='group_to_part_link' to="/group_detail">
-          <Group_List/>
-        </Link>
-        <Link className='group_to_part_link' to="/group_detail">
-          <Group_List/>
-        </Link>
-        <Link className='group_to_part_link' to="/group_detail">
-          <Group_List/>
-        </Link>
-        <Link className='group_to_part_link' to="/group_detail">
-          <Group_List/>
-        </Link>
-        
+        <Group_List/>
+      </Link>
       </div>
       
     </div>
