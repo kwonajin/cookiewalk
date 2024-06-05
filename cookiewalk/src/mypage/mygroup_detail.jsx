@@ -143,12 +143,10 @@ export default function MyGroupDetail() {
     } else if (!data) {
       window.alert('구역을 선택해주세요');
     }
-
-    console.log(data[0].region_number);
-    const regionNum = data[0].region_number;
-
-    if (regionNum <= distance.length && regionNum >= 0) {
-      navigate('/BeforeStart', { state: { drawPath: groupDrawPath[regionNum], path: [], groupDraw: true, regionNumber: regionNum, groupId: groupID } });
+    console.log(data[0].region_number)
+    const regionNum= data[0].region_number
+    if(regionNum <= distance.length && regionNum >= 0 ){
+      navigate('/BeforeStart', {state:{drawPath : groupDrawPath[regionNum] ,path:[], groupDraw: true , regionNumber: regionNum , groupId: groupID ,color:color[regionNum-1]}})
     }
   }
 
