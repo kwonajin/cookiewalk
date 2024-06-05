@@ -16,13 +16,16 @@ function getBrightness(hexColor) {
 }
 
 // MyMap 컴포넌트
-function MyMap({ groupDrawPath, color, center }) {
+function MyMap({ groupDrawPath, color, bounds }) {
   const navermaps = useNavermaps();
 
   return (
     <NaverMap
-      defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)} 
-      defaultZoom={15} 
+      bounds={bounds ? new navermaps.LatLngBounds(
+        new navermaps.LatLng(bounds.south, bounds.west),
+        new navermaps.LatLng(bounds.north, bounds.east)
+      ) : null}
+      defaultZoom={15}
       scaleControl={false}
       mapDataControl={false}
     >
@@ -69,15 +72,17 @@ export default function MyGroupDetail() {
   const [distance, setDistance] = useState(groupList.state.distance);
   const [drawPath, setDrawPath] = useState(groupList.state.drawPath);
   const [groupMember, setGroupMember] = useState(groupList.state.groupMember);
-  const [center, setCenter] = useState(groupList.state.center);
   const [groupDrawPath, setGroupDrawPath] = useState([]);
   const [selected, setSelected] = useState([]);
+  const [bounds, setBounds] = useState(null);
 
   useEffect(() => {
     console.log(drawPath);
     if (drawPath) {
       const groupedPaths = groupPathsByRegion(drawPath);
       setGroupDrawPath(groupedPaths);
+      const bounds = calculateBounds(drawPath);
+      setBounds(bounds);
     }
   }, [drawPath]);
 
@@ -111,6 +116,21 @@ export default function MyGroupDetail() {
     }, {});
   }
 
+  function calculateBounds(paths) {
+    if (!paths || paths.length === 0) return null;
+    let south = paths[0].latitude, north = paths[0].latitude;
+    let west = paths[0].longitude, east = paths[0].longitude;
+
+    paths.forEach(path => {
+      if (path.latitude < south) south = path.latitude;
+      if (path.latitude > north) north = path.latitude;
+      if (path.longitude < west) west = path.longitude;
+      if (path.longitude > east) east = path.longitude;
+    });
+
+    return { south, west, north, east };
+  }
+
   async function goBefore() {
     const { data, error } = await supabase
       .from('group_member')
@@ -140,7 +160,7 @@ export default function MyGroupDetail() {
       <div className="mgd_title">내가 가입한 그룹</div>
       <div className="gd_line"></div>
 
-      <MapDiv className='gd_img'><MyMap groupDrawPath={groupDrawPath} color={color} center={center} /></MapDiv>
+      <MapDiv className='gd_img'><MyMap groupDrawPath={groupDrawPath} color={color} bounds={bounds} /></MapDiv>
 
       <div className="gd_name">{title}</div>
       <div className="gd_dday">
