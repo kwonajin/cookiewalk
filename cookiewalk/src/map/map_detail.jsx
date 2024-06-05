@@ -3,7 +3,7 @@ import './map_detail.css';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 
-function MyMap({ path, center }) {
+function MyMap({ path, center , color}) {
   const navermaps = useNavermaps();
   return (
     <NaverMap
@@ -15,7 +15,7 @@ function MyMap({ path, center }) {
       {path.length > 1 && (
         <Polyline
           path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-          strokeColor='blue'
+          strokeColor={color}
           strokeWeight={4}
           strokeOpacity={0.8}
           strokeStyle="solid"
@@ -39,13 +39,14 @@ export default function Map_detail() {
   const drawPath = mapList.state.pathcoord.coordinate;
   const center = mapList.state.centercoord.coordinate;
   const nickName = mapList.state.nickName
+  const color= mapList.state.color
   // const drawUserId=mapList.state.drawUserId
 
   console.log(drawPath);
   console.log(center);
 
   const followRoute = () => {
-    navigate('/BeforeStart', { state: { drawPath: drawPath , drawId:drawId , path:[]} });
+    navigate('/BeforeStart', { state: { drawPath: drawPath , drawId:drawId , path:[] ,color:color} });
   };
 
   // Scroll to top on component mount
@@ -59,7 +60,7 @@ export default function Map_detail() {
       <span className="MapDetail_title">맵</span>
       <div className="MapDetail_title_line"></div>
 
-      <MapDiv className='e300_47'><MyMap path={drawPath} center={center} /></MapDiv>
+      <MapDiv className='e300_47'><MyMap path={drawPath} center={center} color={color}/></MapDiv>
       {/* <div><img className="e300_47" src="./images/group1.png"/></div> */}
       {/* 경로 이미지 들어가는 곳 */}
 

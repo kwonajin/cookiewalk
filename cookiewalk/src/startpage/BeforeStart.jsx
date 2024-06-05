@@ -4,7 +4,7 @@ import './BeforeStart.css'
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from '../supabaseClient';
 
-function MyMap({path=[],center, drawPath=[] }){
+function MyMap({path=[],center, drawPath=[] ,color}){
     console.log(drawPath)
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
     const markerIcon = {
@@ -19,7 +19,7 @@ function MyMap({path=[],center, drawPath=[] }){
         {path.length >1 &&(
             <Polyline
                 path={path.map(p => new navermaps.LatLng(p.latitude,p.longitude))}
-                strokeColor='#2E9AFE' // 선색깔
+                strokeColor={color} // 선색깔
                 strokeWeight={8} //선두께
                 strokeOpacity={0.8} //투명도
                 strokeStyle="solid"
@@ -32,7 +32,7 @@ function MyMap({path=[],center, drawPath=[] }){
                     title={`Marker ${index + 1}`}
                     clickable={true}
                     icon={{
-                        content: `<div style="background: #B45F04; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        content: `<div style="background: ${color}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
                         size: new navermaps.Size(10, 10),
                         anchor: new navermaps.Point(5, 5)
                     }}
@@ -50,6 +50,7 @@ export default function BeforeStart(){
     const [groupDraw, setGroupDraw]=useState(false)
     const [regionNumber, setRegionNumber]=useState(0)
     const [groupId, setGroupId]=useState('')
+    const [color, setColor]=useState('#7ca0c1')
     const mapCollection = useLocation();
     console.log(mapCollection)
     useEffect(()=>{
@@ -58,6 +59,7 @@ export default function BeforeStart(){
             const maproute=mapCollection.state.path
             const drawID=mapCollection.state.drawId
             const drawPath=mapCollection.state.drawPath
+            const color=mapCollection.state.color
             if(mapCollection.state.groupDraw){
                 setGroupDraw(mapCollection.state.groupDraw)
                 setRegionNumber(mapCollection.state.regionNumber)
@@ -67,6 +69,7 @@ export default function BeforeStart(){
             setPath(maproute)
             setDrawId(drawID)
             setDrawPath(drawPath)
+            setColor(color)
         }
     },[path])
     const  navigate = useNavigate();
@@ -121,14 +124,14 @@ export default function BeforeStart(){
     function startPage(e){
         e.preventDefault();
         const startTime = new Date()
-        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId}})
+        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId, color:color}})
     }
 
     return(
         <div className="BeforeStart_container">
             <Link to='/home'><div><img className='Before_start_backarrow' src="./icon/arrow.svg"/></div></Link>
             
-            <MapDiv className='MapStyle'><MyMap path={path} center={currentPosition} drawPath={drawPath}/></MapDiv>
+            <MapDiv className='MapStyle'><MyMap path={path} center={currentPosition} drawPath={drawPath} color={color}/></MapDiv>
             {/* 지도 넣는 곳 */}
             {/* <div><img className="e118_427" src="./images/image 229_4174.png" alt="map" /></div> */}
 
