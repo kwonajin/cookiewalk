@@ -100,10 +100,15 @@ export default function MyGroupDetail() {
   }, []);
 
   const handleSelectClick = (index) => {
-    const updatedSelected = [...selected];
-    updatedSelected[index] = !updatedSelected[index];
-    setSelected(updatedSelected);
-    console.log(selected);
+    const selectedRegionIndex = selected.findIndex(s => s === true);
+    if (selectedRegionIndex === -1 || selectedRegionIndex === index) {
+      const updatedSelected = [...selected];
+      updatedSelected[index] = !updatedSelected[index];
+      setSelected(updatedSelected);
+      console.log(selected);
+    } else {
+      alert('이미 선택된 경로가 있습니다.');
+    }
   };
 
   function groupPathsByRegion(drawPath) {
@@ -204,7 +209,8 @@ export default function MyGroupDetail() {
                 <span className="group_choice_distance">{region} km</span>
                 <button
                   className={`gd_select_btn ${selected[index] ? 'selected' : 'unselected'}`}
-                  onClick={() => handleSelectClick(index)}>
+                  onClick={() => handleSelectClick(index)}
+                  disabled={selected.find(s => s === true) && !selected[index]}>
                   {selected[index] ? '선택함' : '선택하기'}
                 </button>
               </div>
