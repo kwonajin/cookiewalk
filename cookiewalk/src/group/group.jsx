@@ -1,9 +1,25 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import './group.css';
 import { Link } from "react-router-dom";
 import Group_List from './group_list';
+import {useToken} from '../context/tokenContext'
+import { supabase } from '../supabaseClient';
+import axios from 'axios';
 
 export default function Group() {
+  const userInfo=useToken();
+  const userID= userInfo.user
+  const [address, setAddress]=useState('')
+  const [currentPosition, setCurrentPosition]=useState(null)
+  const [findGroupData , setfindGroupData]=useState([])
+
+  const [groupMember, setGroupMember]=useState([])
+  const [group, setGroup]=useState([])
+  const [drawPath, setDrawPath]=useState([])
+  const [center, setCenter]=useState([])
+  const [loading, setLoading]=useState(true); // 로딩 상태 추가
+  const [count, setCount]=useState([])
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -16,7 +32,169 @@ export default function Group() {
     event.target.placeholder = placeholderText;
   
   };
-  
+  const calculateCenter=(drawPath) =>{
+    return drawPath.map((pathGroup)=>{
+      const total=pathGroup.length;
+      const sum=pathGroup.reduce((acc, coord)=>({
+        latitude: acc.latitude + coord.latitude,
+        longitude: acc.longitude + coord.longitude
+      }), {latitude: 0, longitude:0})
+      
+      return{
+        latitude: sum.latitude/total,
+        longitude: sum.longitude/total
+      }
+    })
+  }
+  //현재 위치 불러오는 함수
+  const fetchCurrentPosition=()=>{
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+            (position)=>{
+                const {latitude, longitude} = position.coords;
+                // console.log(position.coords)
+                setCurrentPosition({lat:latitude, lng:longitude});
+                // console.log(currentPosition)
+            },
+            (error)=>{
+                console.error('위치정보 가져오기 실패:',error)
+                setCurrentPosition({ lat: 37.5665, lng: 126.9780 });
+                setLoading(false)
+            },
+            {
+            enableHighAccuracy: true, //높은 정확도로 위치정보 가져오기
+            timeout:20000,            //위치가져오기 제한시간 설정
+            maximumAge:0              //캐시된 위치 정보 사용 x
+            }
+        );
+    }else{
+        console.error('브라우저에서 지리적 위치 API를 지원하지 않을 경우',error)
+        setCurrentPosition({lat: 37.5665, lng: 126.9780})
+        setLoading(false);
+    }
+}
+async function getReverseGeocode(latitude, longitude){
+  const url =`https://blonde-bobolink-smartbusan-a2d9f8e5.koyeb.app/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
+  try{
+      const response = await axios.get(url, {latitude, longitude});
+      console.log(response.data)
+      const area1=response.data.results[0].region.area1.alias
+      setAddress(area1)
+      return area1;
+  }catch (error){
+      console.error(error)
+      throw error;
+  }
+};
+
+  async function findGroup(){
+    const {data: findUserGroup, error: findUserGroupError}=await supabase
+      .from('group_member')
+      .select('group_id')
+      .eq('user_id', userID)
+    if(findUserGroupError){
+      console.error(findUserGroupError)
+    }else if(findUserGroup.length >= 1 ){
+      // console.log(findUserGroup)
+      const excludedGroups =await findUserGroup.map(group => `${group.group_id}`).join(',');
+      // console.log(excludedGroups)
+      const {data: findOtherGroup, error: findOtherGroupError}=await supabase
+        .from('group')
+        .select('*')
+        .not('group_id', 'in', `(${excludedGroups})`) 
+        .ilike('location', `%${address}%`)
+      if(findOtherGroupError){
+        console.log(findOtherGroupError)
+      }
+      // console.log(findOtherGroup)
+      setfindGroupData(findOtherGroup)
+    }
+  }
+  async function findGroup_2(){
+    if(findGroupData){}
+    for( const group of findGroupData){
+      const groupID = group.group_id
+      const {data, error, count}=await supabase
+        .from('group_member')
+        .select('*',{ count: 'exact' })
+        .eq('group_id', groupID)
+        if (error) {
+          console.error(error);
+          return;
+        }
+        setCount(prevCount => [...prevCount, count])
+        // console.log(`${groupID}_member: ${count}`)
+        setGroupMember(prevGroupCount => [...prevGroupCount, data])
+
+      const {data: groupTableData ,error:groupTableError}= await supabase
+        .from('group')
+        .select('*')
+        .eq('group_id', groupID)
+
+        if(groupTableError){
+          console.error(groupTableError)
+        }
+        // console.log('그룹테이블',groupTableData)
+        setGroup(prevGroup => [...prevGroup, groupTableData])
+      const {data: locationData, error:locationError}=await supabase
+        .from('group_draw_map_location')
+        .select('*')
+        .eq('group_id',groupID)
+      if(locationError){
+        console.error(locationError)
+      }
+      // console.log('좌표테이블:',locationData)
+      setDrawPath(prevDrawPath =>[...prevDrawPath , locationData])
+    }
+    setLoading(false)
+  }
+  useEffect(()=>{
+    if(userID && address){
+      findGroup()
+    }
+  },[userID, address])
+  useEffect(()=>{
+    if(!currentPosition){
+        fetchCurrentPosition()
+    }
+    if(currentPosition){
+      // console.log(currentPosition)
+      getReverseGeocode(currentPosition.lat, currentPosition.lng)
+        
+    }
+  }, [currentPosition])
+
+  useEffect(()=>{
+    if(findGroupData){
+      console.log(findGroupData)
+      findGroup_2()
+    }
+  },[findGroupData])
+
+  useEffect(()=>{
+    console.log(groupMember)
+  },[groupMember])
+  useEffect(()=>{
+    console.log(group)
+  },[group])
+  useEffect(()=>{
+    console.log(drawPath)
+    if(drawPath){
+      setCenter(calculateCenter(drawPath))
+    }
+  },[drawPath])
+  useEffect(()=>{
+    console.log(center)
+  },[center])
+
+  if(loading){
+    return (
+        <div className="BeforeStart_container">
+            <img className='map_loadimg' src="./images/logo.png" alt="" />
+            <div className='map_loadmessage'>나의 그룹 정보를 <br/> 가져오는 중입니다...</div>
+        </div>
+    )
+  }
 
   return (
     <><div className="group_background">
@@ -41,19 +219,33 @@ export default function Group() {
       <div className="sort"><img className='sort_icon' src="./icon/arrow.svg" alt="" /></div>
 
       <div className='GroupList_container'>
-      <Link className='group_to_part_link' to="/group_detail">
-          <Group_List/>
-        </Link>
-        <Link className='group_to_part_link' to="/group_detail">
-          <Group_List/>
-        </Link>
-        <Link className='group_to_part_link' to="/group_detail">
-          <Group_List/>
-        </Link>
-        <Link className='group_to_part_link' to="/group_detail">
-          <Group_List/>
-        </Link>
-        
+      {findGroupData.map((groupList,index)=>(
+        <Link className='group_to_part_link' to="/group_detail" key={groupList.group_id}
+        state={{
+          group_id:groupList.group_id,
+          pathColor:groupList.color, 
+          level:groupList.level, 
+          limit_member:groupList.limit_member,
+          location: groupList.location,
+          title:groupList.title,
+          total_distance:groupList.total_distance,
+          distance: groupList.distance,
+          drawPath:drawPath[index],
+          groupMember: groupMember[index],
+          center: center[index],
+          count: count[index]
+        }} 
+        >
+        <Group_List
+          key={groupList.group_id}
+          groupList={groupList}
+          drawPath={drawPath[index]}
+          groupMember= {groupMember[index]}
+          center= {center[index]}
+          count={count[index]}
+        />
+      </Link>
+      ))}
       </div>
       
     </div>
