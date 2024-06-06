@@ -1,12 +1,15 @@
 import React, { useEffect, useState }  from 'react';
 import './group.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Group_List from './group_list';
 import {useToken} from '../context/tokenContext'
 import { supabase } from '../supabaseClient';
 import axios from 'axios';
 
 export default function Group() {
+  const navigate = useNavigate();
+  const searchCon = useLocation();
+  console.log(searchCon)
   const userInfo=useToken();
   const userID= userInfo.user
   const [address, setAddress]=useState('')
@@ -19,6 +22,20 @@ export default function Group() {
   const [center, setCenter]=useState([])
   const [loading, setLoading]=useState(true); // 로딩 상태 추가
   const [count, setCount]=useState([])
+
+  const [selectedLocation, setSelectedLocation]=useState('') //위치 검색
+  const [selectedDistance, setSelectedDistance]=useState('') // 거리검색
+  const [searchInput, setSearchInput]=useState('')  //검색값
+
+  const handleLocationChange = (event) => {
+    setSelectedLocation(event.target.value);
+  };
+const handleDistanceChange = (event) => {
+    setSelectedDistance(event.target.value);
+  };
+  const handleSearchInputChange = (event)=>{
+    setSearchInput(event.target.value)
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -86,7 +103,7 @@ async function getReverseGeocode(latitude, longitude){
       throw error;
   }
 };
-
+  //검색전 구룹리스트 조회
   async function findGroup(){
     const {data: findUserGroup, error: findUserGroupError}=await supabase
       .from('group_member')
@@ -148,11 +165,61 @@ async function getReverseGeocode(latitude, longitude){
     }
     setLoading(false)
   }
+  //검색후 구룹 리스트 찾기
+  async function findSeacrhGroup(){
+    setLoading(true)
+    const {data: findUserGroup, error: findUserGroupError}=await supabase
+      .from('group_member')
+      .select('group_id')
+      .eq('user_id', userID)
+    if(findUserGroupError){
+      console.error(findUserGroupError)
+    }else if(findUserGroup.length >= 1 ){
+      // console.log(findUserGroup)
+      const excludedGroups =await findUserGroup.map(group => group.group_id);
+      const excludedGroups2 =await findUserGroup.map(group => `${group.group_id}`).join(',');
+      console.log(excludedGroups)
+      console.log(searchInput)
+      console.log(selectedDistance)
+      if(selectedDistance > 15){
+        const {data: findOtherGroup, error: findOtherGroupError}=await supabase
+          .from('group')
+          .select('*')
+          .not('group_id', 'in', `(${excludedGroups})`) 
+          .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
+          .like('location', `%${selectedLocation}%`)
+          .gt('total_distance', selectedDistance-1);
+        if(findOtherGroupError){
+            console.log(findOtherGroupError)
+          }
+        setfindGroupData(findOtherGroup)
+      }else{
+        const {data: findOtherGroup, error: findOtherGroupError}=await supabase
+          .from('group')
+          .select('*')
+          .not('group_id', 'in', `(${excludedGroups})`) 
+          .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
+          .like('location', `%${selectedLocation}%`)
+          .gte('total_distance', selectedDistance-5).lte('total_distance', selectedDistance);
+        if(findOtherGroupError){
+          console.log(findOtherGroupError)
+        }
+        // console.log(findOtherGroup)
+        setfindGroupData(findOtherGroup)
+      }
+    }
+  }
+
   useEffect(()=>{
     if(userID && address){
-      findGroup()
+      if(searchCon.state){
+        console.log('여기')
+        findSeacrhGroup()
+      }else{
+        findGroup()
+      }
     }
-  },[userID, address])
+  },[userID, address, searchCon])
   useEffect(()=>{
     if(!currentPosition){
         fetchCurrentPosition()
@@ -172,13 +239,13 @@ async function getReverseGeocode(latitude, longitude){
   },[findGroupData])
 
   useEffect(()=>{
-    console.log(groupMember)
+    // console.log(groupMember)
   },[groupMember])
   useEffect(()=>{
-    console.log(group)
+    // console.log(group)
   },[group])
   useEffect(()=>{
-    console.log(drawPath)
+    // console.log(drawPath)
     if(drawPath){
       setCenter(calculateCenter(drawPath))
     }
@@ -195,6 +262,9 @@ async function getReverseGeocode(latitude, longitude){
         </div>
     )
   }
+  const HandleSearch = (e)=>{
+    navigate('/group', {state:{selLocation:selectedLocation, selDistance:selectedDistance, search:searchInput}})
+  }
 
   return (
     <><div className="group_background">
@@ -208,15 +278,33 @@ async function getReverseGeocode(latitude, longitude){
           placeholder="참여할 그룹을 찾아보세요!"
           onFocus={handleFocus}
           onBlur={(event) => handleBlur(event, '참여할 그룹을 찾아보세요!')}
+          value={searchInput}
+          onChange={handleSearchInputChange}
         />
-      <div className="search"><img className='search_icon' src="./icon/search.svg" alt="" /></div>
+      <div className="search" onClick={HandleSearch}><img className='search_icon' src="./icon/search.svg" alt="" /></div>
 
-      <div className="region_select_box"></div>
-      <div className="region_select">지역을 선택하세요</div>
-      <div className="region"><img className="region_icon" src="./icon/arrow.svg" alt="" /></div>
-      <div className="sort_box"></div>
+      <select className='region_select_box' value={selectedLocation} onChange={handleLocationChange}>
+                <option value="">위치</option>
+                <option value="경기">경기</option>
+                <option value="대구">대구</option>
+                <option value="부산">부산</option>
+                <option value="서울">서울</option>
+            </select>
+        <select className='sort_box' value={selectedDistance} onChange={handleDistanceChange}>
+          <option value={0}>거리순</option>
+          <option value={5}>5Km 이하</option>
+          <option value={10}>10Km 이하</option>
+          <option value={15}>15Km 이하</option>
+          <option value={16}>15Km 이상</option>
+        </select>
+
+      {/* 드롭 다운으로 수정 전 */}
+      {/* <div className="region_select_box"></div> */}
+      {/* <div className="region_select">지역을 선택하세요</div> */}
+      {/* <div className="region"><img className="region_icon" src="./icon/arrow.svg" alt="" /></div> */}
+      {/* <div className="sort_box"></div>
       <div className="sort_select">거리순</div>
-      <div className="sort"><img className='sort_icon' src="./icon/arrow.svg" alt="" /></div>
+      <div className="sort"><img className='sort_icon' src="./icon/arrow.svg" alt="" /></div> */}
 
       <div className='GroupList_container'>
       {findGroupData.map((groupList,index)=>(
