@@ -160,7 +160,8 @@ export default function MapSearch() {
     //검색후 list 조회함수
     async function mapSearchInfo(){
         setLoading(true)
-        const {data: searchData, error: searchError}= await supabase
+        if(selectedDistance >15){
+            const {data: searchData, error: searchError}= await supabase
             .from('draw_map_collection')
             .select('* , user (nick_name)')
             .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
@@ -168,26 +169,41 @@ export default function MapSearch() {
             .like('level',`%${selectedDifficulty}%`)
             .gt('distance', `${selectedDistance}`)
             .limit(10)
-        if(searchError){
-            console.error(searchError)
+            if(searchError){
+                console.error(searchError)
+            }
+            // console.log(searchData)
+            setMapLists(searchData)
+        }else{
+            const {data: searchData, error: searchError}= await supabase
+            .from('draw_map_collection')
+            .select('* , user (nick_name)')
+            .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
+            .like('location', `%${selectedLocation}%`)
+            .like('level',`%${selectedDifficulty}%`)
+            .gte('distance', `${selectedDistance-5}`).lte('distance', `${selectedDistance}`)
+            .limit(10)
+            if(searchError){
+                console.error(searchError)
+            }
+            // console.log(searchData)
+            setMapLists(searchData)
         }
-        // console.log(searchData)
-        setMapLists(searchData)
-        for(let index in searchData){
+        for(let index in mapLists){
             // console.log(data[index].draw_m_c_id)
             async function drawPath(){
                 const {data: drawPathData,error:drawPathError}=await supabase
                     .from('draw_map_c_location')
                     .select('latitude, longitude')
-                    .eq('draw_m_c_id',searchData[index].draw_m_c_id)
+                    .eq('draw_m_c_id',mapLists[index].draw_m_c_id)
                 // console.log(drawPathData)
                 if(drawPathData.length >0){
                     pathArray.push({
-                        draw_id:searchData[index].draw_m_c_id,
+                        draw_id:mapLists[index].draw_m_c_id,
                         coordinate : drawPathData,
                     });
                     centerArray.push({
-                        draw_id:searchData[index].draw_m_c_id,
+                        draw_id:mapLists[index].draw_m_c_id,
                         coordinate: await calculateCenter(drawPathData)
                     })
                 }
@@ -255,7 +271,7 @@ export default function MapSearch() {
                 <option value={5}>5Km 이하</option>
                 <option value={10}>10Km 이하</option>
                 <option value={15}>15Km 이하</option>
-                <option value={20}>15Km 이상</option>
+                <option value={16}>15Km 이상</option>
             </select>
 
             {/* 난이도 드롭다운 메뉴 구현 */}
