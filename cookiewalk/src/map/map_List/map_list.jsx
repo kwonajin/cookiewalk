@@ -9,8 +9,11 @@ function MyMap({path, center, color}) {
 
     return (
         <NaverMap
-            defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)} 
-            defaultZoom={15} 
+            bounds={center ? new navermaps.LatLngBounds(
+            new navermaps.LatLng(center.south, center.west),
+            new navermaps.LatLng(center.north, center.east)
+            ) : null}
+            defaultZoom={15}
             scaleControl={false}
             mapDataControl={false}
             >

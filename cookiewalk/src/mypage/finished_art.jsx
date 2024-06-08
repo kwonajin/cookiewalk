@@ -5,6 +5,7 @@ import Finished_active from './finished_art/finished_art_active';
 import Finished_List from './finished_art/finished_art_list';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
+import { calculateBounds } from '../utils/calculateBounds';
 
 export default function FinishedArt() {
     const userInfo=useToken(); //TokenContext에서 user 상태를 가져옴
@@ -28,24 +29,24 @@ export default function FinishedArt() {
     const [loading, setLoading]=useState(true)
 
     // 중심좌표 구하는 함수
-    const calculateCenter=(path) =>{
-        const total = path.length; //배열의 총 개수
-        //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
-        const sum =path.reduce((acc, coord) => ({
-            lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
-            lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
-        }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
-        return {
-            latitude: sum.lat / total,
-            longitude: sum.lng / total,
-        };
-    }
+    // const calculateCenter=(path) =>{
+    //     const total = path.length; //배열의 총 개수
+    //     //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
+    //     const sum =path.reduce((acc, coord) => ({
+    //         lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
+    //         lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
+    //     }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
+    //     return {
+    //         latitude: sum.lat / total,
+    //         longitude: sum.lng / total,
+    //     };
+    // }
 
     //완성 산책기록 찾는 함수
     async function CompleteRecord() {
         const {data: recordInfoData , error: recordInfoError}= await supabase
             .from('walking_record')
-            .select('walking_record_id ,distance, title, location, walking_time')
+            .select('walking_record_id ,distance, title, location, walking_time, color')
             .eq('user_id', userID)
         console.log(recordInfoData)
         setRecordList(recordInfoData)
@@ -71,7 +72,8 @@ export default function FinishedArt() {
                         });
                         centerArray.push({
                             walking_record_id: recordInfoData[index].walking_record_id,
-                            coordinate: await calculateCenter(findPathData)
+                            // coordinate: await calculateCenter(findPathData)
+                            coordinate: await calculateBounds(findPathData)
                         })
                     }
                 }
@@ -90,6 +92,9 @@ export default function FinishedArt() {
     }, [path])
 
     useEffect(()=>{
+        console.log(center)
+    }, [center])
+    useEffect(()=>{
         if(userID){
             CompleteRecord()
         }
@@ -107,7 +112,7 @@ export default function FinishedArt() {
             </div>
         )
     }
-
+// detail
     return (
         <div className="finished_route_container">
             <div className='finished_nav'>
@@ -126,15 +131,19 @@ export default function FinishedArt() {
                 {recordList.map((recordItem, index) => {
                     const sendOnlyPath = path.find(p => p.walking_record_id === recordItem.walking_record_id);
                     return (
-                        <Finished_List
-                            key={recordItem.walking_record_id}
-                            drawId={recordItem.walking_record_id}
-                            location={recordItem.location}
-                            distance={recordItem.distance}
-                            time={recordItem.walking_time}
-                            pathcoord={sendOnlyPath ? sendOnlyPath.coordinate : null}
-                            centercoord={center[index]}
-                        />
+                        <Link to={`/finished_art_detail`} state={{drawId:recordItem.walking_record_id, location:recordItem.location, distance: recordItem.distance, time:recordItem.walking_time, pathcoord:sendOnlyPath, center:center[index], title:recordItem.title ,color:recordItem.color}} key={recordItem.walking_record_id}>
+                            <Finished_List
+                                key={recordItem.walking_record_id}
+                                drawId={recordItem.walking_record_id}
+                                location={recordItem.location}
+                                distance={recordItem.distance}
+                                time={recordItem.walking_time}
+                                pathcoord={sendOnlyPath ? sendOnlyPath.coordinate : null}
+                                centercoord={center[index]}
+                                title={recordItem.title}
+                                color={recordItem.color}
+                            />
+                        </Link>
                     );
                 })}
             </div>

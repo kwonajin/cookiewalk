@@ -177,7 +177,7 @@ async function getReverseGeocode(latitude, longitude){
     }else if(findUserGroup.length >= 1 ){
       // console.log(findUserGroup)
       const excludedGroups =await findUserGroup.map(group => group.group_id);
-      const excludedGroups2 =await findUserGroup.map(group => `${group.group_id}`).join(',');
+      // const excludedGroups2 =await findUserGroup.map(group => `${group.group_id}`).join(',');
       console.log(excludedGroups)
       console.log(searchInput)
       console.log(selectedDistance)

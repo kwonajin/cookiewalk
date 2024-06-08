@@ -4,6 +4,8 @@ import { Link, useNavigate,useLocation } from "react-router-dom";
 import MapList from './map_List/map_list';
 import { supabase } from '../supabaseClient';
 import axios from 'axios';
+import { calculateBounds } from '../utils/calculateBounds';
+
 
 export default function MapSearch() {
     const  navigate = useNavigate();
@@ -106,18 +108,18 @@ export default function MapSearch() {
         }
     },[address, searchCon])
     
-    const calculateCenter=(path) =>{
-        const total = path.length; //배열의 총 개수
-        //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
-        const sum =path.reduce((acc, coord) => ({
-            lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
-            lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
-        }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
-        return {
-            latitude: sum.lat / total,
-            longitude: sum.lng / total,
-        };
-    }
+    // const calculateCenter=(path) =>{
+    //     const total = path.length; //배열의 총 개수
+    //     //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
+    //     const sum =path.reduce((acc, coord) => ({
+    //         lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
+    //         lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
+    //     }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
+    //     return {
+    //         latitude: sum.lat / total,
+    //         longitude: sum.lng / total,
+    //     };
+    // }
 
     //검색전 list 조회함수
     async function mapInfo(){
@@ -146,7 +148,7 @@ export default function MapSearch() {
                     });
                     centerArray.push({
                         draw_id:data[index].draw_m_c_id,
-                        coordinate: await calculateCenter(drawPathData)
+                        coordinate: await calculateBounds(drawPathData)
                     })
                 }
             }
