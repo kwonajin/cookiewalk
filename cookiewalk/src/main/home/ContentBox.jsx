@@ -1,6 +1,36 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { supabase } from '../../supabaseClient';
+import { calculateBounds } from '../../utils/calculateBounds';
+import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
+
+function MyMap({ path, bounds , color}) {
+  const navermaps = useNavermaps();
+  return (
+    <NaverMap
+      bounds={bounds ? new navermaps.LatLngBounds(
+      new navermaps.LatLng(bounds.south, bounds.west),
+      new navermaps.LatLng(bounds.north, bounds.east)
+      ) : null}
+      defaultZoom={15}
+      scaleControl={false}
+      mapDataControl={false}
+    >
+      {path.length > 1 && (
+        <Polyline
+          path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+          strokeColor={color}
+          strokeWeight={4}
+          strokeOpacity={0.8}
+          strokeStyle="solid"
+        />
+      )}
+    </NaverMap>
+  );
+}
+
+
+
 
 export default function ContentBox({
   profileName,
@@ -11,12 +41,53 @@ export default function ContentBox({
   createdAt,
   userId,
   userID,
-  postID
+  postID,
+  recordId
 }) {
   const [showMenu, setShowMenu] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
+  const [notRecord, setNotRecord]=useState(true)
+  const [record, setRecord]=useState([])
+  const [color,setColor]=useState('')
+  const [bounds,setBounds]=useState([])
+
+  console.log(recordId)
+  useEffect(()=>{
+    if(recordId != 'example'){
+      findRecordData()
+      setNotRecord(false)
+    }
+  },[recordId])
+
+  async function findRecordData(){
+    const {data:colorData, error:colorError}=await supabase
+      .from('walking_record')
+      .select('color')
+      .eq('walking_record_id', recordId)
+    if(colorError){
+      console.error(colorError)
+    }
+    console.log(colorData[0].color)
+    setColor(colorData[0].color)
+
+    const {data: walkingData , error:walkingError}=await supabase
+      .from('walking_record_location')
+      .select('*')
+      .eq('walking_record_id', recordId)
+    if(walkingError){
+      console.error(walkingError)
+    }
+    console.log(walkingData)
+    const bound= calculateBounds(walkingData)
+    setBounds(bound)
+    setRecord(walkingData)
+
+  }
+  useEffect(()=>{
+    console.log(bounds)
+  },[bounds])
 
   useEffect(() => {
     const fetchLikeStatus = async () => {
@@ -144,7 +215,19 @@ export default function ContentBox({
           )}
         </div>
       )}
+{/*       
       <div className="content_img_box"><img className='content_img' src={contentImage} alt="콘텐츠 이미지" /></div>
+      <MapDiv className='content_img_box'><MyMap path={record} bounds={bounds} color={color}/></MapDiv> */}
+      <div className="content_img_box">
+      {notRecord ? (
+        <img className='content_img' src={contentImage} alt="콘텐츠 이미지" />
+      ) : (
+        <MapDiv className='content_img'>
+          <MyMap path={record} bounds={bounds} color={color} />
+        </MapDiv>
+      )}
+      </div>
+
       <div className="heart" onClick={handleIsLike}>
         <img className="heart_icon" src={isLike ? "./icon/heart_fill_test.svg" : "./icon/heart_test.svg"} alt="하트" />
       </div>
