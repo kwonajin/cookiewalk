@@ -66,15 +66,15 @@ body{
 .mg_group1 { 
 	width:180px;
 	height:181px;
-	position:absolute;
+	position:relative;
 	left:9px;
-	top:62px;
+	top:0px;
 }
 
 .mg_group1_img { 
 	width:180px;
 	height:115px;
-	position:absolute;
+	position:relative;
 	left:0px;
 	top:0px;
 	border-radius: 5px;
@@ -84,9 +84,9 @@ body{
 	background-color:rgba(221.3375759124756, 221.3375759124756, 221.3375759124756, 0.8999999761581421);
 	width:51px;
 	height:18px;
-	position:absolute;
+	position:relative;
 	left:5px;
-	top:4px;
+	top:-114px;
 	border-top-left-radius:4px;
 	border-top-right-radius:4px;
 	border-bottom-left-radius:4px;
@@ -150,9 +150,9 @@ body{
 	background-color:rgba(230.19170880317688, 199.66936022043228, 199.66936022043228, 0.8999999761581421);
 	width:40px;
 	height:18px;
-	position:absolute;
+	position:relative;
 	left:135px;
-	top:4px;
+	top:-132px;
 	border-top-left-radius:4px;
 	border-top-right-radius:4px;
 	border-bottom-left-radius:4px;
@@ -177,9 +177,9 @@ body{
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:178px;
 	height:25px;
-	position:absolute;
+	position:relative;
 	left:1px;
-	top:117px;
+	top:-40px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:14px;
@@ -190,9 +190,9 @@ body{
 .mg_place { 
 	width:18px;
 	height:17px;
-	position:absolute;
+	position:relative;
 	left:1px;
-	top:142px;
+	top:-35px;
 }
 
 .mg_place_icon { 
@@ -207,9 +207,9 @@ body{
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:100px;
 	height:18px;
-	position:absolute;
+	position:relative;
 	left:16px;
-	top:141px;
+	top:-57px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:12px;
@@ -220,9 +220,9 @@ body{
 	transform: scaleX(-1);
 	width:20.000001907348633px;
 	height:20.000001907348633px;
-	position:absolute;
+	position:relative;
 	left:116px;
-	top:138px;
+	top:-77px;
 }
 .mg_distance_icon { 
 	width:15px;
@@ -236,9 +236,9 @@ body{
 	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
 	width:41px;
 	height:14px;
-	position:absolute;
+	position:relative;
 	left:139px;
-	top:139px;
+	top:-97px;
 	font-family:Noto Sans KR;
 	text-align:left;
 	font-size:12px;
@@ -601,6 +601,17 @@ body{
 	font-weight: 600;
 }
 
+.mygroup_list_container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr); /* 2열로 설정 */
+	gap: 10px; /* 요소 사이의 간격 */
+	position: relative;
+	top: 73px;
+	width: 100%;
+	left: -4px;
+}
 
-
-
+.mygroup_to_detail_link {
+	width: 100%;
+	text-decoration: none;
+}

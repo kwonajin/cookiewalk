@@ -7,7 +7,7 @@ import { supabase } from '../supabaseClient';
 import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
 import axios from 'axios';
 
-function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
+function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true , color}) {
     // console.log(path[path.length-1].latitude)
     const navermaps = useNavermaps();
     const markerIcon = {
@@ -26,7 +26,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
             {(walkMode && path.length > 1) && (
                 <Polyline
                     path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='#2E9AFE'
+                    strokeColor={color}
                     strokeWeight={8}
                     strokeOpacity={0.8}
                     strokeStyle="solid"
@@ -36,7 +36,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
             {passPath.length >= 1 && (
                 <Polyline
                     path={passPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='#2E9AFE'
+                    strokeColor={color}
                     strokeWeight={8}
                     strokeOpacity={0.8}
                     strokeStyle="solid"
@@ -61,7 +61,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
                     title={`Marker${index+1}`}
                     clickable={true}
                     icon={{
-                        content: `<div style="background: ${isPassed ? '#2E9AFE' : '#B45F04'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        content: `<div style="background: ${isPassed ? color : '#2E9AFE'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
                         size: new navermaps.Size(10, 10),
                         anchor: new navermaps.Point(5, 5)
                     }}
@@ -85,6 +85,7 @@ export default function Activity_save() {
     const [drawPath, setDrawPath] = useState([]);
     const [currentPosition, setCurrentPosition]=useState([])
     const [walkMode, setWalkMode]=useState(true);//true 백지걷기 //false 경로따라걷기
+    const [color, setColor]=useState('#2E9AFE')
 
     const [pathLoading, setPathLoading]=useState(true)
 
@@ -102,6 +103,7 @@ export default function Activity_save() {
         setDrawPath(state.drawPath)
         setCurrentPosition(state.currentPosition)
         setWalkMode(state.walkMode)//true 백지걷기 //false 경로따라걷기
+        setColor(state.color)
     },[state])
 
 
@@ -131,7 +133,7 @@ export default function Activity_save() {
                     walking_record_id: `record_N_${count+1}`,
                     start_time: state.startTime,
                     end_time: state.endTime,
-                    color:'#2E9AFE',
+                    color:color,
                     distance: state.distance,
                     user_id: userID,
                     walking_time:state.time,
@@ -167,7 +169,7 @@ export default function Activity_save() {
                     walking_record_id: `record_N_${count+1}`,
                     start_time: state.startTime,
                     end_time: state.endTime,
-                    color:'#2E9AFE',
+                    color:color,
                     distance: state.distance,
                     user_id: userID,
                     walking_time:state.time,
@@ -216,7 +218,7 @@ export default function Activity_save() {
                     walking_record_id: `record_${count+1}`,
                     start_time: state.startTime,
                     end_time: state.endTime,
-                    color:'#2E9AFE',
+                    color:color,
                     distance: state.distance,
                     user_id: userID,
                     walking_time:state.time,
@@ -251,7 +253,7 @@ export default function Activity_save() {
                     walking_record_id: `record_${count+1}`,
                     start_time: state.startTime,
                     end_time: state.endTime,
-                    color:'#2E9AFE',
+                    color:color,
                     distance: state.distance,
                     user_id: userID,
                     walking_time:state.time,
@@ -324,7 +326,7 @@ export default function Activity_save() {
             <span className="activity_save_title">활동저장</span>
             <button className="activity_save_remove_button" onClick={removeActivity}>삭제</button>
 
-            <MapDiv className="e298_23"><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode}/></MapDiv>
+            <MapDiv className="e298_23"><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color}/></MapDiv>
             {/* 저장경로 이미지 뜨는 곳 */}
 
             <span className="activity_save_record_title">기록</span>

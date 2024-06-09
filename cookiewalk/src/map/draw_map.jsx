@@ -284,7 +284,6 @@ export default function DrawMap() {
           <option value="상">상</option>
       </select>
       <div className='color_select_text'>선 색상 선택하기</div>
-
     </div>
   );
 }

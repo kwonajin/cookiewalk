@@ -5,6 +5,7 @@ import Unfinished_active from './Unfinished_route_list/Unfinished_route_active';
 import Unfinished_List from './Unfinished_route_list/Unfinished_route_list';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
+import { calculateBounds } from '../utils/calculateBounds';
 
 export default function Unfinished_route() {
 
@@ -51,7 +52,6 @@ export default function Unfinished_route() {
             .from('walking_record_N')
             .select('walking_record_id ,distance, title, location, walking_time, draw_id')
             .eq('user_id', userID)
-            .eq('state','N')
         console.log(recordInfoData)
         setRecordList(recordInfoData)
         setCountRecord(recordInfoData.length)
@@ -76,7 +76,7 @@ export default function Unfinished_route() {
                         });
                         centerArray.push({
                             walking_record_id: recordInfoData[index].walking_record_id,
-                            coordinate: await calculateCenter(findPathData)
+                            coordinate: await calculateBounds(findPathData)
                         })
                     }
                     if(recordInfoData[index].draw_id  && recordInfoData[index].draw_id.includes('draw')){

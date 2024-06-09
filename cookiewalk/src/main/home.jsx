@@ -49,7 +49,7 @@ export default function Home() {
       console.error('Error', error);
       return
     }
-    console.log(data)
+    // console.log(data)
     setRecordCount(count)
     if(data.length >= 1){
       data.forEach(record =>{
@@ -62,7 +62,7 @@ export default function Home() {
     }
   }
   useEffect(()=>{
-    console.log(totalDistance, totoalTime ,recordcount)
+    // console.log(totalDistance, totoalTime ,recordcount)
   },[totalDistance, totoalTime, recordcount])
 
   const checkNickname = async () => {
@@ -110,6 +110,9 @@ export default function Home() {
     });
     setLoading(false);
   };
+  useEffect(()=>{
+    console.log(postList)
+  },[postList])
 
   const handleScroll = () => {
     if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) {
@@ -137,6 +140,7 @@ export default function Home() {
             createdAt={new Date(post.created_at).toLocaleString()}
             userID={userID}
             postID={post.post_id}
+            recordId={post.walking_record_id}
           />
         ))}
         {loading && <div>Loading...</div>}
