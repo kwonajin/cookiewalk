@@ -97,6 +97,11 @@ export const Tab = () => {
     }
   };
 
+
+
+
+
+  //총 이동 거리
   async function getTotalDistance() {
     const { data: walkingRecords, error: walkingError } = await supabase
       .from('walking_record')
@@ -115,6 +120,11 @@ export const Tab = () => {
     return totalDistance;
   }
 
+
+
+
+
+  //차트 세팅
   const settings = {
     dots: true,
     infinite: true,
