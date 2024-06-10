@@ -206,7 +206,7 @@ export const Tab = () => {
               {menuArr[currentTab].content}
               {currentTab === 0 && (
                 <>
-                  <div className='test'>
+                  <div className='mygraph'>
                     <button onClick={() => goToSlide(0)}>주</button>
                     <button onClick={() => goToSlide(1)}>월</button>
                     <button onClick={() => goToSlide(2)}>년</button>
