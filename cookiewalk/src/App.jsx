@@ -16,6 +16,7 @@ import Signup3 from "./signup/Signup3";
 import Signup4 from "./signup/Signup4";
 import Write from "./main/write";
 import Write_map from './main/write_map.jsx'; 
+import WriteMap_choice from './main/write_map_choice.jsx';
 import Notice from './main/notice';
 import Friend from './main/friend';
 import Follower from './mypage/follower';
@@ -83,6 +84,7 @@ export default function App() {
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
             <Route path="/comment/:postID" element={<ProtectedRoute><Comment /></ProtectedRoute>} />
             <Route path="/write_map" element={<ProtectedRoute><Write_map /></ProtectedRoute>} />
+            <Route path="/write_map_choice" element={<ProtectedRoute><WriteMap_choice /></ProtectedRoute>} />
             <Route path="/notice" element={<ProtectedRoute><Notice /></ProtectedRoute>} />
             <Route path="/friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />
             <Route path="/follower" element={<ProtectedRoute><Follower /></ProtectedRoute>} />

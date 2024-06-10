@@ -21,7 +21,7 @@ export default function HomeNav() {
               <div className='write_menu_title1'>사진 등록</div>
             </Link>
             <hr className='dropdown_divider_line'></hr>
-            <Link className='homenav_dropdown_link' to='/finished_art'>
+            <Link className='homenav_dropdown_link' to='/write_map_choice'>
               <div className='write_menu_title2'>경로 등록</div>
               <img className='write_dropdown_icon' src="./icon/map.svg" alt="" />
               </Link>
