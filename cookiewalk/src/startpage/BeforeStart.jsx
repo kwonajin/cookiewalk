@@ -38,6 +38,16 @@ function MyMap({path=[],center, drawPath=[] ,color}){
                     }}
                 />
             ))}
+            {drawPath.length > 1 && (
+                <Polyline
+                    key={drawPath.length}
+                    path={drawPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+                    strokeColor={color}
+                    strokeWeight={8}
+                    strokeOpacity={0.3}
+                    strokeStyle="solid"
+                />
+            )}
     </NaverMap>
     )
 }
