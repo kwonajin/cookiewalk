@@ -282,7 +282,7 @@ export default function Start() {
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
                 startTimer()
-                startTracking2();
+                startTracking();
             }
         }
     }, [isPaused, drawPath]);
