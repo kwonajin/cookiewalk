@@ -696,7 +696,11 @@ body{
 
 .test{
 	position: absolute;
-	left: 100px;
 	margin-bottom: 20px;
-}
+	width: 100%;
+}	
 
+.test button{
+	width: 33.33333333%;
+	height: auto;
+}

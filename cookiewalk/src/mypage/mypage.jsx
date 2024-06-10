@@ -6,7 +6,7 @@ import { useToken } from '../context/tokenContext.jsx';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import MyLineChart from './chart/MyBarChart.jsx';
+import MyBarChart from './chart/MyBarChart.jsx'; // Import MyBarChart
 
 export const Tab = () => {
   const [currentTab, clickTab] = useState(0);
@@ -200,21 +200,17 @@ export const Tab = () => {
                     <button onClick={() => goToSlide(0)}>주</button>
                     <button onClick={() => goToSlide(1)}>월</button>
                     <button onClick={() => goToSlide(2)}>년</button>
-                    <button onClick={() => goToSlide(3)}>테스트</button>
                   </div>
                   <div className="carousel">
                     <Slider ref={sliderRef} {...settings}>
                       <div>
-                        <MyLineChart />
+                        <MyBarChart user={userID} type="week" />
                       </div>
                       <div>
-                        <MyLineChart />
+                        <MyBarChart user={userID} type="month"/>
                       </div>
                       <div>
-                        <MyLineChart />
-                      </div>
-                      <div>
-                        테스트
+                        <MyBarChart user={userID} type="year"/>
                       </div>
                     </Slider>
                   </div>
