@@ -3,20 +3,23 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from "../../supabaseClient";
 import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
 
-function MyMap({path, center}) {
+function MyMap({path, center ,color}) {
     const navermaps = useNavermaps();
 
     return (
         <NaverMap
-            defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)} 
-            defaultZoom={15} 
+            bounds={center ? new navermaps.LatLngBounds(
+                new navermaps.LatLng(center.south, center.west),
+                new navermaps.LatLng(center.north, center.east)
+            ) : null}
+            defaultZoom={15}
             scaleControl={false}
             mapDataControl={false}
             >
             {path.length > 1 && (
                 <Polyline
                     path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='blue'
+                    strokeColor={color}
                     strokeWeight={4}
                     strokeOpacity={0.8}
                     strokeStyle="solid"
@@ -26,7 +29,7 @@ function MyMap({path, center}) {
     );
 }
 
-export default function Finished_List({drawId, location, title, distance, time, pathcoord, centercoord}){
+export default function Finished_List({drawId, location, title, distance, time, pathcoord, centercoord, color}){
     const [path, setPath]= useState([]);
     const [center, setCenter]=useState([])
     useEffect(()=>{
@@ -44,12 +47,10 @@ export default function Finished_List({drawId, location, title, distance, time, 
     };
 
     return(
-    
-        <Link className="finished_art_to_detail_link" to='/finished_art_detail'>
             <div className="finished_list1">
             
             {/* 경로 사진 */}
-            <MapDiv className='finished_list1_picture'><MyMap path={path} center={center}/></MapDiv>
+            <MapDiv className='finished_list1_picture'><MyMap path={path} center={center} color={color}/></MapDiv>
     
     
             <span className="finished_list1_location">제목: {title}</span>
@@ -63,6 +64,5 @@ export default function Finished_List({drawId, location, title, distance, time, 
             <div><img className='finished_list1_rate_icon' src="./icon/place.svg"/></div>
             <div className="finished_list1_rate_value">{location}</div>
             </div>
-        </Link>
     )
 }

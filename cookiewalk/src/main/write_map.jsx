@@ -1,11 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import './write_map.css'; 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from '../supabaseClient'
 import { useToken } from '../context/tokenContext'
+import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
+
+
+function MyMap({ path, center , color}) {
+  const navermaps = useNavermaps();
+  return (
+    <NaverMap
+      bounds={center ? new navermaps.LatLngBounds(
+      new navermaps.LatLng(center.south, center.west),
+      new navermaps.LatLng(center.north, center.east)
+      ) : null}
+      defaultZoom={15}
+      scaleControl={false}
+      mapDataControl={false}
+    >
+      {path.length > 1 && (
+        <Polyline
+          path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+          strokeColor={color}
+          strokeWeight={4}
+          strokeOpacity={0.8}
+          strokeStyle="solid"
+        />
+      )}
+    </NaverMap>
+  );
+}
 
 export default function Write_map() {
   const navigate = useNavigate();
+  const recordItem = useLocation()
+  const recordId = recordItem.state.recordId;
+  const path = recordItem.state.path
+  const center = recordItem.state.center
+  const color= recordItem.state.color
+  const location= recordItem.state.location
+
+  console.log(recordItem)
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +89,7 @@ export default function Write_map() {
   };
 
   const submitPost = async () => {
-    if (!text || !file) {
+    if (!text) {
       alert('모든 필드를 채워주세요.');
       return;
     }
@@ -68,10 +103,10 @@ export default function Write_map() {
       const { data, error } = await supabase.from('post').insert({
         post_id: postID,
         user_id: userID,
-        walking_record_id: 'example', // Update this value according to your context
+        walking_record_id: recordId, // Update this value according to your context
         content: text,
-        image: newImageUrl,
-        locate: '부산',
+        image: 'N',
+        locate: location,
         created_at: createdAt
       });
     
@@ -112,7 +147,7 @@ export default function Write_map() {
         {/* 숨겨진 파일 인풋 */}
         <input id="fileInput" className='writeMap_picture_add' type="file" accept='image/*' onChange={handleFileChange} />
         {/* 이미지 미리보기 - 이미지가 있을 때만 보여줍니다 */}
-        <div className='write_map_img'>지도</div>
+        <MapDiv className='write_map_img'><MyMap path={path} center={center} color={color}/></MapDiv>
         {previewUrl && <img src={previewUrl} alt="Preview" className="writeMap_image_preview" />}
       </div>  
 

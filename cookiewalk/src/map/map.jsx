@@ -4,6 +4,8 @@ import { Link, useNavigate,useLocation } from "react-router-dom";
 import MapList from './map_List/map_list';
 import { supabase } from '../supabaseClient';
 import axios from 'axios';
+import { calculateBounds } from '../utils/calculateBounds';
+
 
 export default function MapSearch() {
     const  navigate = useNavigate();
@@ -106,18 +108,18 @@ export default function MapSearch() {
         }
     },[address, searchCon])
     
-    const calculateCenter=(path) =>{
-        const total = path.length; //배열의 총 개수
-        //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
-        const sum =path.reduce((acc, coord) => ({
-            lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
-            lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
-        }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
-        return {
-            latitude: sum.lat / total,
-            longitude: sum.lng / total,
-        };
-    }
+    // const calculateCenter=(path) =>{
+    //     const total = path.length; //배열의 총 개수
+    //     //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
+    //     const sum =path.reduce((acc, coord) => ({
+    //         lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
+    //         lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
+    //     }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
+    //     return {
+    //         latitude: sum.lat / total,
+    //         longitude: sum.lng / total,
+    //     };
+    // }
 
     //검색전 list 조회함수
     async function mapInfo(){
@@ -146,7 +148,7 @@ export default function MapSearch() {
                     });
                     centerArray.push({
                         draw_id:data[index].draw_m_c_id,
-                        coordinate: await calculateCenter(drawPathData)
+                        coordinate: await calculateBounds(drawPathData)
                     })
                 }
             }
@@ -160,7 +162,8 @@ export default function MapSearch() {
     //검색후 list 조회함수
     async function mapSearchInfo(){
         setLoading(true)
-        const {data: searchData, error: searchError}= await supabase
+        if(selectedDistance >15){
+            const {data: searchData, error: searchError}= await supabase
             .from('draw_map_collection')
             .select('* , user (nick_name)')
             .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
@@ -168,26 +171,41 @@ export default function MapSearch() {
             .like('level',`%${selectedDifficulty}%`)
             .gt('distance', `${selectedDistance}`)
             .limit(10)
-        if(searchError){
-            console.error(searchError)
+            if(searchError){
+                console.error(searchError)
+            }
+            // console.log(searchData)
+            setMapLists(searchData)
+        }else{
+            const {data: searchData, error: searchError}= await supabase
+            .from('draw_map_collection')
+            .select('* , user (nick_name)')
+            .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
+            .like('location', `%${selectedLocation}%`)
+            .like('level',`%${selectedDifficulty}%`)
+            .gte('distance', `${selectedDistance-5}`).lte('distance', `${selectedDistance}`)
+            .limit(10)
+            if(searchError){
+                console.error(searchError)
+            }
+            // console.log(searchData)
+            setMapLists(searchData)
         }
-        // console.log(searchData)
-        setMapLists(searchData)
-        for(let index in searchData){
+        for(let index in mapLists){
             // console.log(data[index].draw_m_c_id)
             async function drawPath(){
                 const {data: drawPathData,error:drawPathError}=await supabase
                     .from('draw_map_c_location')
                     .select('latitude, longitude')
-                    .eq('draw_m_c_id',searchData[index].draw_m_c_id)
+                    .eq('draw_m_c_id',mapLists[index].draw_m_c_id)
                 // console.log(drawPathData)
                 if(drawPathData.length >0){
                     pathArray.push({
-                        draw_id:searchData[index].draw_m_c_id,
+                        draw_id:mapLists[index].draw_m_c_id,
                         coordinate : drawPathData,
                     });
                     centerArray.push({
-                        draw_id:searchData[index].draw_m_c_id,
+                        draw_id:mapLists[index].draw_m_c_id,
                         coordinate: await calculateCenter(drawPathData)
                     })
                 }
@@ -255,7 +273,7 @@ export default function MapSearch() {
                 <option value={5}>5Km 이하</option>
                 <option value={10}>10Km 이하</option>
                 <option value={15}>15Km 이하</option>
-                <option value={20}>15Km 이상</option>
+                <option value={16}>15Km 이상</option>
             </select>
 
             {/* 난이도 드롭다운 메뉴 구현 */}
@@ -269,7 +287,7 @@ export default function MapSearch() {
         
             <div className="map-list-container" style={{ minHeight: `${minHeight}px` }}>
                 {mapLists.map((mapItem, index) => (
-                    <Link className='map_list_link' to={`/mapDetail`} state={{drawID:mapItem.draw_m_c_id, location:mapItem.location, distance:mapItem.distance, level:mapItem.level, time:mapItem.time, pathcoord:path[index], centercoord:center[index], title:mapItem.title, drawUserId:mapItem.user_id, nickName: mapItem.user.nick_name}} key={mapItem.draw_m_c_id}>
+                    <Link className='map_list_link' to={`/mapDetail`} state={{drawID:mapItem.draw_m_c_id, location:mapItem.location, distance:mapItem.distance, level:mapItem.level, time:mapItem.time, pathcoord:path[index], centercoord:center[index], title:mapItem.title, drawUserId:mapItem.user_id, nickName: mapItem.user.nick_name, color: mapItem.color}} key={mapItem.draw_m_c_id}>
                         <MapList
                             key={mapItem.draw_m_c_id}
                             drawId={mapItem.draw_m_c_id}
@@ -281,6 +299,7 @@ export default function MapSearch() {
                             centercoord={center[index]}
                             title={mapItem.title}
                             nickName={mapItem.user.nick_name}
+                            color={mapItem.color}
                         ></MapList>
                     </Link>
                 ))}

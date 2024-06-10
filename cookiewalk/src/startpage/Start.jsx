@@ -4,7 +4,7 @@ import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'r
 import { useLocation, useNavigate } from "react-router-dom";
 import testPath2 from '../utils/testPath2';
 
-function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
+function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color}) {
     // console.log(path[path.length-1].latitude)
     const navermaps = useNavermaps();
     const markerIcon = {
@@ -23,7 +23,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
             {(walkMode && path.length > 1) && (
                 <Polyline
                     path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='#2E9AFE'
+                    strokeColor={color}
                     strokeWeight={8}
                     strokeOpacity={0.8}
                     strokeStyle="solid"
@@ -33,7 +33,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
             {passPath.length >= 1 && (
                 <Polyline
                     path={passPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='#2E9AFE'
+                    strokeColor={color}
                     strokeWeight={8}
                     strokeOpacity={0.8}
                     strokeStyle="solid"
@@ -58,7 +58,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true}) {
                     title={`Marker${index+1}`}
                     clickable={true}
                     icon={{
-                        content: `<div style="background: ${isPassed ? '#2E9AFE' : '#B45F04'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        content: `<div style="background: ${isPassed ? color : '#2E9AFE'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
                         size: new navermaps.Size(10, 10),
                         anchor: new navermaps.Point(5, 5)
                     }}
@@ -77,10 +77,10 @@ export default function Start() {
     const location = useLocation();
     const navigate = useNavigate();
     console.log(location)
-    const groupDraw=location.state.groupDraw
-    const regionNumber= location.state.regionNumber
-    const groupId = location.state.groupId
-    console.log(groupDraw)
+    const [groupDraw ,setGroupDraw]=useState(false)
+    const [regionNumber, setRegionNumber]=useState(0)
+    const [groupId, setGroupId]=useState('')
+    // console.log(groupDraw)
     const [isExpanded, setIsExpanded] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
 
@@ -88,6 +88,7 @@ export default function Start() {
     const [tracking, setTracking] = useState(false);
     const watchIdRef = useRef(null);
     const [path, setPath] = useState([]);
+    const [color, setColor]=useState('#7ca0c1');
 
     const [drawId, setDrawId]=useState('');
     const [drawPath, setDrawPath] = useState([]);
@@ -260,6 +261,11 @@ export default function Start() {
             setWalkMode(false)
             setPassPath(location.state.path)
             setDrawId(location.state.drawId)
+            setGroupId(location.state.groupDraw)
+            setRegionNumber(location.state.regionNumber)
+            setGroupDraw(location.state.groupDraw)
+            setColor(location.state.color)
+            setGroupId(location.state.groupId)
         }
     }, [location.state.drawPath]);
 
@@ -341,20 +347,41 @@ export default function Start() {
 
     function activitySave() {
         const endTime = new Date();
-        navigate('/Activity_Save', {
-            state: {
-                path: path,
-                time: time,
-                distance: totalDistance,
-                startTime: location.state.startTime,
-                endTime: endTime,
-                drawId: drawId,
-                drawPath: drawPath,
-                passPath:passPath,
-                currentPosition:currentPosition,
-                walkMode:walkMode,
-            }
-        });
+        if(groupDraw){
+            navigate('/group_activity_save', {
+                state:{
+                    path: path,
+                    time: time,
+                    distance: totalDistance,
+                    startTime: location.state.startTime,
+                    endTime: endTime,
+                    drawId: drawId,
+                    drawPath: drawPath,
+                    passPath:passPath,
+                    currentPosition:currentPosition,
+                    walkMode:walkMode,
+                    color:color,
+                    groupId: groupId,
+                    regionNumber: regionNumber,
+                }
+            })
+        }else{
+            navigate('/Activity_Save', {
+                state: {
+                    path: path,
+                    time: time,
+                    distance: totalDistance,
+                    startTime: location.state.startTime,
+                    endTime: endTime,
+                    drawId: drawId,
+                    drawPath: drawPath,
+                    passPath:passPath,
+                    currentPosition:currentPosition,
+                    walkMode:walkMode,
+                    color:color,
+                }
+            });
+        }
     }
 
     const handleARCapture = () => {
@@ -404,7 +431,7 @@ export default function Start() {
         <div className="Start_container">
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
 
-            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode}/></MapDiv>
+            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color}/></MapDiv>
 
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
                 <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
