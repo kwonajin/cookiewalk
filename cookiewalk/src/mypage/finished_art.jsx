@@ -131,7 +131,7 @@ export default function FinishedArt() {
                 {recordList.map((recordItem, index) => {
                     const sendOnlyPath = path.find(p => p.walking_record_id === recordItem.walking_record_id);
                     return (
-                        <Link to={`/finished_art_detail`} state={{drawId:recordItem.walking_record_id, location:recordItem.location, distance: recordItem.distance, time:recordItem.walking_time, pathcoord:sendOnlyPath, center:center[index], title:recordItem.title ,color:recordItem.color}} key={recordItem.walking_record_id}>
+                        <Link to={`/finished_art_detail`} className='finished_to_detail_link' state={{drawId:recordItem.walking_record_id, location:recordItem.location, distance: recordItem.distance, time:recordItem.walking_time, pathcoord:sendOnlyPath, center:center[index], title:recordItem.title ,color:recordItem.color}} key={recordItem.walking_record_id}>
                             <Finished_List
                                 key={recordItem.walking_record_id}
                                 drawId={recordItem.walking_record_id}
