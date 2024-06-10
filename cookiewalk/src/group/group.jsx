@@ -111,8 +111,22 @@ async function getReverseGeocode(latitude, longitude){
       .eq('user_id', userID)
     if(findUserGroupError){
       console.error(findUserGroupError)
-    }else if(findUserGroup.length >= 1 ){
-      // console.log(findUserGroup)
+    }
+    console.log(findUserGroup)
+    if(findUserGroup.length === 0){
+      console.log(address)
+      const {data: findOtherGroup, error: findOtherGroupError}=await supabase
+        .from('group')
+        .select('*')
+        .ilike('location', `%${address}%`)
+      if(findOtherGroupError){
+        console.log(findOtherGroupError)
+      }
+      console.log(findOtherGroup)
+      setfindGroupData(findOtherGroup)
+    }
+    if(findUserGroup.length >= 1 ){
+      console.log(findUserGroup)
       const excludedGroups =await findUserGroup.map(group => `${group.group_id}`).join(',');
       // console.log(excludedGroups)
       const {data: findOtherGroup, error: findOtherGroupError}=await supabase
@@ -123,7 +137,7 @@ async function getReverseGeocode(latitude, longitude){
       if(findOtherGroupError){
         console.log(findOtherGroupError)
       }
-      // console.log(findOtherGroup)
+      console.log(findOtherGroup)
       setfindGroupData(findOtherGroup)
     }
   }
@@ -217,6 +231,7 @@ async function getReverseGeocode(latitude, longitude){
         findSeacrhGroup()
       }else{
         findGroup()
+        console.log(2)
       }
     }
   },[userID, address, searchCon])
