@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './mypage.css';
 import { supabase } from '../supabaseClient';
@@ -7,6 +7,7 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import MyBarChart from './chart/MyBarChart.jsx'; // Import MyBarChart
+import PostList from './myPost/myPostList.jsx';
 
 export const Tab = () => {
   const [currentTab, clickTab] = useState(0);
@@ -97,10 +98,6 @@ export const Tab = () => {
     }
   };
 
-
-
-
-
   //총 이동 거리
   async function getTotalDistance() {
     const { data: walkingRecords, error: walkingError } = await supabase
@@ -120,9 +117,22 @@ export const Tab = () => {
     return totalDistance;
   }
 
+  //작성한 게시글 리스트
+  async function getPostList() {
+    const {data, error} = await supabase
+      .from("post")
+      .select("post_id, created_at, image, walking_record_id")
+      .eq("user_id", userID)
+      .order("created_at", { ascending: false });
 
+    if (error) {
+      console.error("getPostList 에러", error);
+      return;
+    }
 
-
+    console.log("postList", data);
+    setPostList(data);
+  }
 
   //차트 세팅
   const settings = {
@@ -147,6 +157,7 @@ export const Tab = () => {
     }
     if (email) {
       followInfo();
+      getPostList();
     }
   }, [userID, email]);
 
@@ -262,10 +273,15 @@ export const Tab = () => {
               {currentTab === 1 && (
                 <>
                   <div className='mypage_postBox'>
-                    <img src="/images/ellipse_7.png" alt="" />
-                    <img src="/images/ellipse_7.png" alt="" />
-                    <img src="/images/ellipse_7.png" alt="" />
-                    <img src="/images/ellipse_7.png" alt="" />
+                    {postList.map((post) => (
+                      <PostList
+                        key={post.post_id}
+                        post_id={post.post_id}
+                        created_at={post.created_at}
+                        image={post.image}
+                        walking_record_id={post.walking_record_id}
+                      />
+                    ))}
                   </div>
                 </>
               )}

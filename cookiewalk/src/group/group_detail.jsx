@@ -154,7 +154,7 @@ export default function GroupDetail() {
         <div className="gd_join_text">그룹 참여하기</div>
       </div>
 
-
+    
     </div>
   );
 }
