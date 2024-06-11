@@ -3,6 +3,7 @@ import './group_detail.css';
 import { Link , useNavigate, useLocation } from "react-router-dom";
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useToken } from '../context/tokenContext';
+import { supabase } from '../supabaseClient';
 
 function MyMap({ groupDrawPath, color, bounds }) {
   const navermaps = useNavermaps();
@@ -31,9 +32,6 @@ function MyMap({ groupDrawPath, color, bounds }) {
   );
 }
 
-
-
-
 export default function GroupDetail() {
   const navigate = useNavigate();
   const userInfo = useToken();
@@ -57,6 +55,8 @@ export default function GroupDetail() {
   const [bounds, setBounds] = useState(null);
   const count = groupList.state.count
 
+  const [popupVisible, setPopupVisible] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -79,7 +79,6 @@ export default function GroupDetail() {
     setSelected(new Array(distance.length).fill(false));
     console.log(selected);
   }, [distance]);
-
 
   function groupPathsByRegion(drawPath) {
     return drawPath.reduce((acc, path) => {
@@ -105,6 +104,27 @@ export default function GroupDetail() {
 
     return { south, west, north, east };
   }
+
+  const handleJoinGroup = async () => {
+    // 그룹 참여 API 호출
+    const { data, error } = await supabase
+      .from('group_member')
+      .insert([{ user_id: userID, group_id: groupID }]);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    // 팝업 창 표시
+    setPopupVisible(true);
+
+    // 2초 후 팝업 창 닫기 및 '마이 그룹' 페이지로 이동
+    setTimeout(() => {
+      setPopupVisible(false);
+      navigate('/mygroup');
+    }, 2000);
+  };
 
   return (
     <div className="gd_background">
@@ -148,14 +168,16 @@ export default function GroupDetail() {
         <span className="gdd_hashtag3_text">#자전거</span>
       </div>
 
-
-      <div className="gd_join">
+      <div className="gd_join" onClick={handleJoinGroup}>
         <div className="gd_join_box"></div>
         <div className="gd_join_text">그룹 참여하기</div>
       </div>
 
-
+      {popupVisible && (
+        <div className="popup">
+          <div className="popup-content">그룹 참여 완료</div>
+        </div>
+      )}
     </div>
   );
 }
-
