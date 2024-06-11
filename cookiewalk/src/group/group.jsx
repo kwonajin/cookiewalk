@@ -107,9 +107,43 @@ export default function Group() {
     const { data: findUserGroup, error: findUserGroupError } = await supabase
       .from('group_member')
       .select('group_id')
+<<<<<<< HEAD
       .eq('user_id', userID);
     if (findUserGroupError) {
       console.error(findUserGroupError);
+=======
+      .eq('user_id', userID)
+    if(findUserGroupError){
+      console.error(findUserGroupError)
+    }
+    console.log(findUserGroup)
+    if(findUserGroup.length === 0){
+      console.log(address)
+      const {data: findOtherGroup, error: findOtherGroupError}=await supabase
+        .from('group')
+        .select('*')
+        .ilike('location', `%${address}%`)
+      if(findOtherGroupError){
+        console.log(findOtherGroupError)
+      }
+      console.log(findOtherGroup)
+      setfindGroupData(findOtherGroup)
+    }
+    if(findUserGroup.length >= 1 ){
+      console.log(findUserGroup)
+      const excludedGroups =await findUserGroup.map(group => `${group.group_id}`).join(',');
+      // console.log(excludedGroups)
+      const {data: findOtherGroup, error: findOtherGroupError}=await supabase
+        .from('group')
+        .select('*')
+        .not('group_id', 'in', `(${excludedGroups})`) 
+        .ilike('location', `%${address}%`)
+      if(findOtherGroupError){
+        console.log(findOtherGroupError)
+      }
+      console.log(findOtherGroup)
+      setfindGroupData(findOtherGroup)
+>>>>>>> cecd8b2aa085de98a94370663f10f2e0345ddf0a
     }
     const excludedGroups = await findUserGroup.map(group => `${group.group_id}`).join(',');
     const { data: findOtherGroup, error: findOtherGroupError } = await supabase
@@ -198,12 +232,23 @@ export default function Group() {
     }
   }
 
+<<<<<<< HEAD
   useEffect(() => {
     if (userID && address) {
       if (searchCon.state) {
         findSeacrhGroup();
       } else {
         findGroup();
+=======
+  useEffect(()=>{
+    if(userID && address){
+      if(searchCon.state){
+        console.log('여기')
+        findSeacrhGroup()
+      }else{
+        findGroup()
+        console.log(2)
+>>>>>>> cecd8b2aa085de98a94370663f10f2e0345ddf0a
       }
     }
   }, [userID, address, searchCon]);

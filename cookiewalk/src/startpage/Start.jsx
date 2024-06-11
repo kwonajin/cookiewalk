@@ -25,7 +25,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
                     path={path.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
                     strokeColor={color}
                     strokeWeight={8}
-                    strokeOpacity={0.8}
+                    strokeOpacity={0.9}
                     strokeStyle="solid"
                 />
             )}
@@ -35,7 +35,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
                     path={passPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
                     strokeColor={color}
                     strokeWeight={8}
-                    strokeOpacity={0.8}
+                    strokeOpacity={0.9}
                     strokeStyle="solid"
                 />
                 
@@ -58,12 +58,22 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
                     title={`Marker${index+1}`}
                     clickable={true}
                     icon={{
-                        content: `<div style="background: ${isPassed ? color : '#2E9AFE'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        content: `<div style="background: ${isPassed ? color : `${color}50`}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
                         size: new navermaps.Size(10, 10),
                         anchor: new navermaps.Point(5, 5)
                     }}
                 />
             )})}
+            {drawPath.length > 1 && (
+                <Polyline
+                    key={drawPath.length}
+                    path={drawPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+                    strokeColor={color}
+                    strokeWeight={8}
+                    strokeOpacity={0.3}
+                    strokeStyle="solid"
+                />
+            )}
 
         </NaverMap>
     );
