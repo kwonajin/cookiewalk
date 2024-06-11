@@ -91,7 +91,7 @@ body{
 }
 .pointsLabel { 
 	color: rgba(129.69693571329117, 129.69693571329117, 129.69693571329117, 1);
-	width: 67px;
+	width: 80px;
 	height: 35px;
 	position: absolute;
 	left: 308px;
@@ -133,7 +133,7 @@ body{
 
 .shopTitle { 
 	color: rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width: 104px;
+	width: 120px;
 	height: 26px;
 	position: absolute;
 	left: 43px;
@@ -165,7 +165,7 @@ body{
 
 .cashTitle { 
 	color: rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width: 104px;
+	width: 120px;
 	height: 26px;
 	position: absolute;
 	left: 243px;
@@ -189,7 +189,7 @@ body{
 
 .pointsHistoryTitle { 
 	color: rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width: 120px;
+	width: 135px;
 	height: 26px;
 	position: absolute;
 	left: 20px;
@@ -230,7 +230,7 @@ body{
 
 .termsText { 
 	color: rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width: 120px;
+	width: 135px;
 	height: 26px;
 	position: absolute;
 	left: 20px;
