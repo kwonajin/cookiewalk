@@ -108,6 +108,7 @@ export default function Start() {
     const [passPath, setPassPath]=useState([])
     const [walkMode, setWalkMode]=useState(true) //true 백지걷기 //false 경로따라걷기
     const passPathRef = useRef(passPath);
+    console.log(passPathRef)
 
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
@@ -165,8 +166,8 @@ export default function Start() {
                             return newPath;
                         }else{   //받아온 경로 있을시
                             newPath=[...prevPath, newPosition]
-                            const closePoint = findCloseCoord(newPosition)
-                            // const closePoint = drawPath[passPathRef.current.length];
+                            // const closePoint = findCloseCoord(newPosition)
+                            const closePoint = drawPath[passPathRef.current.length];
                             const distanceClosePoint = calculateDistance(newPosition, closePoint)
                             if(distanceClosePoint <= tolerance){
                                 setPassPath((prevPassPath)=>{
@@ -223,9 +224,9 @@ export default function Start() {
                         }
                         return newPath
                     }else{
-                        newPath=[...prevPath, newPosition]
-                        const closePoint = findCloseCoord(newPosition)
-                        // const closePoint = drawPath[passPathRef.current.length];
+                        // newPath=[...prevPath, newPosition]
+                        // const closePoint = findCloseCoord(newPosition)
+                        const closePoint = drawPath[passPathRef.current.length];
                         console.log(passPath.length)
                         const distanceClosePoint = calculateDistance(newPosition, closePoint)
                         if(distanceClosePoint <= tolerance){
@@ -292,7 +293,7 @@ export default function Start() {
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
                 startTimer()
-                startTracking();
+                startTracking2();
             }
         }
     }, [isPaused, drawPath]);
