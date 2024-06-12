@@ -1,6 +1,6 @@
-import React, { useEffect ,useState }  from 'react';
+import React, { useEffect, useState } from 'react';
 import './group_detail.css'; 
-import { Link , useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useToken } from '../context/tokenContext';
 import { supabase } from '../supabaseClient';
@@ -53,7 +53,7 @@ export default function GroupDetail() {
   const [groupDrawPath, setGroupDrawPath] = useState([]);
   const [selected, setSelected] = useState([]);
   const [bounds, setBounds] = useState(null);
-  const count = groupList.state.count
+  const count = groupList.state.count;
 
   const [popupVisible, setPopupVisible] = useState(false);
 
@@ -109,7 +109,7 @@ export default function GroupDetail() {
     // 그룹 참여 API 호출
     const { data, error } = await supabase
       .from('group_member')
-      .insert([{ user_id: userID, group_id: groupID }]);
+      .insert([{ user_id: userID, group_id: groupID, region_number: 0 }]); // region_number 값을 0으로 설정
 
     if (error) {
       console.error(error);
@@ -123,7 +123,7 @@ export default function GroupDetail() {
     setTimeout(() => {
       setPopupVisible(false);
       navigate('/mygroup');
-    }, 2000);
+    }, 1000);
   };
 
   return (

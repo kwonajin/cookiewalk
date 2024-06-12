@@ -69,6 +69,8 @@ export default function MyGroupDetail() {
   const [selected, setSelected] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [selectedPath, setSelectedPath] = useState(null);
+  const [userRegionNumber, setUserRegionNumber] = useState(null);
+  const [otherUserRegionNumbers, setOtherUserRegionNumbers] = useState([]);
 
   useEffect(() => {
     if (drawPath) {
@@ -85,12 +87,90 @@ export default function MyGroupDetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchUserRegionNumber();
+    fetchOtherUserRegionNumbers();
   }, []);
 
+  const fetchUserRegionNumber = async () => {
+    const { data, error } = await supabase
+      .from('group_member')
+      .select('region_number')
+      .eq('user_id', userID)
+      .eq('group_id', groupID)
+      .single();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    if (data && data.region_number !== null) {
+      setUserRegionNumber(data.region_number);
+      const updatedSelected = new Array(distance.length).fill(false);
+      if (data.region_number !== 0) {
+        updatedSelected[data.region_number - 1] = true;
+        setSelected(updatedSelected);
+        setSelectedPath(data.region_number);
+      }
+    }
+  };
+
+  const fetchOtherUserRegionNumbers = async () => {
+    const { data, error } = await supabase
+      .from('group_member')
+      .select('region_number')
+      .eq('group_id', groupID)
+      .neq('user_id', userID);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    if (data) {
+      const regionNumbers = data.map(item => item.region_number);
+      setOtherUserRegionNumbers(regionNumbers);
+    }
+  };
+
   const handleSelectClick = (index) => {
-    const updatedSelected = selected.map((_, i) => i === index ? !selected[index] : false);
-    setSelected(updatedSelected);
-    setSelectedPath(index + 1); // region_number에 맞게 1을 더함
+    if (userRegionNumber === 0) {
+      const updatedSelected = selected.map((_, i) => i === index ? !selected[index] : false);
+      setSelected(updatedSelected);
+      setSelectedPath(index + 1); // region_number에 맞게 1을 더함
+    }
+  };
+
+  const saveUserRegionNumber = async (regionNumber) => {
+    const { error } = await supabase
+      .from('group_member')
+      .update({ region_number: regionNumber })
+      .eq('user_id', userID)
+      .eq('group_id', groupID);
+
+    if (error) {
+      console.error(error);
+    } else {
+      setUserRegionNumber(regionNumber);
+    }
+  };
+
+  const goBefore = async () => {
+    if (selectedPath !== null) {
+      await saveUserRegionNumber(selectedPath);
+      navigate('/BeforeStart', {
+        state: {
+          drawPath: groupDrawPath[selectedPath],
+          path: [],
+          groupDraw: true,
+          regionNumber: selectedPath,
+          groupId: groupID,
+          color: color[selectedPath - 1] // 인덱스 조정
+        }
+      });
+    } else {
+      alert('경로를 선택해주세요');
+    }
   };
 
   function groupPathsByRegion(drawPath) {
@@ -117,23 +197,6 @@ export default function MyGroupDetail() {
 
     return { south, west, north, east };
   }
-
-  const goBefore = () => {
-    if (selectedPath !== null) {
-      navigate('/BeforeStart', {
-        state: {
-          drawPath: groupDrawPath[selectedPath],
-          path: [],
-          groupDraw: true,
-          regionNumber: selectedPath,
-          groupId: groupID,
-          color: color[selectedPath - 1] // 인덱스 조정
-        }
-      });
-    } else {
-      alert('경로를 선택해주세요');
-    }
-  };
 
   return (
     <div className="gd_background">
@@ -178,6 +241,7 @@ export default function MyGroupDetail() {
         {distance && distance.map((region, index) => {
           const bgColor = color[index];
           const textColor = getBrightness(bgColor) > 128 ? 'black' : 'white';
+          const isDisabled = (userRegionNumber !== 0 && userRegionNumber !== index + 1) || otherUserRegionNumbers.includes(index + 1);
           return (
             <div key={index}>
               <div className="group_choice_box2">
@@ -190,8 +254,8 @@ export default function MyGroupDetail() {
                 <button
                   className={`gd_select_btn ${selected[index] ? 'selected' : 'unselected'}`}
                   onClick={() => handleSelectClick(index)}
-                  disabled={selected.find(s => s === true) && !selected[index]}>
-                  {selected[index] ? '선택함' : '선택하기'}
+                  disabled={isDisabled}>
+                  {selected[index] ? '선택함' : isDisabled ? '선택 불가' : '선택하기'}
                 </button>
               </div>
             </div>
