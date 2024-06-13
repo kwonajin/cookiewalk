@@ -5,17 +5,14 @@ import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'r
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 
-// 색깔 밝기 계산 함수
 function getBrightness(hexColor) {
-  const rgb = parseInt(hexColor.slice(1), 16); // Remove '#' and convert to integer
+  const rgb = parseInt(hexColor.slice(1), 16); 
   const r = (rgb >> 16) & 0xff;
   const g = (rgb >> 8) & 0xff;
   const b = (rgb >> 0) & 0xff;
-  // Calculate brightness (luminance)
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-// MyMap 컴포넌트
 function MyMap({ groupDrawPath, color, bounds }) {
   const navermaps = useNavermaps();
 
@@ -33,17 +30,16 @@ function MyMap({ groupDrawPath, color, bounds }) {
         <React.Fragment key={region}>
           <Polyline
             path={groupDrawPath[region].map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-            strokeColor={color[index]} // 색상은 props로 받아 사용
+            strokeColor={color[region - 1]} // 인덱스 조정
             strokeWeight={8}
             strokeOpacity={0.8}
             strokeStyle="solid"
           />
-          {/* 시작점에 숫자 표시 */}
           <Marker
             position={new navermaps.LatLng(groupDrawPath[region][0].latitude, groupDrawPath[region][0].longitude)}
             title={`경로 ${index + 1}`}
             icon={{
-              content: `<div style="color: black; background-color: rgba(255, 255, 255, 0.7); border: 2px solid ${color[index]}; border-radius: 50%; padding: 5px; font-size: 14px;">${index + 1}</div>`,
+              content: `<div style="color: black; background-color: rgba(255, 255, 255, 0.7); border: 2px solid ${color[region - 1]}; border-radius: 50%; padding: 5px; font-size: 14px;">${region}</div>`,
               anchor: new navermaps.Point(12, 12),
             }}
           />
@@ -53,15 +49,12 @@ function MyMap({ groupDrawPath, color, bounds }) {
   );
 }
 
-// MyGroupDetail 컴포넌트
 export default function MyGroupDetail() {
   const navigate = useNavigate();
   const userInfo = useToken();
   const userID = userInfo.user;
 
   const groupList = useLocation();
-  console.log(groupList.state);
-
   const groupID = groupList.state.group_id;
   const [color, setColor] = useState(groupList.state.pathColor);
   const level = groupList.state.level;
@@ -75,9 +68,11 @@ export default function MyGroupDetail() {
   const [groupDrawPath, setGroupDrawPath] = useState([]);
   const [selected, setSelected] = useState([]);
   const [bounds, setBounds] = useState(null);
+  const [selectedPath, setSelectedPath] = useState(null);
+  const [userRegionNumber, setUserRegionNumber] = useState(null);
+  const [otherUserRegionNumbers, setOtherUserRegionNumbers] = useState([]);
 
   useEffect(() => {
-    console.log(drawPath);
     if (drawPath) {
       const groupedPaths = groupPathsByRegion(drawPath);
       setGroupDrawPath(groupedPaths);
@@ -87,27 +82,94 @@ export default function MyGroupDetail() {
   }, [drawPath]);
 
   useEffect(() => {
-    console.log(groupDrawPath);
-  }, [groupDrawPath]);
-
-  useEffect(() => {
     setSelected(new Array(distance.length).fill(false));
-    console.log(selected);
   }, [distance]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchUserRegionNumber();
+    fetchOtherUserRegionNumbers();
   }, []);
 
+  const fetchUserRegionNumber = async () => {
+    const { data, error } = await supabase
+      .from('group_member')
+      .select('region_number')
+      .eq('user_id', userID)
+      .eq('group_id', groupID)
+      .single();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    if (data && data.region_number !== null) {
+      setUserRegionNumber(data.region_number);
+      const updatedSelected = new Array(distance.length).fill(false);
+      if (data.region_number !== 0) {
+        updatedSelected[data.region_number - 1] = true;
+        setSelected(updatedSelected);
+        setSelectedPath(data.region_number);
+      }
+    }
+  };
+
+  const fetchOtherUserRegionNumbers = async () => {
+    const { data, error } = await supabase
+      .from('group_member')
+      .select('region_number')
+      .eq('group_id', groupID)
+      .neq('user_id', userID);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    if (data) {
+      const regionNumbers = data.map(item => item.region_number);
+      setOtherUserRegionNumbers(regionNumbers);
+    }
+  };
+
   const handleSelectClick = (index) => {
-    const selectedRegionIndex = selected.findIndex(s => s === true);
-    if (selectedRegionIndex === -1 || selectedRegionIndex === index) {
-      const updatedSelected = [...selected];
-      updatedSelected[index] = !updatedSelected[index];
+    if (userRegionNumber === 0) {
+      const updatedSelected = selected.map((_, i) => i === index ? !selected[index] : false);
       setSelected(updatedSelected);
-      console.log(selected);
+      setSelectedPath(index + 1); // region_number에 맞게 1을 더함
+    }
+  };
+
+  const saveUserRegionNumber = async (regionNumber) => {
+    const { error } = await supabase
+      .from('group_member')
+      .update({ region_number: regionNumber })
+      .eq('user_id', userID)
+      .eq('group_id', groupID);
+
+    if (error) {
+      console.error(error);
     } else {
-      alert('이미 선택된 경로가 있습니다.');
+      setUserRegionNumber(regionNumber);
+    }
+  };
+
+  const goBefore = async () => {
+    if (selectedPath !== null) {
+      await saveUserRegionNumber(selectedPath);
+      navigate('/BeforeStart', {
+        state: {
+          drawPath: groupDrawPath[selectedPath],
+          path: [],
+          groupDraw: true,
+          regionNumber: selectedPath,
+          groupId: groupID,
+          color: color[selectedPath - 1] // 인덱스 조정
+        }
+      });
+    } else {
+      alert('경로를 선택해주세요');
     }
   };
 
@@ -134,25 +196,6 @@ export default function MyGroupDetail() {
     });
 
     return { south, west, north, east };
-  }
-
-  async function goBefore() {
-    const { data, error } = await supabase
-      .from('group_member')
-      .select('region_number')
-      .eq('user_id', userID)
-      .eq('group_id', groupID);
-
-    if (error) {
-      console.error(error);
-    } else if (!data) {
-      window.alert('구역을 선택해주세요');
-    }
-    console.log(data[0].region_number)
-    const regionNum= data[0].region_number
-    if(regionNum <= distance.length && regionNum >= 0 ){
-      navigate('/BeforeStart', {state:{drawPath : groupDrawPath[regionNum] ,path:[], groupDraw: true , regionNumber: regionNum , groupId: groupID ,color:color[regionNum-1]}})
-    }
   }
 
   return (
@@ -198,6 +241,7 @@ export default function MyGroupDetail() {
         {distance && distance.map((region, index) => {
           const bgColor = color[index];
           const textColor = getBrightness(bgColor) > 128 ? 'black' : 'white';
+          const isDisabled = (userRegionNumber !== 0 && userRegionNumber !== index + 1) || otherUserRegionNumbers.includes(index + 1);
           return (
             <div key={index}>
               <div className="group_choice_box2">
@@ -210,8 +254,8 @@ export default function MyGroupDetail() {
                 <button
                   className={`gd_select_btn ${selected[index] ? 'selected' : 'unselected'}`}
                   onClick={() => handleSelectClick(index)}
-                  disabled={selected.find(s => s === true) && !selected[index]}>
-                  {selected[index] ? '선택함' : '선택하기'}
+                  disabled={isDisabled}>
+                  {selected[index] ? '선택함' : isDisabled ? '선택 불가' : '선택하기'}
                 </button>
               </div>
             </div>

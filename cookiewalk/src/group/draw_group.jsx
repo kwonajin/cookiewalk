@@ -308,7 +308,7 @@ function DrawGroupMapComponent() {
         {
           group_id: `group_${groupId}`,
           user_id: userID,
-          region_number: 1
+          region_number: 0
         }
       ]);
     if (insertMemberError) {
