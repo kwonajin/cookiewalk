@@ -3,6 +3,7 @@ import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useLocation, useNavigate } from "react-router-dom";
 import testPath2 from '../utils/testPath2';
+import { PathNavigation } from '../utils/PathNavigation';
 
 function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color}) {
     // console.log(path[path.length-1].latitude)
@@ -121,6 +122,8 @@ export default function Start() {
     const canvasRef = useRef(null);
 
     const tolerance = 0.007;
+
+    const [navigation, setNavigation]=useState([])
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -293,10 +296,16 @@ export default function Start() {
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
                 startTimer()
-                startTracking2();
+                const navi = PathNavigation(drawPath)
+                setNavigation(navi)
+                startTracking();
             }
         }
     }, [isPaused, drawPath]);
+
+    useEffect(()=>{
+        console.log(navigation)
+    }, [navigation])
 
     useEffect(()=>{
         if(path.length >=1){
