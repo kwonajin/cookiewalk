@@ -6,7 +6,7 @@ export const PointProvider = ({ children }) => {
   const [points, setPoints] = useState(0);
 
   const addPoint = () => {
-    setPoints(points + 1);
+    setPoints(prevPoints => prevPoints + 1);
   };
 
   return (
