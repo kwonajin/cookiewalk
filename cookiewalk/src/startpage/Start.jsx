@@ -69,7 +69,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 }
 
 export default function Start() {
-    const { addPoint } = useContext(PointContext); // addPoint 함수 가져오기
+    const { points, addPoint } = useContext(PointContext); // points와 addPoint 가져오기
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -97,7 +97,7 @@ export default function Start() {
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
     const [isARMode, setIsARMode] = useState(false);
-    const [points, setPoints] = useState(0);
+    const [pointsEarned, setPointsEarned] = useState(0); // 새롭게 추가된 상태
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const tolerance = 0.007;
@@ -141,6 +141,7 @@ export default function Start() {
                                     const newDistance = prevDistance + distance;
                                     if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
                                         addPoint(); // 0.1km마다 포인트 적립
+                                        setPointsEarned(prev => prev + 1); // 포인트 획득
                                         alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
                                     }
                                     return newDistance;
@@ -166,6 +167,7 @@ export default function Start() {
                                     const newDistance = prevDistance + distance;
                                     if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
                                         addPoint(); // 0.1km마다 포인트 적립
+                                        setPointsEarned(prev => prev + 1); // 포인트 획득
                                         alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
                                     }
                                     return newDistance;
@@ -208,6 +210,7 @@ export default function Start() {
                                 const newDistance = prevDistance + distance;
                                 if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
                                     addPoint(); // 0.1km마다 포인트 적립
+                                    setPointsEarned(prev => prev + 1); // 포인트 획득
                                     alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
                                 }
                                 return newDistance;
@@ -230,6 +233,7 @@ export default function Start() {
                                 const newDistance = prevDistance + distance;
                                 if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
                                     addPoint(); // 0.1km마다 포인트 적립
+                                    setPointsEarned(prev => prev + 1); // 포인트 획득
                                     alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
                                 }
                                 return newDistance;
