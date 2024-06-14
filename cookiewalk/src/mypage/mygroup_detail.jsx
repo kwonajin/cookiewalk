@@ -82,6 +82,7 @@ export default function MyGroupDetail() {
   }, [drawPath]);
 
   useEffect(() => {
+    console.log(distance)
     setSelected(new Array(distance.length).fill(false));
   }, [distance]);
 
@@ -313,6 +314,7 @@ export default function MyGroupDetail() {
       <div>
         {distance && distance.map((region, index) => {
           const bgColor = color[index];
+          console.log(otherUserRegionNumbers)
           const textColor = getBrightness(bgColor) > 128 ? 'black' : 'white';
           const isDisabled = otherUserRegionNumbers.includes(index + 1);
           return (

@@ -11,15 +11,15 @@ export default function MapSearch() {
     const  navigate = useNavigate();
     const searchCon = useLocation();
     const [selectedLocation, setSelectedLocation] = useState('');
-    const [selectedDistance, setSelectedDistance] = useState(0);
+    const [selectedDistance, setSelectedDistance] = useState(5);
     const [selectedDifficulty, setSelectedDifficulty] = useState('');
     const [searchInput, setSearchInput]= useState('');
     const [minHeight, setMinHeight] = useState(800); // 여기로 상태를 옮겼습니다.
     const [mapLists, setMapLists] = useState([]); // MapList 컴포넌트를 나타내는 객체들의 배열
     const [path,setpath]= useState([])
     const [center,setcenter]=useState([])
-    let pathArray = [];
-    let centerArray=[];
+    // let pathArray = [];
+    // let centerArray=[];
     
     //현재 위치 좌표 
     const [currentPosition, setCurrentPosition]=useState(null);
@@ -83,6 +83,7 @@ export default function MapSearch() {
             getReverseGeocode(currentPosition.lat, currentPosition.lng)
         }
     }, [currentPosition])
+
     async function getReverseGeocode(latitude, longitude){
         const url =`https://blonde-bobolink-smartbusan-a2d9f8e5.koyeb.app/reverse_geocoding?latitude=${latitude}&longitude=${longitude}`;
         try{
@@ -108,19 +109,6 @@ export default function MapSearch() {
         }
     },[address, searchCon])
     
-    // const calculateCenter=(path) =>{
-    //     const total = path.length; //배열의 총 개수
-    //     //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
-    //     const sum =path.reduce((acc, coord) => ({
-    //         lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
-    //         lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
-    //     }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
-    //     return {
-    //         latitude: sum.lat / total,
-    //         longitude: sum.lng / total,
-    //     };
-    // }
-
     //검색전 list 조회함수
     async function mapInfo(){
         const {data, error}= await supabase
@@ -133,6 +121,8 @@ export default function MapSearch() {
             console.error(error)
         }
         setMapLists(data)
+        const pathArray = [];
+        const centerArray=[];
         for(let index in data){
             // console.log(data[index].draw_m_c_id)
             async function drawPath(){
@@ -156,7 +146,6 @@ export default function MapSearch() {
         }
         setpath(pathArray)
         setcenter(centerArray)
-        setLoading(false)
     }
 
     //검색후 list 조회함수
@@ -169,7 +158,7 @@ export default function MapSearch() {
             .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
             .like('location', `%${selectedLocation}%`)
             .like('level',`%${selectedDifficulty}%`)
-            .gt('distance', `${selectedDistance}`)
+            .gt('distance', `${selectedDistance-1}`)
             .limit(10)
             if(searchError){
                 console.error(searchError)
@@ -188,45 +177,62 @@ export default function MapSearch() {
             if(searchError){
                 console.error(searchError)
             }
-            // console.log(searchData)
+            console.log(searchData)
             setMapLists(searchData)
         }
-        for(let index in mapLists){
-            // console.log(data[index].draw_m_c_id)
-            async function drawPath(){
-                const {data: drawPathData,error:drawPathError}=await supabase
-                    .from('draw_map_c_location')
-                    .select('latitude, longitude')
-                    .eq('draw_m_c_id',mapLists[index].draw_m_c_id)
-                // console.log(drawPathData)
-                if(drawPathData.length >0){
-                    pathArray.push({
-                        draw_id:mapLists[index].draw_m_c_id,
-                        coordinate : drawPathData,
-                    });
-                    centerArray.push({
-                        draw_id:mapLists[index].draw_m_c_id,
-                        coordinate: await calculateCenter(drawPathData)
-                    })
-                }
-            }
-            await drawPath()
-        }
-        setpath(pathArray)
-        setcenter(centerArray)
-        setLoading(false)
-    }
-
-    // console.log(selectedLocation)
-    const HandleSearch = (e)=>{
-        navigate('/map',{state:{selLocation:selectedLocation, selDistance:selectedDistance, selDifficulty:selectedDifficulty, search:searchInput}} )
     }
     
+    // console.log(selectedLocation)
+    const HandleSearch = (e)=>{
+        setMapLists([])
+        navigate('/map',{state:{selLocation:selectedLocation, selDistance:selectedDistance, selDifficulty:selectedDifficulty, search:searchInput}} )
+    }
+    useEffect(()=>{
+        if(path.length >= 1 ){
+            setLoading(false)
+        }else{
+            setLoading(true)
+        }
+    } ,[path])
+
     useEffect(() => {
         // MapList 컴포넌트의 개수를 기반으로 min-height를 조정합니다.
         const newMinHeight = 800 + (mapLists.length * 150); // 각 MapList 당 150px를 추가합니다.
         setMinHeight(newMinHeight);
-    }, [mapLists.length]); // mapLists 배열의 길이가 변경될 때 useEffect를 재실행합니다.
+        console.log(mapLists)
+        
+        async function updatePaths() {
+            const pathArray = [];
+            const centerArray = [];
+    
+            for (let index in mapLists) {
+                console.log(mapLists[index].draw_m_c_id)
+                const { data: drawPathData, error: drawPathError } = await supabase
+                    .from('draw_map_c_location')
+                    .select('latitude, longitude')
+                    .eq('draw_m_c_id', mapLists[index].draw_m_c_id)
+                console.log(drawPathData)
+                if (drawPathData.length > 0) {
+                    pathArray.push({
+                        draw_id: mapLists[index].draw_m_c_id,
+                        coordinate: drawPathData,
+                    });
+                    centerArray.push({
+                        draw_id: mapLists[index].draw_m_c_id,
+                        coordinate: await calculateBounds(drawPathData)
+                    })
+                }
+            }
+    
+            setpath(pathArray)
+            setcenter(centerArray)
+            setLoading(false)
+        }
+    
+        if (mapLists.length > 0) {
+            updatePaths();
+        }
+    }, [mapLists]); // mapLists 배열의 길이가 변경될 때 useEffect를 재실행합니다.
     useEffect(() => {
         window.scrollTo(0, 0);
         // console.log(mapLists)
