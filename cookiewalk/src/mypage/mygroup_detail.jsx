@@ -176,17 +176,17 @@ export default function MyGroupDetail() {
           fetchOtherUserRegionNumbers(); // 최신 상태로 업데이트
           return;
         } else {
-          await saveUserRegionNumber(index + 1);
+          await saveUserRegionNumber(index + 1, new Date().toISOString());
           fetchOtherUserRegionNumbers(); // 다른 사용자 경로 업데이트
         }
       }
     }
   };
 
-  const saveUserRegionNumber = async (regionNumber) => {
+  const saveUserRegionNumber = async (regionNumber, selectionTime = null) => {
     const { error } = await supabase
       .from('group_member')
-      .update({ region_number: regionNumber })
+      .update({ region_number: regionNumber, selection_time: selectionTime })
       .eq('user_id', userID)
       .eq('group_id', groupID);
 
@@ -199,17 +199,48 @@ export default function MyGroupDetail() {
 
   const goBefore = async () => {
     if (selectedPath !== null) {
-      await saveUserRegionNumber(selectedPath);
-      navigate('/BeforeStart', {
-        state: {
-          drawPath: groupDrawPath[selectedPath],
-          path: [],
-          groupDraw: true,
-          regionNumber: selectedPath,
-          groupId: groupID,
-          color: color[selectedPath - 1] // 인덱스 조정
+      // 중복 선택 방지 로직 추가
+      const { data, error } = await supabase
+        .from('group_member')
+        .select('region_number, selection_time')
+        .eq('group_id', groupID)
+        .neq('user_id', userID)
+        .neq('region_number', 0);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (data) {
+        const selectedRegions = data.map(item => item.region_number);
+        const userSelectionTime = (await supabase
+          .from('group_member')
+          .select('selection_time')
+          .eq('user_id', userID)
+          .eq('group_id', groupID)
+          .single()).data.selection_time;
+
+        const conflictingSelection = data.find(item => item.region_number === selectedPath && new Date(item.selection_time) < new Date(userSelectionTime));
+
+        if (selectedRegions.includes(selectedPath) && conflictingSelection) {
+          alert('이미 다른 사용자가 선택한 경로입니다.');
+          fetchOtherUserRegionNumbers(); // 최신 상태로 업데이트
+          return;
+        } else {
+          await saveUserRegionNumber(selectedPath, new Date().toISOString());
+          navigate('/BeforeStart', {
+            state: {
+              drawPath: groupDrawPath[selectedPath],
+              path: [],
+              groupDraw: true,
+              regionNumber: selectedPath,
+              groupId: groupID,
+              color: color[selectedPath - 1] // 인덱스 조정
+            }
+          });
         }
-      });
+      }
     } else {
       alert('경로를 선택해주세요');
     }
