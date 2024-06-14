@@ -22,7 +22,7 @@ export default function Group() {
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
-  const [selectedDistance, setSelectedDistance] = useState('');
+  const [selectedDistance, setSelectedDistance] = useState(5);
   const [searchInput, setSearchInput] = useState('');
 
   // 이벤트 핸들러들
@@ -103,6 +103,7 @@ export default function Group() {
     }
   }
 
+  // 사용자가 가입한 그룹 아이디 조회
   async function findGroup() {
     const { data: findUserGroup, error: findUserGroupError } = await supabase
       .from('group_member')
@@ -112,6 +113,7 @@ export default function Group() {
       console.error(findUserGroupError)
     }
     console.log(findUserGroup)
+    //없으면 그냥 그룹들 조회
     if(findUserGroup.length === 0){
       console.log(address)
       const {data: findOtherGroup, error: findOtherGroupError}=await supabase
@@ -124,6 +126,7 @@ export default function Group() {
       console.log(findOtherGroup)
       setfindGroupData(findOtherGroup)
     }
+    //있으면 본인 그룹 제외하고 조회
     if(findUserGroup.length >= 1 ){
       console.log(findUserGroup)
       const excludedGroups =await findUserGroup.map(group => `${group.group_id}`).join(',');
@@ -142,40 +145,41 @@ export default function Group() {
   }
 
   async function findGroup_2() {
-    if (findGroupData) {
-      for (const group of findGroupData) {
-        const groupID = group.group_id;
-        const { data, error, count } = await supabase
-          .from('group_member')
-          .select('*', { count: 'exact' })
-          .eq('group_id', groupID);
-        if (error) {
-          console.error(error);
-          return;
-        }
-        setCount(prevCount => [...prevCount, count]);
-        setGroupMember(prevGroupCount => [...prevGroupCount, data]);
+    for (const group of findGroupData) {
+      const groupID = group.group_id;
+      console.log(groupID)
+      //그룹 맴버 수 조회
+      const { data, error, count } = await supabase
+        .from('group_member')
+        .select('*', { count: 'exact' })
+        .eq('group_id', groupID);
+      if (error) {
+        console.error(error);
+        return;
+      }
+      setCount(prevCount => [...prevCount, count]);
+      setGroupMember(prevGroupCount => [...prevGroupCount, data]);
+      //조회한 
+      const { data: groupTableData, error: groupTableError } = await supabase
+        .from('group')
+        .select('*')
+        .eq('group_id', groupID);
+      if (groupTableError) {
+        console.error(groupTableError);
+      }
+      console.log(groupTableData)
+      setGroup(prevGroup => [...prevGroup, groupTableData]);
 
-        const { data: groupTableData, error: groupTableError } = await supabase
-          .from('group')
-          .select('*')
-          .eq('group_id', groupID);
-        if (groupTableError) {
-          console.error(groupTableError);
-        }
-        setGroup(prevGroup => [...prevGroup, groupTableData]);
-
-        const { data: locationData, error: locationError } = await supabase
-          .from('group_draw_map_location')
-          .select('*')
-          .eq('group_id', groupID);
-        if (locationError) {
-          console.error(locationError);
-        }
-        setDrawPath(prevDrawPath => [...prevDrawPath, locationData]);
+      const { data: locationData, error: locationError } = await supabase
+        .from('group_draw_map_location')
+        .select('*')
+        .eq('group_id', groupID);
+      if (locationError) {
+        console.error(locationError);
+      }
+      setDrawPath(prevDrawPath => [...prevDrawPath, locationData]);
       }
       setLoading(false);
-    }
   }
 
   async function findSeacrhGroup() {
@@ -188,11 +192,12 @@ export default function Group() {
       console.error(findUserGroupError);
     } else if (findUserGroup.length >= 1) {
       const excludedGroups = await findUserGroup.map(group => group.group_id);
+      console.log(excludedGroups)
       if (selectedDistance > 15) {
         const { data: findOtherGroup, error: findOtherGroupError } = await supabase
           .from('group')
           .select('*')
-          .not('group_id', 'in', `(${excludedGroups})`)
+          .not('group_id', 'in',  excludedGroups.length ? `(${excludedGroups.join(',')})` : '(-1)')
           .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
           .like('location', `%${selectedLocation}%`)
           .gt('total_distance', selectedDistance - 1);
@@ -204,7 +209,7 @@ export default function Group() {
         const { data: findOtherGroup, error: findOtherGroupError } = await supabase
           .from('group')
           .select('*')
-          .not('group_id', 'in', `(${excludedGroups})`)
+          .not('group_id', 'in', excludedGroups.length ? `(${excludedGroups.join(',')})` : '(-1)')
           .or(`location.ilike.%${searchInput}%, title.ilike.%${searchInput}%`)
           .like('location', `%${selectedLocation}%`)
           .gte('total_distance', selectedDistance - 5).lte('total_distance', selectedDistance);
@@ -242,6 +247,13 @@ export default function Group() {
       findGroup_2();
     }
   }, [findGroupData]);
+
+  useEffect(() => {
+    console.log(group)
+  }, [group]);
+  useEffect(() => {
+    console.log(count)
+  }, [count]);
 
   useEffect(() => {
     if (drawPath) {
