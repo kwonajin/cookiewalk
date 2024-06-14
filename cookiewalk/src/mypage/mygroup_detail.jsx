@@ -133,12 +133,23 @@ export default function MyGroupDetail() {
     }
   };
 
-  const handleSelectClick = (index) => {
-    if (userRegionNumber === 0) {
-      const updatedSelected = selected.map((_, i) => i === index ? !selected[index] : false);
+  const handleSelectClick = async (index) => {
+    if (userRegionNumber === index + 1) {
+      // 선택 해제
+      setSelected(new Array(distance.length).fill(false));
+      setSelectedPath(null);
+      await saveUserRegionNumber(0);
+    } else {
+      // 선택 또는 변경
+      const updatedSelected = new Array(distance.length).fill(false);
+      updatedSelected[index] = true;
       setSelected(updatedSelected);
-      setSelectedPath(index + 1); // region_number에 맞게 1을 더함
+      setSelectedPath(index + 1);
+
+      await saveUserRegionNumber(index + 1);
     }
+
+    fetchOtherUserRegionNumbers(); // 다른 사용자 경로 업데이트
   };
 
   const saveUserRegionNumber = async (regionNumber) => {
@@ -241,7 +252,7 @@ export default function MyGroupDetail() {
         {distance && distance.map((region, index) => {
           const bgColor = color[index];
           const textColor = getBrightness(bgColor) > 128 ? 'black' : 'white';
-          const isDisabled = (userRegionNumber !== 0 && userRegionNumber !== index + 1) || otherUserRegionNumbers.includes(index + 1);
+          const isDisabled = otherUserRegionNumbers.includes(index + 1);
           return (
             <div key={index}>
               <div className="group_choice_box2">
