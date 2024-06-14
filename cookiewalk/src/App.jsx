@@ -2,15 +2,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LogIn from "./login/login";
 import FindPassword from './login/FindPassword.jsx';
 import FindPassword2 from './login/FindPassword2.jsx';
-
 import Home from "./main/home";
-import Comment from './main/comment.jsx'
+import Comment from './main/comment.jsx';
 import MapSearch from './map/map';
 import Map_detail from './map/map_detail.jsx';
-
-import BeforeStart from './startpage/BeforeStart'
+import BeforeStart from './startpage/BeforeStart';
 import Group from "./group/group";
-import MyPage from "./mypage/mypage";
+import MyPage from './mypage/mypage';
 import Signup from './signup/Signup';
 import Signup3 from "./signup/Signup3";
 import Signup4 from "./signup/Signup4";
@@ -25,9 +23,9 @@ import GroupDetail from './group/group_detail';
 import MyGroup from './mypage/mygroup';
 import Group_Activity_save from './mypage/group_activity_save.jsx';
 import DrawGroupMap from './group/draw_group.jsx';
-import MyGroupDetail from './mypage/mygroup_detail'
-import ProfileEdit from './mypage/profile_edit.jsx'
-import PersonalProfile from './personal/personal_profile.jsx'
+import MyGroupDetail from './mypage/mygroup_detail';
+import ProfileEdit from './mypage/profile_edit.jsx';
+import PersonalProfile from './personal/personal_profile.jsx';
 import HomePersonalProfile from './main/home_personal_profile.jsx';
 import MypageMenu from './mypage/mypage_menu.jsx';
 import DrawMap from './map/draw_map.jsx';
@@ -38,28 +36,24 @@ import Saved from './mypage/saved.jsx';
 import Liked from './mypage/liked.jsx';
 import Blocked from './mypage/blocked.jsx';
 import Reward from './mypage/reward/reward.jsx';
-
 import FinishedArtDetail from './main/finished_art_detail.jsx';
-
 import Unfinished_route from './startpage/Unfinished_route';
-import Start from './startpage/Start'
+import Start from './startpage/Start';
 import Activity_save from './startpage/activity_save.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
-
 import { NavermapsProvider } from 'react-naver-maps';
-
 import MyLineChart from './mypage/chart/MyBarChart.jsx';
-
+import { PointProvider } from './context/pointContext'; // PointProvider 추가
 
 export default function App() {
-
   const naverMapClientID = import.meta.env.VITE_NAVER_CLIENT_ID;
 
   return (
-      <TokenProvider>
-        <NavermapsProvider ncpClientId={naverMapClientID}>
+    <TokenProvider>
+      <NavermapsProvider ncpClientId={naverMapClientID}>
+        <PointProvider> {/* PointProvider로 감쌈 */}
           <Routes>
             <Route path="/" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} />
             <Route path="/find_ps" element={<ProtectedRoute_2><FindPassword /></ProtectedRoute_2>} />
@@ -68,7 +62,6 @@ export default function App() {
             <Route path="/signup" element={<ProtectedRoute_2><Signup/></ProtectedRoute_2>} />
             <Route path="/signup3" element={<ProtectedRoute><Signup3/></ProtectedRoute>} />
             <Route path="/signup4" element={<ProtectedRoute><Signup4 /></ProtectedRoute>} />
-            {/* <Route path="/login" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} /> */}
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/map" element={<ProtectedRoute><MapSearch /></ProtectedRoute>} />
             <Route path="/mapDetail" element={<ProtectedRoute><Map_detail /></ProtectedRoute>} />
@@ -105,18 +98,9 @@ export default function App() {
             <Route path="/reward" element={<ProtectedRoute><Reward /></ProtectedRoute>} />
             <Route path="/finished_art_detail" element={<ProtectedRoute><FinishedArtDetail /></ProtectedRoute>} />
             <Route path="/MyLineChart" element={<MyLineChart></MyLineChart>}></Route>
-
-
-
-
-
-
-
-
           </Routes>
-        </NavermapsProvider>
-      </TokenProvider>
-
-
+        </PointProvider>
+      </NavermapsProvider>
+    </TokenProvider>
   );
 }
