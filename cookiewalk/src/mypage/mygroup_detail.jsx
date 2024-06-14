@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import './mygroup_detail.css'; 
+import './mygroup_detail.css';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 
 function getBrightness(hexColor) {
-  const rgb = parseInt(hexColor.slice(1), 16); 
+  const rgb = parseInt(hexColor.slice(1), 16);
   const r = (rgb >> 16) & 0xff;
   const g = (rgb >> 8) & 0xff;
   const b = (rgb >> 0) & 0xff;
@@ -89,6 +89,17 @@ export default function MyGroupDetail() {
     window.scrollTo(0, 0);
     fetchUserRegionNumber();
     fetchOtherUserRegionNumbers();
+
+    const subscription = supabase
+      .channel('public:group_member')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'group_member' }, payload => {
+        fetchOtherUserRegionNumbers();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
   }, []);
 
   const fetchUserRegionNumber = async () => {
@@ -146,10 +157,30 @@ export default function MyGroupDetail() {
       setSelected(updatedSelected);
       setSelectedPath(index + 1);
 
-      await saveUserRegionNumber(index + 1);
-    }
+      const { data, error } = await supabase
+        .from('group_member')
+        .select('region_number')
+        .eq('group_id', groupID)
+        .neq('user_id', userID)
+        .neq('region_number', 0);
 
-    fetchOtherUserRegionNumbers(); // 다른 사용자 경로 업데이트
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (data) {
+        const selectedRegions = data.map(item => item.region_number);
+        if (selectedRegions.includes(index + 1)) {
+          alert('이미 다른 사용자가 선택한 경로입니다.');
+          fetchOtherUserRegionNumbers(); // 최신 상태로 업데이트
+          return;
+        } else {
+          await saveUserRegionNumber(index + 1);
+          fetchOtherUserRegionNumbers(); // 다른 사용자 경로 업데이트
+        }
+      }
+    }
   };
 
   const saveUserRegionNumber = async (regionNumber) => {
@@ -263,7 +294,7 @@ export default function MyGroupDetail() {
                 </div>
                 <span className="group_choice_distance">{region} km</span>
                 <button
-                  className={`gd_select_btn ${selected[index] ? 'selected' : 'unselected'}`}
+                  className={`gd_select_btn ${selected[index] ? 'selected' : isDisabled ? 'disabled' : 'unselected'}`}
                   onClick={() => handleSelectClick(index)}
                   disabled={isDisabled}>
                   {selected[index] ? '선택함' : isDisabled ? '선택 불가' : '선택하기'}
