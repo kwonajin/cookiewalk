@@ -36,6 +36,8 @@ export const PathNavigation = (drawPath) => {
     const cosTheta = dot / (mag1 * mag2);
     return Math.acos(cosTheta) * (180 / Math.PI); //라디안에서 도로 단위 변환하기
   }
+  
+  //백터 외적
   const crossProduct = (v1, v2) => v1.x * v2.y - v1.y * v2.x;
 
   //왼쪽 오른쪽 방향 구하기
