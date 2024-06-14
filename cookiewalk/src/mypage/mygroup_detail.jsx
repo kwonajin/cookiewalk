@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import './mygroup_detail.css'; 
+import './mygroup_detail.css';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 
 function getBrightness(hexColor) {
-  const rgb = parseInt(hexColor.slice(1), 16); 
+  const rgb = parseInt(hexColor.slice(1), 16);
   const r = (rgb >> 16) & 0xff;
   const g = (rgb >> 8) & 0xff;
   const b = (rgb >> 0) & 0xff;
@@ -90,6 +90,17 @@ export default function MyGroupDetail() {
     window.scrollTo(0, 0);
     fetchUserRegionNumber();
     fetchOtherUserRegionNumbers();
+
+    const subscription = supabase
+      .channel('public:group_member')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'group_member' }, payload => {
+        fetchOtherUserRegionNumbers();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
   }, []);
 
   const fetchUserRegionNumber = async () => {
@@ -134,18 +145,49 @@ export default function MyGroupDetail() {
     }
   };
 
-  const handleSelectClick = (index) => {
-    if (userRegionNumber === 0) {
-      const updatedSelected = selected.map((_, i) => i === index ? !selected[index] : false);
+  const handleSelectClick = async (index) => {
+    if (userRegionNumber === index + 1) {
+      // 선택 해제
+      setSelected(new Array(distance.length).fill(false));
+      setSelectedPath(null);
+      await saveUserRegionNumber(0);
+    } else {
+      // 선택 또는 변경
+      const updatedSelected = new Array(distance.length).fill(false);
+      updatedSelected[index] = true;
       setSelected(updatedSelected);
-      setSelectedPath(index + 1); // region_number에 맞게 1을 더함
+      setSelectedPath(index + 1);
+
+      const { data, error } = await supabase
+        .from('group_member')
+        .select('region_number')
+        .eq('group_id', groupID)
+        .neq('user_id', userID)
+        .neq('region_number', 0);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (data) {
+        const selectedRegions = data.map(item => item.region_number);
+        if (selectedRegions.includes(index + 1)) {
+          alert('이미 다른 사용자가 선택한 경로입니다.');
+          fetchOtherUserRegionNumbers(); // 최신 상태로 업데이트
+          return;
+        } else {
+          await saveUserRegionNumber(index + 1, new Date().toISOString());
+          fetchOtherUserRegionNumbers(); // 다른 사용자 경로 업데이트
+        }
+      }
     }
   };
 
-  const saveUserRegionNumber = async (regionNumber) => {
+  const saveUserRegionNumber = async (regionNumber, selectionTime = null) => {
     const { error } = await supabase
       .from('group_member')
-      .update({ region_number: regionNumber })
+      .update({ region_number: regionNumber, selection_time: selectionTime })
       .eq('user_id', userID)
       .eq('group_id', groupID);
 
@@ -158,17 +200,48 @@ export default function MyGroupDetail() {
 
   const goBefore = async () => {
     if (selectedPath !== null) {
-      await saveUserRegionNumber(selectedPath);
-      navigate('/BeforeStart', {
-        state: {
-          drawPath: groupDrawPath[selectedPath],
-          path: [],
-          groupDraw: true,
-          regionNumber: selectedPath,
-          groupId: groupID,
-          color: color[selectedPath - 1] // 인덱스 조정
+      // 중복 선택 방지 로직 추가
+      const { data, error } = await supabase
+        .from('group_member')
+        .select('region_number, selection_time')
+        .eq('group_id', groupID)
+        .neq('user_id', userID)
+        .neq('region_number', 0);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (data) {
+        const selectedRegions = data.map(item => item.region_number);
+        const userSelectionTime = (await supabase
+          .from('group_member')
+          .select('selection_time')
+          .eq('user_id', userID)
+          .eq('group_id', groupID)
+          .single()).data.selection_time;
+
+        const conflictingSelection = data.find(item => item.region_number === selectedPath && new Date(item.selection_time) < new Date(userSelectionTime));
+
+        if (selectedRegions.includes(selectedPath) && conflictingSelection) {
+          alert('이미 다른 사용자가 선택한 경로입니다.');
+          fetchOtherUserRegionNumbers(); // 최신 상태로 업데이트
+          return;
+        } else {
+          await saveUserRegionNumber(selectedPath, new Date().toISOString());
+          navigate('/BeforeStart', {
+            state: {
+              drawPath: groupDrawPath[selectedPath],
+              path: [],
+              groupDraw: true,
+              regionNumber: selectedPath,
+              groupId: groupID,
+              color: color[selectedPath - 1] // 인덱스 조정
+            }
+          });
         }
-      });
+      }
     } else {
       alert('경로를 선택해주세요');
     }
@@ -243,7 +316,7 @@ export default function MyGroupDetail() {
           const bgColor = color[index];
           console.log(otherUserRegionNumbers)
           const textColor = getBrightness(bgColor) > 128 ? 'black' : 'white';
-          const isDisabled = (userRegionNumber !== 0 && userRegionNumber !== index + 1) || otherUserRegionNumbers.includes(index + 1);
+          const isDisabled = otherUserRegionNumbers.includes(index + 1);
           return (
             <div key={index}>
               <div className="group_choice_box2">
@@ -254,7 +327,7 @@ export default function MyGroupDetail() {
                 </div>
                 <span className="group_choice_distance">{region} km</span>
                 <button
-                  className={`gd_select_btn ${selected[index] ? 'selected' : 'unselected'}`}
+                  className={`gd_select_btn ${selected[index] ? 'selected' : isDisabled ? 'disabled' : 'unselected'}`}
                   onClick={() => handleSelectClick(index)}
                   disabled={isDisabled}>
                   {selected[index] ? '선택함' : isDisabled ? '선택 불가' : '선택하기'}

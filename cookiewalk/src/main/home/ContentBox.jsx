@@ -4,13 +4,14 @@ import { supabase } from '../../supabaseClient';
 import { calculateBounds } from '../../utils/calculateBounds';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 
-function MyMap({ path, bounds , color}) {
+// MyMap 컴포넌트는 네이버 맵을 표시하고 경로를 그립니다.
+function MyMap({ path, bounds, color }) {
   const navermaps = useNavermaps();
   return (
     <NaverMap
       bounds={bounds ? new navermaps.LatLngBounds(
-      new navermaps.LatLng(bounds.south, bounds.west),
-      new navermaps.LatLng(bounds.north, bounds.east)
+        new navermaps.LatLng(bounds.south, bounds.west),
+        new navermaps.LatLng(bounds.north, bounds.east)
       ) : null}
       defaultZoom={15}
       scaleControl={false}
@@ -29,66 +30,68 @@ function MyMap({ path, bounds , color}) {
   );
 }
 
-
-
-
 export default function ContentBox({
-  profileName,
-  profileImage,
-  location,
-  contentImage,
-  contentText,
-  createdAt,
-  userId,
-  userID,
-  postID,
-  recordId
+  profileName,    // 프로필 이름
+  profileImage,   // 프로필 이미지
+  location,       // 위치 정보
+  contentImage,   // 콘텐츠 이미지
+  contentText,    // 콘텐츠 텍스트
+  createdAt,      // 생성 날짜
+  userId,         // 게시물 작성자 ID
+  userID,         // 현재 로그인한 사용자 ID
+  postID,         // 게시물 ID
+  recordId        // 워킹 기록 ID
 }) {
-  const [showMenu, setShowMenu] = useState(false);
-  const [isLike, setIsLike] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [commentCount, setCommentCount] = useState(0);
-  const [notRecord, setNotRecord]=useState(true)
-  const [record, setRecord]=useState([])
-  const [color,setColor]=useState('')
-  const [bounds,setBounds]=useState([])
+  const [showMenu, setShowMenu] = useState(false);         // 메뉴 표시 여부 상태
+  const [isLike, setIsLike] = useState(false);             // 좋아요 상태
+  const [likeCount, setLikeCount] = useState(0);           // 좋아요 수
+  const [commentCount, setCommentCount] = useState(0);     // 댓글 수
+  const [notRecord, setNotRecord] = useState(true);        // 워킹 기록 유무 상태
+  const [record, setRecord] = useState([]);                // 워킹 기록 데이터
+  const [color, setColor] = useState('');                  // 경로 색상
+  const [bounds, setBounds] = useState([]);                // 경로 경계
 
-  console.log(recordId)
-  useEffect(()=>{
-    if(recordId != 'example'){
-      findRecordData()
-      setNotRecord(false)
+  console.log(recordId);
+
+  // recordId가 'example'이 아니면 findRecordData 함수 호출
+  useEffect(() => {
+    if (recordId != 'example') {
+      findRecordData();
+      setNotRecord(false);
     }
-  },[recordId])
+  }, [recordId]);
 
-  async function findRecordData(){
-    const {data:colorData, error:colorError}=await supabase
+  // 워킹 기록 데이터를 찾아오는 함수
+  async function findRecordData() {
+    const { data: colorData, error: colorError } = await supabase
       .from('walking_record')
       .select('color')
-      .eq('walking_record_id', recordId)
-    if(colorError){
-      console.error(colorError)
+      .eq('walking_record_id', recordId);
+    if (colorError) {
+      console.error(colorError);
     }
-    console.log(colorData[0].color)
-    setColor(colorData[0].color)
+    console.log(colorData[0].color);
+    setColor(colorData[0].color);
 
-    const {data: walkingData , error:walkingError}=await supabase
+    const { data: walkingData, error: walkingError } = await supabase
       .from('walking_record_location')
       .select('*')
-      .eq('walking_record_id', recordId)
-    if(walkingError){
-      console.error(walkingError)
+      .eq('walking_record_id', recordId);
+    if (walkingError) {
+      console.error(walkingError);
     }
-    console.log(walkingData)
-    const bound= calculateBounds(walkingData)
-    setBounds(bound)
-    setRecord(walkingData)
-
+    console.log(walkingData);
+    const bound = calculateBounds(walkingData);  // 경로 경계 계산
+    setBounds(bound);
+    setRecord(walkingData);
   }
-  useEffect(()=>{
-    console.log(bounds)
-  },[bounds])
 
+  // 경계 변경 시 콘솔 로그 출력
+  useEffect(() => {
+    console.log(bounds);
+  }, [bounds]);
+
+  // 좋아요 상태, 좋아요 수, 댓글 수를 가져오는 함수들
   useEffect(() => {
     const fetchLikeStatus = async () => {
       const { data, error } = await supabase
@@ -139,10 +142,12 @@ export default function ContentBox({
     fetchCommentCount();
   }, [postID, userID]);
 
+  // 메뉴 토글 함수
   const handleMenuToggle = () => {
     setShowMenu(!showMenu);
   };
 
+  // 좋아요 처리 함수
   const handleIsLike = async (event) => {
     event.stopPropagation();
 
@@ -171,6 +176,7 @@ export default function ContentBox({
     }
   };
 
+  // 게시물 삭제 함수
   const handlePostDelete = async () => {
     const { error } = await supabase
       .from('post')
@@ -179,12 +185,13 @@ export default function ContentBox({
     if (error) {
       console.error("Error deleting post:", error);
     } else {
-      window.location.reload();
+      window.location.reload(); // 삭제 후 페이지 새로고침
     }
   };
 
   return (
     <div className='main_content_box'>
+      {/* 사용자 프로필 링크 */}
       <Link 
         className='content_top_link' 
         to={userId === userID ? "/mypage" : `/home_personal_profile/${userId}`} 
@@ -215,19 +222,18 @@ export default function ContentBox({
           )}
         </div>
       )}
-{/*       
-      <div className="content_img_box"><img className='content_img' src={contentImage} alt="콘텐츠 이미지" /></div>
-      <MapDiv className='content_img_box'><MyMap path={record} bounds={bounds} color={color}/></MapDiv> */}
       <div className="content_img_box">
-      {notRecord ? (
-        <img className='content_img' src={contentImage} alt="콘텐츠 이미지" />
-      ) : (
-        <MapDiv className='content_img'>
-          <MyMap path={record} bounds={bounds} color={color} />
-        </MapDiv>
-      )}
+        {/* 워킹 기록이 없으면 이미지 표시, 있으면 지도 표시 */}
+        {notRecord ? (
+          <img className='content_img' src={contentImage} alt="콘텐츠 이미지" />
+        ) : (
+          <MapDiv className='content_img'>
+            <MyMap path={record} bounds={bounds} color={color} />
+          </MapDiv>
+        )}
       </div>
 
+      {/* 좋아요 버튼 */}
       <div className="heart" onClick={handleIsLike}>
         <img className="heart_icon" src={isLike ? "./icon/heart_fill_test.svg" : "./icon/heart_test.svg"} alt="하트" />
       </div>

@@ -716,3 +716,30 @@ body{
 	background-color: #d0d0d0;
   }
   
+
+  .mypage_postBox {
+	top: 297px;
+	position: absolute;
+	display: grid;
+	grid-template-columns: repeat(3, 130px);
+	grid-template-rows: 130px;
+	grid-gap: 0px; /* 필요한 경우 요소 간 간격 조절 */
+  }
+  
+  .postItem {
+	width: 130px;
+	height: 130px;
+	overflow: hidden;
+  }
+  
+  .postItem img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+  }
+  
+  .postItem .content_img {
+	width: 100%;
+	height: 100%;
+  }
+  
