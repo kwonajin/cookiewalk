@@ -43,15 +43,6 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true ,colo
                 />
                 
             )}
-            {/* {(walkMode && path.length > 1) && (
-                <Polyline
-                    path={drawPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='red'
-                    strokeWeight={8}
-                    strokeOpacity={0.8}
-                    strokeStyle="solid"
-                />
-            )} */}
             {drawPath.length > 1 && drawPath.map((p, index)=> {
                 const isPassed = passPath.some(pp => pp.latitude === p.latitude && pp.longitude === p.longitude);
             return (
