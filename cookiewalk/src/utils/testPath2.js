@@ -17,7 +17,7 @@ const testPath3 = [
   {latitude: 35.1340437, longitude: 129.1042001},
   {latitude: 35.1341547, longitude: 129.1040708},
 ];
-const testPath2 =[
+const testPath1 =[
   {latitude: 35.1370681, longitude: 129.1002482},
   {latitude: 35.1369365, longitude: 129.1003447},
   {latitude: 35.1367961, longitude: 129.1004091},
@@ -30,6 +30,17 @@ const testPath2 =[
   {latitude: 35.1358749, longitude: 129.1008865},
   {latitude: 35.1357915, longitude: 129.1008865},
   {latitude: 35.1354099, longitude: 129.1009402},
+]
+
+const testPath4 =[
+  {latitude : 35.135666, longitude : 129.1125662 },
+  {latitude : 35.1306472, longitude : 129.1011078}
+]
+
+const testPath2 = [
+  {latitude: 35.1330338 , longitude : 129.1043693},
+  {latitude: 35.1322967 , longitude : 129.1035539},
+  {latitude: 35.1326477 , longitude : 129.111622}
 ]
 
 export default testPath2
