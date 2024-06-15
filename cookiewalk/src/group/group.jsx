@@ -256,6 +256,7 @@ export default function Group() {
   }, [count]);
 
   useEffect(() => {
+    console.log(drawPath)
     if (drawPath) {
       setCenter(calculateCenter(drawPath));
     }

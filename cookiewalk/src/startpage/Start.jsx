@@ -302,7 +302,7 @@ export default function Start() {
                 startTimer()
                 const navi = PathNavigation(drawPath)
                 setNavigation(navi)
-                startTracking();
+                startTracking2();
             }
         }
     }, [isPaused, drawPath]);

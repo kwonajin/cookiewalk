@@ -13,7 +13,7 @@ function getBrightness(hexColor) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-function MyMap({ groupDrawPath, color, bounds }) {
+function MyMap({ groupDrawPath, color, bounds, groupRecordPath }) {
   const navermaps = useNavermaps();
 
   return (
@@ -32,7 +32,7 @@ function MyMap({ groupDrawPath, color, bounds }) {
             path={groupDrawPath[region].map(p => new navermaps.LatLng(p.latitude, p.longitude))}
             strokeColor={color[region - 1]} // 인덱스 조정
             strokeWeight={8}
-            strokeOpacity={0.8}
+            strokeOpacity={0.3}
             strokeStyle="solid"
           />
           <Marker
@@ -42,6 +42,17 @@ function MyMap({ groupDrawPath, color, bounds }) {
               content: `<div style="color: black; background-color: rgba(255, 255, 255, 0.7); border: 2px solid ${color[region - 1]}; border-radius: 50%; padding: 5px; font-size: 14px;">${region}</div>`,
               anchor: new navermaps.Point(12, 12),
             }}
+          />
+        </React.Fragment>
+      ))}
+      {groupRecordPath && Object.keys(groupRecordPath).map((region, index) => (
+        <React.Fragment key={region}>
+          <Polyline
+            path={groupRecordPath[region].map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+            strokeColor={color[region - 1]} // 인덱스 조정
+            strokeWeight={8}
+            strokeOpacity={1}
+            strokeStyle="solid"
           />
         </React.Fragment>
       ))}
@@ -71,6 +82,16 @@ export default function MyGroupDetail() {
   const [selectedPath, setSelectedPath] = useState(null);
   const [userRegionNumber, setUserRegionNumber] = useState(null);
   const [otherUserRegionNumbers, setOtherUserRegionNumbers] = useState([]);
+  
+  const [path, setPath]=useState([])
+  const [groupRecordPath, setGroupRecordPath]= useState([])
+  
+  const distacneCount= groupList.state.distance.length
+  const [recordDistance, setRecordDistance]=useState(Array(distacneCount).fill(0));
+  const [recordDisSum, setRecrodDisSum]=useState([])
+  const [recordPercent, setRecordPercent]=useState(Array(distacneCount).fill(0))
+  console.log(recordDistance)
+  console.log(distance)
 
   useEffect(() => {
     if (drawPath) {
@@ -78,6 +99,7 @@ export default function MyGroupDetail() {
       setGroupDrawPath(groupedPaths);
       const bounds = calculateBounds(drawPath);
       setBounds(bounds);
+      walkingRecord()
     }
   }, [drawPath]);
 
@@ -272,6 +294,88 @@ export default function MyGroupDetail() {
     return { south, west, north, east };
   }
 
+  //여기부터 걸은 경로 불러오는 로직
+
+  async function walkingRecord() {
+    //완성 기록 좌표 데이터 불러오기
+    const {data: recordData ,error:recordError} = await supabase
+      .from('group_walking_r_location')
+      .select("*")
+      .eq('group_id', groupID);
+    if(recordError){
+      console.error(error);
+    }
+    // console.log(recordData);
+
+    //미완성 기록 좌표 데이터 불러오기
+    const {data: record_N_data, error: record_N_error}=await supabase
+      .from('group_walking_r_location_N')
+      .select("*")
+      .eq('group_id', groupID)
+    if(record_N_error){
+      console.error(record_N_error)
+    }
+    //recrodData에 완성 미완성 합치기
+    recordData.push(...record_N_data)
+    setPath(recordData)
+
+    const {data: recordDisData , error :recordDisError}= await supabase
+      .from('group_walking_record')
+      .select('region_number , distance')
+      .eq('group_id', groupID)
+    if(recordDisError){
+      console.error(recordDisError)
+    }
+    console.log(recordDisData)
+
+    const {data: record_N_DisData , error :record_N_DisError}= await supabase
+      .from('group_walking_record_N')
+      .select('region_number , distance')
+      .eq('group_id', groupID)
+    if(recordDisError){
+      console.error(record_N_DisError)
+    }
+    console.log(record_N_DisData)
+
+    recordDisData.push(...record_N_DisData)
+    setRecrodDisSum(recordDisData)
+  }
+  useEffect(()=>{
+    console.log(path)
+    if(path){
+      const groupPaths =groupPathsByRegion(path)
+      setGroupRecordPath(groupPaths)
+    }
+  },[path])
+  useEffect(()=>{
+    console.log(groupRecordPath)
+  },[groupRecordPath])
+  useEffect(()=>{
+    console.log(recordDisSum)
+    if(recordDisSum){
+      const newDistanceArray = Array(distacneCount).fill(0)
+      recordDisSum.forEach(item => {
+        if(item.region_number -1 < distacneCount){
+          newDistanceArray[item.region_number -1]= item.distance;
+        }
+        setRecordDistance(newDistanceArray)
+      })
+    }
+  },[recordDisSum])
+
+  useEffect(()=>{
+    const newPercentArray = Array(distacneCount).fill(0)
+    recordDistance.map((dis,index)=>{
+      let percent= (dis/Number(distance[index])*100).toFixed(2)
+      newPercentArray[index]=percent
+    })
+    setRecordPercent(newPercentArray)
+  },[recordDistance])  
+  useEffect(()=>{
+    console.log(recordPercent)
+  },[recordPercent])
+
+
   return (
     <div className="gd_background">
       <Link to="/mygroup">
@@ -282,7 +386,7 @@ export default function MyGroupDetail() {
       <div className="mgd_title">내가 가입한 그룹</div>
       <div className="gd_line"></div>
 
-      <MapDiv className='gd_img'><MyMap groupDrawPath={groupDrawPath} color={color} bounds={bounds} /></MapDiv>
+      <MapDiv className='gd_img'><MyMap groupDrawPath={groupDrawPath} color={color} bounds={bounds} groupRecordPath={groupRecordPath}/></MapDiv>
 
       <div className="gd_name">{title}</div>
       <div className="gd_dday">
@@ -314,7 +418,7 @@ export default function MyGroupDetail() {
       <div>
         {distance && distance.map((region, index) => {
           const bgColor = color[index];
-          console.log(otherUserRegionNumbers)
+          // console.log(otherUserRegionNumbers)
           const textColor = getBrightness(bgColor) > 128 ? 'black' : 'white';
           const isDisabled = otherUserRegionNumbers.includes(index + 1);
           return (
@@ -326,6 +430,8 @@ export default function MyGroupDetail() {
                   </div>
                 </div>
                 <span className="group_choice_distance">{region} km</span>
+                {/* 밑에 recordPercent[index]가 달성률임다 위치수정 부탁드립니다 폰트 글자색등 자유롭게 원하는대로 바꾸주시면 됩니다!!*/}
+                <span className="group_choice_distance"> {recordPercent[index]} %</span>
                 <button
                   className={`gd_select_btn ${selected[index] ? 'selected' : isDisabled ? 'disabled' : 'unselected'}`}
                   onClick={() => handleSelectClick(index)}

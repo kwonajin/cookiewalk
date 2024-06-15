@@ -129,7 +129,7 @@ export default function Group_Activity_save() {
                 group_id: groupId,
                 region_number: regionNumber,
                 walking_time:state.time,
-                distance: state.distance,
+                distance: state.distance.toFixed(2),
                 start_time: state.startTime,
                 end_time: state.endTime,
                 }
@@ -140,7 +140,7 @@ export default function Group_Activity_save() {
             console.log('구릅 미완성:', insertWalkData);
             for (const [index, location] of state.passPath.entries() ){
                 const {data: insertLocationData, error: insertLocationError}= await supabase
-                .from('group_walkng_r_location_N')
+                .from('group_walking_r_location_N')
                 .insert([
                     {
                     group_id: groupId,
@@ -166,7 +166,7 @@ export default function Group_Activity_save() {
                 group_id: groupId,
                 region_number: regionNumber,
                 walking_time:state.time,
-                distance: state.distance,
+                distance: state.distance.toFixed(2),
                 start_time: state.startTime,
                 end_time: state.endTime,
             }
