@@ -6,6 +6,7 @@ import {useToken} from '../context/tokenContext'
 import { supabase } from '../supabaseClient';
 import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'react-naver-maps'
 import axios from 'axios';
+import {calculateDistance2} from '../utils/CalculateDistance2'
 
 function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true ,color}) {
     // console.log(path[path.length-1].latitude)
@@ -43,15 +44,6 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true ,colo
                 />
                 
             )}
-            {/* {(walkMode && path.length > 1) && (
-                <Polyline
-                    path={drawPath.map(p => new navermaps.LatLng(p.latitude, p.longitude))}
-                    strokeColor='red'
-                    strokeWeight={8}
-                    strokeOpacity={0.8}
-                    strokeStyle="solid"
-                />
-            )} */}
             {drawPath.length > 1 && drawPath.map((p, index)=> {
                 const isPassed = passPath.some(pp => pp.latitude === p.latitude && pp.longitude === p.longitude);
             return (
@@ -61,7 +53,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true ,colo
                     title={`Marker${index+1}`}
                     clickable={true}
                     icon={{
-                        content: `<div style="background: ${isPassed ? color : '#2E9AFE'}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        content: `<div style="background: ${isPassed ? color : `${color}50`}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
                         size: new navermaps.Size(10, 10),
                         anchor: new navermaps.Point(5, 5)
                     }}
@@ -83,11 +75,17 @@ export default function Group_Activity_save() {
     const [passPath, setPassPath]=useState([])
     const [drawId, setDrawId]=useState('');
     const [drawPath, setDrawPath] = useState([]);
+    const [drawDistacne, setDrawDistance]=useState('')
     const [currentPosition, setCurrentPosition]=useState([])
     const [walkMode, setWalkMode]=useState(true);//true 백지걷기 //false 경로따라걷기
     const [color,setColor]=useState('')
     const [groupId, setGroupId]=useState('')
     const [regionNumber, setRegionNumber]= useState(0)
+    const [beforeRecord, setBeforeRecord]=useState(false) //이전 기록 있는 체크
+    const [persent, setPersent]=useState(0) //경로 달성률
+    const [time, setTime]=useState(state.time)
+    const [beforeStartTime, setBeforeStartTime]=useState(state.startTime)
+    
 
     const [pathLoading, setPathLoading]=useState(true)
 
@@ -108,8 +106,46 @@ export default function Group_Activity_save() {
         setColor(state.color)
         setGroupId(state.groupId)
         setRegionNumber(state.regionNumber)
+        setDrawDistance(Number(state.drawDistacne))
+        // setTime(state.time)
+        findRecord()
     },[state])
 
+    useEffect(()=>{
+        if(passPath.length >= 1){
+            let passPathDistance = 0
+            for (let i = 0; i < passPath.length - 1; i++) {
+                const PathDistance = calculateDistance2(passPath[i], passPath[i + 1]);
+                passPathDistance += PathDistance;
+            }
+            const recordPersent = (passPathDistance.toFixed(2)/drawDistacne)*100
+            console.log(recordPersent)
+            setPersent(recordPersent.toFixed(2))
+            console.log(typeof(persent))
+        }
+    },[drawDistacne, passPath])
+
+    //이전에 기록 있나 확인
+    async function findRecord(){
+        const {data: findData , error: findError}= await supabase
+            .from('group_walking_record_N')
+            .select("*")
+            .eq('group_id', state.groupId)
+            .eq('region_number',state.regionNumber)
+        if(findError){
+            console.error(findError)
+        }
+        console.log(findData)
+        if(findData.length >0){
+            setBeforeRecord(true)
+            const newTime = time + findData[0].walking_time
+            setTime(newTime)
+            setBeforeStartTime(findData[0].start_time)
+        }
+    }
+    useEffect(()=>{
+        console.log(beforeRecord)
+    },[beforeRecord])
 
 
     const formatTime = (seconds) => {
@@ -122,60 +158,155 @@ export default function Group_Activity_save() {
 
     //미완성 경로 저장함수 
     async function nonCompleteWalk(){
-        const {data: insertWalkData, error:insertWalkError}= await supabase
-            .from('group_walking_record_N')
-            .insert([
-                {
-                group_id: groupId,
-                region_number: regionNumber,
-                walking_time:state.time,
-                distance: state.distance.toFixed(2),
-                start_time: state.startTime,
-                end_time: state.endTime,
+        if(Number(persent) !== 100){
+            if(beforeRecord){
+                const {data: updateData, error: updateError} = await supabase
+                    .from('group_walking_record_N')
+                    .update({ 
+                    walking_time: time,
+                    distance: state.distance.toFixed(2),
+                    end_time: state.endTime
+                    })
+                    .eq('group_id', groupId)
+                    .eq('region_number', state.regionNumber)
+                if(updateError){
+                    console.error(updateError)
                 }
-            ])
-            if(insertWalkError){
-                console.error(insertWalkError)
-            }
-            console.log('구릅 미완성:', insertWalkData);
-            for (const [index, location] of state.passPath.entries() ){
-                const {data: insertLocationData, error: insertLocationError}= await supabase
-                .from('group_walking_r_location_N')
-                .insert([
-                    {
-                    group_id: groupId,
-                    region_number: regionNumber,
-                    mark_order: index+1,
-                    latitude: location.latitude,
-                    longitude: location.longitude
+                const {data: deleteData , error: deleteError}= await supabase
+                    .from('group_walking_r_location_N')
+                    .delete()
+                    .eq('group_id', groupId)
+                    .eq('region_number', state.regionNumber)
+                if(deleteError){
+                    console.error(deleteError)
+                }
+                for (const [index, location] of state.passPath.entries() ){
+                    const {data: insertLocationData, error: insertLocationError}= await supabase
+                    .from('group_walking_r_location_N')
+                    .insert([
+                        {
+                        group_id: groupId,
+                        region_number: regionNumber,
+                        mark_order: index+1,
+                        latitude: location.latitude,
+                        longitude: location.longitude
+                        }
+                    ])
+                    if(insertLocationError){
+                        console.log(insertLocationError)
                     }
-                ])
-                if(insertLocationError){
-                    console.log(insertLocationError)
                 }
+                navigate('/mypage')
+            }else{
+                const {data: insertWalkData, error:insertWalkError}= await supabase
+                    .from('group_walking_record_N')
+                    .insert([
+                        {
+                        group_id: groupId,
+                        region_number: regionNumber,
+                        walking_time:state.time,
+                        distance: state.distance.toFixed(2),
+                        start_time: state.startTime,
+                        end_time: state.endTime,
+                        }
+                    ])
+                if(insertWalkError){
+                    console.error(insertWalkError)
+                }
+                console.log('구릅 미완성:', insertWalkData);
+                for (const [index, location] of state.passPath.entries() ){
+                    const {data: insertLocationData, error: insertLocationError}= await supabase
+                    .from('group_walking_r_location_N')
+                    .insert([
+                        {
+                        group_id: groupId,
+                        region_number: regionNumber,
+                        mark_order: index+1,
+                        latitude: location.latitude,
+                        longitude: location.longitude
+                        }
+                    ])
+                    if(insertLocationError){
+                        console.log(insertLocationError)
+                    }
+                }
+            navigate('/mypage')
             }
-        navigate('/home')
+        }else{
+            window.alert(`${persent}% 이므로 미완성으로 저장할 수 없습니다.`)
+        }
     }
 
     //완성 경로 저장함수
     async function completeWalk(){
-        const {data: insertWalkData, error:insertWalkError}= await supabase
-        .from('group_walking_record')
-        .insert([
-            {
-                group_id: groupId,
-                region_number: regionNumber,
-                walking_time:state.time,
-                distance: state.distance.toFixed(2),
-                start_time: state.startTime,
-                end_time: state.endTime,
+        if(Number(persent) === 100){
+            if(beforeRecord){
+                const {data: deleteData , error: deleteError}= await supabase
+                    .from('group_walking_r_location_N')
+                    .delete()
+                    .eq('group_id', groupId)
+                    .eq('region_number', state.regionNumber)
+                if(deleteError){
+                    console.error(deleteError)
+                }
+                const {data: deleteRecordData , error: deleteRecordError}= await supabase
+                    .from('group_walking_record_N')
+                    .delete()
+                    .eq('group_id', groupId)
+                    .eq('region_number', state.regionNumber)
+                if(deleteRecordError){
+                    console.error(deleteError)
+                }
+                const {data: insertWalkData, error:insertWalkError}= await supabase
+                    .from('group_walking_record')
+                    .insert([
+                        {
+                        group_id: groupId,
+                        region_number: regionNumber,
+                        walking_time: time,
+                        distance: state.distance.toFixed(2),
+                        start_time: beforeStartTime,
+                        end_time: state.endTime,
+                        }
+                    ])
+                if(insertWalkError){
+                    console.error(insertWalkError)
+                }
+                for (const [index, location] of state.passPath.entries() ){
+                    const {data: insertLocationData, error: insertLocationError}= await supabase
+                    .from('group_walking_r_location')
+                    .insert([
+                        {
+                        group_id:groupId,
+                        region_number: regionNumber,
+                        mark_order: index+1,
+                        latitude: location.latitude,
+                        longitude: location.longitude
+                        }
+                    ])
+                    if(insertLocationError){
+                        console.log(insertLocationError)
+                    }
+                }
+            navigate('/mypage')
+            }else{
+                const {data: insertWalkData, error:insertWalkError}= await supabase
+                    .from('group_walking_record')
+                    .insert([
+                        {
+                        group_id: groupId,
+                        region_number: regionNumber,
+                        walking_time: time,
+                        distance: state.distance.toFixed(2),
+                        start_time: state.startTime,
+                        end_time: state.endTime,
+                        }
+                    ])
+            if(insertWalkError){
+                console.error(insertWalkError)
             }
-        ])
-        if(insertWalkError){
-            console.error(insertWalkError)
-        }
-        for (const [index, location] of state.passPath.entries() ){
-            const {data: insertLocationData, error: insertLocationError}= await supabase
+            for (const [index, location] of state.passPath.entries() ){
+                const {data: insertLocationData, error: insertLocationError}= await supabase
                 .from('group_walking_r_location')
                 .insert([
                     {
@@ -186,11 +317,16 @@ export default function Group_Activity_save() {
                     longitude: location.longitude
                     }
                 ])
-            if(insertLocationError){
-                console.log(insertLocationError)
+                if(insertLocationError){
+                    console.log(insertLocationError)
+                }
             }
+            navigate('/mypage')
+            }
+        }else{
+            window.alert(`${persent}% 로 미완성입니다.`)
         }
-        navigate('/home')
+        
     }
     // 경로 삭제 함수
     const removeActivity = () => {
@@ -222,7 +358,7 @@ export default function Group_Activity_save() {
             <span className="g_activity_save_distance_value">{state.distance.toFixed(2)}km</span>
             <div className="g_activiity_save_label_divide_line"></div>
             <span className="g_activity_save_time_label">활동 시간</span>
-            <span className="g_activity_save_time_value">{formatTime(state.time)}</span>
+            <span className="g_activity_save_time_value">{formatTime(time)}</span>
             <div className="g_activity_save_line1"></div>
             
 

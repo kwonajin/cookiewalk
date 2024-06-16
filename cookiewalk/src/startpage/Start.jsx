@@ -4,7 +4,7 @@ import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'r
 import { useLocation, useNavigate } from "react-router-dom";
 import testPath2 from '../utils/testPath2';
 import { PathNavigation } from '../utils/PathNavigation';
-import { PointContext } from '../context/pointContext'; // PointContext 가져오기
+import { textToSpeech } from '../utils/textToSpeech';
 
 function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color }) {
     const navermaps = useNavermaps();
@@ -70,7 +70,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 }
 
 export default function Start() {
-    const { points, addPoint } = useContext(PointContext); // points와 addPoint 가져오기
+    
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -90,6 +90,7 @@ export default function Start() {
     const [color, setColor] = useState('#7ca0c1');
     const [drawId, setDrawId] = useState('');
     const [drawPath, setDrawPath] = useState([]);
+    const [drawDistacne, setDrawDistance]=useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
     const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
@@ -100,7 +101,7 @@ export default function Start() {
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
     const [isARMode, setIsARMode] = useState(false);
-    const [pointsEarned, setPointsEarned] = useState(0); // 새롭게 추가된 상태
+    const [points, setPoints] = useState(0); // 새롭게 추가된 상태
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const tolerance = 0.007;
@@ -144,11 +145,7 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
-                                        addPoint(); // 0.1km마다 포인트 적립
-                                        setPointsEarned(prev => prev + 1); // 포인트 획득
-                                        alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
-                                    }
+                            
                                     return newDistance;
                                 });
                             }
@@ -171,11 +168,6 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
-                                        addPoint(); // 0.1km마다 포인트 적립
-                                        setPointsEarned(prev => prev + 1); // 포인트 획득
-                                        alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
-                                    }
                                     return newDistance;
                                 });
                             }
@@ -214,11 +206,7 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
-                                    addPoint(); // 0.1km마다 포인트 적립
-                                    setPointsEarned(prev => prev + 1); // 포인트 획득
-                                    alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
-                                }
+                                
                                 return newDistance;
                             });
                         }
@@ -242,11 +230,7 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
-                                    addPoint(); // 0.1km마다 포인트 적립
-                                    setPointsEarned(prev => prev + 1); // 포인트 획득
-                                    alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
-                                }
+                            
                                 return newDistance;
                             });
                         }
@@ -262,6 +246,13 @@ export default function Start() {
 
     useEffect(() => {
         passPathRef.current = passPath;
+        console.log(passPath)
+        if(passPathRef.current.length > 0){
+            console.log(navigation[passPathRef.current.length-1])
+            if(navigation[passPathRef.current.length-1] != '직진'){
+                textToSpeech(navigation[passPathRef.current.length-1])
+            }
+        }
     }, [passPath]);
 
     const stopTracking = () => {
@@ -284,6 +275,7 @@ export default function Start() {
             setGroupDraw(location.state.groupDraw);
             setColor(location.state.color);
             setGroupId(location.state.groupId);
+            setDrawDistance(location.state.drawDistance)
         }
     }, [location.state.drawPath]);
 
@@ -301,7 +293,7 @@ export default function Start() {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
                 startTimer()
                 const navi = PathNavigation(drawPath)
-                setNavigation(navi)
+                setNavigation(navi.resultArray)
                 startTracking();
             }
         }
@@ -386,6 +378,7 @@ export default function Start() {
                     color: color,
                     groupId: groupId,
                     regionNumber: regionNumber,
+                    drawDistacne: drawDistacne
                 }
             })
         } else {
@@ -486,3 +479,4 @@ export default function Start() {
         </div>
     );
 }
+

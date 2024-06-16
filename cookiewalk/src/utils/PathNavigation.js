@@ -64,6 +64,7 @@ export const PathNavigation = (drawPath) => {
   const directionsArray = ['시작']
   const angleArray = ['0']
   const distanceArray=[]
+  const resultArray=[]
   for(let i = 1 ; i < drawPath.length -1  ; i++){
     const v1 = vector(drawPath[i-1], drawPath[i]);
     const v2 = vector(drawPath[i], drawPath[i+1]);
@@ -79,10 +80,20 @@ export const PathNavigation = (drawPath) => {
   }
   for(let j =0 ; j< drawPath.length -1 ; j++){
     const distance = calculateDistance(drawPath[j], drawPath[j+1])
-    distanceArray.push(distance.toFixed(5))
+    distanceArray.push((distance*1000).toFixed(0))
   }
-  console.log(directionsArray)
-  console.log(angleArray)
-  console.log(distanceArray)
-  return { directionsArray, angleArray};
+  // console.log(directionsArray) //방향
+  // console.log(angleArray) //각도
+  // console.log(distanceArray) //거리
+
+  for (let z = 1 ;z <directionsArray.length ; z++){
+    if(directionsArray[z] === '우회전' || directionsArray[z]=== '좌회전'){
+      resultArray.push(`약 ${distanceArray[z-1]}미터 후 ${directionsArray[z]}입니다`)
+    }else{
+      resultArray.push('직진')
+    }
+  }
+  console.log(resultArray)
+
+  return { resultArray};
 }; 

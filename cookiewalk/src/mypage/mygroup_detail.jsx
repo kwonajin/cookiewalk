@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
+import { calculateDistance2 } from '../utils/CalculateDistance2';
 
 function getBrightness(hexColor) {
   const rgb = parseInt(hexColor.slice(1), 16);
@@ -90,7 +91,6 @@ export default function MyGroupDetail() {
   const [recordDistance, setRecordDistance]=useState(Array(distacneCount).fill(0));
   const [recordDisSum, setRecrodDisSum]=useState([])
   const [recordPercent, setRecordPercent]=useState(Array(distacneCount).fill(0))
-  console.log(recordDistance)
   console.log(distance)
 
   useEffect(() => {
@@ -252,16 +252,22 @@ export default function MyGroupDetail() {
           return;
         } else {
           await saveUserRegionNumber(selectedPath, new Date().toISOString());
-          navigate('/BeforeStart', {
-            state: {
-              drawPath: groupDrawPath[selectedPath],
-              path: [],
-              groupDraw: true,
-              regionNumber: selectedPath,
-              groupId: groupID,
-              color: color[selectedPath - 1] // 인덱스 조정
-            }
-          });
+          //완료시에 그리기 못하게 추가
+          if(Number(recordPercent[selectedPath-1]) === 100){
+            window.alert('선택하신 구역의 그리기를 완료하셨습니다.')
+          }else{
+            navigate('/BeforeStart', {
+              state: {
+                drawPath: groupDrawPath[selectedPath],
+                path: !groupRecordPath[selectedPath] || Object.keys(groupRecordPath[selectedPath]).length === 0 ? [] : groupRecordPath[selectedPath],
+                groupDraw: true,
+                regionNumber: selectedPath,
+                groupId: groupID,
+                color: color[selectedPath - 1], // 인덱스 조정
+                drawDistance: distance[selectedPath -1]
+              }
+            });
+          }
         }
       }
     } else {
@@ -347,23 +353,32 @@ export default function MyGroupDetail() {
       setGroupRecordPath(groupPaths)
     }
   },[path])
-  useEffect(()=>{
-    console.log(groupRecordPath)
-  },[groupRecordPath])
-  useEffect(()=>{
-    console.log(recordDisSum)
-    if(recordDisSum){
-      const newDistanceArray = Array(distacneCount).fill(0)
-      recordDisSum.forEach(item => {
-        if(item.region_number -1 < distacneCount){
-          newDistanceArray[item.region_number -1]= item.distance;
-        }
-        setRecordDistance(newDistanceArray)
-      })
+
+  function calculateTotalDistance(section) {
+    let totalDistance = 0;
+    for (let i = 0; i < section.length - 1; i++) {
+      const distance = calculateDistance2(section[i], section[i + 1]);
+      totalDistance += distance;
     }
-  },[recordDisSum])
+    return totalDistance;
+  }
 
   useEffect(()=>{
+    console.log(groupRecordPath)
+    const newDistanceArray = Array(distacneCount).fill(0)
+    if(Object.keys(groupRecordPath).length > 0){
+      // const newDistanceArray = Array(distacneCount).fill(0)
+      for (const regionNum in groupRecordPath){
+        const section = groupRecordPath[regionNum];
+        const passDistance = calculateTotalDistance(section)
+        newDistanceArray[regionNum-1]=passDistance.toFixed(2)
+      }
+    }
+    setRecordDistance(newDistanceArray)
+  },[groupRecordPath])
+
+  useEffect(()=>{
+    console.log(recordDistance)
     const newPercentArray = Array(distacneCount).fill(0)
     recordDistance.map((dis,index)=>{
       let percent= (dis/Number(distance[index])*100).toFixed(2)
@@ -371,6 +386,7 @@ export default function MyGroupDetail() {
     })
     setRecordPercent(newPercentArray)
   },[recordDistance])  
+  
   useEffect(()=>{
     console.log(recordPercent)
   },[recordPercent])
