@@ -90,6 +90,7 @@ export default function Start() {
     const [color, setColor] = useState('#7ca0c1');
     const [drawId, setDrawId] = useState('');
     const [drawPath, setDrawPath] = useState([]);
+    const [drawDistacne, setDrawDistance]=useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
     const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
@@ -274,13 +275,13 @@ export default function Start() {
             setGroupDraw(location.state.groupDraw);
             setColor(location.state.color);
             setGroupId(location.state.groupId);
+            setDrawDistance(location.state.drawDistance)
         }
     }, [location.state.drawPath]);
 
     useEffect(() => {
         if (location.state.path.length > 1) {
             setPath(location.state.path);
-
         }
     }, [location.state.path]);
 
@@ -293,7 +294,7 @@ export default function Start() {
                 startTimer()
                 const navi = PathNavigation(drawPath)
                 setNavigation(navi.resultArray)
-                startTracking();
+                startTracking2();
             }
         }
     }, [isPaused, drawPath]);
@@ -377,6 +378,7 @@ export default function Start() {
                     color: color,
                     groupId: groupId,
                     regionNumber: regionNumber,
+                    drawDistacne: drawDistacne
                 }
             })
         } else {
