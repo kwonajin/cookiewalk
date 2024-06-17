@@ -74,9 +74,9 @@ export default function Start() {
     const [popupVisible, setPopupVisible] = useState(false); // 팝업창 상태 추가
     const [points, setPoints] = useState(0); // 포인트 상태 추가
     
+
     useEffect(() => {
         window.scrollTo(0, 0);
-        fetchUserPoints();
     }, []);
 
     const location = useLocation();
@@ -93,12 +93,12 @@ export default function Start() {
     const [color, setColor] = useState('#7ca0c1');
     const [drawId, setDrawId] = useState('');
     const [drawPath, setDrawPath] = useState([]);
-    const [drawDistance, setDrawDistance] = useState([]);
+    const [drawDistacne, setDrawDistance]=useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
-    const [walkMode, setWalkMode] = useState(true); // true 백지걷기 // false 경로따라걷기
+    const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
     const passPathRef = useRef(passPath);
-    console.log(passPathRef);
+    console.log(passPathRef)
 
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
@@ -108,7 +108,7 @@ export default function Start() {
     const canvasRef = useRef(null);
     const tolerance = 0.007;
 
-    const [navigation, setNavigation] = useState([]);
+    const [navigation, setNavigation]=useState([])
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -158,18 +158,20 @@ export default function Start() {
                                     return newDistance;
                                 });
                             }
-                        } else {   // 받아온 경로 있을 시
-                            newPath = [...prevPath, newPosition];
+                            return newPath;
+                        }else{   //받아온 경로 있을시
+                            newPath=[...prevPath, newPosition]
+                            // const closePoint = findCloseCoord(newPosition)
                             const closePoint = drawPath[passPathRef.current.length];
-                            const distanceClosePoint = calculateDistance(newPosition, closePoint);
-                            if (distanceClosePoint <= tolerance) {
-                                setPassPath((prevPassPath) => {
-                                    let newPassPath = [...prevPassPath, closePoint];
-                                    return newPassPath;
-                                });
-                                console.log('경로 같음');
-                            } else {
-                                console.log('경로 벗어남');
+                            const distanceClosePoint = calculateDistance(newPosition, closePoint)
+                            if(distanceClosePoint <= tolerance){
+                                setPassPath((prevPassPath)=>{
+                                    let newPassPath = [...prevPassPath, closePoint]
+                                    return newPassPath
+                                })
+                                console.log('경로같음')
+                            }else{
+                                console.log('경로벗어남')
                             }
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
@@ -185,8 +187,8 @@ export default function Start() {
                                     return newDistance;
                                 });
                             }
+                            return newPath;
                         }
-                        return newPath;
                     });
                 },
                 (error) => {
@@ -231,17 +233,21 @@ export default function Start() {
                                 return newDistance;
                             });
                         }
-                    } else {
+                        return newPath
+                    }else{
+                        // newPath=[...prevPath, newPosition]
+                        // const closePoint = findCloseCoord(newPosition)
                         const closePoint = drawPath[passPathRef.current.length];
-                        const distanceClosePoint = calculateDistance(newPosition, closePoint);
-                        if (distanceClosePoint <= tolerance) {
-                            setPassPath((prevPassPath) => {
-                                let newPassPath = [...prevPassPath, closePoint];
-                                return newPassPath;
-                            });
-                            console.log('경로 같음');
-                        } else {
-                            console.log('경로 벗어남');
+                        console.log(passPath.length)
+                        const distanceClosePoint = calculateDistance(newPosition, closePoint)
+                        if(distanceClosePoint <= tolerance){
+                            setPassPath((prevPassPath)=>{
+                                let newPassPath = [...prevPassPath, closePoint]
+                                return newPassPath
+                            })
+                            console.log('경로같음')
+                        }else{
+                            console.log('경로벗어남')
                         }
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
@@ -258,8 +264,8 @@ export default function Start() {
                                 return newDistance;
                             });
                         }
+                        return newPath;
                     }
-                    return newPath;
                 });
                 countIndex++;
             } else {
@@ -284,11 +290,11 @@ export default function Start() {
 
     useEffect(() => {
         passPathRef.current = passPath;
-        console.log(passPath);
-        if (passPathRef.current.length > 0) {
-            console.log(navigation[passPathRef.current.length - 1]);
-            if (navigation[passPathRef.current.length - 1] !== '직진') {
-                textToSpeech(navigation[passPathRef.current.length - 1]);
+        console.log(passPath)
+        if(passPathRef.current.length > 0){
+            console.log(navigation[passPathRef.current.length-1])
+            if(navigation[passPathRef.current.length-1] != '직진'){
+                textToSpeech(navigation[passPathRef.current.length-1])
             }
         }
     }, [passPath]);
@@ -313,7 +319,7 @@ export default function Start() {
             setGroupDraw(location.state.groupDraw);
             setColor(location.state.color);
             setGroupId(location.state.groupId);
-            setDrawDistance(location.state.drawDistance);
+            setDrawDistance(location.state.drawDistance)
         }
     }, [location.state.drawPath]);
 
@@ -332,18 +338,18 @@ export default function Start() {
                 startTimer()
                 const navi = PathNavigation(drawPath)
                 setNavigation(navi.resultArray)
-                startTracking2();
+                startTracking();
             }
         }
     }, [isPaused, drawPath]);
 
-    useEffect(() => {
-        console.log(navigation);
-    }, [navigation]);
+    useEffect(()=>{
+        console.log(navigation)
+    }, [navigation])
 
-    useEffect(() => {
-        if (path.length >= 1) {
-            setPathLoading(false);
+    useEffect(()=>{
+        if(path.length >=1){
+            setPathLoading(false)
         }
     }, [path]);
 
@@ -416,9 +422,9 @@ export default function Start() {
                     color: color,
                     groupId: groupId,
                     regionNumber: regionNumber,
-                    drawDistance: drawDistance
+                    drawDistacne: drawDistacne
                 }
-            });
+            })
         } else {
             navigate('/Activity_Save', {
                 state: {
