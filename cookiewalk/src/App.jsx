@@ -45,7 +45,6 @@ import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 import { NavermapsProvider } from 'react-naver-maps';
 import MyLineChart from './mypage/chart/MyBarChart.jsx';
-import { PointProvider } from './context/pointContext'; // PointProvider 추가
 
 export default function App() {
   const naverMapClientID = import.meta.env.VITE_NAVER_CLIENT_ID;
@@ -53,7 +52,6 @@ export default function App() {
   return (
     <TokenProvider>
       <NavermapsProvider ncpClientId={naverMapClientID}>
-        <PointProvider> {/* PointProvider로 감쌈 */}
           <Routes>
             <Route path="/" element={<ProtectedRoute_2><LogIn /></ProtectedRoute_2>} />
             <Route path="/find_ps" element={<ProtectedRoute_2><FindPassword /></ProtectedRoute_2>} />
@@ -99,7 +97,6 @@ export default function App() {
             <Route path="/finished_art_detail" element={<ProtectedRoute><FinishedArtDetail /></ProtectedRoute>} />
             <Route path="/MyLineChart" element={<MyLineChart></MyLineChart>}></Route>
           </Routes>
-        </PointProvider>
       </NavermapsProvider>
     </TokenProvider>
   );

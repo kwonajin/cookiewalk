@@ -1,10 +1,32 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import './reward.css';
 import { Link } from "react-router-dom";
-import { PointContext } from '../../context/pointContext'; // PointContext 가져오기
+import { supabase } from '../../supabaseClient'; // supabaseClient를 import합니다.
 
 export default function Reward(){
-  const { points } = useContext(PointContext); // 포인트 가져오기
+  const [points, setPoints] = useState(0);
+
+  useEffect(() => {
+    const fetchPoints = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { id } = user;
+        const { data, error } = await supabase
+          .from('user')
+          .select('point')
+          .eq('user_id', id)
+          .single();
+        if (data) {
+          setPoints(data.point);
+        }
+        if (error) {
+          console.error('Error fetching points:', error);
+        }
+      }
+    };
+
+    fetchPoints();
+  }, []);
 
   return (
     <div style={{ background: '#E5E5E5' }}>
