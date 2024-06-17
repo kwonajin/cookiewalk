@@ -147,43 +147,29 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    // 0.02km마다 포인트 적립
-                                    if (newDistance - totalDistance >= 0.02) {
-                                        setPoints(points + 1); // 포인트 증가
-                                        setPopupVisible(true); // 팝업 표시
-                                        setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
-                                        updateUserPoints(); // Supabase에 포인트 업데이트
-                                    }
-                            
+                                    handlePointIncrease(newDistance, prevDistance);
                                     return newDistance;
                                 });
                             }
                             return newPath;
-                        }else{   //받아온 경로 있을시
-                            newPath=[...prevPath, newPosition]
-                            // const closePoint = findCloseCoord(newPosition)
+                        } else { // 받아온 경로 있을 시
+                            newPath = [...prevPath, newPosition];
                             const closePoint = drawPath[passPathRef.current.length];
-                            const distanceClosePoint = calculateDistance(newPosition, closePoint)
-                            if(distanceClosePoint <= tolerance){
-                                setPassPath((prevPassPath)=>{
-                                    let newPassPath = [...prevPassPath, closePoint]
-                                    return newPassPath
-                                })
-                                console.log('경로같음')
-                            }else{
-                                console.log('경로벗어남')
+                            const distanceClosePoint = calculateDistance(newPosition, closePoint);
+                            if (distanceClosePoint <= tolerance) {
+                                setPassPath((prevPassPath) => {
+                                    let newPassPath = [...prevPassPath, closePoint];
+                                    return newPassPath;
+                                });
+                                console.log('경로같음');
+                            } else {
+                                console.log('경로벗어남');
                             }
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    // 0.02km마다 포인트 적립
-                                    if (newDistance - totalDistance >= 0.02) {
-                                        setPoints(points + 1); // 포인트 증가
-                                        setPopupVisible(true); // 팝업 표시
-                                        setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
-                                        updateUserPoints(); // Supabase에 포인트 업데이트
-                                    }
+                                    handlePointIncrease(newDistance, prevDistance);
                                     return newDistance;
                                 });
                             }
@@ -222,45 +208,29 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                // 0.02km마다 포인트 적립
-                                if (newDistance - totalDistance >= 0.02) {
-                                    setPoints(points + 1); // 포인트 증가
-                                    setPopupVisible(true); // 팝업 표시
-                                    setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
-                                    updateUserPoints(); // Supabase에 포인트 업데이트
-                                }
-                                
+                                handlePointIncrease(newDistance, prevDistance);
                                 return newDistance;
                             });
                         }
-                        return newPath
-                    }else{
-                        // newPath=[...prevPath, newPosition]
-                        // const closePoint = findCloseCoord(newPosition)
+                        return newPath;
+                    } else { // 받아온 경로 있을 시
+                        newPath = [...prevPath, newPosition];
                         const closePoint = drawPath[passPathRef.current.length];
-                        console.log(passPath.length)
-                        const distanceClosePoint = calculateDistance(newPosition, closePoint)
-                        if(distanceClosePoint <= tolerance){
-                            setPassPath((prevPassPath)=>{
-                                let newPassPath = [...prevPassPath, closePoint]
-                                return newPassPath
-                            })
-                            console.log('경로같음')
-                        }else{
-                            console.log('경로벗어남')
+                        const distanceClosePoint = calculateDistance(newPosition, closePoint);
+                        if (distanceClosePoint <= tolerance) {
+                            setPassPath((prevPassPath) => {
+                                let newPassPath = [...prevPassPath, closePoint];
+                                return newPassPath;
+                            });
+                            console.log('경로같음');
+                        } else {
+                            console.log('경로벗어남');
                         }
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                // 0.02km마다 포인트 적립
-                                if (newDistance - totalDistance >= 0.02) {
-                                    setPoints(points + 1); // 포인트 증가
-                                    setPopupVisible(true); // 팝업 표시
-                                    setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
-                                    updateUserPoints(); // Supabase에 포인트 업데이트
-                                }
-                            
+                                handlePointIncrease(newDistance, prevDistance);
                                 return newDistance;
                             });
                         }
@@ -271,7 +241,16 @@ export default function Start() {
             } else {
                 clearInterval(test);
             }
-        }, 3000);
+        }, 1000);
+    };
+
+    const handlePointIncrease = (newDistance, prevDistance) => {
+        if (newDistance - prevDistance >= 0.05) {
+            setPoints(points + 1); // 포인트 증가
+            setPopupVisible(true); // 팝업 표시
+            setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
+            updateUserPoints(); // Supabase에 포인트 업데이트
+        }
     };
 
     const updateUserPoints = async () => {
@@ -489,4 +468,3 @@ export default function Start() {
         </div>
     );
 }
-
