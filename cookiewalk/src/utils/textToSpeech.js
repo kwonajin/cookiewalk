@@ -20,7 +20,11 @@ export const textToSpeech = async (text) =>{
   };
 
   try {
-    const response = await axios.post(url, data);
+    const response = await axios.post(url, data, {
+      headers:{
+        'Content-Type': 'application/json',
+      },
+    });
     const audioContent = response.data.audioContent;
     const audioBlob = new Blob([new Uint8Array(atob(audioContent).split('').map((char)=>char.charCodeAt(0)))],{type: 'audio/mp3'});
     const audioUrl =URL.createObjectURL(audioBlob);
