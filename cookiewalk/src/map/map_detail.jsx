@@ -49,7 +49,7 @@ export default function Map_detail() {
   console.log(center);
 
   const followRoute = () => {
-    navigate('/BeforeStart', { state: { drawPath: drawPath , drawId:drawId , path:[] ,color:color} });
+    navigate('/BeforeStart', { state: { drawPath: drawPath , drawId:drawId , path:[] ,color:color, level:level} });
   };
 
   // Scroll to top on component mount

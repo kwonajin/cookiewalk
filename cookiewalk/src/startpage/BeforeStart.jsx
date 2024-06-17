@@ -81,6 +81,7 @@ export default function BeforeStart(){
     const [regionNumber, setRegionNumber]=useState(0)
     const [groupId, setGroupId]=useState('')
     const [color, setColor]=useState('#7ca0c1')
+    const [level, setLevel]=useState('하')
     const mapCollection = useLocation();
     console.log(mapCollection)
     useEffect(()=>{
@@ -90,6 +91,7 @@ export default function BeforeStart(){
             const drawID=mapCollection.state.drawId
             const drawPath=mapCollection.state.drawPath
             const color=mapCollection.state.color
+            const level=mapCollection.state.level
             if(mapCollection.state.groupDraw){
                 setGroupDraw(mapCollection.state.groupDraw)
                 setRegionNumber(mapCollection.state.regionNumber)
@@ -101,6 +103,7 @@ export default function BeforeStart(){
             setDrawPath(drawPath)
             setColor(color)
             setDrawDistance(mapCollection.state.drawDistance)
+            setLevel(level)
         }
     },[path])
     const  navigate = useNavigate();
@@ -155,7 +158,7 @@ export default function BeforeStart(){
     function startPage(e){
         e.preventDefault();
         const startTime = new Date()
-        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId, color:color, drawDistance: drawDistance}})
+        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId, color:color, drawDistance: drawDistance, level:level}})
     }
 
     return(

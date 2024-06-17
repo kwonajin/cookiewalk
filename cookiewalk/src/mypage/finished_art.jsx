@@ -28,31 +28,20 @@ export default function FinishedArt() {
     //로딩상태
     const [loading, setLoading]=useState(true)
 
-    // 중심좌표 구하는 함수
-    // const calculateCenter=(path) =>{
-    //     const total = path.length; //배열의 총 개수
-    //     //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
-    //     const sum =path.reduce((acc, coord) => ({
-    //         lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
-    //         lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
-    //     }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
-    //     return {
-    //         latitude: sum.lat / total,
-    //         longitude: sum.lng / total,
-    //     };
-    // }
-
     //완성 산책기록 찾는 함수
     async function CompleteRecord() {
         const {data: recordInfoData , error: recordInfoError}= await supabase
             .from('walking_record')
-            .select('walking_record_id ,distance, title, location, walking_time, color')
+            .select('walking_record_id ,distance, title, location, walking_time, color, level')
             .eq('user_id', userID)
         console.log(recordInfoData)
         setRecordList(recordInfoData)
         setCountRecord(recordInfoData.length)
         let newTotalDistance = 0;
         let newTotalTime = 0;
+        if(recordInfoData.length === 0){
+            setLoading(false)
+        }
         if(recordInfoData.length >= 1){
             for(let index in recordInfoData){
                 newTotalDistance += recordInfoData[index].distance
@@ -131,7 +120,7 @@ export default function FinishedArt() {
                 {recordList.map((recordItem, index) => {
                     const sendOnlyPath = path.find(p => p.walking_record_id === recordItem.walking_record_id);
                     return (
-                        <Link to={`/finished_art_detail`} className='finished_to_detail_link' state={{drawId:recordItem.walking_record_id, location:recordItem.location, distance: recordItem.distance, time:recordItem.walking_time, pathcoord:sendOnlyPath, center:center[index], title:recordItem.title ,color:recordItem.color}} key={recordItem.walking_record_id}>
+                        <Link to={`/finished_art_detail`} className='finished_to_detail_link' state={{drawId:recordItem.walking_record_id, location:recordItem.location, distance: recordItem.distance, time:recordItem.walking_time, pathcoord:sendOnlyPath, center:center[index], title:recordItem.title ,color:recordItem.color, level:recordItem.level}} key={recordItem.walking_record_id}>
                             <Finished_List
                                 key={recordItem.walking_record_id}
                                 drawId={recordItem.walking_record_id}
@@ -142,6 +131,7 @@ export default function FinishedArt() {
                                 centercoord={center[index]}
                                 title={recordItem.title}
                                 color={recordItem.color}
+                                level={recordItem.level}
                             />
                         </Link>
                     );

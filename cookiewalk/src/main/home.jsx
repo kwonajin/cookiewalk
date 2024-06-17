@@ -23,7 +23,7 @@ export default function Home() {
   let distance=0
   const [recordcount, setRecordCount]=useState(0)
   const [totalDistance ,setTotalDistance]=useState(0)
-  const [totoalTime, setTotoalTime]=useState('')
+  const [totoalTime, setTotoalTime]=useState('00h 00m 00s')
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -62,7 +62,7 @@ export default function Home() {
     }
   }
   useEffect(()=>{
-    // console.log(totalDistance, totoalTime ,recordcount)
+    console.log(totalDistance, totoalTime ,recordcount)
   },[totalDistance, totoalTime, recordcount])
 
   const checkNickname = async () => {
