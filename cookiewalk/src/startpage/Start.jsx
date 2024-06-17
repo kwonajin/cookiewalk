@@ -73,7 +73,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 export default function Start() {
     const [popupVisible, setPopupVisible] = useState(false); // 팝업창 상태 추가
     const [points, setPoints] = useState(0); // 포인트 상태 추가
-    
+    const [distanceAccumulated, setDistanceAccumulated] = useState(0); // 누적 거리 상태 추가
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -93,7 +93,7 @@ export default function Start() {
     const [color, setColor] = useState('#7ca0c1');
     const [drawId, setDrawId] = useState('');
     const [drawPath, setDrawPath] = useState([]);
-    const [drawDistacne, setDrawDistance]=useState([]);
+    const [drawDistance, setDrawDistance] = useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
     const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
@@ -108,7 +108,7 @@ export default function Start() {
     const canvasRef = useRef(null);
     const tolerance = 0.007;
 
-    const [navigation, setNavigation]=useState([])
+    const [navigation, setNavigation] = useState([])
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -147,7 +147,7 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    handlePointIncrease(newDistance, prevDistance);
+                                    handlePointIncrease(newDistance);
                                     return newDistance;
                                 });
                             }
@@ -169,7 +169,7 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    handlePointIncrease(newDistance, prevDistance);
+                                    handlePointIncrease(newDistance);
                                     return newDistance;
                                 });
                             }
@@ -208,7 +208,7 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                handlePointIncrease(newDistance, prevDistance);
+                                handlePointIncrease(newDistance);
                                 return newDistance;
                             });
                         }
@@ -230,7 +230,7 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                handlePointIncrease(newDistance, prevDistance);
+                                handlePointIncrease(newDistance);
                                 return newDistance;
                             });
                         }
@@ -244,22 +244,25 @@ export default function Start() {
         }, 1000);
     };
 
-    const handlePointIncrease = (newDistance, prevDistance) => {
-        if (newDistance - prevDistance >= 0.05) {
-            setPoints(points + 1); // 포인트 증가
+    const handlePointIncrease = (newDistance) => {
+        const distanceToAdd = newDistance - distanceAccumulated;
+        if (distanceToAdd >= 0.05) {
+            const pointsToAdd = Math.floor(distanceToAdd / 0.05);
+            setPoints(prevPoints => prevPoints + pointsToAdd);
+            setDistanceAccumulated(newDistance);
             setPopupVisible(true); // 팝업 표시
             setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
-            updateUserPoints(); // Supabase에 포인트 업데이트
+            updateUserPoints(pointsToAdd); // Supabase에 포인트 업데이트
         }
     };
 
-    const updateUserPoints = async () => {
+    const updateUserPoints = async (pointsToAdd) => {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
             const { id } = user;
             const { data, error } = await supabase
                 .from('user')
-                .update({ point: points + 1 })
+                .update({ point: supabase.from('user').select('point').eq('user_id', id).single().point + pointsToAdd })
                 .eq('user_id', id);
             if (error) {
                 console.error('Error updating points:', error);
@@ -270,10 +273,10 @@ export default function Start() {
     useEffect(() => {
         passPathRef.current = passPath;
         console.log(passPath)
-        if(passPathRef.current.length > 0){
-            console.log(navigation[passPathRef.current.length-1])
-            if(navigation[passPathRef.current.length-1] != '직진'){
-                textToSpeech(navigation[passPathRef.current.length-1])
+        if (passPathRef.current.length > 0) {
+            console.log(navigation[passPathRef.current.length - 1])
+            if (navigation[passPathRef.current.length - 1] !== '직진') {
+                textToSpeech(navigation[passPathRef.current.length - 1])
             }
         }
     }, [passPath]);
@@ -314,20 +317,20 @@ export default function Start() {
             stopTracking();
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
-                startTimer()
-                const navi = PathNavigation(drawPath)
-                setNavigation(navi.resultArray)
+                startTimer();
+                const navi = PathNavigation(drawPath);
+                setNavigation(navi.resultArray);
                 startTracking();
             }
         }
     }, [isPaused, drawPath]);
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(navigation)
     }, [navigation])
 
-    useEffect(()=>{
-        if(path.length >=1){
+    useEffect(() => {
+        if (path.length >= 1) {
             setPathLoading(false)
         }
     }, [path]);
@@ -401,7 +404,7 @@ export default function Start() {
                     color: color,
                     groupId: groupId,
                     regionNumber: regionNumber,
-                    drawDistacne: drawDistacne
+                    drawDistance: drawDistance
                 }
             })
         } else {
@@ -422,7 +425,6 @@ export default function Start() {
             });
         }
     }
-
 
     if (pathLoading) {
         return (
