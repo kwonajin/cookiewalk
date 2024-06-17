@@ -25,6 +25,9 @@ export const textToSpeech = async (text) =>{
         'Content-Type': 'application/json',
       },
     });
+
+    console.log('Received response from Google Text-to-Speech API:', response);
+
     const audioContent = response.data.audioContent;
     const audioBlob = new Blob([new Uint8Array(atob(audioContent).split('').map((char)=>char.charCodeAt(0)))],{type: 'audio/mp3'});
     const audioUrl =URL.createObjectURL(audioBlob);
