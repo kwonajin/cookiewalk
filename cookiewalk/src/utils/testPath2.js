@@ -53,6 +53,7 @@ const testPath6 = [
   {latitude: 35.1366103, longitude: 129.1029332}
 ]
 const testPath2 =[
+  { latitude: 35.1338068, longitude: 129.1021758},
   { latitude: 35.1337851,longitude: 129.1023411},
   { latitude: 35.1337864, longitude: 129.1024579},
   { latitude: 35.1339205, longitude: 129.1024633},
