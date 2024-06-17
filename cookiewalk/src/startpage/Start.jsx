@@ -4,7 +4,7 @@ import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'r
 import { useLocation, useNavigate } from "react-router-dom";
 import testPath2 from '../utils/testPath2';
 import { PathNavigation } from '../utils/PathNavigation';
-import { PointContext } from '../context/pointContext'; // PointContext 가져오기
+import { supabase } from '../supabaseClient'; // supabaseClient를 import합니다.
 
 function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color }) {
     const navermaps = useNavermaps();
@@ -70,7 +70,8 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 }
 
 export default function Start() {
-    const { points, addPoint } = useContext(PointContext); // points와 addPoint 가져오기
+    const [popupVisible, setPopupVisible] = useState(false); // 팝업창 상태 추가
+    const [points, setPoints] = useState(0); // 포인트 상태 추가
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -99,10 +100,6 @@ export default function Start() {
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
-    const [isARMode, setIsARMode] = useState(false);
-    const [pointsEarned, setPointsEarned] = useState(0); // 새롭게 추가된 상태
-    const videoRef = useRef(null);
-    const canvasRef = useRef(null);
     const tolerance = 0.007;
 
     const [navigation, setNavigation]=useState([])
@@ -144,10 +141,12 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
-                                        addPoint(); // 0.1km마다 포인트 적립
-                                        setPointsEarned(prev => prev + 1); // 포인트 획득
-                                        alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
+                                    // 0.02km마다 포인트 적립
+                                    if (newDistance - totalDistance >= 0.02) {
+                                        setPoints(points + 1); // 포인트 증가
+                                        setPopupVisible(true); // 팝업 표시
+                                        setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
+                                        updateUserPoints(); // Supabase에 포인트 업데이트
                                     }
                                     return newDistance;
                                 });
@@ -171,10 +170,12 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
-                                        addPoint(); // 0.1km마다 포인트 적립
-                                        setPointsEarned(prev => prev + 1); // 포인트 획득
-                                        alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
+                                    // 0.02km마다 포인트 적립
+                                    if (newDistance - totalDistance >= 0.02) {
+                                        setPoints(points + 1); // 포인트 증가
+                                        setPopupVisible(true); // 팝업 표시
+                                        setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
+                                        updateUserPoints(); // Supabase에 포인트 업데이트
                                     }
                                     return newDistance;
                                 });
@@ -214,10 +215,12 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
-                                    addPoint(); // 0.1km마다 포인트 적립
-                                    setPointsEarned(prev => prev + 1); // 포인트 획득
-                                    alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
+                                // 0.02km마다 포인트 적립
+                                if (newDistance - totalDistance >= 0.02) {
+                                    setPoints(points + 1); // 포인트 증가
+                                    setPopupVisible(true); // 팝업 표시
+                                    setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
+                                    updateUserPoints(); // Supabase에 포인트 업데이트
                                 }
                                 return newDistance;
                             });
@@ -242,10 +245,12 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                if (Math.floor(newDistance * 10) > Math.floor(prevDistance * 10)) {
-                                    addPoint(); // 0.1km마다 포인트 적립
-                                    setPointsEarned(prev => prev + 1); // 포인트 획득
-                                    alert('1포인트 획득하였습니다.'); // 포인트 획득 알림
+                                // 0.02km마다 포인트 적립
+                                if (newDistance - totalDistance >= 0.02) {
+                                    setPoints(points + 1); // 포인트 증가
+                                    setPopupVisible(true); // 팝업 표시
+                                    setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
+                                    updateUserPoints(); // Supabase에 포인트 업데이트
                                 }
                                 return newDistance;
                             });
@@ -258,6 +263,20 @@ export default function Start() {
                 clearInterval(test);
             }
         }, 3000);
+    };
+
+    const updateUserPoints = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { id } = user;
+            const { data, error } = await supabase
+                .from('user')
+                .update({ point: points + 1 })
+                .eq('user_id', id);
+            if (error) {
+                console.error('Error updating points:', error);
+            }
+        }
     };
 
     useEffect(() => {
@@ -407,41 +426,6 @@ export default function Start() {
         }
     }
 
-    const handleARCapture = () => {
-        setPoints(points + 1);
-        setIsARMode(false);
-        startTracking();
-    };
-
-    useEffect(() => {
-        if (isARMode) {
-            const video = videoRef.current;
-            if (navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then((stream) => {
-                        video.srcObject = stream;
-                    })
-                    .catch((error) => {
-                        console.error("Error accessing webcam: ", error);
-                    });
-            }
-        }
-    }, [isARMode]);
-
-    if (isARMode) {
-        return (
-            <div className="ar-container">
-                <video ref={videoRef} autoPlay className="ar-camera-view" />
-                <div className="ar-overlay">
-                    <img src="/images/logo.png" alt="AR" className="ar-image" onClick={handleARCapture} />
-                </div>
-                <div className="ar-info">
-                    <div>AR 모드 활성화</div>
-                    <div>AR 이미지를 클릭하세요!</div>
-                </div>
-            </div>
-        );
-    }
 
     if (pathLoading) {
         return (
@@ -483,6 +467,7 @@ export default function Start() {
                     </>
                 )}
             </div>
+            {popupVisible && <div className="popup">1포인트가 적립되었습니다.</div>} {/* 팝업창 */}
         </div>
     );
 }
