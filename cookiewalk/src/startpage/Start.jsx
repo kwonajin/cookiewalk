@@ -4,7 +4,6 @@ import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'r
 import { useLocation, useNavigate } from "react-router-dom";
 import testPath2 from '../utils/testPath2';
 import { PathNavigation } from '../utils/PathNavigation';
-import { supabase } from '../supabaseClient'; // supabaseClient를 import합니다.
 import { textToSpeech } from '../utils/textToSpeech';
 
 function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color }) {
@@ -71,12 +70,10 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 }
 
 export default function Start() {
-    const [popupVisible, setPopupVisible] = useState(false); // 팝업창 상태 추가
-    const [points, setPoints] = useState(0); // 포인트 상태 추가
+    
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        fetchUserPoints();
     }, []);
 
     const location = useLocation();
@@ -93,22 +90,24 @@ export default function Start() {
     const [color, setColor] = useState('#7ca0c1');
     const [drawId, setDrawId] = useState('');
     const [drawPath, setDrawPath] = useState([]);
-    const [drawDistance, setDrawDistance] = useState([]);
+    const [drawDistacne, setDrawDistance]=useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
-    const [walkMode, setWalkMode] = useState(true); // true 백지걷기 // false 경로따라걷기
+    const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
     const passPathRef = useRef(passPath);
-    console.log(passPathRef);
+    console.log(passPathRef)
+    const [level, setLevel]=useState('하')
 
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
     const [isARMode, setIsARMode] = useState(false);
+    const [points, setPoints] = useState(0); // 새롭게 추가된 상태
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const tolerance = 0.007;
 
-    const [navigation, setNavigation] = useState([]);
+    const [navigation, setNavigation]=useState([])
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -145,47 +144,36 @@ export default function Start() {
                         if (drawPath.length === 0) {
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
-                                const newDistance = totalDistance + distance; // 미리 newDistance 계산
-                                if (newDistance - totalDistance >= 0.05) {
-                                    setTotalDistance(newDistance); // 총 거리 업데이트
-                                    setPoints((prevPoints) => prevPoints + 1); // 포인트 증가
-                                    setPopupVisible(true); // 팝업 표시
-                                    setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
-                                    updateUserPoints(); // Supabase에 포인트 업데이트
-                                } else {
-                                    setTotalDistance(newDistance); // 총 거리 업데이트
-                                }
-                                return newPath;
-                            }
-                        } else {   // 받아온 경로 있을 시
-                            newPath = [...prevPath, newPosition];
-                            const closePoint = drawPath[passPathRef.current.length];
-                            const distanceClosePoint = calculateDistance(newPosition, closePoint);
-                            if (distanceClosePoint <= tolerance) {
-                                setPassPath((prevPassPath) => {
-                                    let newPassPath = [...prevPassPath, closePoint];
-                                    return newPassPath;
+                                setTotalDistance((prevDistance) => {
+                                    const newDistance = prevDistance + distance;
+                            
+                                    return newDistance;
                                 });
-                                console.log('경로 같음');
-                            } else {
-                                console.log('경로 벗어남');
+                            }
+                            return newPath;
+                        }else{   //받아온 경로 있을시
+                            newPath=[...prevPath, newPosition]
+                            // const closePoint = findCloseCoord(newPosition)
+                            const closePoint = drawPath[passPathRef.current.length];
+                            const distanceClosePoint = calculateDistance(newPosition, closePoint)
+                            if(distanceClosePoint <= tolerance){
+                                setPassPath((prevPassPath)=>{
+                                    let newPassPath = [...prevPassPath, closePoint]
+                                    return newPassPath
+                                })
+                                console.log('경로같음')
+                            }else{
+                                console.log('경로벗어남')
                             }
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
-                                const newDistance = totalDistance + distance; // 미리 newDistance 계산
-                                if (newDistance - totalDistance >= 0.05) {
-                                    setTotalDistance(newDistance); // 총 거리 업데이트
-                                    setPoints((prevPoints) => prevPoints + 1); // 포인트 증가
-                                    setPopupVisible(true); // 팝업 표시
-                                    setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
-                                    updateUserPoints(); // Supabase에 포인트 업데이트
-                                } else {
-                                    setTotalDistance(newDistance); // 총 거리 업데이트
-                                }
-                                return newPath;
+                                setTotalDistance((prevDistance) => {
+                                    const newDistance = prevDistance + distance;
+                                    return newDistance;
+                                });
                             }
+                            return newPath;
                         }
-                        return newPath;
                     });
                 },
                 (error) => {
@@ -217,104 +205,53 @@ export default function Start() {
                     if (drawPath.length === 0) {
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
-                            const newDistance = totalDistance + distance; // 미리 newDistance 계산
-                            if (newDistance - totalDistance >= 0.05) {
-                                setTotalDistance(newDistance); // 총 거리 업데이트
-                                setPoints((prevPoints) => prevPoints + 1); // 포인트 증가
-                                setPopupVisible(true); // 팝업 표시
-                                setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
-                                updateUserPoints(); // Supabase에 포인트 업데이트
-                            } else {
-                                setTotalDistance(newDistance); // 총 거리 업데이트
-                            }
-                            return newPath;
-                        }
-                    } else {
-                        const closePoint = drawPath[passPathRef.current.length];
-                        const distanceClosePoint = calculateDistance(newPosition, closePoint);
-                        if (distanceClosePoint <= tolerance) {
-                            setPassPath((prevPassPath) => {
-                                let newPassPath = [...prevPassPath, closePoint];
-                                return newPassPath;
+                            setTotalDistance((prevDistance) => {
+                                const newDistance = prevDistance + distance;
+                                
+                                return newDistance;
                             });
-                            console.log('경로 같음');
-                        } else {
-                            console.log('경로 벗어남');
+                        }
+                        return newPath
+                    }else{
+                        // newPath=[...prevPath, newPosition]
+                        // const closePoint = findCloseCoord(newPosition)
+                        const closePoint = drawPath[passPathRef.current.length];
+                        console.log(passPath.length)
+                        const distanceClosePoint = calculateDistance(newPosition, closePoint)
+                        if(distanceClosePoint <= tolerance){
+                            setPassPath((prevPassPath)=>{
+                                let newPassPath = [...prevPassPath, closePoint]
+                                return newPassPath
+                            })
+                            console.log('경로같음')
+                        }else{
+                            console.log('경로벗어남')
                         }
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
-                            const newDistance = totalDistance + distance; // 미리 newDistance 계산
-                            if (newDistance - totalDistance >= 0.05) {
-                                setTotalDistance(newDistance); // 총 거리 업데이트
-                                setPoints((prevPoints) => prevPoints + 1); // 포인트 증가
-                                setPopupVisible(true); // 팝업 표시
-                                setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
-                                updateUserPoints(); // Supabase에 포인트 업데이트
-                            } else {
-                                setTotalDistance(newDistance); // 총 거리 업데이트
-                            }
-                            return newPath;
+                            setTotalDistance((prevDistance) => {
+                                const newDistance = prevDistance + distance;
+                            
+                                return newDistance;
+                            });
                         }
+                        return newPath;
                     }
-                    return newPath;
                 });
                 countIndex++;
             } else {
                 clearInterval(test);
             }
-        }, 1000);
-    };
-
-    const updateUserPoints = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-            const { id } = user;
-            const { data, error } = await supabase
-                .from('user')
-                .select('point')
-                .eq('user_id', id)
-                .single();
-            if (data) {
-                const newPoints = data.point + 1;
-                const { error: updateError } = await supabase
-                    .from('user')
-                    .update({ point: newPoints })
-                    .eq('user_id', id);
-                if (updateError) {
-                    console.error('Error updating points:', updateError);
-                }
-            }
-            if (error) {
-                console.error('Error fetching user points:', error);
-            }
-        }
-    };
-
-    const fetchUserPoints = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-            const { id } = user;
-            const { data, error } = await supabase
-                .from('user')
-                .select('point')
-                .eq('user_id', id)
-                .single();
-            if (data) {
-                setPoints(data.point);
-            }
-            if (error) {
-                console.error('Error fetching user points:', error);
-            }
-        }
+        }, 3000);
     };
 
     useEffect(() => {
         passPathRef.current = passPath;
-        console.log(passPath);
-        if (passPathRef.current.length > 0) {
-            console.log(navigation[passPathRef.current.length - 1]);
-            if (navigation[passPathRef.current.length - 1] !== '직진') {
-                textToSpeech(navigation[passPathRef.current.length - 1]);
+        console.log(passPath)
+        if(passPathRef.current.length > 0){
+            console.log(navigation[passPathRef.current.length-1])
+            if(navigation[passPathRef.current.length-1] != '직진'){
+                textToSpeech(navigation[passPathRef.current.length-1])
             }
         }
     }, [passPath]);
@@ -339,7 +276,8 @@ export default function Start() {
             setGroupDraw(location.state.groupDraw);
             setColor(location.state.color);
             setGroupId(location.state.groupId);
-            setDrawDistance(location.state.drawDistance);
+            setDrawDistance(location.state.drawDistance)
+            setLevel(location.state.level)
         }
     }, [location.state.drawPath]);
 
@@ -355,21 +293,21 @@ export default function Start() {
             stopTracking();
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
-                startTimer();
-                const navi = PathNavigation(drawPath);
-                setNavigation(navi.resultArray);
-                startTracking();
+                startTimer()
+                const navi = PathNavigation(drawPath)
+                setNavigation(navi.resultArray)
+                startTracking2();
             }
         }
     }, [isPaused, drawPath]);
 
-    useEffect(() => {
-        console.log(navigation);
-    }, [navigation]);
+    useEffect(()=>{
+        console.log(navigation)
+    }, [navigation])
 
-    useEffect(() => {
-        if (path.length >= 1) {
-            setPathLoading(false);
+    useEffect(()=>{
+        if(path.length >=1){
+            setPathLoading(false)
         }
     }, [path]);
 
@@ -442,9 +380,9 @@ export default function Start() {
                     color: color,
                     groupId: groupId,
                     regionNumber: regionNumber,
-                    drawDistance: drawDistance
+                    drawDistacne: drawDistacne
                 }
-            });
+            })
         } else {
             navigate('/Activity_Save', {
                 state: {
@@ -459,11 +397,47 @@ export default function Start() {
                     currentPosition: currentPosition,
                     walkMode: walkMode,
                     color: color,
+                    level:level
                 }
             });
         }
     }
 
+    const handleARCapture = () => {
+        setPoints(points + 1);
+        setIsARMode(false);
+        startTracking();
+    };
+
+    useEffect(() => {
+        if (isARMode) {
+            const video = videoRef.current;
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then((stream) => {
+                        video.srcObject = stream;
+                    })
+                    .catch((error) => {
+                        console.error("Error accessing webcam: ", error);
+                    });
+            }
+        }
+    }, [isARMode]);
+
+    if (isARMode) {
+        return (
+            <div className="ar-container">
+                <video ref={videoRef} autoPlay className="ar-camera-view" />
+                <div className="ar-overlay">
+                    <img src="/images/logo.png" alt="AR" className="ar-image" onClick={handleARCapture} />
+                </div>
+                <div className="ar-info">
+                    <div>AR 모드 활성화</div>
+                    <div>AR 이미지를 클릭하세요!</div>
+                </div>
+            </div>
+        );
+    }
 
     if (pathLoading) {
         return (
@@ -505,7 +479,6 @@ export default function Start() {
                     </>
                 )}
             </div>
-            {popupVisible && <div className="popup">1포인트가 적립되었습니다.</div>} {/* 팝업창 */}
         </div>
     );
 }
