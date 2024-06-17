@@ -28,20 +28,6 @@ export default function FinishedArt() {
     //로딩상태
     const [loading, setLoading]=useState(true)
 
-    // 중심좌표 구하는 함수
-    // const calculateCenter=(path) =>{
-    //     const total = path.length; //배열의 총 개수
-    //     //좌표 배열 순회하며 각 죄표의 위도 경도의 합을 구함
-    //     const sum =path.reduce((acc, coord) => ({
-    //         lat: acc.lat + coord.latitude,  //누적된 위도 합에 현재 좌표 위도 합 더하기
-    //         lng: acc.lng + coord.longitude	//누적된 경도 합에 현재 좌표 경도 합 더하기
-    //     }), {lat:0, lng:0})  //초기값 {lat:0, lng:0}
-    //     return {
-    //         latitude: sum.lat / total,
-    //         longitude: sum.lng / total,
-    //     };
-    // }
-
     //완성 산책기록 찾는 함수
     async function CompleteRecord() {
         const {data: recordInfoData , error: recordInfoError}= await supabase
@@ -53,6 +39,9 @@ export default function FinishedArt() {
         setCountRecord(recordInfoData.length)
         let newTotalDistance = 0;
         let newTotalTime = 0;
+        if(recordInfoData.length === 0){
+            setLoading(false)
+        }
         if(recordInfoData.length >= 1){
             for(let index in recordInfoData){
                 newTotalDistance += recordInfoData[index].distance
