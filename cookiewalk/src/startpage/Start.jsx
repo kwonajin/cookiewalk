@@ -76,6 +76,7 @@ export default function Start() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        fetchUserPoints();
     }, []);
 
     const location = useLocation();
@@ -95,7 +96,7 @@ export default function Start() {
     const [drawDistance, setDrawDistance] = useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
-    const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
+    const [walkMode, setWalkMode] = useState(true); // true 백지걷기 // false 경로따라걷기
     const passPathRef = useRef(passPath);
     console.log(passPathRef);
 
@@ -145,12 +146,14 @@ export default function Start() {
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 const newDistance = totalDistance + distance; // 미리 newDistance 계산
-                                setTotalDistance(newDistance);
                                 if (newDistance - totalDistance >= 0.05) {
+                                    setTotalDistance(newDistance); // 총 거리 업데이트
                                     setPoints((prevPoints) => prevPoints + 1); // 포인트 증가
                                     setPopupVisible(true); // 팝업 표시
                                     setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
                                     updateUserPoints(); // Supabase에 포인트 업데이트
+                                } else {
+                                    setTotalDistance(newDistance); // 총 거리 업데이트
                                 }
                                 return newPath;
                             }
@@ -170,12 +173,14 @@ export default function Start() {
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 const newDistance = totalDistance + distance; // 미리 newDistance 계산
-                                setTotalDistance(newDistance);
                                 if (newDistance - totalDistance >= 0.05) {
+                                    setTotalDistance(newDistance); // 총 거리 업데이트
                                     setPoints((prevPoints) => prevPoints + 1); // 포인트 증가
                                     setPopupVisible(true); // 팝업 표시
                                     setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
                                     updateUserPoints(); // Supabase에 포인트 업데이트
+                                } else {
+                                    setTotalDistance(newDistance); // 총 거리 업데이트
                                 }
                                 return newPath;
                             }
@@ -213,12 +218,14 @@ export default function Start() {
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
                             const newDistance = totalDistance + distance; // 미리 newDistance 계산
-                            setTotalDistance(newDistance);
                             if (newDistance - totalDistance >= 0.05) {
+                                setTotalDistance(newDistance); // 총 거리 업데이트
                                 setPoints((prevPoints) => prevPoints + 1); // 포인트 증가
                                 setPopupVisible(true); // 팝업 표시
                                 setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
                                 updateUserPoints(); // Supabase에 포인트 업데이트
+                            } else {
+                                setTotalDistance(newDistance); // 총 거리 업데이트
                             }
                             return newPath;
                         }
@@ -237,12 +244,14 @@ export default function Start() {
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
                             const newDistance = totalDistance + distance; // 미리 newDistance 계산
-                            setTotalDistance(newDistance);
                             if (newDistance - totalDistance >= 0.05) {
+                                setTotalDistance(newDistance); // 총 거리 업데이트
                                 setPoints((prevPoints) => prevPoints + 1); // 포인트 증가
                                 setPopupVisible(true); // 팝업 표시
                                 setTimeout(() => setPopupVisible(false), 1000); // 1초 후 팝업 닫기
                                 updateUserPoints(); // Supabase에 포인트 업데이트
+                            } else {
+                                setTotalDistance(newDistance); // 총 거리 업데이트
                             }
                             return newPath;
                         }
@@ -262,10 +271,39 @@ export default function Start() {
             const { id } = user;
             const { data, error } = await supabase
                 .from('user')
-                .update({ point: points + 1 })
-                .eq('user_id', id);
+                .select('point')
+                .eq('user_id', id)
+                .single();
+            if (data) {
+                const newPoints = data.point + 1;
+                const { error: updateError } = await supabase
+                    .from('user')
+                    .update({ point: newPoints })
+                    .eq('user_id', id);
+                if (updateError) {
+                    console.error('Error updating points:', updateError);
+                }
+            }
             if (error) {
-                console.error('Error updating points:', error);
+                console.error('Error fetching user points:', error);
+            }
+        }
+    };
+
+    const fetchUserPoints = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { id } = user;
+            const { data, error } = await supabase
+                .from('user')
+                .select('point')
+                .eq('user_id', id)
+                .single();
+            if (data) {
+                setPoints(data.point);
+            }
+            if (error) {
+                console.error('Error fetching user points:', error);
             }
         }
     };
