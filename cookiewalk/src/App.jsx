@@ -52,6 +52,8 @@ import { NavermapsProvider } from 'react-naver-maps';
 
 import MyLineChart from './mypage/chart/MyBarChart.jsx';
 
+import Shop from './mypage/reward/shop/shop.jsx';
+
 
 export default function App() {
 
@@ -104,7 +106,7 @@ export default function App() {
             <Route path="/blocked" element={<ProtectedRoute><Blocked /></ProtectedRoute>} />
             <Route path="/reward" element={<ProtectedRoute><Reward /></ProtectedRoute>} />
             <Route path="/finished_art_detail" element={<ProtectedRoute><FinishedArtDetail /></ProtectedRoute>} />
-            <Route path="/MyLineChart" element={<MyLineChart></MyLineChart>}></Route>
+            <Route path="/shop" element={<ProtectedRoute><Shop></Shop></ProtectedRoute>}></Route>
 
 
 
