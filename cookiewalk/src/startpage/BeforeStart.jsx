@@ -76,6 +76,7 @@ export default function BeforeStart(){
     const [path,setPath]=useState([])
     const [drawId,setDrawId]=useState('')
     const [drawPath, setDrawPath]=useState([])
+    const [drawDistance, setDrawDistance]=useState('')
     const [groupDraw, setGroupDraw]=useState(false)
     const [regionNumber, setRegionNumber]=useState(0)
     const [groupId, setGroupId]=useState('')
@@ -99,6 +100,7 @@ export default function BeforeStart(){
             setDrawId(drawID)
             setDrawPath(drawPath)
             setColor(color)
+            setDrawDistance(mapCollection.state.drawDistance)
         }
     },[path])
     const  navigate = useNavigate();
@@ -153,7 +155,7 @@ export default function BeforeStart(){
     function startPage(e){
         e.preventDefault();
         const startTime = new Date()
-        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId, color:color}})
+        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId, color:color, drawDistance: drawDistance}})
     }
 
     return(

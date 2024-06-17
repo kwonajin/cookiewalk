@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import testPath2 from '../utils/testPath2';
 import { PathNavigation } from '../utils/PathNavigation';
 import { supabase } from '../supabaseClient'; // supabaseClient를 import합니다.
+import { textToSpeech } from '../utils/textToSpeech';
 
 function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color }) {
     const navermaps = useNavermaps();
@@ -72,6 +73,7 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 export default function Start() {
     const [popupVisible, setPopupVisible] = useState(false); // 팝업창 상태 추가
     const [points, setPoints] = useState(0); // 포인트 상태 추가
+    
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -91,6 +93,7 @@ export default function Start() {
     const [color, setColor] = useState('#7ca0c1');
     const [drawId, setDrawId] = useState('');
     const [drawPath, setDrawPath] = useState([]);
+    const [drawDistacne, setDrawDistance]=useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
     const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
@@ -100,6 +103,9 @@ export default function Start() {
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
+    const [isARMode, setIsARMode] = useState(false);
+    const videoRef = useRef(null);
+    const canvasRef = useRef(null);
     const tolerance = 0.007;
 
     const [navigation, setNavigation]=useState([])
@@ -148,6 +154,7 @@ export default function Start() {
                                         setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
                                         updateUserPoints(); // Supabase에 포인트 업데이트
                                     }
+                            
                                     return newDistance;
                                 });
                             }
@@ -222,6 +229,7 @@ export default function Start() {
                                     setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
                                     updateUserPoints(); // Supabase에 포인트 업데이트
                                 }
+                                
                                 return newDistance;
                             });
                         }
@@ -252,6 +260,7 @@ export default function Start() {
                                     setTimeout(() => setPopupVisible(false), 3000); // 3초 후 팝업 닫기
                                     updateUserPoints(); // Supabase에 포인트 업데이트
                                 }
+                            
                                 return newDistance;
                             });
                         }
@@ -281,6 +290,13 @@ export default function Start() {
 
     useEffect(() => {
         passPathRef.current = passPath;
+        console.log(passPath)
+        if(passPathRef.current.length > 0){
+            console.log(navigation[passPathRef.current.length-1])
+            if(navigation[passPathRef.current.length-1] != '직진'){
+                textToSpeech(navigation[passPathRef.current.length-1])
+            }
+        }
     }, [passPath]);
 
     const stopTracking = () => {
@@ -303,6 +319,7 @@ export default function Start() {
             setGroupDraw(location.state.groupDraw);
             setColor(location.state.color);
             setGroupId(location.state.groupId);
+            setDrawDistance(location.state.drawDistance)
         }
     }, [location.state.drawPath]);
 
@@ -320,7 +337,7 @@ export default function Start() {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
                 startTimer()
                 const navi = PathNavigation(drawPath)
-                setNavigation(navi)
+                setNavigation(navi.resultArray)
                 startTracking();
             }
         }
@@ -405,6 +422,7 @@ export default function Start() {
                     color: color,
                     groupId: groupId,
                     regionNumber: regionNumber,
+                    drawDistacne: drawDistacne
                 }
             })
         } else {
@@ -471,3 +489,4 @@ export default function Start() {
         </div>
     );
 }
+
