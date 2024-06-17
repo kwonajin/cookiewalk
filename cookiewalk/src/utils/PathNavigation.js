@@ -72,8 +72,10 @@ export const PathNavigation = (drawPath) => {
     const angle = angleBetweenVectors(v1, v2)
     angleArray.push(angle.toFixed(4))
 
-    if( angle > 45){
+    if( angle > 45 && angle <140){
       directionsArray.push(direction)
+    }else if(angle >= 140){
+      directionsArray.push('유턴')
     }else{
       directionsArray.push('전환없음')
     }
@@ -82,12 +84,12 @@ export const PathNavigation = (drawPath) => {
     const distance = calculateDistance(drawPath[j], drawPath[j+1])
     distanceArray.push((distance*1000).toFixed(0))
   }
-  // console.log(directionsArray) //방향
-  // console.log(angleArray) //각도
+  console.log(directionsArray) //방향
+  console.log(angleArray) //각도
   // console.log(distanceArray) //거리
 
   for (let z = 1 ;z <directionsArray.length ; z++){
-    if(directionsArray[z] === '우회전' || directionsArray[z]=== '좌회전'){
+    if(directionsArray[z] === '우회전' || directionsArray[z]=== '좌회전' || directionsArray[z]==='유턴'){
       resultArray.push(`약 ${distanceArray[z-1]}미터 후 ${directionsArray[z]}입니다`)
     }else{
       resultArray.push('직진')

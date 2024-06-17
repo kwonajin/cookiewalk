@@ -139,7 +139,8 @@ export default function Activity_save() {
                     walking_time:state.time,
                     title: title,
                     location: address,
-                    draw_id: `record_N_${count+1}`
+                    draw_id: `record_N_${count+1}`,
+                    level:'중'
                 }
             ])
             if(insertWalkError){
@@ -175,7 +176,8 @@ export default function Activity_save() {
                     walking_time:state.time,
                     title: title,
                     location: address,
-                    draw_id: drawId
+                    draw_id: drawId,
+                    level:state.level
                 }
             ])
             if(insertWalkError){
@@ -224,7 +226,8 @@ export default function Activity_save() {
                     walking_time:state.time,
                     title: title,
                     location: address,
-                    draw_id: `record_${count+1}`
+                    draw_id: `record_${count+1}`,
+                    level:'중'
                 }
             ])
             if(insertWalkError){
@@ -259,7 +262,8 @@ export default function Activity_save() {
                     walking_time:state.time,
                     title: title,
                     location: address,
-                    draw_id: drawId
+                    draw_id: drawId,
+                    level:state.level
                 }
             ])
             if(insertWalkError){

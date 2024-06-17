@@ -93,6 +93,8 @@ export default function MyGroupDetail() {
   const [recordPercent, setRecordPercent]=useState(Array(distacneCount).fill(0))
   console.log(distance)
 
+  const [finished, setFinished]=useState(false)
+
   useEffect(() => {
     if (drawPath) {
       const groupedPaths = groupPathsByRegion(drawPath);
@@ -389,6 +391,9 @@ export default function MyGroupDetail() {
   
   useEffect(()=>{
     console.log(recordPercent)
+    if(recordPercent.every(percent => percent === '100')){
+      setFinished(true)
+    }
   },[recordPercent])
 
 
@@ -462,7 +467,10 @@ export default function MyGroupDetail() {
 
       <div className="gd_join">
         <div className="gd_join_box"></div>
-        <div className="gd_join_text" onClick={goBefore}>걷기 시작하기</div>
+        {finished ? 
+          ( <div className="gd_join_text" onClick={goBefore}>그림 완성</div>)
+          : 
+          (<div className="gd_join_text" onClick={goBefore}>걷기 시작하기</div> )}
       </div>
     </div>
   );
