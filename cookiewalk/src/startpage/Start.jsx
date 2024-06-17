@@ -96,6 +96,7 @@ export default function Start() {
     const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
     const passPathRef = useRef(passPath);
     console.log(passPathRef)
+    const [level, setLevel]=useState('하')
 
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
@@ -276,6 +277,7 @@ export default function Start() {
             setColor(location.state.color);
             setGroupId(location.state.groupId);
             setDrawDistance(location.state.drawDistance)
+            setLevel(location.state.level)
         }
     }, [location.state.drawPath]);
 
@@ -395,6 +397,7 @@ export default function Start() {
                     currentPosition: currentPosition,
                     walkMode: walkMode,
                     color: color,
+                    level:level
                 }
             });
         }
