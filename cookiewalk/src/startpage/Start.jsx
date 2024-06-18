@@ -154,16 +154,19 @@ export default function Start() {
                         }else{   //받아온 경로 있을시
                             newPath=[...prevPath, newPosition]
                             // const closePoint = findCloseCoord(newPosition)
-                            const closePoint = drawPath[passPathRef.current.length];
-                            const distanceClosePoint = calculateDistance(newPosition, closePoint)
-                            if(distanceClosePoint <= tolerance){
-                                setPassPath((prevPassPath)=>{
-                                    let newPassPath = [...prevPassPath, closePoint]
-                                    return newPassPath
-                                })
-                                console.log('경로같음')
-                            }else{
-                                console.log('경로벗어남')
+                            if(passPathRef.current.length < drawPath.length){
+                                const closePoint = drawPath[passPathRef.current.length];
+                                console.log(passPath.length)
+                                const distanceClosePoint = calculateDistance(newPosition, closePoint)
+                                if(distanceClosePoint <= tolerance){
+                                    setPassPath((prevPassPath)=>{
+                                        let newPassPath = [...prevPassPath, closePoint]
+                                        return newPassPath
+                                    })
+                                    console.log('경로같음')
+                                }else{
+                                    console.log('경로벗어남')
+                                }
                             }
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
@@ -215,17 +218,19 @@ export default function Start() {
                     }else{
                         // newPath=[...prevPath, newPosition]
                         // const closePoint = findCloseCoord(newPosition)
-                        const closePoint = drawPath[passPathRef.current.length];
-                        console.log(passPath.length)
-                        const distanceClosePoint = calculateDistance(newPosition, closePoint)
-                        if(distanceClosePoint <= tolerance){
-                            setPassPath((prevPassPath)=>{
-                                let newPassPath = [...prevPassPath, closePoint]
-                                return newPassPath
-                            })
-                            console.log('경로같음')
-                        }else{
-                            console.log('경로벗어남')
+                        if(passPathRef.current.length < drawPath.length){
+                            const closePoint = drawPath[passPathRef.current.length];
+                            console.log(passPath.length)
+                            const distanceClosePoint = calculateDistance(newPosition, closePoint)
+                            if(distanceClosePoint <= tolerance){
+                                setPassPath((prevPassPath)=>{
+                                    let newPassPath = [...prevPassPath, closePoint]
+                                    return newPassPath
+                                })
+                                console.log('경로같음')
+                            }else{
+                                console.log('경로벗어남')
+                            }
                         }
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
