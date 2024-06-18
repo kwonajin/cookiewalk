@@ -6,7 +6,7 @@ import { supabase } from '../../../supabaseClient';
 import logo from "../images/logo.png";
 
 // Supabase 데이터베이스에서 아이템 목록을 가져오는 함수
-async function fetchItems() {
+async function fetchItems() { 
   const { data, error } = await supabase
     .from('item')
     .select('*');
