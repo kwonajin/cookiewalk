@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
@@ -6,17 +7,15 @@ import testPath2 from '../utils/testPath2';
 import { PathNavigation } from '../utils/PathNavigation';
 import { textToSpeech } from '../utils/textToSpeech';
 import { supabase } from '../supabaseClient';
-import { useToken } from '../context/tokenContext'
-import fetchAvatar from '../utils/getAvatar/getUserAvatar';
+import { useToken } from '../context/tokenContext';
 
-function MyMap({ path = [], drawPath = [], center, passPath = [], walkMode = true, color, avatarUrl }) {
+function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color }) {
     const navermaps = useNavermaps();
     const markerIcon = {
-        content: `<div><img src="${avatarUrl}" alt="icon" class="icon_size"></div>`, // 아바타 URL 사용
+        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
         size: new navermaps.Size(24, 24),
         anchor: new navermaps.Point(12, 12)
     };
-
     return (
         <NaverMap
             defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)}
@@ -95,7 +94,7 @@ export default function Start() {
     const [drawDistance, setDrawDistance] = useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
-    const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
+    const [walkMode, setWalkMode] = useState(true);
     const passPathRef = useRef(passPath);
     const [level, setLevel] = useState('하');
     const [totalDistance, setTotalDistance] = useState(0);
@@ -105,11 +104,7 @@ export default function Start() {
     const [navigation, setNavigation] = useState([]);
     const userInfo = useToken();
     const userID = userInfo.user;
-    const [avatarUrl, setAvatarUrl] = useState('/images/logo.png'); // 아바타 URL 상태 추가
-
-    // New state for tracking points
-    const [lastPointDistance, setLastPointDistance] = useState(0);
-    const [showPointPopup, setShowPointPopup] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -148,26 +143,28 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
+                                    checkForPointAward(newDistance);
                                     return newDistance;
                                 });
                             }
                             return newPath;
-                        } else {   //받아온 경로 있을시
-                            newPath = [...prevPath, newPosition]
-                            if (passPathRef.current.length < drawPath.length) {
+                        } else {   
+                            newPath = [...prevPath, newPosition];
+                            if(passPathRef.current.length < drawPath.length){
                                 const closePoint = drawPath[passPathRef.current.length];
-                                const distanceClosePoint = calculateDistance(newPosition, closePoint)
-                                if (distanceClosePoint <= tolerance) {
-                                    setPassPath((prevPassPath) => {
-                                        let newPassPath = [...prevPassPath, closePoint]
-                                        return newPassPath
-                                    })
+                                const distanceClosePoint = calculateDistance(newPosition, closePoint);
+                                if(distanceClosePoint <= tolerance){
+                                    setPassPath((prevPassPath)=>{
+                                        let newPassPath = [...prevPassPath, closePoint];
+                                        return newPassPath;
+                                    });
                                 }
                             }
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
+                                    checkForPointAward(newDistance);
                                     return newDistance;
                                 });
                             }
@@ -206,25 +203,27 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
+                                checkForPointAward(newDistance);
                                 return newDistance;
                             });
                         }
-                        return newPath
-                    } else {
-                        if (passPathRef.current.length < drawPath.length) {
+                        return newPath;
+                    }else{
+                        if(passPathRef.current.length < drawPath.length){
                             const closePoint = drawPath[passPathRef.current.length];
-                            const distanceClosePoint = calculateDistance(newPosition, closePoint)
-                            if (distanceClosePoint <= tolerance) {
-                                setPassPath((prevPassPath) => {
-                                    let newPassPath = [...prevPassPath, closePoint]
-                                    return newPassPath
-                                })
+                            const distanceClosePoint = calculateDistance(newPosition, closePoint);
+                            if(distanceClosePoint <= tolerance){
+                                setPassPath((prevPassPath)=>{
+                                    let newPassPath = [...prevPassPath, closePoint];
+                                    return newPassPath;
+                                });
                             }
                         }
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
+                                checkForPointAward(newDistance);
                                 return newDistance;
                             });
                         }
@@ -240,9 +239,11 @@ export default function Start() {
 
     useEffect(() => {
         passPathRef.current = passPath;
-        if (passPathRef.current.length > 0 && (passPathRef.current.length < drawPath.length - 1)) {
-            if (navigation[passPathRef.current.length - 1] !== '직진') {
-                textToSpeech(navigation[passPathRef.current.length - 1]);
+        console.log(passPath)
+        if(passPathRef.current.length > 0 && passPathRef.current.length < drawPath.length-1 ){
+            console.log(navigation[passPathRef.current.length-1])
+            if(navigation[passPathRef.current.length-1] != '직진'){
+                textToSpeech(navigation[passPathRef.current.length-1]);
             }
         }
     }, [passPath]);
@@ -292,29 +293,11 @@ export default function Start() {
         }
     }, [isPaused, drawPath]);
 
-    useEffect(() => {
-        if (path.length >= 1) {
+    useEffect(()=>{
+        if(path.length >=1){
             setPathLoading(false);
         }
     }, [path]);
-
-    useEffect(() => {
-        // Function to handle distance check and point awarding
-        const handleDistanceCheck = () => {
-            if (totalDistance - lastPointDistance >= 0.5) {
-                setLastPointDistance(totalDistance);
-                updateUserPoints(userID, 1);
-                // Show popup message for 1 second
-                setShowPointPopup(true);
-                setTimeout(() => {
-                    setShowPointPopup(false);
-                }, 1000);
-            }
-        };
-
-        // Call the function whenever totalDistance changes
-        handleDistanceCheck();
-    }, [totalDistance]);
 
     const startTimer = () => {
         if (timerRef.current === null) {
@@ -367,31 +350,23 @@ export default function Start() {
 
     const icon3Path = isExpanded ? "./icon/mdi--arrow-down-drop.svg" : "./icon/mdi--arrow-drop-up.svg";
 
-    async function updateUserPoints(userId, pointsToAdd) {
-        const { data: currentUser, error: fetchError } = await supabase
-            .from('user')
-            .select('point')
-            .eq('user_id', userId)
-            .single();
+    const checkForPointAward = async (distance) => {
+        if (distance >= 0.05 && distance - totalDistance < 0.05) {
+            setShowPopup(true);
+            const { data, error } = await supabase
+                .from('user')
+                .update({ point: supabase.raw('point + 1') })
+                .eq('user_id', userID);
 
-        if (fetchError) {
-            console.error('Error fetching user points:', fetchError);
-            return;
+            if (error) {
+                console.error('Error updating points:', error);
+            }
         }
+    };
 
-        const newPoints = currentUser.point + pointsToAdd;
-
-        const { data, error } = await supabase
-            .from('user')
-            .update({ point: newPoints })
-            .eq('user_id', userId);
-
-        if (error) {
-            console.error('Error updating user points:', error);
-        } else {
-            console.log('User points updated:', data);
-        }
-    }
+    const handlePopupClose = () => {
+        setShowPopup(false);
+    };
 
     function activitySave() {
         const endTime = new Date();
@@ -411,9 +386,9 @@ export default function Start() {
                     color: color,
                     groupId: groupId,
                     regionNumber: regionNumber,
-                    drawDistacne: drawDistance
+                    drawDistance: drawDistance
                 }
-            })
+            });
         } else {
             navigate('/Activity_Save', {
                 state: {
@@ -434,53 +409,6 @@ export default function Start() {
         }
     }
 
-    const handleARCapture = () => {
-        setPoints(points + 1);
-        setIsARMode(false);
-        startTracking();
-    };
-
-    useEffect(() => {
-        if (isARMode) {
-            const video = videoRef.current;
-            if (navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then((stream) => {
-                        video.srcObject = stream;
-                    })
-                    .catch((error) => {
-                        console.error("Error accessing webcam: ", error);
-                    });
-            }
-        }
-    }, [isARMode]);
-
-    // 아바타 URL 가져오기
-    useEffect(() => {
-        const fetchAvatarUrl = async () => {
-            const url = await fetchAvatar(userID); // 아바타 URL 가져오기
-            if (url) {
-                setAvatarUrl(url); // 아바타 URL 설정
-            }
-        };
-        fetchAvatarUrl();
-    }, [userID]);
-
-    if (isARMode) {
-        return (
-            <div className="ar-container">
-                <video ref={videoRef} autoPlay className="ar-camera-view" />
-                <div className="ar-overlay">
-                    <img src={avatarUrl} alt="AR" className="ar-image" onClick={handleARCapture} /> {/* 아바타 URL 사용 */}
-                </div>
-                <div className="ar-info">
-                    <div>AR 모드 활성화</div>
-                    <div>AR 이미지를 클릭하세요!</div>
-                </div>
-            </div>
-        );
-    }
-
     if (pathLoading) {
         return (
             <div className="BeforeStart_container">
@@ -492,13 +420,8 @@ export default function Start() {
 
     return (
         <div className="Start_container">
-            {showPointPopup && (
-                <div className="point-popup">
-                    1 포인트 획득!
-                </div>
-            )}
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
-            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color} avatarUrl={avatarUrl} /></MapDiv> {/* 아바타 URL 전달 */}
+            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color} /></MapDiv>
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
                 <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
                 {isExpanded && (
@@ -526,6 +449,14 @@ export default function Start() {
                     </>
                 )}
             </div>
+            {showPopup && (
+                <div className="popup">
+                    <div className="popup-content">
+                        <p>1포인트를 획득하였습니다!</p>
+                        <button onClick={handlePopupClose}>확인</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
