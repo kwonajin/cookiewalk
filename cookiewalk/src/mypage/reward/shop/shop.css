@@ -191,12 +191,16 @@ body{
 	position: relative;
 	top: 175px;
 	width: 100%;
-	height: calc(100vh - 153px - 100px); /* 조정 필요: 헤더, 푸터를 고려한 높이 설정 */
+	height: calc(100vh - 153px - 200px); /* 조정 필요: 헤더, 푸터를 고려한 높이 설정 */
 	overflow-y: auto; /* 내부 스크롤 활성화 */
 }
 
 .GroupList_container::-webkit-scrollbar {
 	display: none; /* 기본 스크롤 막대 숨기기 */
+}
+
+.GroupList_container img {
+	
 }
 
 .group_img { 
