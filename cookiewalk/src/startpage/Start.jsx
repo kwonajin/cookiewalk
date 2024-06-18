@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useLocation, useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import testPath2 from '../utils/testPath2';
 import { PathNavigation } from '../utils/PathNavigation';
 import { textToSpeech } from '../utils/textToSpeech';
 import { supabase } from '../supabaseClient';
-import { useToken } from '../context/tokenContext';
+import { useToken } from '../context/tokenContext'
 
 function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color }) {
     const navermaps = useNavermaps();
@@ -72,6 +72,8 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 }
 
 export default function Start() {
+    
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -90,20 +92,20 @@ export default function Start() {
     const [color, setColor] = useState('#7ca0c1');
     const [drawId, setDrawId] = useState('');
     const [drawPath, setDrawPath] = useState([]);
-    const [drawDistance, setDrawDistance] = useState([]);
+    const [drawDistacne, setDrawDistance]=useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
-    const [walkMode, setWalkMode] = useState(true);
+    const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
     const passPathRef = useRef(passPath);
-    const [level, setLevel] = useState('하');
+    console.log(passPathRef)
+    const [level, setLevel]=useState('하')
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
     const tolerance = 0.007;
-    const [navigation, setNavigation] = useState([]);
+    const [navigation, setNavigation]=useState([]);
     const userInfo = useToken();
     const userID = userInfo.user;
-    const [showPopup, setShowPopup] = useState(false);
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -142,28 +144,31 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    checkForPointAward(newDistance);
                                     return newDistance;
                                 });
                             }
                             return newPath;
-                        } else {   
-                            newPath = [...prevPath, newPosition];
+                        } else {   //받아온 경로 있을시
+                            newPath=[...prevPath, newPosition]
+                            // const closePoint = findCloseCoord(newPosition)
                             if(passPathRef.current.length < drawPath.length){
                                 const closePoint = drawPath[passPathRef.current.length];
-                                const distanceClosePoint = calculateDistance(newPosition, closePoint);
+                                console.log(passPath.length)
+                                const distanceClosePoint = calculateDistance(newPosition, closePoint)
                                 if(distanceClosePoint <= tolerance){
                                     setPassPath((prevPassPath)=>{
-                                        let newPassPath = [...prevPassPath, closePoint];
-                                        return newPassPath;
-                                    });
+                                        let newPassPath = [...prevPassPath, closePoint]
+                                        return newPassPath
+                                    })
+                                    console.log('경로같음')
+                                }else{
+                                    console.log('경로벗어남')
                                 }
                             }
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    checkForPointAward(newDistance);
                                     return newDistance;
                                 });
                             }
@@ -202,27 +207,31 @@ export default function Start() {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                checkForPointAward(newDistance);
                                 return newDistance;
                             });
                         }
-                        return newPath;
+                        return newPath
                     }else{
+                        // newPath=[...prevPath, newPosition]
+                        // const closePoint = findCloseCoord(newPosition)
                         if(passPathRef.current.length < drawPath.length){
                             const closePoint = drawPath[passPathRef.current.length];
-                            const distanceClosePoint = calculateDistance(newPosition, closePoint);
+                            console.log(passPath.length)
+                            const distanceClosePoint = calculateDistance(newPosition, closePoint)
                             if(distanceClosePoint <= tolerance){
                                 setPassPath((prevPassPath)=>{
-                                    let newPassPath = [...prevPassPath, closePoint];
-                                    return newPassPath;
-                                });
+                                    let newPassPath = [...prevPassPath, closePoint]
+                                    return newPassPath
+                                })
+                                console.log('경로같음')
+                            }else{
+                                console.log('경로벗어남')
                             }
                         }
                         if (lastPosition) {
                             const distance = calculateDistance(lastPosition, newPosition);
                             setTotalDistance((prevDistance) => {
                                 const newDistance = prevDistance + distance;
-                                checkForPointAward(newDistance);
                                 return newDistance;
                             });
                         }
@@ -239,7 +248,7 @@ export default function Start() {
     useEffect(() => {
         passPathRef.current = passPath;
         console.log(passPath)
-        if(passPathRef.current.length > 0 && passPathRef.current.length < drawPath.length-1 ){
+        if(passPathRef.current.length > 0 && (passPathRef.current.length < drawPath.length-1) ){
             console.log(navigation[passPathRef.current.length-1])
             if(navigation[passPathRef.current.length-1] != '직진'){
                 textToSpeech(navigation[passPathRef.current.length-1]);
@@ -267,8 +276,8 @@ export default function Start() {
             setGroupDraw(location.state.groupDraw);
             setColor(location.state.color);
             setGroupId(location.state.groupId);
-            setDrawDistance(location.state.drawDistance);
-            setLevel(location.state.level);
+            setDrawDistance(location.state.drawDistance)
+            setLevel(location.state.level)
         }
     }, [location.state.drawPath]);
 
@@ -284,13 +293,18 @@ export default function Start() {
             stopTracking();
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
-                startTimer();
-                const navi = PathNavigation(drawPath);
-                setNavigation(navi.resultArray);
+                console.log(drawPath)
+                startTimer()
+                const navi = PathNavigation(drawPath)
+                setNavigation(navi.resultArray)
                 startTracking();
             }
         }
     }, [isPaused, drawPath]);
+
+    useEffect(()=>{
+        console.log(navigation)
+    }, [navigation])
 
     useEffect(()=>{
         if(path.length >=1){
@@ -349,24 +363,6 @@ export default function Start() {
 
     const icon3Path = isExpanded ? "./icon/mdi--arrow-down-drop.svg" : "./icon/mdi--arrow-drop-up.svg";
 
-    const checkForPointAward = async (distance) => {
-        if (distance >= 0.05 && distance - totalDistance < 0.05) {
-            setShowPopup(true);
-            const { data, error } = await supabase
-                .from('user')
-                .update({ point: supabase.raw('point + 1') })
-                .eq('user_id', userID);
-
-            if (error) {
-                console.error('Error updating points:', error);
-            }
-        }
-    };
-
-    const handlePopupClose = () => {
-        setShowPopup(false);
-    };
-
     function activitySave() {
         const endTime = new Date();
         if (groupDraw) {
@@ -385,9 +381,9 @@ export default function Start() {
                     color: color,
                     groupId: groupId,
                     regionNumber: regionNumber,
-                    drawDistance: drawDistance
+                    drawDistacne: drawDistacne
                 }
-            });
+            })
         } else {
             navigate('/Activity_Save', {
                 state: {
@@ -402,7 +398,7 @@ export default function Start() {
                     currentPosition: currentPosition,
                     walkMode: walkMode,
                     color: color,
-                    level: level
+                    level:level
                 }
             });
         }
@@ -448,14 +444,6 @@ export default function Start() {
                     </>
                 )}
             </div>
-            {showPopup && (
-                <div className="popup">
-                    <div className="popup-content">
-                        <p>1포인트를 획득하였습니다!</p>
-                        <button onClick={handlePopupClose}>확인</button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
