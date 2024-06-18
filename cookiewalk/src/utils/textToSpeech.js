@@ -34,6 +34,7 @@ export const textToSpeech = async (text) =>{
     const audio = new Audio(audioUrl);
     audio.play();
 
+    
     audio.onended = () => {
       URL.revokeObjectURL(audioUrl);
     };
