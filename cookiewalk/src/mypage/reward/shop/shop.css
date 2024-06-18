@@ -199,9 +199,6 @@ body{
 	display: none; /* 기본 스크롤 막대 숨기기 */
 }
 
-.GroupList_container img {
-	
-}
 
 .group_img { 
 	width:180px;
@@ -511,7 +508,6 @@ body{
 	height: 25px; /* 이미지의 높이를 80px로 조정 */
 	cursor: pointer; /* 포인터 커서 설정 */
 }
-
 
 .GroupList_container > div[class^="avatar"] {
 	display: flex;
