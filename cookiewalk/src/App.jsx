@@ -45,6 +45,9 @@ import ProtectedRoute_2 from './ProtectedRoute_2.jsx';
 import { TokenProvider } from './context/tokenContext.jsx';
 import { NavermapsProvider } from 'react-naver-maps';
 import MyLineChart from './mypage/chart/MyBarChart.jsx';
+import Write_group_map from './main/write_group_map.jsx'
+
+import Shop from './mypage/reward/shop/shop.jsx';
 
 export default function App() {
   const naverMapClientID = import.meta.env.VITE_NAVER_CLIENT_ID;
@@ -75,6 +78,7 @@ export default function App() {
             <Route path="/write" element={<ProtectedRoute><Write /></ProtectedRoute>} />
             <Route path="/comment/:postID" element={<ProtectedRoute><Comment /></ProtectedRoute>} />
             <Route path="/write_map" element={<ProtectedRoute><Write_map /></ProtectedRoute>} />
+            <Route path="/write_group_map" element={<ProtectedRoute><Write_group_map /></ProtectedRoute>} />
             <Route path="/write_map_choice" element={<ProtectedRoute><WriteMap_choice /></ProtectedRoute>} />
             <Route path="/notice" element={<ProtectedRoute><Notice /></ProtectedRoute>} />
             <Route path="/friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />
@@ -95,7 +99,15 @@ export default function App() {
             <Route path="/blocked" element={<ProtectedRoute><Blocked /></ProtectedRoute>} />
             <Route path="/reward" element={<ProtectedRoute><Reward /></ProtectedRoute>} />
             <Route path="/finished_art_detail" element={<ProtectedRoute><FinishedArtDetail /></ProtectedRoute>} />
-            <Route path="/MyLineChart" element={<MyLineChart></MyLineChart>}></Route>
+            <Route path="/shop" element={<ProtectedRoute><Shop></Shop></ProtectedRoute>}></Route>
+
+
+
+
+
+
+
+
           </Routes>
       </NavermapsProvider>
     </TokenProvider>

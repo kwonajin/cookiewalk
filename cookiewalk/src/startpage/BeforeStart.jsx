@@ -3,14 +3,14 @@ import {Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline} from 'rea
 import './BeforeStart.css'
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from '../supabaseClient';
+import { useToken } from '../context/tokenContext'
+import fetchAvatar from '../utils/getUserAvatar'
 
-import { PathNavigation } from '../utils/PathNavigation';
-
-function MyMap({path=[],center, drawPath=[] ,color}){
+function MyMap({path=[],center, drawPath=[] ,color, avatar}){
     console.log(drawPath)
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
     const markerIcon = {
-        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
+        content: `<div><img src="${avatar}" alt="icon" class="icon_size"></div>`,
         size: new navermaps.Size(24,24),
         anchor: new navermaps.Point(12,12)
     }
@@ -34,7 +34,7 @@ function MyMap({path=[],center, drawPath=[] ,color}){
                     title={`Marker ${index + 1}`}
                     clickable={true}
                     icon={{
-                        content: `<div style="background: ${color}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        content: `<div style="background: ${index === 0 ? color : `${color}40`}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
                         size: new navermaps.Size(10, 10),
                         anchor: new navermaps.Point(5, 5)
                     }}
@@ -55,24 +55,11 @@ function MyMap({path=[],center, drawPath=[] ,color}){
 }
 
 export default function BeforeStart(){
-
-    // const drawPath2 = [
-    //     {latitude: 35.1334537, longitude: 129.1014169},
-    //     {latitude: 35.133471, longitude: 129.1018953},
-    //     {latitude: 35.1335055, longitude: 129.1023737},
-    //     {latitude: 35.1337586, longitude: 129.1025144},
-    //     {latitude: 35.1340463, longitude: 129.1024722},
-    //     {latitude: 35.1342074, longitude: 129.1024582},
-    //     {latitude: 35.1344814, longitude: 129.1024271},
-    //     {latitude: 35.134769, longitude: 129.1027367},
-    //     {latitude: 35.1348496, longitude: 129.1031729},
-    //     {latitude: 35.1348496, longitude: 129.1034965},
-    //     {latitude: 35.1345357, longitude: 129.1035711},
-    //     {latitude: 35.1341675, longitude: 129.1036556},
-    //     ]
-    // const a= PathNavigation(drawPath2)
-    // console.log(a)
     
+    const userInfo = useToken();
+    const userID = userInfo.user;
+    const [getUserAvatar, setGetUserAvatar]= useState('')
+
     const [path,setPath]=useState([])
     const [drawId,setDrawId]=useState('')
     const [drawPath, setDrawPath]=useState([])
@@ -141,10 +128,20 @@ export default function BeforeStart(){
         }
     }
     
-    useEffect(() => {
+    useEffect(()=>{
         window.scrollTo(0, 0);
+        // fetchCurrentPosition(); // 현재 위치 가져오기
+        if (userID) {
+            fetchAvatar(userID).then((avatarUrl) => {
+                setGetUserAvatar(avatarUrl);
+            }).catch(error => console.error('Failed to fetch avatar:', error));
+        }
+    },[userID])
+
+    useEffect(()=>{
+        console.log(getUserAvatar)
         fetchCurrentPosition(); // 현재 위치 가져오기
-    }, []);
+    },[getUserAvatar])
 
     if(loading){
         return (
@@ -158,14 +155,14 @@ export default function BeforeStart(){
     function startPage(e){
         e.preventDefault();
         const startTime = new Date()
-        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId, color:color, drawDistance: drawDistance, level:level}})
+        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId, color:color, drawDistance: drawDistance, level:level, avatar:getUserAvatar}})
     }
 
     return(
         <div className="BeforeStart_container">
             <Link to='/home'><div><img className='Before_start_backarrow' src="./icon/arrow.svg"/></div></Link>
             
-            <MapDiv className='MapStyle'><MyMap path={path} center={currentPosition} drawPath={drawPath} color={color}/></MapDiv>
+            <MapDiv className='MapStyle'><MyMap path={path} center={currentPosition} drawPath={drawPath} color={color} avatar={getUserAvatar}/></MapDiv>
             {/* 지도 넣는 곳 */}
             {/* <div><img className="e118_427" src="./images/image 229_4174.png" alt="map" /></div> */}
 

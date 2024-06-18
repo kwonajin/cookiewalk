@@ -30,6 +30,34 @@ function MyMap({ path, bounds, color }) {
   );
 }
 
+function MyMapGroup({color, bounds, groupRecordPath }) {
+  const navermaps = useNavermaps();
+
+  return (
+    <NaverMap
+      bounds={bounds ? new navermaps.LatLngBounds(
+        new navermaps.LatLng(bounds.south, bounds.west),
+        new navermaps.LatLng(bounds.north, bounds.east)
+      ) : null}
+      defaultZoom={15}
+      scaleControl={false}
+      mapDataControl={false}
+    >
+      {groupRecordPath && Object.keys(groupRecordPath).map((region, index) => (
+        // <React.Fragment key={region}>
+          <Polyline
+            path={groupRecordPath[region].map(p => new navermaps.LatLng(p.latitude, p.longitude))}
+            strokeColor={color[region - 1]} // 인덱스 조정
+            strokeWeight={8}
+            strokeOpacity={1}
+            strokeStyle="solid"
+          />
+        // </React.Fragment>
+      ))}
+    </NaverMap>
+  );
+}
+
 export default function ContentBox({
   profileName,    // 프로필 이름
   profileImage,   // 프로필 이미지
@@ -49,15 +77,25 @@ export default function ContentBox({
   const [notRecord, setNotRecord] = useState(true);        // 워킹 기록 유무 상태
   const [record, setRecord] = useState([]);                // 워킹 기록 데이터
   const [color, setColor] = useState('');                  // 경로 색상
-  const [bounds, setBounds] = useState([]);                // 경로 경계
-
-  console.log(recordId);
+  const [bounds, setBounds] = useState([]);
+                  // 경로 경계
+  const [groupPost, setGroupPost]=useState(false)   //포스트이면 true, 개인기록게시물이면 false
+  const [groupColor, setGroupColor]= useState([])
+  const [groupRecordPath, setGroupRecordPath]=useState([])
+  // console.log(recordId);
 
   // recordId가 'example'이 아니면 findRecordData 함수 호출
   useEffect(() => {
     if (recordId != 'example') {
-      findRecordData();
-      setNotRecord(false);
+      if(recordId.includes('record')){
+        findRecordData();
+        setGroupPost(false)
+        setNotRecord(false);
+      }else{
+        findGroupData();
+        setGroupPost(true)
+        setNotRecord(false);
+      }
     }
   }, [recordId]);
 
@@ -86,9 +124,50 @@ export default function ContentBox({
     setRecord(walkingData);
   }
 
+  function groupPathsByRegion(drawPath) {
+    return drawPath.reduce((acc, path) => {
+      if (!acc[path.region_number]) {
+        acc[path.region_number] = [];
+      }
+      acc[path.region_number].push(path);
+      return acc;
+    }, {});
+  }
+  //그룹 포스팅 일떄
+  async function findGroupData(){
+    const { data: groupTableData, error: groupTableError } = await supabase
+        .from('group')
+        .select('*')
+        .eq('group_id', recordId);
+
+      if (groupTableError) {
+        console.error(groupTableError);
+      }
+      console.log(groupTableData)
+      setGroupColor(groupTableData[0].color)
+
+      const {data: recordDisData , error :recordDisError}= await supabase
+        .from('group_walking_r_location')
+        .select('*')
+        .eq('group_id', recordId)
+      if(recordDisError){
+        console.error(recordDisError)
+      }
+      console.log(recordDisData)
+      if(recordDisData.length > 0){
+        const groupPaths =groupPathsByRegion(recordDisData)
+        setGroupRecordPath(groupPaths)
+        const bound = calculateBounds(recordDisData)
+        setBounds(bound);
+      }
+  }
+  useEffect(()=>{
+    console.log(groupRecordPath)
+  },[groupRecordPath])
+
   // 경계 변경 시 콘솔 로그 출력
   useEffect(() => {
-    console.log(bounds);
+    console.log(recordId,bounds);
   }, [bounds]);
 
   // 좋아요 상태, 좋아요 수, 댓글 수를 가져오는 함수들
@@ -228,8 +307,12 @@ export default function ContentBox({
           <img className='content_img' src={contentImage} alt="콘텐츠 이미지" />
         ) : (
           <MapDiv className='content_img'>
-            <MyMap path={record} bounds={bounds} color={color} />
-          </MapDiv>
+            {groupPost ? (
+              <MyMapGroup groupRecordPath={groupRecordPath} bounds={bounds} color={groupColor}/>
+            ): (
+              <MyMap path={record} bounds={bounds} color={color} />
+            )}
+            </MapDiv>
         )}
       </div>
 
