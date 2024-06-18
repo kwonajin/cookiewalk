@@ -238,8 +238,10 @@ export default function Start() {
 
     useEffect(() => {
         passPathRef.current = passPath;
-        if(passPathRef.current.length > 0 && (passPathRef.current.length < drawPath.length-1) ){
-            if(navigation[passPathRef.current.length-1] !== '직진'){
+        console.log(passPath)
+        if(passPathRef.current.length > 0 && passPathRef.current.length < drawPath.length-1 ){
+            console.log(navigation[passPathRef.current.length-1])
+            if(navigation[passPathRef.current.length-1] != '직진'){
                 textToSpeech(navigation[passPathRef.current.length-1]);
             }
         }
