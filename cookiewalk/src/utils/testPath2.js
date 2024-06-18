@@ -58,7 +58,8 @@ const testPath8 =[
   { latitude: 35.1337864, longitude: 129.1024579},
   { latitude: 35.1339205, longitude: 129.1024633},
   { latitude: 35.1340092, longitude: 129.1024695},
-  { latitude: 35.1340155, longitude: 129.1025703}
+  { latitude: 35.1340155, longitude: 129.1025703},
+  { latitude: 35.1340300, longitude: 129.1027903}
 ]
 
 export default testPath2
