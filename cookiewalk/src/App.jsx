@@ -97,7 +97,7 @@ export default function App() {
             <Route path="/blocked" element={<ProtectedRoute><Blocked /></ProtectedRoute>} />
             <Route path="/reward" element={<ProtectedRoute><Reward /></ProtectedRoute>} />
             <Route path="/finished_art_detail" element={<ProtectedRoute><FinishedArtDetail /></ProtectedRoute>} />
-            <Route path="/shop" element={<Shop></Shop>}></Route>
+            <Route path="/shop" element={<ProtectedRoute><Shop></Shop></ProtectedRoute>}></Route>
 
 
 

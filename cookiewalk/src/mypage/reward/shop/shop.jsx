@@ -3,40 +3,22 @@ import './shop.css'; // 필요한 CSS 파일
 import { Link, useNavigate } from "react-router-dom";
 import { useToken } from '../../../context/tokenContext';
 import { supabase } from '../../../supabaseClient';
-import logo from "../images/logo.png"
+import logo from "../images/logo.png";
+import fetchAvatar from '../../../utils/getUserAvatar';
 
-// Supabase 스토리지에서 특정 버킷과 폴더의 파일 목록을 가져오는 함수
-async function listFilesInFolder(bucketName, folderPath) {
+// Supabase 데이터베이스에서 아이템 목록을 가져오는 함수
+async function fetchItems() {
   const { data, error } = await supabase
-    .storage
-    .from(bucketName)
-    .list(folderPath, {
-      limit: 100, // 최대 100개의 파일 목록을 가져옴
-      offset: 0,
-    });
+    .from('item')
+    .select('*');
 
   if (error) {
-    console.error("Error Listing Files", error); // 파일 목록 가져오기 실패 시 에러 출력
+    console.error("Error fetching items", error); // 아이템 목록 가져오기 실패 시 에러 출력
     return [];
   }
 
-  console.log("파일", data); // 가져온 파일 목록 출력
+  console.log("아이템 목록", data); // 가져온 아이템 목록 출력
   return data;
-}
-
-// Supabase 스토리지에서 파일의 공개 URL을 가져오는 함수
-function getPublicUrl(bucketName, filePath) {
-  const { data } = supabase
-    .storage
-    .from(bucketName)
-    .getPublicUrl(filePath);
-
-  if (!data) {
-    console.error("Error getting public URL"); // URL 가져오기 실패 시 에러 출력
-    return null;
-  }
-
-  return data.publicUrl; // 공개 URL 반환
 }
 
 // Supabase 데이터베이스에서 avatar 컬럼을 업데이트하는 함수
@@ -69,29 +51,83 @@ async function getUserAvatar(userID) {
   return data.avatar; // avatar 값 반환
 }
 
+// Supabase 데이터베이스에서 각 아바타의 사용 횟수를 가져오는 함수
+async function fetchAvatarUsage() {
+  const { data, error } = await supabase
+    .from('user')
+    .select('avatar');
+
+  if (error) {
+    console.error("Error fetching avatar usage", error); // 아바타 사용 횟수 가져오기 실패 시 에러 출력
+    return {};
+  }
+
+  const usageCount = data.reduce((acc, curr) => {
+    acc[curr.avatar] = (acc[curr.avatar] || 0) + 1;
+    return acc;
+  }, {});
+
+  console.log("아바타 사용 횟수", usageCount); // 가져온 아바타 사용 횟수 출력
+  return usageCount;
+}
+
+// Supabase 데이터베이스에서 사용자가 구매한 아이템 목록을 가져오는 함수
+async function fetchUserItems(userID) {
+  const { data, error } = await supabase
+    .from('user_item')
+    .select('item_id')
+    .eq('user_id', userID);
+
+  if (error) {
+    console.error("Error fetching user items", error); // 사용자 아이템 목록 가져오기 실패 시 에러 출력
+    return [];
+  }
+
+  console.log("사용자 아이템 목록", data); // 가져온 사용자 아이템 목록 출력
+  return data.map(item => item.item_id);
+}
+
+// Supabase 데이터베이스에서 아이템을 구매하는 함수
+async function purchaseItem(userID, itemID) {
+  const { error } = await supabase
+    .from('user_item')
+    .insert({ user_id: userID, item_id: itemID });
+
+  if (error) {
+    console.error("Error purchasing item", error); // 아이템 구매 실패 시 에러 출력
+  } else {
+    console.log("Item purchased successfully"); // 아이템 구매 성공 시 메시지 출력
+  }
+}
+
 export default function Shop() {
   const navigate = useNavigate(); // 페이지 이동을 위한 훅
   const userInfo = useToken(); // 사용자 정보를 가져오는 훅
   const userID = userInfo.user; // 사용자 ID
-  const [images, setImages] = useState([]); // 이미지 목록을 저장하는 상태 변수
+  const [items, setItems] = useState([]); // 아이템 목록을 저장하는 상태 변수
   const [currentAvatar, setCurrentAvatar] = useState(''); // 현재 사용 중인 아바타를 저장하는 상태 변수
+  const [selectedOption, setSelectedOption] = useState('avatar'); // 선택된 옵션 상태 변수
+  const [sortOption, setSortOption] = useState('distance'); // 정렬 기준 상태 변수
+  const [avatarUsage, setAvatarUsage] = useState({}); // 아바타 사용 횟수를 저장하는 상태 변수
+  const [userItems, setUserItems] = useState([]); // 사용자가 구매한 아이템 목록을 저장하는 상태 변수
 
-  // 컴포넌트가 마운트될 때 파일 목록과 공개 URL을 가져와 상태를 업데이트하는 함수
+  // 컴포넌트가 마운트될 때 아이템 목록을 가져와 상태를 업데이트하는 함수
   useEffect(() => {
-    async function fetchImages() {
-      const files = await listFilesInFolder('image', 'avatar'); // 'image' 버킷의 'avatar' 폴더의 파일 목록을 가져옴
-      const imageUrls = files.map((file) => {
-        const url = getPublicUrl('image', `avatar/${file.name}`); // 각 파일의 공개 URL을 가져옴
-        console.log("Public URL:", url);
-        return { url, name: file.name.replace('.png', '') }; // URL과 파일 이름(.png 확장자 제거)을 반환
-      });
-      setImages(imageUrls); // 이미지 상태를 업데이트
+    async function fetchData() {
+      const [itemsData, avatar, usageData, userItemsData] = await Promise.all([
+        fetchItems(),
+        getUserAvatar(userID),
+        fetchAvatarUsage(),
+        fetchUserItems(userID)
+      ]);
 
-      const avatar = await getUserAvatar(userID); // 현재 사용자 아바타 값을 가져옴
+      setItems(itemsData); // 아이템 상태를 업데이트
       setCurrentAvatar(avatar); // 현재 아바타 상태를 업데이트
+      setAvatarUsage(usageData); // 아바타 사용 횟수 상태를 업데이트
+      setUserItems(userItemsData); // 사용자 아이템 상태를 업데이트
     }
 
-    fetchImages(); // 함수 호출
+    fetchData(); // 함수 호출
   }, [userID]);
 
   // 아바타를 업데이트하는 함수
@@ -99,6 +135,50 @@ export default function Shop() {
     updateAvatar(userID, avatarValue); // 아바타 값을 업데이트하는 함수 호출
     setCurrentAvatar(avatarValue); // 현재 아바타 상태를 업데이트
   };
+
+  // 아이템을 구매하는 함수
+  const handlePurchaseItem = (itemID, itemName, itemPrice) => {
+    const confirmPurchase = window.confirm(`"${itemName}"을(를) "${itemPrice}P"를 소비하여 구매하시겠습니까?`);
+    if (confirmPurchase) {
+      purchaseItem(userID, itemID); // 아이템 구매 함수 호출
+      setUserItems([...userItems, itemID]); // 사용자 아이템 목록에 추가
+    }
+  };
+
+  // 옵션 변경 핸들러 함수
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value); // 선택된 옵션 상태를 업데이트
+  };
+
+  // 정렬 기준 변경 핸들러 함수
+  const handleSortChange = (event) => {
+    setSortOption(event.target.value); // 정렬 기준 상태를 업데이트
+  };
+
+  // 정렬 함수
+  const sortItems = (items) => {
+    if (sortOption === 'distance') {
+      return [...items].sort((a, b) => a.item_id.localeCompare(b.item_id));
+    } else if (sortOption === 'under5km') {
+      return [...items].sort((a, b) => b.item_id.localeCompare(a.item_id));
+    } else if (sortOption === 'under10km') {
+      return [...items].sort((a, b) => a.price - b.price);
+    } else if (sortOption === 'under15km') {
+      return [...items].sort((a, b) => {
+        const usageA = avatarUsage[a.item_id] || 0;
+        const usageB = avatarUsage[b.item_id] || 0;
+        if (usageA !== usageB) {
+          return usageB - usageA;
+        } else {
+          return a.item_id.localeCompare(b.item_id);
+        }
+      });
+    }
+    return items;
+  };
+
+  // 선택된 옵션과 정렬 기준에 따라 필터링된 아이템을 반환하는 함수
+  const filteredItems = sortItems(items.filter(item => item.type === selectedOption));
 
   return (
     <div className="shop-container">
@@ -116,14 +196,14 @@ export default function Shop() {
           <img className='search_icon' src="./icon/search.svg" alt="Search Icon" />
         </div>
 
-        <select className='region_select_box'>
+        <select className='region_select_box' onChange={handleOptionChange} value={selectedOption}>
           <option value="avatar">아바타</option>
           <option value="option1">미정1</option>
           <option value="option2">미정2</option>
           <option value="option3">미정3</option>
           <option value="option4">미정4</option>
         </select>
-        <select className='sort_box'>
+        <select className='sort_box' onChange={handleSortChange} value={sortOption}>
           <option value="distance">오름차순</option>
           <option value="under5km">내림차순</option>
           <option value="under10km">가격순</option>
@@ -131,26 +211,32 @@ export default function Shop() {
         </select>
 
         <div className='GroupList_container'>
-          <div className="No0">
-            <img src={logo}></img> {/* 기본 아바타 이미지 */}
-            <p>No0_original</p> {/* 기본 아바타 이름 */}
+          <div className="avatar_No0">
+            <img src={logo} alt="Default Avatar" /> {/* 기본 아바타 이미지 */}
+            <p>avatar_No0</p> {/* 기본 아바타 이름 */}
+            <p>무료</p>
             <button 
-              onClick={() => handleAvatarUpdate("No0")}
-              disabled={currentAvatar === "No0"} // 현재 아바타가 No0이면 버튼 비활성화
+              onClick={() => handleAvatarUpdate("avatar_No0")}
+              disabled={currentAvatar === "avatar_No0"} // 현재 아바타가 avatar_No0이면 버튼 비활성화
             >
-              {currentAvatar === "No0" ? "사용중" : "사용하기"} {/* 현재 아바타가 No0이면 '사용중' 표시 */}
+              {currentAvatar === "avatar_No0" ? "사용중" : "사용하기"} {/* 현재 아바타가 avatar_No0이면 '사용중' 표시 */}
             </button>
           </div>
-          {images.map((image, index) => (
-            <div key={index} className={`No${index+1}`}>
-              <img src={image.url} alt={`Image ${index+1}`} /> {/* 아바타 이미지 */}
-              <p>{image.name}</p> {/* 아바타 이름 (확장자 제거) */}
-              <button 
-                onClick={() => handleAvatarUpdate(`No${index+1}`)}
-                disabled={currentAvatar === `No${index+1}`} // 현재 아바타가 No1, No2, ...이면 버튼 비활성화
-              >
-                {currentAvatar === `No${index+1}` ? "사용중" : "사용하기"} {/* 현재 아바타가 No1, No2, ...이면 '사용중' 표시 */}
-              </button>
+          {filteredItems.map((item) => (
+            <div key={item.item_id} className={`${selectedOption}_No${item.item_id.split('_')[1]}`}>
+              <img src={item.source} alt={`Image ${item.item_id}`} /> {/* 아이템 이미지 */}
+              <p>{item.item_id}</p> {/* 아이템 ID */}
+              <p>가격: {item.price}P</p> {/* 아이템 가격 */}
+              {userItems.includes(item.item_id) ? (
+                <button 
+                  onClick={() => handleAvatarUpdate(item.item_id)}
+                  disabled={currentAvatar === item.item_id} // 현재 아바타가 item_id이면 버튼 비활성화
+                >
+                  {currentAvatar === item.item_id ? "사용중" : "사용하기"} {/* 현재 아바타가 item_id이면 '사용중' 표시 */}
+                </button>
+              ) : (
+                <button onClick={() => handlePurchaseItem(item.item_id, item.item_id, item.price)}>구매하기</button>
+              )}
             </div>
           ))}
         </div>
@@ -162,9 +248,6 @@ export default function Shop() {
         <Link to="/BeforeStart"><div className="run"><img className="group_run_icon" src="./icon/record.svg" alt="Run" /></div></Link>
         <Link to="/group"><div className="group"><img className="group_group_icon" src="./icon/group.svg" alt="Group" /></div></Link>
         <Link to="/mypage"><div className="my"><img className="group_my_icon" src="./icon/my.svg" alt="My Page" /></div></Link>
-        <Link to="/draw_group_map" className="group_floating-add-button">
-          <img className='group_floating-add-button-icon' src="./icon/write.svg" alt="Add Map" />
-        </Link>
       </div>
     </div>
   );
