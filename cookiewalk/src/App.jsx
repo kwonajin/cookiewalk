@@ -47,6 +47,8 @@ import { NavermapsProvider } from 'react-naver-maps';
 import MyLineChart from './mypage/chart/MyBarChart.jsx';
 import Write_group_map from './main/write_group_map.jsx'
 
+import Shop from './mypage/reward/shop/shop.jsx';
+
 export default function App() {
   const naverMapClientID = import.meta.env.VITE_NAVER_CLIENT_ID;
 
@@ -97,7 +99,15 @@ export default function App() {
             <Route path="/blocked" element={<ProtectedRoute><Blocked /></ProtectedRoute>} />
             <Route path="/reward" element={<ProtectedRoute><Reward /></ProtectedRoute>} />
             <Route path="/finished_art_detail" element={<ProtectedRoute><FinishedArtDetail /></ProtectedRoute>} />
-            <Route path="/MyLineChart" element={<MyLineChart></MyLineChart>}></Route>
+            <Route path="/shop" element={<ProtectedRoute><Shop></Shop></ProtectedRoute>}></Route>
+
+
+
+
+
+
+
+
           </Routes>
       </NavermapsProvider>
     </TokenProvider>
