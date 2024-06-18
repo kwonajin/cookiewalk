@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import { textToSpeech } from '../utils/textToSpeech';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext'
 
-function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color }) {
+function MyMap({ path = [], drawPath = [], center, passPath = [], walkMode = true, color }) {
     const navermaps = useNavermaps();
     const markerIcon = {
         content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
@@ -72,7 +72,6 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 }
 
 export default function Start() {
-    
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -92,20 +91,23 @@ export default function Start() {
     const [color, setColor] = useState('#7ca0c1');
     const [drawId, setDrawId] = useState('');
     const [drawPath, setDrawPath] = useState([]);
-    const [drawDistacne, setDrawDistance]=useState([]);
+    const [drawDistance, setDrawDistance] = useState([]);
     const [pathLoading, setPathLoading] = useState(true);
     const [passPath, setPassPath] = useState([]);
     const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
     const passPathRef = useRef(passPath);
-    console.log(passPathRef)
-    const [level, setLevel]=useState('하')
+    const [level, setLevel] = useState('하');
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
     const tolerance = 0.007;
-    const [navigation, setNavigation]=useState([]);
+    const [navigation, setNavigation] = useState([]);
     const userInfo = useToken();
     const userID = userInfo.user;
+
+    // New state for tracking points
+    const [lastPointDistance, setLastPointDistance] = useState(0);
+    const [showPointPopup, setShowPointPopup] = useState(false);
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -149,20 +151,15 @@ export default function Start() {
                             }
                             return newPath;
                         } else {   //받아온 경로 있을시
-                            newPath=[...prevPath, newPosition]
-                            // const closePoint = findCloseCoord(newPosition)
-                            if(passPathRef.current.length < drawPath.length){
+                            newPath = [...prevPath, newPosition]
+                            if (passPathRef.current.length < drawPath.length) {
                                 const closePoint = drawPath[passPathRef.current.length];
-                                console.log(passPath.length)
                                 const distanceClosePoint = calculateDistance(newPosition, closePoint)
-                                if(distanceClosePoint <= tolerance){
-                                    setPassPath((prevPassPath)=>{
+                                if (distanceClosePoint <= tolerance) {
+                                    setPassPath((prevPassPath) => {
                                         let newPassPath = [...prevPassPath, closePoint]
                                         return newPassPath
                                     })
-                                    console.log('경로같음')
-                                }else{
-                                    console.log('경로벗어남')
                                 }
                             }
                             if (lastPosition) {
@@ -211,21 +208,15 @@ export default function Start() {
                             });
                         }
                         return newPath
-                    }else{
-                        // newPath=[...prevPath, newPosition]
-                        // const closePoint = findCloseCoord(newPosition)
-                        if(passPathRef.current.length < drawPath.length){
+                    } else {
+                        if (passPathRef.current.length < drawPath.length) {
                             const closePoint = drawPath[passPathRef.current.length];
-                            console.log(passPath.length)
                             const distanceClosePoint = calculateDistance(newPosition, closePoint)
-                            if(distanceClosePoint <= tolerance){
-                                setPassPath((prevPassPath)=>{
+                            if (distanceClosePoint <= tolerance) {
+                                setPassPath((prevPassPath) => {
                                     let newPassPath = [...prevPassPath, closePoint]
                                     return newPassPath
                                 })
-                                console.log('경로같음')
-                            }else{
-                                console.log('경로벗어남')
                             }
                         }
                         if (lastPosition) {
@@ -247,11 +238,9 @@ export default function Start() {
 
     useEffect(() => {
         passPathRef.current = passPath;
-        console.log(passPath)
-        if(passPathRef.current.length > 0 && (passPathRef.current.length < drawPath.length-1) ){
-            console.log(navigation[passPathRef.current.length-1])
-            if(navigation[passPathRef.current.length-1] != '직진'){
-                textToSpeech(navigation[passPathRef.current.length-1]);
+        if (passPathRef.current.length > 0 && (passPathRef.current.length < drawPath.length - 1)) {
+            if (navigation[passPathRef.current.length - 1] !== '직진') {
+                textToSpeech(navigation[passPathRef.current.length - 1]);
             }
         }
     }, [passPath]);
@@ -293,7 +282,6 @@ export default function Start() {
             stopTracking();
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
-                console.log(drawPath)
                 startTimer()
                 const navi = PathNavigation(drawPath)
                 setNavigation(navi.resultArray)
@@ -302,15 +290,29 @@ export default function Start() {
         }
     }, [isPaused, drawPath]);
 
-    useEffect(()=>{
-        console.log(navigation)
-    }, [navigation])
-
-    useEffect(()=>{
-        if(path.length >=1){
+    useEffect(() => {
+        if (path.length >= 1) {
             setPathLoading(false);
         }
     }, [path]);
+
+    useEffect(() => {
+        // Function to handle distance check and point awarding
+        const handleDistanceCheck = () => {
+            if (totalDistance - lastPointDistance >= 0.05) {
+                setLastPointDistance(totalDistance);
+                updateUserPoints(userID, 1);
+                // Show popup message for 1 second
+                setShowPointPopup(true);
+                setTimeout(() => {
+                    setShowPointPopup(false);
+                }, 1000);
+            }
+        };
+
+        // Call the function whenever totalDistance changes
+        handleDistanceCheck();
+    }, [totalDistance]);
 
     const startTimer = () => {
         if (timerRef.current === null) {
@@ -363,6 +365,19 @@ export default function Start() {
 
     const icon3Path = isExpanded ? "./icon/mdi--arrow-down-drop.svg" : "./icon/mdi--arrow-drop-up.svg";
 
+    async function updateUserPoints(userId, pointsToAdd) {
+        const { data, error } = await supabase
+            .from('user')
+            .update({ point: supabase.raw('point + ?', [pointsToAdd]) })
+            .eq('user_id', userId);
+
+        if (error) {
+            console.error('Error updating user points:', error);
+        } else {
+            console.log('User points updated:', data);
+        }
+    }
+
     function activitySave() {
         const endTime = new Date();
         if (groupDraw) {
@@ -398,7 +413,7 @@ export default function Start() {
                     currentPosition: currentPosition,
                     walkMode: walkMode,
                     color: color,
-                    level:level
+                    level: level
                 }
             });
         }
@@ -415,6 +430,11 @@ export default function Start() {
 
     return (
         <div className="Start_container">
+            {showPointPopup && (
+                <div className="point-popup">
+                    1 포인트 획득!
+                </div>
+            )}
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
             <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color} /></MapDiv>
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
