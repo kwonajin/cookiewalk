@@ -299,7 +299,7 @@ export default function Start() {
     useEffect(() => {
         // Function to handle distance check and point awarding
         const handleDistanceCheck = () => {
-            if (totalDistance - lastPointDistance >= 0.05) {
+            if (totalDistance - lastPointDistance >= 0.5) {
                 setLastPointDistance(totalDistance);
                 updateUserPoints(userID, 1);
                 // Show popup message for 1 second
