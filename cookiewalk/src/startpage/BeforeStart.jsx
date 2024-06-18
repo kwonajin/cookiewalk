@@ -34,7 +34,7 @@ function MyMap({path=[],center, drawPath=[] ,color}){
                     title={`Marker ${index + 1}`}
                     clickable={true}
                     icon={{
-                        content: `<div style="background: ${color}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
+                        content: `<div style="background: ${index === 0 ? color : `${color}40`}; width: 10px; height: 10px; border-radius: 50%;"></div>`,
                         size: new navermaps.Size(10, 10),
                         anchor: new navermaps.Point(5, 5)
                     }}
