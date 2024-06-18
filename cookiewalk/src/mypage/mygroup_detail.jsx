@@ -396,7 +396,9 @@ export default function MyGroupDetail() {
     }
   },[recordPercent])
 
-
+  function goPost(){
+    navigate('/write_group_map', {state: {groupRecordPath : groupRecordPath, color:color,bounds: bounds, groupID:groupID, location:location}})
+  }
   return (
     <div className="gd_background">
       <Link to="/mygroup">
@@ -468,7 +470,7 @@ export default function MyGroupDetail() {
       <div className="gd_join">
         <div className="gd_join_box"></div>
         {finished ? 
-          ( <div className="gd_join_text" onClick={goBefore}>그림 완성</div>)
+          ( <div className="gd_join_text" onClick={goPost}>그림 완성</div>)
           : 
           (<div className="gd_join_text" onClick={goBefore}>걷기 시작하기</div> )}
       </div>
