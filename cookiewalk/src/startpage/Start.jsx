@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom";
+import testPath2 from '../utils/testPath2';
 import { PathNavigation } from '../utils/PathNavigation';
 import { textToSpeech } from '../utils/textToSpeech';
 import { supabase } from '../supabaseClient';
@@ -73,8 +74,6 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 export default function Start() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { token } = useToken(); // 추가된 부분: 로그인한 사용자 정보 가져오기
-
     const [groupDraw, setGroupDraw] = useState(false);
     const [regionNumber, setRegionNumber] = useState(0);
     const [groupId, setGroupId] = useState('');
@@ -92,18 +91,18 @@ export default function Start() {
     const [passPath, setPassPath] = useState([]);
     const [walkMode, setWalkMode] = useState(true); //true 백지걷기 //false 경로따라걷기
     const passPathRef = useRef(passPath);
-
+    const [level, setLevel]=useState('하')
     const [totalDistance, setTotalDistance] = useState(0);
     const [time, setTime] = useState(0);
     const timerRef = useRef(null);
     const [isARMode, setIsARMode] = useState(false);
-    const [points, setPoints] = useState(0);
+    const [points, setPoints] = useState(0); // 새롭게 추가된 상태
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const tolerance = 0.007;
-
     const [navigation, setNavigation]=useState([]);
-    const [lastDistance, setLastDistance] = useState(0); // 추가된 부분: 마지막 포인트를 획득한 거리
+    const userInfo = useToken();
+    const userID = userInfo.user;
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -142,26 +141,37 @@ export default function Start() {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    checkForPointReward(newDistance); // 포인트 체크 함수 호출
+                                    if (newDistance - prevDistance >= 0.05) {
+                                        setPoint(point + 1);
+                                        showPointPopup();
+                                        updatePoint(userID, 1);
+                                    }
                                     return newDistance;
                                 });
                             }
                             return newPath;
-                        }else{   //받아온 경로 있을시
+                        } else {   //받아온 경로 있을시
                             newPath=[...prevPath, newPosition]
                             const closePoint = drawPath[passPathRef.current.length];
-                            const distanceClosePoint = calculateDistance(newPosition, closePoint)
+                            const distanceClosePoint = calculateDistance(newPosition, closePoint);
                             if(distanceClosePoint <= tolerance){
                                 setPassPath((prevPassPath)=>{
-                                    let newPassPath = [...prevPassPath, closePoint]
-                                    return newPassPath
-                                })
+                                    let newPassPath = [...prevPassPath, closePoint];
+                                    return newPassPath;
+                                });
+                                console.log('경로같음');
+                            } else {
+                                console.log('경로벗어남');
                             }
                             if (lastPosition) {
                                 const distance = calculateDistance(lastPosition, newPosition);
                                 setTotalDistance((prevDistance) => {
                                     const newDistance = prevDistance + distance;
-                                    checkForPointReward(newDistance); // 포인트 체크 함수 호출
+                                    if (newDistance - prevDistance >= 0.05) {
+                                        setPoint(point + 1);
+                                        showPointPopup();
+                                        updatePoint(userID, 1);
+                                    }
                                     return newDistance;
                                 });
                             }
@@ -182,37 +192,75 @@ export default function Start() {
         }
     };
 
-    const checkForPointReward = async (newDistance) => {
-        if (newDistance - lastDistance >= 0.05) {
-            setPoints((prevPoints) => prevPoints + 1);
-            setLastDistance(newDistance);
-            await updatePointsInSupabase();
-            alert('1포인트를 획득하였습니다.');
-        }
-    };
-
-    const updatePointsInSupabase = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('user')
-                .update({ points: supabase.raw('points + 1') })
-                .eq('user_id', token.user.id);
-
-            if (error) {
-                console.error('Error updating points:', error);
+    const startTracking2 = () => {
+        setTracking(true);
+        let countIndex = 0;
+        const test = setInterval(() => {
+            if (countIndex < testPath2.length) {
+                const newPosition = testPath2[countIndex];
+                setCurrentPosition(newPosition);
+                setPath((prevPath) => {
+                    if (!Array.isArray(prevPath)) {
+                        prevPath = [];
+                    }
+                    let newPath = [...prevPath, newPosition];
+                    const lastPosition = prevPath[prevPath.length - 1];
+                    if (drawPath.length === 0) {
+                        if (lastPosition) {
+                            const distance = calculateDistance(lastPosition, newPosition);
+                            setTotalDistance((prevDistance) => {
+                                const newDistance = prevDistance + distance;
+                                if (newDistance - prevDistance >= 0.05) {
+                                    setPoint(point + 1);
+                                    showPointPopup();
+                                    updatePoint(userID, 1);
+                                }
+                                return newDistance;
+                            });
+                        }
+                        return newPath
+                    } else {
+                        const closePoint = drawPath[passPathRef.current.length];
+                        console.log(passPath.length);
+                        const distanceClosePoint = calculateDistance(newPosition, closePoint);
+                        if(distanceClosePoint <= tolerance){
+                            setPassPath((prevPassPath)=>{
+                                let newPassPath = [...prevPassPath, closePoint];
+                                return newPassPath;
+                            });
+                            console.log('경로같음');
+                        } else {
+                            console.log('경로벗어남');
+                        }
+                        if (lastPosition) {
+                            const distance = calculateDistance(lastPosition, newPosition);
+                            setTotalDistance((prevDistance) => {
+                                const newDistance = prevDistance + distance;
+                                if (newDistance - prevDistance >= 0.05) {
+                                    setPoint(point + 1);
+                                    showPointPopup();
+                                    updatePoint(userID, 1);
+                                }
+                                return newDistance;
+                            });
+                        }
+                        return newPath;
+                    }
+                });
+                countIndex++;
             } else {
-                console.log('Points updated successfully:', data);
+                clearInterval(test);
             }
-        } catch (error) {
-            console.error('Error updating points:', error);
-        }
+        }, 3000);
     };
 
     useEffect(() => {
         passPathRef.current = passPath;
+        console.log(passPath);
         if(passPathRef.current.length > 0){
+            console.log(navigation[passPathRef.current.length-1]);
             if(navigation[passPathRef.current.length-1] != '직진'){
-                textToSpeech(navigation[passPathRef.current.length-1])
+                textToSpeech(navigation[passPathRef.current.length-1]);
             }
         }
     }, [passPath]);
@@ -237,7 +285,8 @@ export default function Start() {
             setGroupDraw(location.state.groupDraw);
             setColor(location.state.color);
             setGroupId(location.state.groupId);
-            setDrawDistance(location.state.drawDistance)
+            setDrawDistance(location.state.drawDistance);
+            setLevel(location.state.level);
         }
     }, [location.state.drawPath]);
 
@@ -262,8 +311,12 @@ export default function Start() {
     }, [isPaused, drawPath]);
 
     useEffect(()=>{
+        console.log(navigation);
+    }, [navigation]);
+
+    useEffect(()=>{
         if(path.length >=1){
-            setPathLoading(false)
+            setPathLoading(false);
         }
     }, [path]);
 
@@ -353,6 +406,7 @@ export default function Start() {
                     currentPosition: currentPosition,
                     walkMode: walkMode,
                     color: color,
+                    level:level
                 }
             });
         }
@@ -402,6 +456,35 @@ export default function Start() {
             </div>
         );
     }
+
+    const showPointPopup = () => {
+        alert('1포인트를 획득하였습니다.');
+    };
+
+    const updatePoint = async (userID, point) => {
+        const { data, error } = await supabase
+            .from('user')
+            .select('point')
+            .eq('user_id', userID)
+            .single();
+
+        if (error) {
+            console.error('Error fetching user point:', error);
+            return;
+        }
+
+        const currentPoint = data.point;
+        const newPoint = currentPoint + point;
+
+        const { error: updateError } = await supabase
+            .from('user')
+            .update({ point: newPoint })
+            .eq('user_id', userID);
+
+        if (updateError) {
+            console.error('Error updating user point:', updateError);
+        }
+    };
 
     return (
         <div className="Start_container">
