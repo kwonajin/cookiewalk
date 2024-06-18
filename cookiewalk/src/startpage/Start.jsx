@@ -6,7 +6,7 @@ import testPath2 from '../utils/testPath2';
 import { PathNavigation } from '../utils/PathNavigation';
 import { textToSpeech } from '../utils/textToSpeech';
 import { supabase } from '../supabaseClient';
-import { useToken } from '../context/tokenContext'
+import { useToken } from '../context/tokenContext';
 
 function MyMap({ path = [], drawPath = [], center, passPath = [], walkMode = true, color }) {
     const navermaps = useNavermaps();
@@ -265,8 +265,8 @@ export default function Start() {
             setGroupDraw(location.state.groupDraw);
             setColor(location.state.color);
             setGroupId(location.state.groupId);
-            setDrawDistance(location.state.drawDistance)
-            setLevel(location.state.level)
+            setDrawDistance(location.state.drawDistance);
+            setLevel(location.state.level);
         }
     }, [location.state.drawPath]);
 
@@ -282,9 +282,9 @@ export default function Start() {
             stopTracking();
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
-                startTimer()
-                const navi = PathNavigation(drawPath)
-                setNavigation(navi.resultArray)
+                startTimer();
+                const navi = PathNavigation(drawPath);
+                setNavigation(navi.resultArray);
                 startTracking();
             }
         }
@@ -366,9 +366,22 @@ export default function Start() {
     const icon3Path = isExpanded ? "./icon/mdi--arrow-down-drop.svg" : "./icon/mdi--arrow-drop-up.svg";
 
     async function updateUserPoints(userId, pointsToAdd) {
+        const { data: currentUser, error: fetchError } = await supabase
+            .from('user')
+            .select('point')
+            .eq('user_id', userId)
+            .single();
+
+        if (fetchError) {
+            console.error('Error fetching user points:', fetchError);
+            return;
+        }
+
+        const newPoints = currentUser.point + pointsToAdd;
+
         const { data, error } = await supabase
             .from('user')
-            .update({ point: supabase.raw('point + ?', [pointsToAdd]) })
+            .update({ point: newPoints })
             .eq('user_id', userId);
 
         if (error) {
@@ -396,7 +409,7 @@ export default function Start() {
                     color: color,
                     groupId: groupId,
                     regionNumber: regionNumber,
-                    drawDistacne: drawDistacne
+                    drawDistacne: drawDistance
                 }
             })
         } else {
