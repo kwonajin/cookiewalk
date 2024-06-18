@@ -248,7 +248,7 @@ export default function Start() {
     useEffect(() => {
         passPathRef.current = passPath;
         console.log(passPath)
-        if(passPathRef.current.length > 0){
+        if(passPathRef.current.length > 0 && passPathRef.current.length < drawPath.length-1 ){
             console.log(navigation[passPathRef.current.length-1])
             if(navigation[passPathRef.current.length-1] != '직진'){
                 textToSpeech(navigation[passPathRef.current.length-1])
@@ -293,6 +293,7 @@ export default function Start() {
             stopTracking();
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
+                console.log(drawPath)
                 startTimer()
                 const navi = PathNavigation(drawPath)
                 setNavigation(navi.resultArray)
