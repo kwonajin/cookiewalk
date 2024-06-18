@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import './Start.css';
 import { Container as MapDiv, NaverMap, Marker, useNavermaps, Polyline } from 'react-naver-maps';
 import { useLocation, useNavigate } from "react-router-dom";
@@ -412,7 +412,7 @@ export default function Start() {
             </div>
         );
     }
-    
+
     return (
         <div className="Start_container">
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
