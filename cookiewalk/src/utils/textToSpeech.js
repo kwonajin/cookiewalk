@@ -33,6 +33,10 @@ export const textToSpeech = async (text) =>{
     const audioUrl =URL.createObjectURL(audioBlob);
     const audio = new Audio(audioUrl);
     audio.play();
+
+    audio.onended = () => {
+      URL.revokeObjectURL(audioUrl);
+    };
   }catch(error){
     console.error(error)
   }
