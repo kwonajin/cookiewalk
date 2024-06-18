@@ -10,7 +10,7 @@ function MyMap({path=[],center, drawPath=[] ,color}){
     console.log(drawPath)
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
     const markerIcon = {
-        content: '<div><img src="" alt="icon" class="icon_size"></div>',
+        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
         size: new navermaps.Size(24,24),
         anchor: new navermaps.Point(12,12)
     }
