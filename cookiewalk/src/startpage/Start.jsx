@@ -210,7 +210,9 @@ export default function Start() {
 
     useEffect(() => {
         passPathRef.current = passPath;
+
         if(passPathRef.current.length > 0){
+
             if(navigation[passPathRef.current.length-1] != '직진'){
                 textToSpeech(navigation[passPathRef.current.length-1])
             }
@@ -253,9 +255,11 @@ export default function Start() {
             stopTracking();
         } else {
             if (drawPath.length > 1 || location.state.drawPath < 1) {
+
                 startTimer();
                 const navi = PathNavigation(drawPath);
                 setNavigation(navi.resultArray);
+
                 startTracking();
             }
         }
