@@ -1,6 +1,6 @@
 
 //실제로 주변을 걷는 경로 test좌표
-const testPath3 = [
+const testPath2 = [
   {latitude: 35.1344985, longitude: 129.1041788},
   {latitude: 35.1344985, longitude: 129.1041788},
   {latitude: 35.1344648, longitude: 129.1042632},
@@ -45,14 +45,14 @@ const testPath7 = [
   {latitude: 35.1282605 , longitude : 129.1129095},
   {latitude: 35.1278744 , longitude : 129.1132099},
 ]
-const testPath6 = [
+const testPath9 = [
   {latitude: 35.1359303, longitude: 129.1023887},
   {latitude: 35.1362067, longitude: 129.1021768},
   {latitude: 35.1362944, longitude: 129.1022411},
   {latitude: 35.1364568, longitude: 129.1026113},
   {latitude: 35.1366103, longitude: 129.1029332}
 ]
-const testPath2 =[
+const testPath8 =[
   { latitude: 35.1338068, longitude: 129.1021758},
   { latitude: 35.1337851,longitude: 129.1023411},
   { latitude: 35.1337864, longitude: 129.1024579},
