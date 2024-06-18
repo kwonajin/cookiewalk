@@ -6,15 +6,17 @@ import testPath2 from '../utils/testPath2';
 import { PathNavigation } from '../utils/PathNavigation';
 import { textToSpeech } from '../utils/textToSpeech';
 import { supabase } from '../supabaseClient';
-import { useToken } from '../context/tokenContext';
+import { useToken } from '../context/tokenContext'
+import fetchAvatar from '../utils/getAvatar/getUserAvatar';
 
-function MyMap({ path = [], drawPath = [], center, passPath = [], walkMode = true, color }) {
+function MyMap({ path = [], drawPath = [], center, passPath = [], walkMode = true, color, avatarUrl }) {
     const navermaps = useNavermaps();
     const markerIcon = {
-        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
+        content: `<div><img src="${avatarUrl}" alt="icon" class="icon_size"></div>`, // 아바타 URL 사용
         size: new navermaps.Size(24, 24),
         anchor: new navermaps.Point(12, 12)
     };
+
     return (
         <NaverMap
             defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)}
@@ -72,7 +74,6 @@ function MyMap({ path = [], drawPath = [], center, passPath = [], walkMode = tru
 }
 
 export default function Start() {
-
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -104,6 +105,7 @@ export default function Start() {
     const [navigation, setNavigation] = useState([]);
     const userInfo = useToken();
     const userID = userInfo.user;
+    const [avatarUrl, setAvatarUrl] = useState('/images/logo.png'); // 아바타 URL 상태 추가
 
     // New state for tracking points
     const [lastPointDistance, setLastPointDistance] = useState(0);
@@ -432,6 +434,53 @@ export default function Start() {
         }
     }
 
+    const handleARCapture = () => {
+        setPoints(points + 1);
+        setIsARMode(false);
+        startTracking();
+    };
+
+    useEffect(() => {
+        if (isARMode) {
+            const video = videoRef.current;
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then((stream) => {
+                        video.srcObject = stream;
+                    })
+                    .catch((error) => {
+                        console.error("Error accessing webcam: ", error);
+                    });
+            }
+        }
+    }, [isARMode]);
+
+    // 아바타 URL 가져오기
+    useEffect(() => {
+        const fetchAvatarUrl = async () => {
+            const url = await fetchAvatar(userID); // 아바타 URL 가져오기
+            if (url) {
+                setAvatarUrl(url); // 아바타 URL 설정
+            }
+        };
+        fetchAvatarUrl();
+    }, [userID]);
+
+    if (isARMode) {
+        return (
+            <div className="ar-container">
+                <video ref={videoRef} autoPlay className="ar-camera-view" />
+                <div className="ar-overlay">
+                    <img src={avatarUrl} alt="AR" className="ar-image" onClick={handleARCapture} /> {/* 아바타 URL 사용 */}
+                </div>
+                <div className="ar-info">
+                    <div>AR 모드 활성화</div>
+                    <div>AR 이미지를 클릭하세요!</div>
+                </div>
+            </div>
+        );
+    }
+
     if (pathLoading) {
         return (
             <div className="BeforeStart_container">
@@ -449,7 +498,7 @@ export default function Start() {
                 </div>
             )}
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
-            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color} /></MapDiv>
+            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color} avatarUrl={avatarUrl} /></MapDiv> {/* 아바타 URL 전달 */}
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
                 <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
                 {isExpanded && (

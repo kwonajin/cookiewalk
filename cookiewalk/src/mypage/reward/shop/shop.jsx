@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useToken } from '../../../context/tokenContext';
 import { supabase } from '../../../supabaseClient';
 import logo from "../images/logo.png";
-import fetchAvatar from '../../../utils/getUserAvatar';
 
 // Supabase 데이터베이스에서 아이템 목록을 가져오는 함수
 async function fetchItems() {
@@ -198,7 +197,7 @@ export default function Shop() {
 
         <select className='region_select_box' onChange={handleOptionChange} value={selectedOption}>
           <option value="avatar">아바타</option>
-          <option value="option1">미정1</option>
+          <option value="option1">기프티콘</option>
           <option value="option2">미정2</option>
           <option value="option3">미정3</option>
           <option value="option4">미정4</option>
