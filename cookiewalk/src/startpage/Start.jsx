@@ -7,14 +7,16 @@ import { PathNavigation } from '../utils/PathNavigation';
 import { textToSpeech } from '../utils/textToSpeech';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext'
+import fetchAvatar from '../utils/getAvatar/getUserAvatar';
 
-function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, color }) {
+function MyMap({ path = [], drawPath = [], center, passPath = [], walkMode = true, color, avatarUrl }) {
     const navermaps = useNavermaps();
     const markerIcon = {
-        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
+        content: `<div><img src="${avatarUrl}" alt="icon" class="icon_size"></div>`, // 아바타 URL 사용
         size: new navermaps.Size(24, 24),
         anchor: new navermaps.Point(12, 12)
     };
+
     return (
         <NaverMap
             defaultCenter={center ? new navermaps.LatLng(center.latitude, center.longitude) : new navermaps.LatLng(37.3595704, 127.105399)}
@@ -72,8 +74,6 @@ function MyMap({ path=[], drawPath=[], center , passPath=[], walkMode=true, colo
 }
 
 export default function Start() {
-    
-
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -111,6 +111,7 @@ export default function Start() {
     const [navigation, setNavigation]=useState([]);
     const userInfo = useToken();
     const userID = userInfo.user;
+    const [avatarUrl, setAvatarUrl] = useState('/images/logo.png'); // 아바타 URL 상태 추가
 
     const togglePause = () => {
         setIsPaused(!isPaused);
@@ -450,12 +451,23 @@ export default function Start() {
         }
     }, [isARMode]);
 
+    // 아바타 URL 가져오기
+    useEffect(() => {
+        const fetchAvatarUrl = async () => {
+            const url = await fetchAvatar(userID); // 아바타 URL 가져오기
+            if (url) {
+                setAvatarUrl(url); // 아바타 URL 설정
+            }
+        };
+        fetchAvatarUrl();
+    }, [userID]);
+
     if (isARMode) {
         return (
             <div className="ar-container">
                 <video ref={videoRef} autoPlay className="ar-camera-view" />
                 <div className="ar-overlay">
-                    <img src="/images/logo.png" alt="AR" className="ar-image" onClick={handleARCapture} />
+                    <img src={avatarUrl} alt="AR" className="ar-image" onClick={handleARCapture} /> {/* 아바타 URL 사용 */}
                 </div>
                 <div className="ar-info">
                     <div>AR 모드 활성화</div>
@@ -506,7 +518,7 @@ export default function Start() {
     return (
         <div className="Start_container">
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
-            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color} /></MapDiv>
+            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color} avatarUrl={avatarUrl} /></MapDiv> {/* 아바타 URL 전달 */}
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
                 <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
                 {isExpanded && (

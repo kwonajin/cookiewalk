@@ -1,16 +1,16 @@
 import React, { useEffect, useState, Suspense, useRef } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps, NavermapsProvider } from 'react-naver-maps';
 import './draw_group.css';
-import customIcon from '../../public/images/logo.png';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { calculateDistance } from '../utils/CalculateDistance';
+import fetchAvatar from '../utils/getAvatar/getUserAvatar';
 
 const initialColors = ['#FF0000', '#FFA500', '#FFFF00', '#008000', '#0000FF'];
 
-function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, setRedMarkerClicked, colors, sectionIndex, onPolylineClick }) {
+function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, setRedMarkerClicked, colors, sectionIndex, onPolylineClick, avatarUrl }) {
   const navermaps = useNavermaps();
   const [position, setPosition] = useState(null);
   const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));
@@ -59,8 +59,8 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
     anchor: new navermaps.Point(7.5, 7.5)
   });
 
-  const customIconFactory = () => ({
-    content: `<div class='animated-cookie' style='width: 30px; height: 40px;'><img src="${customIcon}" style="width: 100%; height: 100%;" /></div>`,
+  const customIconFactory = (url) => ({
+    content: `<div class='animated-cookie' style='width: 30px; height: 40px;'><img src="${url}" style="width: 100%; height: 100%;" /></div>`,
     size: new navermaps.Size(30, 40),
     anchor: new navermaps.Point(15, 25)
   });
@@ -71,7 +71,7 @@ function MyMap({ drawing, setPath, path, start, setEndPoint, redMarkerClicked, s
       defaultZoom={15}
       onClick={handleMapClick}
     >
-      {position && <Marker position={position} icon={customIconFactory()} />}
+      {position && <Marker position={position} icon={customIconFactory(avatarUrl)} />}
       {path.map((sectionPath, index) => (
         sectionPath && sectionPath.length > 0 && (
           <React.Fragment key={index}>
@@ -126,6 +126,7 @@ function DrawGroupMapComponent() {
   const [selectedColors, setSelectedColors] = useState(initialColors);
   const [currentPolylineIndex, setCurrentPolylineIndex] = useState(null);
   const [currentDistance, setCurrentDistance] = useState(0); // 추가
+  const [avatarUrl, setAvatarUrl] = useState('/images/logo.png'); // 아바타 URL 상태 추가
 
   const [selectedDate, setSelectedDate] = useState('');
 
@@ -383,6 +384,15 @@ function DrawGroupMapComponent() {
     console.log(path);
   }, [path]);
 
+  useEffect(() => {
+    const fetchAvatarUrl = async () => {
+      const url = await fetchAvatar(userID); // 아바타 URL 가져오기
+      if (url) {
+        setAvatarUrl(url); // 아바타 URL 설정
+      }
+    };
+    fetchAvatarUrl();
+  }, [userID]);
   
   return (
     <div className='group_draw_map_container'>
@@ -423,7 +433,7 @@ function DrawGroupMapComponent() {
       <div className='draw_save' onClick={submitRoute}>경로 저장</div>
 
       <MapDiv className='mapimg' style={{ width: '100%', height: '450px' }}>
-        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} colors={selectedColors} sectionIndex={sectionIndex} onPolylineClick={handlePolylineClick} />
+        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} colors={selectedColors} sectionIndex={sectionIndex} onPolylineClick={handlePolylineClick} avatarUrl={avatarUrl} />
       </MapDiv>
 
       <div className='draw_name'>제목</div>

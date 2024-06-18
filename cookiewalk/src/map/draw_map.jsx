@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Container as MapDiv, NaverMap, Marker, Polyline, useNavermaps } from 'react-naver-maps';
 import './draw_map.css';
-import customIcon from '../../public/images/logo.png';  // 이미지 경로를 불러옵니다.
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 import axios from 'axios'
 import { Link, useNavigate } from "react-router-dom";
 import  {calculateDistance} from '../utils/CalculateDistance'
+import fetchAvatar from '../utils/getAvatar/getUserAvatar';
 
-function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor }) {
+function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClicked, setRedMarkerClicked, setPathAfterRedMarker, selectedColor, avatarUrl }) {
   const navermaps = useNavermaps();
   const [position, setPosition] = useState(null);
   const [center, setCenter] = useState(new navermaps.LatLng(37.3595704, 127.105399));
-
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -46,11 +45,6 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
   const handleRedMarkerClick = () => {
     if (drawing && !redMarkerClicked) {
       setRedMarkerClicked(false);
-      // setPath(currentPath => {
-      //   const newPath = [...currentPath, currentPath[0]];
-      //   setPathAfterRedMarker(newPath);
-      //   return newPath;
-      // });
     }
   };
 
@@ -60,8 +54,8 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
     anchor: new navermaps.Point(7.5, 7.5)
   });
 
-  const customIconFactory = () => ({
-    url: customIcon,
+  const customIconFactory = (url) => ({
+    url: url,
     size: new navermaps.Size(30,40 ),  // 이미지 크기를 설정합니다.
     scaledSize: new navermaps.Size(30, 40),
     anchor: new navermaps.Point(15, 25)
@@ -73,7 +67,7 @@ function MyMap({ drawing, setPath, path, start, end, setEndPoint, redMarkerClick
       defaultZoom={15}
       onClick={handleMapClick}
     >
-      {position && <Marker position={position} icon={customIconFactory()} />}  // 사용자의 현재 위치를 로고 이미지로 표시
+      {position && <Marker position={position} icon={customIconFactory(avatarUrl)} />}  // 사용자의 현재 위치를 로고 이미지로 표시
       {path.length > 0 && <Polyline path={path} strokeColor={selectedColor} strokeWeight={7} />}
       {path.length > 0 && (
         <Marker
@@ -99,12 +93,13 @@ export default function DrawMap() {
   const [selectedColor, setSelectedColor] = useState('#000000'); // 기본 색상 설정
   const [totalDistance, setTotalDistance]=useState(0)
 
-  const  navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const userInfo=useToken();
+  const userInfo = useToken();
   const userID = userInfo.user;
-  const [address, setAddress]=useState('')
-  const [title, setTitle]=useState('')
+  const [address, setAddress] = useState('');
+  const [title, setTitle] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('/images/logo.png'); // 아바타 URL 상태 추가
 
   const [selectedDifficulty, setSelectedDifficulty] = useState('하');  // 난이도 상태 추가
 
@@ -143,8 +138,8 @@ export default function DrawMap() {
     setStartPoint(null);
     setEndPoint(null);
     setRedMarkerClicked(false);
-    setAddress('')
-    setTotalDistance(0)
+    setAddress('');
+    setTotalDistance(0);
     if (!drawing) {
       setDrawing(true);  // 초기화 후에도 그림 그리기 모드 유지
     }
@@ -211,7 +206,6 @@ export default function DrawMap() {
         console.error(insertCollectionError)
       }
       for (const [index, location] of path.entries()){
-        // console.log(location)
         const {data: insertLocation, insertLocationError}= await supabase
           .from('draw_map_c_location')
           .insert([
@@ -231,6 +225,17 @@ export default function DrawMap() {
       window.alert('필수값이 입력되지 않았습니다.')
     }
   }
+
+  useEffect(() => {
+    const fetchAvatarUrl = async () => {
+        const url = await fetchAvatar(userID); // 아바타 URL 가져오기
+        if (url) {
+            setAvatarUrl(url); // 아바타 URL 설정
+        }
+    };
+    fetchAvatarUrl();
+  }, [userID]);
+
   return (
     <div className='draw_map_container'>
       
@@ -265,7 +270,7 @@ export default function DrawMap() {
       <div className='draw_save' onClick={submitRoute} >경로 저장</div>
       
       <MapDiv className='mapimg' style={{ width: '100%', height: '450px' }}>
-        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} selectedColor={selectedColor} />
+        <MyMap drawing={drawing} setPath={setPath} path={path} start={setStartPoint} setEndPoint={setEndPoint} redMarkerClicked={redMarkerClicked} setRedMarkerClicked={setRedMarkerClicked} setPathAfterRedMarker={setPathAfterRedMarker} selectedColor={selectedColor} avatarUrl={avatarUrl} />
       </MapDiv>
 
       <div className='draw_name'>제목</div>
