@@ -93,7 +93,7 @@ export default function MyGroupDetail() {
   const [recordPercent, setRecordPercent]=useState(Array(distacneCount).fill(0))
   console.log(distance)
 
-  const [finished, setFinished]=useState(true)
+  const [finished, setFinished]=useState(false)
 
   useEffect(() => {
     if (drawPath) {
