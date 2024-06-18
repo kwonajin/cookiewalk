@@ -130,7 +130,7 @@ export default function Write_map() {
 
   return (
     <div className="write-map-page">
-      <Link to="/finished_art_detail">
+      <Link to="/finished_art">
         <div className="write_map_back">
           <img className='write_map_back_icon' src="./icon/arrow.svg" alt="Back" />
         </div>

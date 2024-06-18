@@ -43,6 +43,7 @@ export default function FinishedArtDetail() {
   const center = recordItem.state.center.coordinate;
   // const nickName = mapList.state.nickName
   const color= recordItem.state.color
+  const level= recordItem.state.level
 
   console.log(recordItem)
 
@@ -73,7 +74,7 @@ export default function FinishedArtDetail() {
       <span className="fad_location_value">{location}</span>
 
       <div><img className="fad_difficulty_icon" src="./icon/round-star.svg" alt="Difficulty Icon" /></div>
-      <span className="fad_difficulty_value">level</span>
+      <span className="fad_difficulty_value">{level}</span>
 
       <div><img className="fad_time_icon" src="./icon/clock.svg" alt="Difficulty Icon" /></div>
       <span className="fad_time_value">{formatTime(time)}</span>

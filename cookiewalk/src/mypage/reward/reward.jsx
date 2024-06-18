@@ -1,8 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './reward.css';
 import { Link } from "react-router-dom";
+import { supabase } from '../../supabaseClient'; // supabaseClient를 import합니다.
 
 export default function Reward(){
+  const [points, setPoints] = useState(0);
+
+  useEffect(() => {
+    const fetchPoints = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { id } = user;
+        const { data, error } = await supabase
+          .from('user')
+          .select('point')
+          .eq('user_id', id)
+          .single();
+        if (data) {
+          setPoints(data.point);
+        }
+        if (error) {
+          console.error('Error fetching points:', error);
+        }
+      }
+    };
+
+    fetchPoints();
+  }, []);
+
   return (
     <div style={{ background: '#E5E5E5' }}>
       <div className="reward_background">
@@ -12,7 +37,7 @@ export default function Reward(){
 
       <img className="logo_icon" src="./images/logo.png" alt="" />
       <img className="footerBackground" src="./images/coin.png" alt="" />
-      <span className="pointsAmount">1350</span>
+      <span className="pointsAmount">{points}</span>
       <span className="pointsLabel">포인트</span>
       <div className="point_line"></div>
       <div className="line1"></div>
@@ -34,5 +59,3 @@ export default function Reward(){
     </div>
   );
 }
-
-

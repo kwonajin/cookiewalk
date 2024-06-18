@@ -4,6 +4,8 @@ import './BeforeStart.css'
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from '../supabaseClient';
 
+import { PathNavigation } from '../utils/PathNavigation';
+
 function MyMap({path=[],center, drawPath=[] ,color}){
     console.log(drawPath)
     const navermaps = useNavermaps(); //네이버 지도API 객체 가져오기
@@ -53,14 +55,33 @@ function MyMap({path=[],center, drawPath=[] ,color}){
 }
 
 export default function BeforeStart(){
+
+    // const drawPath2 = [
+    //     {latitude: 35.1334537, longitude: 129.1014169},
+    //     {latitude: 35.133471, longitude: 129.1018953},
+    //     {latitude: 35.1335055, longitude: 129.1023737},
+    //     {latitude: 35.1337586, longitude: 129.1025144},
+    //     {latitude: 35.1340463, longitude: 129.1024722},
+    //     {latitude: 35.1342074, longitude: 129.1024582},
+    //     {latitude: 35.1344814, longitude: 129.1024271},
+    //     {latitude: 35.134769, longitude: 129.1027367},
+    //     {latitude: 35.1348496, longitude: 129.1031729},
+    //     {latitude: 35.1348496, longitude: 129.1034965},
+    //     {latitude: 35.1345357, longitude: 129.1035711},
+    //     {latitude: 35.1341675, longitude: 129.1036556},
+    //     ]
+    // const a= PathNavigation(drawPath2)
+    // console.log(a)
     
     const [path,setPath]=useState([])
     const [drawId,setDrawId]=useState('')
     const [drawPath, setDrawPath]=useState([])
+    const [drawDistance, setDrawDistance]=useState('')
     const [groupDraw, setGroupDraw]=useState(false)
     const [regionNumber, setRegionNumber]=useState(0)
     const [groupId, setGroupId]=useState('')
     const [color, setColor]=useState('#7ca0c1')
+    const [level, setLevel]=useState('하')
     const mapCollection = useLocation();
     console.log(mapCollection)
     useEffect(()=>{
@@ -70,6 +91,7 @@ export default function BeforeStart(){
             const drawID=mapCollection.state.drawId
             const drawPath=mapCollection.state.drawPath
             const color=mapCollection.state.color
+            const level=mapCollection.state.level
             if(mapCollection.state.groupDraw){
                 setGroupDraw(mapCollection.state.groupDraw)
                 setRegionNumber(mapCollection.state.regionNumber)
@@ -80,6 +102,8 @@ export default function BeforeStart(){
             setDrawId(drawID)
             setDrawPath(drawPath)
             setColor(color)
+            setDrawDistance(mapCollection.state.drawDistance)
+            setLevel(level)
         }
     },[path])
     const  navigate = useNavigate();
@@ -134,7 +158,7 @@ export default function BeforeStart(){
     function startPage(e){
         e.preventDefault();
         const startTime = new Date()
-        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId, color:color}})
+        navigate('/start', {state: {currentPosition:currentPosition, startTime: startTime, drawPath:drawPath,path:path, drawId: drawId, groupDraw: groupDraw, regionNumber:regionNumber, groupId: groupId, color:color, drawDistance: drawDistance, level:level}})
     }
 
     return(

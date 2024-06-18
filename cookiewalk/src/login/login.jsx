@@ -61,7 +61,7 @@ export default function LogIn() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options:{
-        redirectTo:'http://localhost:5173/home',
+        redirectTo:'https//cookiewalk.netlify.app',
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
@@ -88,7 +88,7 @@ export default function LogIn() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo:'http://localhost:5173/home',
+        redirectTo:'https//cookiewalk.netlify.app',
         queryParams: {
         access_type: 'offline',
         prompt: 'consent',
