@@ -235,7 +235,7 @@ export default function Shop() {
                   {currentAvatar === item.item_id ? "사용중" : "사용하기"} {/* 현재 아바타가 item_id이면 '사용중' 표시 */}
                 </button>
               ) : (
-                <button onClick={() => handlePurchaseItem(item.item_id, item.item_id, item.price)}>구매하기</button>
+                <button className='buybtn' onClick={() => handlePurchaseItem(item.item_id, item.item_id, item.price)}>구매하기</button>
               )}
             </div>
           ))}

@@ -512,3 +512,8 @@ body{
 	cursor: pointer; /* 포인터 커서 설정 */
 }
 
+.buybtn{
+	background-color: #7ca0c1;
+	color: #ffffff;
+	outline: ;
+}
