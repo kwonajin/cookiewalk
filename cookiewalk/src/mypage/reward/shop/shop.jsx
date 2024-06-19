@@ -108,7 +108,7 @@ async function purchaseItem(userID, itemID, itemPrice) {
 
   if (userPoints < itemPrice) {
     window.alert("point가 부족합니다."); // 포인트가 부족할 경우 경고 메시지
-    return;
+    return false;
   }
 
   const { error } = await supabase
@@ -117,6 +117,7 @@ async function purchaseItem(userID, itemID, itemPrice) {
 
   if (error) {
     console.error("Error purchasing item", error); // 아이템 구매 실패 시 에러 출력
+    return false;
   } else {
     console.log("Item purchased successfully"); // 아이템 구매 성공 시 메시지 출력
     // 포인트를 차감하는 로직 추가
@@ -127,8 +128,10 @@ async function purchaseItem(userID, itemID, itemPrice) {
 
     if (updateError) {
       console.error("Error updating points", updateError); // 포인트 업데이트 실패 시 에러 출력
+      return false;
     } else {
       console.log("Points updated successfully"); // 포인트 업데이트 성공 시 메시지 출력
+      return true;
     }
   }
 }
@@ -170,12 +173,19 @@ export default function Shop() {
   };
 
   // 아이템을 구매하는 함수
-  const handlePurchaseItem = (itemID, itemName, itemPrice) => {
+  const handlePurchaseItem = async (itemID, itemName, itemPrice) => {
     const confirmPurchase = window.confirm(`"${itemName}"을(를) "${itemPrice}P"를 소비하여 구매하시겠습니까?`);
     if (confirmPurchase) {
-      purchaseItem(userID, itemID, itemPrice); // 아이템 구매 함수 호출
-      setUserItems([...userItems, itemID]); // 사용자 아이템 목록에 추가
+      const success = await purchaseItem(userID, itemID, itemPrice); // 아이템 구매 함수 호출
+      if (success) {
+        setUserItems([...userItems, itemID]); // 사용자 아이템 목록에 추가
+      }
     }
+  };
+
+  // 기프티콘을 사용하는 함수
+  const handleUseGifticon = (itemID) => {
+    window.alert(`No${extractNumber(itemID)} 기프티콘을 사용합니다.`);
   };
 
   // 옵션 변경 핸들러 함수
@@ -223,8 +233,7 @@ export default function Shop() {
     <div className="shop-container">
       <div className="group_background">
         <div className='groupnav'>
-        <Link to="/reward"><div className="shop_back"><img className='shop_back_icon' src="./icon/arrow.svg" alt="" /></div></Link>
-
+          <Link to="/reward"><div className="shop_back"><img className='shop_back_icon' src="./icon/arrow.svg" alt="" /></div></Link>
           <div className="group_title">상점</div> {/* 상점 제목 */}
           <div className="group_line"></div> {/* 상점 제목 아래 선 */}
         </div>
@@ -237,11 +246,9 @@ export default function Shop() {
           <img className='search_icon' src="./icon/search.svg" alt="Search Icon" />
         </div>
 
-
-
         <select className='region_select_box' onChange={handleOptionChange} value={selectedOption}>
           <option value="avatar">아바타</option>
-          <option value="option1">미정1</option>
+          <option value="gifticon">기프티콘</option>
           <option value="option2">미정2</option>
           <option value="option3">미정3</option>
           <option value="option4">미정4</option>
@@ -254,29 +261,35 @@ export default function Shop() {
         </select>
 
         <div className='GroupList_container'>
-          <div className="avatar_No0">
-            <img src={logo} alt="Default Avatar" /> {/* 기본 아바타 이미지 */}
-            <p>avatar_No0</p> {/* 기본 아바타 이름 */}
-            <p className='price'>무료</p>
-            <button className='usedbtn' 
-              onClick={() => handleAvatarUpdate("avatar_No0")}
-              disabled={currentAvatar === "avatar_No0"} // 현재 아바타가 avatar_No0이면 버튼 비활성화
-            >
-              {currentAvatar === "avatar_No0" ? "사용중" : "사용하기"} {/* 현재 아바타가 avatar_No0이면 '사용중' 표시 */}
-            </button>
-          </div>
+          {selectedOption === "avatar" && (
+            <div className="avatar_No0">
+              <img src={logo} alt="Default Avatar" /> {/* 기본 아바타 이미지 */}
+              <p>avatar_No0</p> {/* 기본 아바타 이름 */}
+              <p className='price'>무료</p>
+              <button className='usedbtn' 
+                onClick={() => handleAvatarUpdate("avatar_No0")}
+                disabled={currentAvatar === "avatar_No0"} // 현재 아바타가 avatar_No0이면 버튼 비활성화
+              >
+                {currentAvatar === "avatar_No0" ? "사용중" : "사용하기"} {/* 현재 아바타가 avatar_No0이면 '사용중' 표시 */}
+              </button>
+            </div>
+          )}
           {filteredItems.map((item) => (
             <div key={item.item_id} className={`${selectedOption}_No${item.item_id.split('_')[1]}`}>
               <img src={item.source} alt={`Image ${item.item_id}`} /> {/* 아이템 이미지 */}
               <p>{item.item_id}</p> {/* 아이템 ID */}
               <p className='price'>가격: {item.price}P</p> {/* 아이템 가격 */}
               {userItems.includes(item.item_id) ? (
-                <button 
-                  onClick={() => handleAvatarUpdate(item.item_id)}
-                  disabled={currentAvatar === item.item_id} // 현재 아바타가 item_id이면 버튼 비활성화
-                >
-                  {currentAvatar === item.item_id ? "사용중" : "사용하기"} {/* 현재 아바타가 item_id이면 '사용중' 표시 */}
-                </button>
+                selectedOption === "gifticon" ? (
+                  <button className='usebtn' onClick={() => handleUseGifticon(item.item_id)}>사용하기</button>
+                ) : (
+                  <button 
+                    onClick={() => handleAvatarUpdate(item.item_id)}
+                    disabled={currentAvatar === item.item_id} // 현재 아바타가 item_id이면 버튼 비활성화
+                  >
+                    {currentAvatar === item.item_id ? "사용중" : "사용하기"} {/* 현재 아바타가 item_id이면 '사용중' 표시 */}
+                  </button>
+                )
               ) : (
                 <button className='buybtn' onClick={() => handlePurchaseItem(item.item_id, item.item_id, item.price)}>구매하기</button>
               )}

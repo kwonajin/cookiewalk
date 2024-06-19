@@ -560,3 +560,13 @@ body{
 		top:5px;
 	}
   
+
+
+
+.GroupList_container > div[class^="gifticon"] {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
