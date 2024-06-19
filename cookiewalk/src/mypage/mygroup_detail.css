@@ -608,6 +608,12 @@ body{
 	font-weight: 700;
 	letter-spacing:0;
 }
+.group_choice_distance_rate{
+	position: absolute;
+	top: 18px;
+	left: 200px;
+	font-family: Noto Sans KR;
+}
 .e359_129 { 
 	width:75px;
 	height:30px;

@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useToken } from '../../../context/tokenContext';
 import { supabase } from '../../../supabaseClient';
 import logo from "../images/logo.png";
-import fetchAvatar from '../../../utils/getUserAvatar';
 
 // Supabase 데이터베이스에서 아이템 목록을 가져오는 함수
 async function fetchItems() {
@@ -87,8 +86,31 @@ async function fetchUserItems(userID) {
   return data.map(item => item.item_id);
 }
 
+// Supabase 데이터베이스에서 사용자의 point를 가져오는 함수
+async function getUserPoints(userID) {
+  const { data, error } = await supabase
+    .from('user')
+    .select('point')
+    .eq('user_id', userID)
+    .single(); // 단일 레코드 가져오기
+
+  if (error) {
+    console.error("Error fetching user points", error); // 포인트 가져오기 실패 시 에러 출력
+    return null;
+  }
+
+  return data.point; // point 값 반환
+}
+
 // Supabase 데이터베이스에서 아이템을 구매하는 함수
-async function purchaseItem(userID, itemID) {
+async function purchaseItem(userID, itemID, itemPrice) {
+  const userPoints = await getUserPoints(userID); // 사용자의 현재 포인트를 가져옴
+
+  if (userPoints < itemPrice) {
+    window.alert("point가 부족합니다."); // 포인트가 부족할 경우 경고 메시지
+    return;
+  }
+
   const { error } = await supabase
     .from('user_item')
     .insert({ user_id: userID, item_id: itemID });
@@ -97,6 +119,17 @@ async function purchaseItem(userID, itemID) {
     console.error("Error purchasing item", error); // 아이템 구매 실패 시 에러 출력
   } else {
     console.log("Item purchased successfully"); // 아이템 구매 성공 시 메시지 출력
+    // 포인트를 차감하는 로직 추가
+    const { error: updateError } = await supabase
+      .from('user')
+      .update({ point: userPoints - itemPrice })
+      .eq('user_id', userID);
+
+    if (updateError) {
+      console.error("Error updating points", updateError); // 포인트 업데이트 실패 시 에러 출력
+    } else {
+      console.log("Points updated successfully"); // 포인트 업데이트 성공 시 메시지 출력
+    }
   }
 }
 
@@ -140,7 +173,7 @@ export default function Shop() {
   const handlePurchaseItem = (itemID, itemName, itemPrice) => {
     const confirmPurchase = window.confirm(`"${itemName}"을(를) "${itemPrice}P"를 소비하여 구매하시겠습니까?`);
     if (confirmPurchase) {
-      purchaseItem(userID, itemID); // 아이템 구매 함수 호출
+      purchaseItem(userID, itemID, itemPrice); // 아이템 구매 함수 호출
       setUserItems([...userItems, itemID]); // 사용자 아이템 목록에 추가
     }
   };
@@ -158,9 +191,9 @@ export default function Shop() {
   // 정렬 함수
   const sortItems = (items) => {
     if (sortOption === 'distance') {
-      return [...items].sort((a, b) => a.item_id.localeCompare(b.item_id));
+      return [...items].sort((a, b) => extractNumber(a.item_id) - extractNumber(b.item_id));
     } else if (sortOption === 'under5km') {
-      return [...items].sort((a, b) => b.item_id.localeCompare(a.item_id));
+      return [...items].sort((a, b) => extractNumber(b.item_id) - extractNumber(a.item_id));
     } else if (sortOption === 'under10km') {
       return [...items].sort((a, b) => a.price - b.price);
     } else if (sortOption === 'under15km') {
@@ -170,11 +203,17 @@ export default function Shop() {
         if (usageA !== usageB) {
           return usageB - usageA;
         } else {
-          return a.item_id.localeCompare(b.item_id);
+          return extractNumber(a.item_id) - extractNumber(b.item_id);
         }
       });
     }
     return items;
+  };
+
+  // 숫자를 추출하는 함수
+  const extractNumber = (itemId) => {
+    const match = itemId.match(/\d+$/);
+    return match ? parseInt(match[0], 10) : 0;
   };
 
   // 선택된 옵션과 정렬 기준에 따라 필터링된 아이템을 반환하는 함수

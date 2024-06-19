@@ -454,7 +454,7 @@ export default function MyGroupDetail() {
                 </div>
                 <span className="group_choice_distance">{region} km</span>
                 {/* 밑에 recordPercent[index]가 달성률임다 위치수정 부탁드립니다 폰트 글자색등 자유롭게 원하는대로 바꾸주시면 됩니다!!*/}
-                <span className="group_choice_distance"> {recordPercent[index]} %</span>
+                <span className="group_choice_distance_rate"> {recordPercent[index]} %</span>
                 <button
                   className={`gd_select_btn ${selected[index] ? 'selected' : isDisabled ? 'disabled' : 'unselected'}`}
                   onClick={() => handleSelectClick(index)}

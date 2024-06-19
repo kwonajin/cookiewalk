@@ -8,10 +8,10 @@ import { textToSpeech } from '../utils/textToSpeech';
 import { supabase } from '../supabaseClient';
 import { useToken } from '../context/tokenContext';
 
-function MyMap({ path = [], drawPath = [], center, passPath = [], walkMode = true, color }) {
+function MyMap({ path = [], drawPath = [], center, passPath = [], walkMode = true, color , avatar }) {
     const navermaps = useNavermaps();
     const markerIcon = {
-        content: '<div><img src="/images/logo.png" alt="icon" class="icon_size"></div>',
+        content: `<div><img src="${avatar}" alt="icon" class="icon_size"></div>`,
         size: new navermaps.Size(24, 24),
         anchor: new navermaps.Point(12, 12)
     };
@@ -79,6 +79,8 @@ export default function Start() {
 
     const location = useLocation();
     const navigate = useNavigate();
+    const [getUserAvatar, setGetUserAvatar] = useState(location.state.avatar)
+
     const [groupDraw, setGroupDraw] = useState(false);
     const [regionNumber, setRegionNumber] = useState(0);
     const [groupId, setGroupId] = useState('');
@@ -449,7 +451,7 @@ export default function Start() {
                 </div>
             )}
             {isPaused && <div className="close-button" onClick={handleCloseClick}>CLOSE</div>}
-            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color} /></MapDiv>
+            <MapDiv className='e118_443'><MyMap path={path} drawPath={drawPath} center={currentPosition} passPath={passPath} walkMode={walkMode} color={color} avatar={getUserAvatar} /></MapDiv>
             <div className={`start_expanded_content ${isExpanded ? 's_expanded' : 's_collapsed'}`}>
                 <img className={`s_icon3 ${isExpanded ? 's_icon3-expanded' : 's_icon3-collapsed'}`} src={icon3Path} alt="Icon 3" onClick={toggleExpand} />
                 {isExpanded && (
