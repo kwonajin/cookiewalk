@@ -6,7 +6,7 @@ body{
 }
 
 .group_background { 
-	min-height: 850px;
+	/* min-height: 850px; */
 	box-shadow: 0px 10px 15px #00000040;
 	top: 0px;
 	background-color:#ffffff;
@@ -191,7 +191,7 @@ body{
 	position: relative;
 	top: 175px;
 	width: 100%;
-	height: calc(100vh - 153px - 100px); /* 조정 필요: 헤더, 푸터를 고려한 높이 설정 */
+	height: calc(100vh - 153px -100px); /* 조정 필요: 헤더, 푸터를 고려한 높이 설정 */
 	overflow-y: auto; /* 내부 스크롤 활성화 */
 }
 
@@ -311,8 +311,8 @@ body{
 }
 
 .group_name { 
-	color:rgba(19.0000007674098, 19.0000007674098, 19.0000007674098, 1);
-	width:116px;
+	color:#131313;
+	width:200px;
 	height:25px;
 	position:relative;
 	left:11px;
@@ -357,7 +357,7 @@ body{
 	width:20.000001907348633px;
 	height:20.000001907348633px;
 	position:relative;
-	left:130px;
+	left:110px;
 	top:-66px;
 }
 
@@ -374,7 +374,7 @@ body{
 	width:41px;
 	height:14px;
 	position:relative;
-	left:151px;
+	left:131px;
 	top:-82px;
 	font-family:Noto Sans KR;
 	text-align:left;

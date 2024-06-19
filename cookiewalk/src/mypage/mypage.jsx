@@ -259,16 +259,16 @@ export const Tab = () => {
                   </Link>
                   <div className="myjoingroup_list"></div>
                   <div className="group1">
-                    <div className="group1_img"></div>
-                    <div className="group1_title">전국 한반도 그리기</div>
+                    <div className><img className='group1_img' src="./images/group_img1.png" alt="" /></div>
+                    <div className="group1_title">토끼 그려요 🐰</div>
                   </div>
                   <div className="group2">
-                    <div className="group2_img"></div>
-                    <div className="group2_title">부산 토끼 그려요</div>
+                  <div className><img className='group2_img' src="./images/group_img2.png" alt="" /></div>
+                    <div className="group2_title">🍒 체리 그리실분?!</div>
                   </div>
                   <div className="group3">
-                    <div className="group2_img"></div>
-                    <div className="group2_title">폼폼푸린 🍮</div>
+                  <div className><img className='group3_img' src="./images/group_img3.png" alt="" /></div>
+                    <div className="group2_title">진저맨 쿠키 🍪🍩</div>
                   </div>
                 </>
               )}
