@@ -6,7 +6,7 @@ import { supabase } from '../../../supabaseClient';
 import logo from "../images/logo.png";
 
 // Supabase 데이터베이스에서 아이템 목록을 가져오는 함수
-async function fetchItems() {
+async function fetchItems() { 
   const { data, error } = await supabase
     .from('item')
     .select('*');
@@ -223,6 +223,8 @@ export default function Shop() {
     <div className="shop-container">
       <div className="group_background">
         <div className='groupnav'>
+        <Link to="/reward"><div className="shop_back"><img className='shop_back_icon' src="./icon/arrow.svg" alt="" /></div></Link>
+
           <div className="group_title">상점</div> {/* 상점 제목 */}
           <div className="group_line"></div> {/* 상점 제목 아래 선 */}
         </div>
@@ -234,6 +236,8 @@ export default function Shop() {
         <div className="search">
           <img className='search_icon' src="./icon/search.svg" alt="Search Icon" />
         </div>
+
+
 
         <select className='region_select_box' onChange={handleOptionChange} value={selectedOption}>
           <option value="avatar">아바타</option>
@@ -253,8 +257,8 @@ export default function Shop() {
           <div className="avatar_No0">
             <img src={logo} alt="Default Avatar" /> {/* 기본 아바타 이미지 */}
             <p>avatar_No0</p> {/* 기본 아바타 이름 */}
-            <p>무료</p>
-            <button 
+            <p className='price'>무료</p>
+            <button className='usedbtn' 
               onClick={() => handleAvatarUpdate("avatar_No0")}
               disabled={currentAvatar === "avatar_No0"} // 현재 아바타가 avatar_No0이면 버튼 비활성화
             >
@@ -265,7 +269,7 @@ export default function Shop() {
             <div key={item.item_id} className={`${selectedOption}_No${item.item_id.split('_')[1]}`}>
               <img src={item.source} alt={`Image ${item.item_id}`} /> {/* 아이템 이미지 */}
               <p>{item.item_id}</p> {/* 아이템 ID */}
-              <p>가격: {item.price}P</p> {/* 아이템 가격 */}
+              <p className='price'>가격: {item.price}P</p> {/* 아이템 가격 */}
               {userItems.includes(item.item_id) ? (
                 <button 
                   onClick={() => handleAvatarUpdate(item.item_id)}
