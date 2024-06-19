@@ -224,7 +224,6 @@ export default function Group() {
   useEffect(()=>{
     if(userID && address){
       if(searchCon.state){
-        console.log('여기')
         findSeacrhGroup()
       }else{
         findGroup()
@@ -266,7 +265,7 @@ export default function Group() {
     return (
       <div className="BeforeStart_container">
         <img className='map_loadimg' src="./images/logo.png" alt="" />
-        <div className='map_loadmessage'>나의 그룹 정보를 <br /> 가져오는 중입니다...</div>
+        <div className='map_loadmessage'>그룹 정보를 <br /> 가져오는 중입니다...</div>
       </div>
     );
   }
