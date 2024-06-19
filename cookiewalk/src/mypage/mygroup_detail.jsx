@@ -471,7 +471,7 @@ export default function MyGroupDetail() {
       <div className="gd_join">
         <div className="gd_join_box"></div>
         {finished ? 
-          ( <div className="gd_join_text" onClick={goPost}>그림 완성</div>)
+          ( <div className="gd_join_text" onClick={goPost}>그림 완성 !!</div>)
           : 
           (<div className="gd_join_text" onClick={goBefore}>걷기 시작하기</div> )}
       </div>
