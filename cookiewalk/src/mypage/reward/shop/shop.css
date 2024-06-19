@@ -512,7 +512,7 @@ body{
 	cursor: pointer; /* 포인터 커서 설정 */
 }
 
-.buybtn{
+/* .buybtn{
 	background-color: #7ca0c1;
 	color: #ffffff;
 	border: none;
@@ -520,14 +520,4 @@ body{
 	height: 30px;
 	width: 100px;
 
-}
-
-.avatar_No0{
-	width: 200px;
-	padding-left: 25px;
-}
-
-.avatar_NoNo{
-	width: 200px;
-	padding-left: 25px;
-}
+} */
