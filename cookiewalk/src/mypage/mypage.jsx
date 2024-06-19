@@ -19,6 +19,7 @@ export const Tab = () => {
   const [profileImage, setProfileImage] = useState('');
   const [email, setEmail] = useState('');
   const [distance, setDistance] = useState(0);
+  const [point, setPoint] = useState(0); // Add state for point
 
   const [followerCount, setFollowerCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -66,6 +67,7 @@ export const Tab = () => {
       setIntro(data[0].intro);
       setProfileImage(data[0].profile_image);
       setEmail(data[0].email);
+      setPoint(data[0].point); // Set the point value
     }
   };
 
@@ -167,7 +169,7 @@ export const Tab = () => {
         <div className='mynav'>
           <Link to="/reward">
             <img className='reward_icon' src="./images/logo.png" alt="" />
-            <div className='tot_point'>1350</div>
+            <div className='tot_point'>{point}</div> {/* Update point display */}
           </Link>
           <div className="user_id">{nickname}</div>
           <Link to="/mypage_menu">
