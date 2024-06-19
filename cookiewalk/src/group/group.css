@@ -312,7 +312,7 @@ body{
 
 .group_name { 
 	color:#131313;
-	width:300px;
+	width:200px;
 	height:25px;
 	position:relative;
 	left:11px;
@@ -357,7 +357,7 @@ body{
 	width:20.000001907348633px;
 	height:20.000001907348633px;
 	position:relative;
-	left:130px;
+	left:110px;
 	top:-66px;
 }
 
@@ -374,7 +374,7 @@ body{
 	width:41px;
 	height:14px;
 	position:relative;
-	left:151px;
+	left:131px;
 	top:-82px;
 	font-family:Noto Sans KR;
 	text-align:left;
