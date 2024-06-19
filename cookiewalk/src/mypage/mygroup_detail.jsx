@@ -391,8 +391,9 @@ export default function MyGroupDetail() {
   
   useEffect(()=>{
     console.log(recordPercent)
-    if(recordPercent.every(percent => percent === '100')){
+    if(recordPercent.every(percent => percent === '100.00')){
       setFinished(true)
+      console.log(finished)
     }
   },[recordPercent])
 
