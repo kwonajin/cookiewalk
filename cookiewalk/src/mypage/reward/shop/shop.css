@@ -515,5 +515,19 @@ body{
 .buybtn{
 	background-color: #7ca0c1;
 	color: #ffffff;
-	outline: ;
+	border: none;
+	border-radius: 5px;
+	height: 30px;
+	width: 100px;
+
+}
+
+.avatar_No0{
+	width: 200px;
+	padding-left: 25px;
+}
+
+.avatar_NoNo{
+	width: 200px;
+	padding-left: 25px;
 }
